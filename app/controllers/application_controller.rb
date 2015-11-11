@@ -5,7 +5,6 @@ class ApplicationController < ActionController::Base
 
   rescue_from ActionController::RoutingError, with: :render_404
 
-  before_action :set_locale
   helper_method :current_user, :logged_in?, :current_user?, :login_path
 
   def render_404

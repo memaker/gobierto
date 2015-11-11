@@ -8,6 +8,7 @@ gem 'redcarpet'
 gem 'bcrypt'
 gem 'rollbar'
 gem 'meta-tags'
+gem 'ine-places', require: 'ine/places/places'
 
 # Frontend
 gem 'jquery-rails'
