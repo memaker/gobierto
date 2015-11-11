@@ -6,12 +6,10 @@
 @import "vendor/populities";
 @import "vendor/tipsy";
 @import "vendor/jquery.dynatable";
-/*
 @import "vendor/quill.snow";
 @import "vendor/pickadate/classic";
 @import "vendor/pickadate/classic.date";
 @import "vendor/pickadate/classic.time";
-*/
 @import "bourbon";
 @import "cookies_eu";
 
@@ -22,8 +20,27 @@
  */
 
 /* 
+PALETTE: Original Greeners
+AUTHOR: @furilo
+
+$background: #FFF;
+$text: #898989;
+
+$color_1: #BCC41A;
+$color_1_dark: #9AA115;
+$color_1_soft: #E5E9A6;
+$color_1_dark_plus: #787D10;
+
+$color_2: #D61D57;
+
+$color_3: #60C8D6;
+$color_3_soft: #E5F2F3;
+*/
+
+
+/* 
 PALETTE: Bluer
-AUTHOR: Populate Tools
+AUTHOR: @damagedgoods
 */
 
 $background: #FFF;
@@ -35,6 +52,12 @@ $color_1: #00A3D0;
 $color_1_dark: #00A3D0;
 $color_1_soft: #DDECF4;
 $color_1_dark_plus: #172532;
+
+$color_2: #D61D57;
+
+$color_3: #60C8D6;
+$color_3_soft: #E5F2F3;
+
 
 /* General colors */
 $color_bg_error: #F5D6D2;

@@ -16,6 +16,7 @@ gem 'jquery-turbolinks'
 gem 'bourbon'
 gem 'turbolinks'
 gem 'therubyracer'
+gem 'cookies_eu'
 
 group :development, :test do
   gem 'spring'

@@ -14,7 +14,16 @@
 //= require jquery.turbolinks
 //= require jquery_ujs
 //= require turbolinks
-//= require_tree .
+//= require vendor/velocity.min
+//= require vendor/jquery.dynatable
+//= require vendor/jquery.sticky
+//= require vendor/tipsy
+//= require vendor/quill.min
+//= require cookies_eu
+//= require vendor/pickadate/picker
+//= require vendor/pickadate/picker.date
+//= require vendor/pickadate/picker.time
 
-$(function(){
-});
+//= require ui
+// require menu
+//= require_tree .
