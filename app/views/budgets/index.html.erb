@@ -4,29 +4,37 @@
 
 <%= form_tag budgets_path, method: :get do %>
 
-  <%= label_tag :year, 'Año' %>
-  <%= select_tag :year, options_for_select(Budget.years, params[:year]) %>
-
   <%= label_tag :place, 'Municipio' %>
-  <%= text_field_tag :place, params[:place] %>
+  <%= select_tag :place, options_for_select(INE::Places::Place.all.map{|p| [p.name, p.id]}, params[:place]), class: 'select2' %>
 
   <br>
 
   <%= label_tag :functional_area, 'Area funcional' %>
-  <%= select_tag :functional_area, options_for_select(FunctionalArea.items_for_select, params[:functional_area]), include_blank: true %>
+  <%= select_tag :functional_area, options_for_select(FunctionalArea.items_for_select, params[:functional_area]), include_blank: true, class: 'select2' %>
 
   <br>
 
+  <%= label_tag :economic_area, 'Area económica' %>
+  <%= select_tag :economic_area, options_for_select(EconomicArea.items_for_select, params[:economic_area]), include_blank: true, class: 'select2' %>
+
+  <br>
+ 
   <%= label_tag :kind, 'Tipo' %>
   <%= select_tag :kind, options_for_select(EconomicArea.kinds, params[:kind]), include_blank: true %>
 
   <br>
 
-  <%= label_tag :economic_area, 'Area económica' %>
-  <%= select_tag :economic_area, options_for_select(EconomicArea.items_for_select, params[:economic_area]), include_blank: true %>
+  <%= label_tag :year, 'Año' %>
+  <%= select_tag :year, options_for_select(Budget.years, params[:year]) %>
 
   <br>
-  <%= submit_tag 'Filtrar' %>
+
+  <%= label_tag :size, 'Tamaño' %>
+  <%= select_tag :size, options_for_select(['Todos'], params[:size]) %>
+
+  <br>
+
+ <%= submit_tag 'Filtrar' %>
 <% end %>
 
 <div>

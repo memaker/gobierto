@@ -27,35 +27,8 @@ $(function(){
       perPageOptions: [25,50,100, 300]
     }
   });
-  
-  // $(".sticky").sticky({topSpacing:0});
-  
-  // $('.datepicker').pickadate({
-  //   selectYears: true,
-  //   selectMonths: true
-  // });
-  // $('.timepicker').pickatime();
 
-  
-
-  /**** WYSIWYG ********/
-  // var editorSelector = '.editor';
-  // if($(editorSelector).length > 0){
-  //   window.editor = new Quill('.editor', {
-  //     theme: 'snow',
-  //     modules: {
-  //       'toolbar': { container: '#full-toolbar' },
-  //       'link-tooltip': true
-  //     },
-  //   });
-  // }
-
-  // $('.js-text-receiver').hide();
-  // $('form').on('submit', function(e){
-  //   if(window.editor !== undefined){
-  //     $('.js-text-receiver').val(window.editor.getHTML());
-  //   }
-  // });
-  /**** WYSIWYG ********/
-
+  $(function(){
+    $('.select2').select2();
+  });
 });
