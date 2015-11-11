@@ -41,10 +41,17 @@
   <% if @budgets && @budgets.any? %>
     <table>
       <% @budgets.each do |budget| %>
+
         <tr>
-          <td><%= budget.year %></td>
-          <td><%= budget.place_name %></td>
-          <td><%= budget.amount %></td>
+          <% if @filter.by_place? %>
+            <td><%= budget.code %></td>
+            <td><%= budget.name %></td>
+          <% else %>
+            <td><%= budget.place_name %></td>
+            <td><%= budget.population.total %></td>
+          <% end %>
+          <td><%= money(budget.amount / budget.population.total) %></td>
+          <td><%= money(budget.amount) %></td>
         </tr>
       <% end %>
     </table>

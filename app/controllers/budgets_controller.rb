@@ -2,6 +2,7 @@ class BudgetsController < ApplicationController
   def index
     return if params[:year].nil?
 
-    @budgets = BudgetFilter.new.filter(params)
+    @filter = BudgetFilter.new(params)
+    @budgets = @filter.filter
   end
 end

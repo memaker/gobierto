@@ -19,7 +19,7 @@ class EconomicArea < ActiveRecord::Base
     code = options[:code]
 
     sql = <<-SQL
-select sum(importe) as amount, tb_inventario.nombreente as place_name, tb_economica.year
+select sum(importe) as amount, tb_inventario.nombreente as place_name, tb_economica.year, #{place.id} as place_id
 FROM tb_economica
 INNER join "tb_cuentasEconomica" ON "tb_cuentasEconomica".cdcta = tb_economica.cdcta
 INNER join tb_inventario ON tb_inventario.id = tb_economica.id AND tb_inventario.codente = '#{place.id}AA000'
