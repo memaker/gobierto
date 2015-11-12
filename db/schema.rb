@@ -225,6 +225,9 @@ ActiveRecord::Schema.define(version: 20151112094751) do
     t.string  "estado",     limit: 1
   end
 
+  add_index "tb_inventario", ["codente"], name: "index_tb_inventario_on_codente", using: :btree
+  add_index "tb_inventario", ["id"], name: "index_tb_inventario_on_id", using: :btree
+
   create_table "tb_inventario_2010", id: false, force: :cascade do |t|
     t.decimal "id",                    precision: 15, scale: 2
     t.string  "codbdgel",   limit: 10
