@@ -11,11 +11,12 @@
 //= require ui
 
 SPARKLINES_DEFAULTS = {
-  width: 40,
+  width: 60,
   numberDigitGroupSep: '.',
   numberDecimalMark: ',',
   lineColor: '#82CAD8',
   spotColor: '',
   spotRadius: 0,
-  fillColor: false
+  fillColor: false,
+  tagValuesAttribute: 'data-sparkvalues'
 }
