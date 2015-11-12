@@ -1,79 +1,83 @@
-<%= link_to 'Resetear', budgets_path %>
+<div class="main-nav">
 
-<br>
-
-<%= form_tag budgets_path, method: :get do %>
-
-  <%= label_tag :place, 'Municipio' %>
-  <%= select_tag :place, options_for_select(INE::Places::Place.all.map{|p| [p.name, p.id]}, params[:place]), class: 'select2', prompt: 'Todos' %>
+  <%= link_to 'Resetear', budgets_path %>
 
   <br>
 
-  <%= label_tag :functional_area, 'Area funcional' %>
-  <%= select_tag :functional_area, options_for_select(FunctionalArea.items_for_select, params[:functional_area]), prompt: 'Total', class: 'select2' %>
+  <%= form_tag budgets_path, method: :get do %>
 
-  <br>
+    <%= label_tag :place, 'Municipio' %>
+    <%= select_tag :place, options_for_select(INE::Places::Place.all.map{|p| [p.name, p.id]}, params[:place]), class: 'select2', prompt: 'Todos' %>
 
-  <%= label_tag :economic_area, 'Area económica' %>
-  <%= select_tag :economic_area, options_for_select(EconomicArea.items_for_select, params[:economic_area]), prompt: 'Total', class: 'select2' %>
+    <br>
 
-  <br>
- 
-  <%= label_tag :kind, 'Tipo' %>
-  <%= select_tag :kind, options_for_select(EconomicArea.kinds, params[:kind]) %>
+    <%= label_tag :functional_area, 'Area funcional' %>
+    <%= select_tag :functional_area, options_for_select(FunctionalArea.items_for_select, params[:functional_area]), prompt: 'Total', class: 'select2' %>
 
-  <br>
+    <br>
 
-  <%= label_tag :year, 'Año' %>
-  <%= select_tag :year, options_for_select(BudgetFilter.years, params[:year]) %>
+    <%= label_tag :economic_area, 'Area económica' %>
+    <%= select_tag :economic_area, options_for_select(EconomicArea.items_for_select, params[:economic_area]), prompt: 'Total', class: 'select2' %>
 
-  <br>
+    <br>
+   
+    <%= label_tag :kind, 'Tipo' %>
+    <%= select_tag :kind, options_for_select(EconomicArea.kinds, params[:kind]) %>
 
-  <%= label_tag :size, 'Tamaño' %>
-  <%= select_tag :size, options_for_select(BudgetFilter.populations, params[:size]), prompt: 'Todos' %>
+    <br>
 
-  <br>
+    <%= label_tag :year, 'Año' %>
+    <%= select_tag :year, options_for_select(BudgetFilter.years, params[:year]) %>
 
- <%= submit_tag 'Filtrar' %>
-<% end %>
+    <br>
 
-<div>
-  <% if @budget_lines && @budget_lines.any? %>
-    <table>
-      <theader>
-        <tr>
-          <th></th>
-          <% if @filter.global? %>
-            <th>Cód. Partida</th>
-            <th>Partida</th>
-          <% else %>
-            <th>Municipio</th>
-            <th>Habitantes</th>
-          <% end %>
-          <th>Gasto/Hab</th>
-          <th>Gasto</th>
-          <th>% S/Total</th>
-          <th></th>
-        </tr>
-      </theader>
-      <tbody>
-        <% @budget_lines.each do |budget_line| %>
-          <tr>
-            <td></td>
-            <% if @filter.global? %>
-              <td><%= budget_line.code %></td>
-              <td><%= budget_line.name %></td>
-            <% else %>
-              <td><%= budget_line.place_name %></td>
-              <td><%= budget_line.population.total %></td>
-            <% end %>
-            <td><%= money(budget_line.amount / budget_line.population.total) %></td>
-            <td><%= money(budget_line.amount) %></td>
-            <td><%= percentage(budget_line.amount, budget_line.place.total_budget) %></td>
-            <td><%= link_to 'Compara', '' %></td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
+    <%= label_tag :size, 'Tamaño' %>
+    <%= select_tag :size, options_for_select(BudgetFilter.populations, params[:size]), prompt: 'Todos' %>
+
+    <br>
+
+   <%= submit_tag 'Filtrar' %>
   <% end %>
+
+  <div>
+    <% if @budget_lines && @budget_lines.any? %>
+      <table>
+        <theader>
+          <tr>
+            <th></th>
+            <% if @filter.global? %>
+              <th>Cód. Partida</th>
+              <th>Partida</th>
+            <% else %>
+              <th>Municipio</th>
+              <th>Habitantes</th>
+            <% end %>
+            <th>Gasto/Hab</th>
+            <th>Gasto</th>
+            <th>% S/Total</th>
+            <th></th>
+          </tr>
+        </theader>
+        <tbody>
+          <% @budget_lines.each do |budget_line| %>
+            <tr>
+              <td></td>
+              <% if @filter.global? %>
+                <td><%= budget_line.code %></td>
+                <td><%= budget_line.name %></td>
+              <% else %>
+                <td><%= budget_line.place_name %></td>
+                <td><%= budget_line.population.total %></td>
+              <% end %>
+              <td><%= money(budget_line.amount / budget_line.population.total) %></td>
+              <td><%= money(budget_line.amount) %></td>
+              <td><%= percentage(budget_line.amount, budget_line.place.total_budget) %></td>
+              <td><%= link_to 'Compara', '' %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% end %>
+  </div>
+
 </div>

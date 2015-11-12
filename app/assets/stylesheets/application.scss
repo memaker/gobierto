@@ -155,4 +155,28 @@ footer {
     opacity: .5;
   }
 }
+header.global {
+  border-bottom: 1px solid $separator;
+  padding: 0 0 0em 0;
+  margin: 0 0 2em 0;
+}
 
+
+/*
+ * Main-nav
+ *
+ */
+.main-nav {
+  padding: 1em; 
+  @include border-radius(4px);
+  background: $color_1_soft;
+
+  label {
+    text-transform: uppercase;
+    font-size: .8em;
+    opacity: .75;
+    display: inline-block;
+    width: 125px;
+    text-align: right; 
+  }
+}
