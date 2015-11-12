@@ -26,9 +26,14 @@ $(function(){
       perPageDefault: 25,
       perPageOptions: [25,50,100, 300]
     }
+  }).bind('dynatable:afterUpdate', function(){
+    sparkRender();
   });
 
-  $('.sparkline').sparkline('html',SPARKLINES_DEFAULTS);
+  function sparkRender(){
+    $('.sparkline').sparkline('html',SPARKLINES_DEFAULTS);
+  }
+  sparkRender();
 
   $('.select2').select2();
   $('.bonsai').bonsai();
