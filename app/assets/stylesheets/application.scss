@@ -7,10 +7,10 @@
 @import "vendor/tipsy";
 @import "vendor/jquery.dynatable";
 @import "vendor/quill.snow";
-@import "vendor/pickadate/classic";
-@import "vendor/pickadate/classic.date";
-@import "vendor/pickadate/classic.time";
-// @import "bourbon";
+// @import "vendor/pickadate/classic";
+// @import "vendor/pickadate/classic.date";
+// @import "vendor/pickadate/classic.time";
+@import "bourbon";
 @import "cookies_eu";
 
 
@@ -40,23 +40,18 @@ $color_3_soft: #E5F2F3;
 
 /* 
 PALETTE: Bluer
-AUTHOR: @damagedgoods
+AUTHOR: @
 */
 
 $background: #FFF;
-$text: #4A4A4A;
-$text_soft: #A3A3A3;
-$separator: #EEEEEE;
+$text: #554E41;
+$text_soft: #B2AFA9;
+$separator: #F0F0F0;
 
-$color_1: #00A3D0;
-$color_1_dark: #00A3D0;
-$color_1_soft: #DDECF4;
-$color_1_dark_plus: #172532;
-
-$color_2: #D61D57;
-
-$color_3: #60C8D6;
-$color_3_soft: #E5F2F3;
+$color_1: #00909E;
+$color_1_soft: #EFF8F9;
+$color_1_dark: #00909E;
+// $color_1_dark_plus: #172532;
 
 
 /* General colors */
@@ -68,11 +63,11 @@ $color_text_error: #9C0000;
  * Fonts
  *
  */
-@import url("https://fonts.googleapis.com/css?family=Raleway:400,700,900");
+@import url("https://fonts.googleapis.com/css?family=Work+Sans:400,700,600");
 @import "//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css";        
 
-$font_headings: 'Raleway';
-$font_text: 'Raleway';
+$font_headings: 'Work Sans';
+$font_text: 'Work Sans';
 
 
 /*
@@ -116,19 +111,10 @@ footer {
  * Layout
  *
  */
-.cont {
-  width: 1000px;
+.container {
+  width: 95%;
+  max-width: 1600px;
   margin: auto;
-  @include screen(740) {
-    width: auto;
-    padding: 15px;
-  }
-}
-header.meta {
-  margin: 0;
-  // background: $color_1;
-  background: $color_1_dark_plus;
-  color: $background;
 }
 .resp {
   @include screen(740, 2000) {
@@ -140,3 +126,33 @@ header.meta {
     display: none;
   }
 }
+
+
+/*
+ * Header
+ *
+ */
+.top-claim {
+  background: $color_1;
+  color: $background;
+  padding: .45em;
+  text-align: center;
+  margin: 0 0 1.5em 0;
+  font-size: .85em;
+}
+.logo {
+  img {
+    display: inline-block;
+    vertical-align: middle;
+  }
+  .sub-brand {
+    display: inline-block;
+    color: $text_soft;
+  }
+  .sub-brand:before {
+    content: "|";
+    padding: 0 .5em;
+    opacity: .5;
+  }
+}
+

@@ -10,7 +10,26 @@
 </head>
 <body>
 
-<%= yield %>
+<div class="top-claim">
+  ¿Interesado en herramientas de análisis presupuestario para Municipios? 
+</div>
+
+<div class="container">
+
+  <header class="global">
+
+    <div class="logo">
+      <%= link_to_unless_current image_tag('LogoGobierto', width: '180'), root_path %>
+      <div class="sub-brand">
+        Presupuestos Municipales
+      </div>
+    </div>
+
+  </header>
+
+  <%= yield %>
+
+</div>
 
 </body>
 </html>
