@@ -94,7 +94,7 @@
       <tbody>
         <% @budget_lines.each do |budget_line| %>
           <tr>
-            <td></td>
+            <td class="sparkline" data-sparkvalues='<%= budget_line.historic_values.join(',') %>'></td>
             <% if @filter.global? %>
               <td><%= budget_line.code %></td>
               <td><%= budget_line.name %></td>

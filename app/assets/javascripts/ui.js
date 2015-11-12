@@ -29,6 +29,7 @@ $(function(){
   });
 
   $('.select2').select2();
+  $('.sparkline').sparkline('html',SPARKLINES_DEFAULTS);
 
   // menu
 
