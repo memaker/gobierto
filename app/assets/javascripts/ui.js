@@ -28,7 +28,8 @@ $(function(){
     }
   });
 
-  $(function(){
-    $('.select2').select2();
-  });
+  $('.select2').select2();
+
+  //$('.sparkline').sparkline([<%= convert_zeros_to_nulls(get_data('renta_media_hogar', 'all', nil)).join(',') %>], SPARKLINES_DEFAULTS);
+
 });
