@@ -7,6 +7,7 @@
 //= require vendor/jquery.sticky
 //= require vendor/tipsy
 //= require vendor/jquery.sparkline
+//= require vendor/jquery.bonsai
 
 //= require ui
 

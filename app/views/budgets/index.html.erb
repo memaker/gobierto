@@ -14,32 +14,93 @@
         <div class="form_item">
           <%= label_tag :functional_area, 'Area funcional' %>
 
-          <div class="select_from_tree" style="display: none">
+          <div class="select_from_tree" >
             
-            <div class="label">Todas <i class="fa fa-sort-down"></i></div>
+            <div class="label"><%= link_to 'Todas <i class="fa fa-sort-down"></i>'.html_safe, '' %></div>
             
             <div class="tree">
 
-              <ul>
-                <li>Deuda público</li>
-                <li>Servicios públicos básicos</li>
+              <ul class="bonsai">
+                <li>Deuda público
+                  <ul>
+                    <li>Deuda pública
+                      <ul>
+                        <li>Deuda pública</li>
+                      </ul>
+                    </li>
+                  </ul>
+                </li>
+                <li>Servicios públicos básicos
+                  <ul>
+                    <li>Bienestar comunitario
+                      <ul>
+                        <li>Limpieza viaria</li>
+                        <li>Saneamiento, abastecimiento y distribución de aguas.</li>
+                        <li>Cementerios y servicios funerarios</li>
+                        <li>Alumbrado público </li>
+                        <li>Otros servicios de bienestar comunitario </li>
+                        <li>Recogida, eliminación y tratamiento de residuos.</li>
+                      </ul>
+                    </li>
+                  </ul>
+                </li>
                 <li>Actuaciones de protección y promoción social</li>
                 <li>Producción de bienes públicos de caracter preferente</li>
                 <li>Actuaciones de carácter económico</li>
                 <li>Actuaciones de carácter general</li>
               </ul>
 
+            </div>
+
+          </div>
+
+          <%# select_tag :functional_area, options_for_select(FunctionalArea.items_for_select, params[:functional_area]), prompt: 'Total', class: 'select2' %>
+        </div>
+
+        <div class="form_item">
+          <%= label_tag :economic_area, 'Area económica' %>
+
+          <div class="select_from_tree" >
+            
+            <div class="label"><%= link_to 'Todas <i class="fa fa-sort-down"></i>'.html_safe, '' %></div>
+            
+            <div class="tree">
+
+              <ul class="bonsai">
+                <li>Deuda público
+                  <ul>
+                    <li>Deuda pública
+                      <ul>
+                        <li>Deuda pública</li>
+                      </ul>
+                    </li>
+                  </ul>
+                </li>
+                <li>Servicios públicos básicos
+                  <ul>
+                    <li>Bienestar comunitario
+                      <ul>
+                        <li>Limpieza viaria</li>
+                        <li>Saneamiento, abastecimiento y distribución de aguas.</li>
+                        <li>Cementerios y servicios funerarios</li>
+                        <li>Alumbrado público </li>
+                        <li>Otros servicios de bienestar comunitario </li>
+                        <li>Recogida, eliminación y tratamiento de residuos.</li>
+                      </ul>
+                    </li>
+                  </ul>
+                </li>
+                <li>Actuaciones de protección y promoción social</li>
+                <li>Producción de bienes públicos de caracter preferente</li>
+                <li>Actuaciones de carácter económico</li>
+                <li>Actuaciones de carácter general</li>
+              </ul>
 
             </div>
 
           </div>
 
-          <%= select_tag :functional_area, options_for_select(FunctionalArea.items_for_select, params[:functional_area]), prompt: 'Total', class: 'select2' %>
-        </div>
-
-        <div class="form_item">
-          <%= label_tag :economic_area, 'Area económica' %>
-          <%= select_tag :economic_area, options_for_select(EconomicArea.items_for_select, params[:economic_area]), prompt: 'Total', class: 'select2' %>
+          <%# select_tag :economic_area, options_for_select(EconomicArea.items_for_select, params[:economic_area]), prompt: 'Total', class: 'select2' %>
         </div>
 
       </div>
@@ -74,20 +135,23 @@
 
 <div>
   <% if @budget_lines && @budget_lines.any? %>
-    <table>
-      <theader>
+    <table class="dynatable">
+      <thead>
         <tr>
           <th></th>
-          <th>Cód. Partida</th>
-          <th>Partida</th>
-          <th>Municipio</th>
-          <th>Habitantes</th>
+          <% if @filter.global? %>
+            <th>Cód. Partida</th>
+            <th class="main_col">Partida</th>
+          <% else %>
+            <th class="main_col">Municipio</th>
+            <th>Habitantes</th>
+          <% end %>
           <th>Gasto/Hab</th>
           <th>Gasto</th>
           <th>% S/Total</th>
           <th></th>
         </tr>
-      </theader>
+      </thead>
       <tbody>
         <% @budget_lines.each do |budget_line| %>
           <% next if budget_line.place.nil? %>

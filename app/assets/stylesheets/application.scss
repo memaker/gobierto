@@ -12,7 +12,8 @@
 // @import "vendor/pickadate/classic.time";
 @import "bourbon";
 @import "cookies_eu";
-@import "sparkline";
+@import "vendor/sparkline";
+@import "vendor/jquery.bonsai";
 
 
 /*
@@ -211,10 +212,11 @@ table {
 
   }
   th, td {
-    padding: 0px 6px 0px 10px;
+    padding: 3px 6px 3px 10px;
   }
   td {
     font-size: 12px;
+    line-height: 16px;
   }
   tr:nth-child(even) {
     td {
@@ -228,5 +230,50 @@ table {
   }
   .money {
     text-align: right;
+  }
+  .main_col {
+    width: 30%;
+  }
+}
+.form_item {
+  vertical-align: top;
+  position: relative;
+}
+
+.select_from_tree {
+  width: calc(100% - 145px);
+  display: inline-block;
+  background: $background;
+  position: absolute;
+  border: 1px solid $text_soft;
+  @include border-radius(4px);
+  z-index: 100;
+
+  .label {
+    position: relative;
+    z-index: 99;
+    
+    a {
+      display: block;
+      background: $background;
+      padding: 3px 7px;
+      text-decoration: none;
+    }
+    a:hover {
+      background: darken($color_1_soft, 10%);
+    }
+    .fa {
+      position: absolute;
+      right: 10px;
+      top: 6px;
+      font-size: .8em;
+    }
+  }
+  .tree {
+    display: none;
+    z-index: 101;
+    position: relative;
+
+
   }
 }

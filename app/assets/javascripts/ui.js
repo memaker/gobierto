@@ -31,24 +31,22 @@ $(function(){
   $('.select2').select2();
   $('.sparkline').sparkline('html',SPARKLINES_DEFAULTS);
 
-  // menu
+  $('.bonsai').bonsai();
+  
+  $('.select_from_tree').hover(function(e) {
+    e.preventDefault();
+    console.log('in');
+    $(this).find('.tree').show();
+  }, function(e) {
+    console.log('out');
+    $(this).find('.tree').hide();
+  });
 
-  // 
-  // $('[data-menu]').click(function(e) {
-  //   e.preventDefault();
-  //   var menu = $(this).attr("data-menu");
-  //   if(menu == 'close') {
-  //     global_menu_close();
-  //   } else {
-  //     global_menu(menu);  
-  //   }
-  // });
-
-  // $('menu.global').velocity("fadeIn", { duration: 250 });
-  //     $('menu.global').addClass('global_open'); 
-  //     $('menu.global .content').velocity({ 
-  //       translateX: 740,
-  //       opacity: 1
-  //     }, 250);
+  $('menu.global').velocity("fadeIn", { duration: 250 });
+      $('menu.global').addClass('global_open'); 
+      $('menu.global .content').velocity({ 
+        translateX: 740,
+        opacity: 1
+      }, 250);
 
 });
