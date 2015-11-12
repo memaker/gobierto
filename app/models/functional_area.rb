@@ -14,10 +14,14 @@ class FunctionalArea < ActiveRecord::Base
     place = options[:place]
     code = options[:code]
 
+    place_conditions = if place
+                         "AND tb_inventario.codente = '#{place.id}AA000'"
+                       else
+                         "AND tb_inventario.codente like '%AA000'"
+                       end
+
     conditions = []
-    if year.present?
-      conditions << "year = #{year}"
-    end
+    conditions << "year = #{year}" if year.present?
 
     if code.present?
       conditions << "tb_funcional.cdfgr = '#{code}'"
@@ -26,14 +30,15 @@ class FunctionalArea < ActiveRecord::Base
     end
 
     sql = <<-SQL
-select sum(importe) as amount, tb_inventario.nombreente as place_name, tb_funcional.year, #{place.id} as place_id,
+select sum(importe) as amount, tb_inventario.nombreente as place_name, tb_funcional.year, substring(tb_inventario.codente from 0 for 6) as place_id,
 tb_funcional.cdfgr as code, "tb_cuentasProgramas".nombre as name
 FROM tb_funcional
 INNER join "tb_cuentasProgramas" ON "tb_cuentasProgramas".cdfgr = tb_funcional.cdfgr
-INNER join tb_inventario ON tb_inventario.id = tb_funcional.id AND tb_inventario.codente = '#{place.id}AA000'
+INNER join tb_inventario ON tb_inventario.id = tb_funcional.id #{place_conditions}
 WHERE #{conditions.join(' AND ')}
-GROUP BY tb_funcional.cdfgr, tb_inventario.nombreente, tb_funcional.year, "tb_cuentasProgramas".nombre
+GROUP BY tb_funcional.cdfgr, tb_inventario.nombreente, tb_funcional.year, "tb_cuentasProgramas".nombre, tb_inventario.codente
 ORDER BY code, amount DESC
+#{"LIMIT 600" if place.nil?}
 SQL
 
     ActiveRecord::Base.connection.execute(sql).map do |row|
@@ -41,11 +46,11 @@ SQL
     end
   end
 
-  def self.total_budget(place, year)
+  def self.total_budget(place_id, year)
     sql = <<-SQL
 select sum(importe) as amount
 FROM tb_funcional
-INNER join tb_inventario ON tb_inventario.id = tb_funcional.id AND tb_inventario.codente = '#{place.id}AA000'
+INNER join tb_inventario ON tb_inventario.id = tb_funcional.id AND tb_inventario.codente = '#{place_id}AA000'
 WHERE year = #{year} AND
 char_length(tb_funcional.cdfgr) = 1
 SQL

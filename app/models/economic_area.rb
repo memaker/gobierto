@@ -34,11 +34,11 @@ SQL
     end
   end
 
-  def self.total_budget(place, year)
+  def self.total_budget(place_id, year)
     sql = <<-SQL
 select sum(importe) as amount
 FROM tb_economica
-INNER join tb_inventario ON tb_inventario.id = tb_economica.id AND tb_inventario.codente = '#{place.id}AA000'
+INNER join tb_inventario ON tb_inventario.id = tb_economica.id AND tb_inventario.codente = '#{place_id}AA000'
 WHERE year = #{year} AND
 char_length(tb_economica.cdcta) = 1
 SQL

@@ -78,13 +78,10 @@
       <theader>
         <tr>
           <th></th>
-          <% if @filter.global? %>
-            <th>Cód. Partida</th>
-            <th>Partida</th>
-          <% else %>
-            <th>Municipio</th>
-            <th>Habitantes</th>
-          <% end %>
+          <th>Cód. Partida</th>
+          <th>Partida</th>
+          <th>Municipio</th>
+          <th>Habitantes</th>
           <th>Gasto/Hab</th>
           <th>Gasto</th>
           <th>% S/Total</th>
@@ -93,15 +90,13 @@
       </theader>
       <tbody>
         <% @budget_lines.each do |budget_line| %>
+          <% next if budget_line.place.nil? %>
           <tr>
             <td class="sparkline" data-sparkvalues='<%= budget_line.historic_values.join(',') %>'></td>
-            <% if @filter.global? %>
-              <td><%= budget_line.code %></td>
-              <td><%= budget_line.name %></td>
-            <% else %>
-              <td><%= budget_line.place_name %></td>
-              <td><%= budget_line.population.total %></td>
-            <% end %>
+            <td><%= budget_line.code %></td>
+            <td><%= budget_line.name %></td>
+            <td><%= budget_line.place_name %></td>
+            <td><%= number_with_delimiter(budget_line.place.population.total, delimiter: '.', separator: ',') %></td>
             <td class="money"><%= money(budget_line.amount / budget_line.population.total) %></td>
             <td class="money"><%= money(budget_line.amount) %></td>
             <td class="money"><%= percentage(budget_line.amount, budget_line.place.total_budget) %></td>

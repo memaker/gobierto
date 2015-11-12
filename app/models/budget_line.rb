@@ -3,12 +3,17 @@ class BudgetLine < OpenStruct
     super.to_f
   end
 
-  def population
-    @population ||= Population.by_place_id(place_id)
-  end
-
   def place
-    @place ||= INE::Places::Place.find(place_id)
+    @place ||= INE::Places::Place.find(place_id).tap do |place|
+      if place.nil?
+        Rails.logger.info "======================================================"
+        Rails.logger.info "[WARNING] #{place_id} is nil"
+        Rails.logger.info "======================================================"
+      else
+        place.total_budget = FunctionalArea.total_budget(place_id, self.year)
+        place.population = Population.by_place_id(place_id)
+      end
+    end
   end
 
   def historic_values
