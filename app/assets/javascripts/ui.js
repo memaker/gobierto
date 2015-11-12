@@ -24,7 +24,22 @@ $(function(){
     },
     dataset: {
       perPageDefault: 25,
-      perPageOptions: [25,50,100, 300]
+      perPageOptions: [25,50,100, 300],
+      sorts: {
+        habitantes: 1
+      }
+    },
+    readers: {
+      'habitantes': function(el, record) { return Number(el.textContent); },
+      'gasto/Hab': function(el, record) { return Number(el.textContent); },
+      'gasto': function(el, record) { return Number(el.textContent); },
+      '%S/Total': function(el, record) { return Number(el.textContent); },
+    },
+    writers: {
+      'habitantes': function(record) { return accounting.formatNumber(record.habitantes, 0); },
+      'gasto/Hab': function(record) { return accounting.formatMoney(record['gasto/Hab']); },
+      'gasto': function(record) { return accounting.formatMoney(record.gasto); },
+      '%S/Total': function(record) { return record['%S/Total'].toPrecision(4) + " %"; },
     }
   }).bind('dynatable:afterUpdate', function(){
     sparkRender();
