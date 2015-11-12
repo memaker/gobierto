@@ -5,6 +5,14 @@ class EconomicArea < ActiveRecord::Base
     order("cdcta")
   end
 
+  def self.root_items
+    where("char_length(cdcta) = 1").order("cdcta")
+  end
+
+  def children
+    self.class.items.where("cdcta like '#{self.code}%' AND char_length(cdcta) = #{self.level + 2}")
+  end
+
   def self.kinds
     [['Gastos','G'],['Ingresos','I']]
   end

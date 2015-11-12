@@ -11,4 +11,12 @@ module ApplicationHelper
              end
     number_to_percentage result, precision: 2
   end
+
+  def render_children(item)
+    return "" if item.children.empty?
+
+    "<ul>
+      #{item.children.map{|c| %Q{<li>#{c.name} #{render_children(c)}</li>}}.join("\n")}
+    </ul>".html_safe
+  end
 end

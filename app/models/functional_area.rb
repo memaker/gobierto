@@ -5,6 +5,14 @@ class FunctionalArea < ActiveRecord::Base
     order("cdfgr")
   end
 
+  def self.root_items
+    where("char_length(cdfgr) = 1").order("cdfgr")
+  end
+
+  def children
+    self.class.items.where("cdfgr like '#{self.code}%' AND char_length(cdfgr) = #{self.level + 2}")
+  end
+
   def self.items_for_select
     items.map{ |i| ["#{'-'*i.level} #{i.code} #{i.name}", i.code] }
   end
