@@ -39,5 +39,28 @@ $(function(){
     $(this).find('.tree').hide();
   });
 
+  $('[data-menu-area]').click(function(e){
+    e.preventDefault();
+    $('#' + $(this).data('rel')).val($(this).data('menu-area'));
+
+    var text = $(this).text();
+    $(this).parents('.select_from_tree').find('.label a').text(text);
+    $(this).parents('.tree').hide();
+  });
+
+  if($('#functional_area').val() !== ""){
+    var $option = $('#functional_area');
+    var value = $option.val();
+    var text = $('[data-menu-area=' + value + ']').text();
+    $option.parent().find('.label a').text(text);
+  }
+
+  if($('#economic_area').val() !== ""){
+    var $option = $('#functional_area');
+    var value = $option.val();
+    var text = $('[data-menu-area=' + value + ']').text();
+    $option.parent().find('.label a').text(text);
+  }
+
 });
 

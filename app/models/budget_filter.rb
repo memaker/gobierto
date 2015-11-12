@@ -16,9 +16,9 @@ class BudgetFilter
   end
 
   def initialize(filters)
-    @year = filters[:year].to_i                         if filters[:year].present?
-    @economic_area_filter = filters[:economic_area]     if filters[:economic_area].present?
-    @functional_area_filter = filters[:functional_area] if filters[:functional_area].present?
+    @year = filters[:year].to_i                              if filters[:year].present?
+    @economic_area_filter_code = filters[:economic_area]     if filters[:economic_area].present?
+    @functional_area_filter_code = filters[:functional_area] if filters[:functional_area].present?
 
     @place = if filters[:place].present?
                INE::Places::Place.find(filters[:place])
@@ -33,10 +33,10 @@ class BudgetFilter
     # If the year is nil we assume there are no filters applied
     return [] if @year.nil?
 
-    if @economic_area_filter
-      EconomicArea.budgets(year: @year, place: @place, code: @economic_area_filter)
+    if @economic_area_filter_code
+      EconomicArea.budgets(year: @year, place: @place, code: @economic_area_filter_code)
     else
-      FunctionalArea.budgets(year: @year, place: @place, code: @functional_area_filter)
+      FunctionalArea.budgets(year: @year, place: @place, code: @functional_area_filter_code)
     end
   end
 
