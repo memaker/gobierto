@@ -167,16 +167,65 @@ header.global {
  *
  */
 .main-nav {
-  padding: 1em; 
-  @include border-radius(4px);
+  padding: 2em; 
+  @include border-radius(10px);
   background: $color_1_soft;
+  margin: 0 0 2em 0;
 
+  .form_item {
+    margin: 0 0 1em 0;
+    height: 30px;
+  }
+  .col-1-2 {
+    width: 60%;
+  }
+  .col-2-2 {
+    width: 35%;
+  }
   label {
+    vertical-align: middle;
+    margin: 0 10px 0 0;
     text-transform: uppercase;
-    font-size: .8em;
-    opacity: .75;
+    font-size: .75em;
+    opacity: .5;
     display: inline-block;
     width: 125px;
     text-align: right; 
+  }
+}
+
+
+/*
+ * Tables
+ *
+ */
+table {
+  width: 100%;
+
+  th {
+    background: #F5F5F5;
+    font-size: 10px;
+    text-transform: uppercase;
+    text-align: left;
+
+  }
+  th, td {
+    padding: 0px 6px 0px 10px;
+  }
+  td {
+    font-size: 12px;
+  }
+  tr:nth-child(even) {
+    td {
+
+    }
+  }
+  tr:nth-child(odd) {
+    td {
+      background: #FCFCF2;
+    }
+  }
+  .money {
+    text-align: right;
   }
 }
