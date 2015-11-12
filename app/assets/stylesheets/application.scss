@@ -241,12 +241,9 @@ table {
 }
 
 .select_from_tree {
-  width: calc(100% - 145px);
+  width: calc(100% - 141px);
   display: inline-block;
   background: $background;
-  position: absolute;
-  border: 1px solid $text_soft;
-  @include border-radius(4px);
   z-index: 100;
 
   .label {
@@ -255,6 +252,9 @@ table {
     
     a {
       display: block;
+      border: 1px solid $text_soft;
+      @include border-radius(4px);
+
       background: $background;
       padding: 3px 7px;
       text-decoration: none;
@@ -272,7 +272,12 @@ table {
   .tree {
     display: none;
     z-index: 101;
-    position: relative;
+    position: absolute;
+    background: $background;
+    border: 1px solid $text_soft; 
+    padding: .5em;
+    margin-top: -5px;
+    border-top: none;
 
 
   }
