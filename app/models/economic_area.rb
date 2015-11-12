@@ -6,7 +6,7 @@ class EconomicArea < ActiveRecord::Base
   end
 
   def self.kinds
-    ['I', 'G']
+    [['Gastos','G'],['Ingresos','I']]
   end
 
   def self.items_for_select
