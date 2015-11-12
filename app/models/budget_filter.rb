@@ -6,7 +6,7 @@ class BudgetFilter
     @functional_area_filter = filters[:functional_area]
   end
 
-  def filter
+  def apply
     if @economic_area_filter.present?
       EconomicArea.budgets(year: @year, place: @place, code: @economic_area_filter)
     else
@@ -14,7 +14,7 @@ class BudgetFilter
     end
   end
 
-  def by_place?
+  def global?
     @economic_area_filter.blank? || @functional_area_filter.blank?
   end
 end

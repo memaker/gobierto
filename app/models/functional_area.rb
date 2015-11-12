@@ -37,7 +37,7 @@ ORDER BY code, amount DESC
 SQL
 
     ActiveRecord::Base.connection.execute(sql).map do |row|
-      Budget.new row
+      BudgetLine.new row
     end
   end
 

@@ -38,22 +38,42 @@
 <% end %>
 
 <div>
-  <% if @budgets && @budgets.any? %>
+  <% if @budget_lines && @budget_lines.any? %>
     <table>
-      <% @budgets.each do |budget| %>
-
+      <theader>
         <tr>
-          <% if @filter.by_place? %>
-            <td><%= budget.code %></td>
-            <td><%= budget.name %></td>
+          <th></th>
+          <% if @filter.global? %>
+            <th>Cód. Partida</th>
+            <th>Partida</th>
           <% else %>
-            <td><%= budget.place_name %></td>
-            <td><%= budget.population.total %></td>
+            <th>Municipio</th>
+            <th>Habitantes</th>
           <% end %>
-          <td><%= money(budget.amount / budget.population.total) %></td>
-          <td><%= money(budget.amount) %></td>
+          <th>Gasto/Hab</th>
+          <th>Gasto</th>
+          <th>% S/Total</th>
+          <th></th>
         </tr>
-      <% end %>
+      </theader>
+      <tbody>
+        <% @budget_lines.each do |budget_line| %>
+          <tr>
+            <td></td>
+            <% if @filter.global? %>
+              <td><%= budget_line.code %></td>
+              <td><%= budget_line.name %></td>
+            <% else %>
+              <td><%= budget_line.place_name %></td>
+              <td><%= budget_line.population.total %></td>
+            <% end %>
+            <td><%= money(budget_line.amount / budget_line.population.total) %></td>
+            <td><%= money(budget_line.amount) %></td>
+            <td>13 %</td>
+            <td><%= link_to 'Compara', '' %></td>
+          </tr>
+        <% end %>
+      </tbody>
     </table>
   <% end %>
 </div>
