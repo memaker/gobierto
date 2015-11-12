@@ -38,7 +38,7 @@ INNER join tb_inventario ON tb_inventario.id = tb_funcional.id #{place_condition
 WHERE #{conditions.join(' AND ')}
 GROUP BY tb_funcional.cdfgr, tb_inventario.nombreente, tb_funcional.year, "tb_cuentasProgramas".nombre, tb_inventario.codente
 ORDER BY code, amount DESC
-#{"LIMIT 600" if place.nil?}
+#{"LIMIT 200" if place.nil?}
 SQL
 
     ActiveRecord::Base.connection.execute(sql).map do |row|
