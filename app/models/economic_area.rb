@@ -25,13 +25,25 @@ INNER join "tb_cuentasEconomica" ON "tb_cuentasEconomica".cdcta = tb_economica.c
 INNER join tb_inventario ON tb_inventario.id = tb_economica.id AND tb_inventario.codente = '#{place.id}AA000'
 WHERE year = #{year} AND
 tb_economica.cdcta = '#{code}'
-GROUP BY tb_economica.cdfgr, tb_inventario.nombreente, tb_economica.year
+GROUP BY tb_economica.cdcta, tb_inventario.nombreente, tb_economica.year
 ORDER BY amount DESC
 SQL
 
     ActiveRecord::Base.connection.execute(sql).map do |row|
       BudgetLine.new row
     end
+  end
+
+  def self.total_budget(place, year)
+    sql = <<-SQL
+select sum(importe) as amount
+FROM tb_economica
+INNER join tb_inventario ON tb_inventario.id = tb_economica.id AND tb_inventario.codente = '#{place.id}AA000'
+WHERE year = #{year} AND
+char_length(tb_economica.cdcta) = 1
+SQL
+
+    ActiveRecord::Base.connection.execute(sql).first['amount'].to_f
   end
 
   def level

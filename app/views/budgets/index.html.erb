@@ -69,7 +69,7 @@
             <% end %>
             <td><%= money(budget_line.amount / budget_line.population.total) %></td>
             <td><%= money(budget_line.amount) %></td>
-            <td>13 %</td>
+            <td><%= percentage(budget_line.amount, budget_line.place.total_budget) %></td>
             <td><%= link_to 'Compara', '' %></td>
           </tr>
         <% end %>

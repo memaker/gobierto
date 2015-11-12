@@ -41,6 +41,18 @@ SQL
     end
   end
 
+  def self.total_budget(place, year)
+    sql = <<-SQL
+select sum(importe) as amount
+FROM tb_funcional
+INNER join tb_inventario ON tb_inventario.id = tb_funcional.id AND tb_inventario.codente = '#{place.id}AA000'
+WHERE year = #{year} AND
+char_length(tb_funcional.cdfgr) = 1
+SQL
+
+    ActiveRecord::Base.connection.execute(sql).first['amount'].to_f
+  end
+
   def level
     code.length - 1
   end

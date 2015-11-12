@@ -2,6 +2,7 @@ class BudgetFilter
   def initialize(filters)
     @year = filters[:year].to_i
     @place = INE::Places::Place.find(filters[:place])
+    @place.total_budget = FunctionalArea.total_budget(@place, @year)
     @economic_area_filter = filters[:economic_area]
     @functional_area_filter = filters[:functional_area]
   end
