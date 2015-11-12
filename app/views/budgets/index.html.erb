@@ -97,7 +97,7 @@
             <td><%= budget_line.name %></td>
             <td><%= budget_line.place_name %></td>
             <td><%= number_with_delimiter(budget_line.place.population.total, delimiter: '.', separator: ',') %></td>
-            <td class="money"><%= money(budget_line.amount / budget_line.population.total) %></td>
+            <td class="money"><%= money(budget_line.amount / budget_line.place.population.total) %></td>
             <td class="money"><%= money(budget_line.amount) %></td>
             <td class="money"><%= percentage(budget_line.amount, budget_line.place.total_budget) %></td>
             <td><%= link_to 'Compara', '' %></td>
