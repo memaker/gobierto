@@ -229,6 +229,11 @@ table {
       // background: #FCFCF2;
     }
   }
+  tr:hover {
+    td {
+      background: #FCFCF2; 
+    }
+  }
   .money, .percentage {
     text-align: right;
   }
