@@ -48,16 +48,16 @@ $(function(){
     $(this).parents('.tree').hide();
   });
 
-  if($('#functional_area').val() !== ""){
-    var $option = $('#functional_area');
-    var value = $option.val();
+  var $option = $('#functional_area');
+  var value = $option.val();
+  if(value !== undefined && value !== ""){
     var text = $('[data-menu-area=' + value + ']').text();
     $option.parent().find('.label a').text(text);
   }
 
-  if($('#economic_area').val() !== ""){
-    var $option = $('#functional_area');
-    var value = $option.val();
+  var $option = $('#functional_area');
+  var value = $option.val();
+  if(value !== undefined && value !== ""){
     var text = $('[data-menu-area=' + value + ']').text();
     $option.parent().find('.label a').text(text);
   }
