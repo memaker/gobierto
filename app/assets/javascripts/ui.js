@@ -28,8 +28,9 @@ $(function(){
     }
   });
 
-  $('.select2').select2();
   $('.sparkline').sparkline('html',SPARKLINES_DEFAULTS);
+
+  $('.select2').select2();
   $('.bonsai').bonsai();
   
   $('.select_from_tree').hover(function(e) {

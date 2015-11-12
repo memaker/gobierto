@@ -89,8 +89,7 @@
     <table class="dynatable">
       <thead>
         <tr>
-          <th></th>
-          <th>Cód. Partida</th>
+          <th>Evolución</th>
           <th>Partida</th>
           <th>Municipio</th>
           <th>Habitantes</th>
@@ -104,8 +103,7 @@
         <% @budget_lines.each do |budget_line| %>
           <% next if budget_line.place.nil? %>
           <tr>
-            <td class="sparkline" data-sparkvalues='<%= budget_line.historic_values.join(',') %>'></td>
-            <td><%= budget_line.code %></td>
+            <td><span class="sparkline" data-sparkvalues='<%= budget_line.historic_values.join(',') %>'></span></td>
             <td><%= budget_line.name %></td>
             <td><%= budget_line.place_name %></td>
             <td><%= number_with_delimiter(budget_line.place.population.total, delimiter: '.', separator: ',') %></td>
