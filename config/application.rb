@@ -32,3 +32,5 @@ module RailsTemplate
     # config.action_mailer.default_url_options = { host: '' }
   end
 end
+
+require 'extend_ine_places'

@@ -48,7 +48,6 @@ $(function(){
   }
   sparkRender();
 
-  $('.select2').select2();
   $('.bonsai').bonsai();
   
   $('.select_from_tree').hover(function(e) {
@@ -80,6 +79,8 @@ $(function(){
     var text = $('[data-menu-area=' + value + ']').text();
     $option.parent().find('.label a').text(text);
   }
+
+  $('#search').autocomplete($.extend({}, AUTOCOMPLETE_DEFAULTS, searchOptions));
 
 });
 

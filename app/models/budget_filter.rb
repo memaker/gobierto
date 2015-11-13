@@ -25,6 +25,8 @@ class BudgetFilter
              end
   end
 
+  attr_reader :place
+
   def place?
     @place.present?
   end

@@ -9,5 +9,6 @@ Rails.application.routes.draw do
   end
 
   get 'presupuestos' => 'budgets#index', as: :budgets
+  get 'search' => 'search#index'
 
 end

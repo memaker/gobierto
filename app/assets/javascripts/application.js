@@ -9,6 +9,7 @@
 //= require vendor/jquery.sparkline
 //= require vendor/jquery.bonsai
 //= require vendor/accounting.min
+//= require vendor/jquery.autocomplete
 
 //= require ui
 
@@ -37,3 +38,23 @@ accounting.settings = {
     decimal: ".",   // decimal point separator
   }
 }
+
+var AUTOCOMPLETE_DEFAULTS = {
+  dataType: 'json',
+  minChars: 2,
+  showNoSuggestionNotice: true,
+  noSuggestionNotice: 'Lo sentimos, pero no hay resultados.',
+  preserveInput: true,
+  autoSelectFirst: true,
+  triggerSelectOnValidInput: false
+};
+
+var searchOptions = {
+  serviceUrl: '/search',
+  onSelect: function (suggestion) {
+    $('#place').val(suggestion.data.id);
+    $('#search').val(suggestion.value);
+  },
+  groupBy: 'category',
+};
+
