@@ -12,8 +12,8 @@ Rails.application.routes.draw do
   get 'search' => 'search#index'
 
   namespace :api do
-    get '/data/:place_id/economic' => 'data#economic'
-    get '/data/:place_id/functional' => 'data#functional'
+    get '/data/:place_id/:year/economic' => 'data#economic'
+    get '/data/:place_id/:year/functional' => 'data#functional'
   end
 
 end
