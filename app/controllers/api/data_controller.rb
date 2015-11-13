@@ -4,53 +4,40 @@ class Api::DataController < ApplicationController
     place = INE::Places::Place.find(params[:place_id])
 
     respond_to do |format|
-      budgets = [
-        {
-          name: 'Deuda pública',
-          per_person: {
+      budgets = {
+        per_person: [
+          {
+            name: 'Deuda pública',
             value: 1111111,
             mean_national: 1123123,
             mean_autonomy: 22222,
             mean_province: 3333,
           },
-          percentage: {
-            value: 22,
-            mean_national: 25,
-            mean_autonomy: 22,
-            mean_province: 20
-          }
-        },
-        {
-          name: 'Servicios públicos',
-          per_person: {
+          {
+            name: 'Servicios públicos',
             value: 1111111,
             mean_national: 1123123,
             mean_autonomy: 22222,
             mean_province: 3333,
-          },
-          percentage: {
-            value: 22,
-            mean_national: 25,
-            mean_autonomy: 22,
-            mean_province: 20
           }
-        },
-        {
-          name: 'Protección social',
-          per_person: {
-            value: 1111111,
-            mean_national: 1123123,
-            mean_autonomy: 22222,
-            mean_province: 3333,
+        ],
+        percentage: [
+          {
+            name: 'Deuda pública',
+            value: 11,
+            mean_national: 12,
+            mean_autonomy: 10,
+            mean_province: 20,
           },
-          percentage: {
-            value: 22,
-            mean_national: 25,
-            mean_autonomy: 22,
-            mean_province: 20
+          {
+            name: 'Servicios públicos',
+            value: 30,
+            mean_national: 22,
+            mean_autonomy: 25,
+            mean_province: 10,
           }
-        }
-      ]
+        ]
+      }
 
       #budgets = FunctionalArea.root_items.map do |item|
         #{
