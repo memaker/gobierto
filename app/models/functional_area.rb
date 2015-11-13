@@ -38,7 +38,7 @@ class FunctionalArea < ActiveRecord::Base
       conditions << "tb_funcional.level = 3"
     end
 
-    population_filter = if population.present?
+    population_filter = if population.any?
                           population_limits = ["total >= #{population.first}"]
                           population_limits << "total <= #{population.last}" if population.last > 0
                           "INNER JOIN poblacion_municipal_2014 ON poblacion_municipal_2014.codigo = substring(tb_inventario.codente from 0 for 6) AND #{population_limits.join(' AND ')}"

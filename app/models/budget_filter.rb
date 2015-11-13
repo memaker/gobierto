@@ -39,9 +39,9 @@ class BudgetFilter
     return [] if @year.nil?
 
     if @economic_area_filter_code
-      EconomicArea.budgets(year: @year, place: @place, code: @economic_area_filter_code, population: [@population_min, @population_max])
+      EconomicArea.budgets(year: @year, place: @place, code: @economic_area_filter_code, population: [@population_min, @population_max].compact)
     else
-      FunctionalArea.budgets(year: @year, place: @place, code: @functional_area_filter_code, population: [@population_min, @population_max])
+      FunctionalArea.budgets(year: @year, place: @place, code: @functional_area_filter_code, population: [@population_min, @population_max].compact)
     end
   end
 
