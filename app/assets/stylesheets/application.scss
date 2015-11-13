@@ -307,7 +307,10 @@ table {
 }
 
 
-// Autocomplete
+/*
+ * Autocomplete
+ *
+ */
 .autocomplete-suggestions { 
   border: 1px solid #999; 
   font-size: 12px;
@@ -334,4 +337,19 @@ table {
   border-bottom: 1px solid $separator; 
 }
 
+
+/*
+ * Widgets
+ *
+ */
+.widget_container {
+  display: flex;
+}
+.widget {
+  border: 1px solid orange;
+
+}
+.widget-1-2 {
+
+}
 
