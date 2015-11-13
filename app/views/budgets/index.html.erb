@@ -75,8 +75,8 @@
         </div>
 
         <div class="form_item">
-          <%= label_tag :size, 'Tamaño' %>
-          <%= select_tag :size, options_for_select(BudgetFilter.populations, params[:size]), prompt: 'Todos' %>
+          <%= label_tag :population, 'Tamaño' %>
+          <%= select_tag :population, options_for_select(BudgetFilter.populations, params[:population]), prompt: 'Todos' %>
         </div>
       </div>
     </div>
