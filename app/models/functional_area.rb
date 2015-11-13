@@ -6,11 +6,11 @@ class FunctionalArea < ActiveRecord::Base
   end
 
   def self.root_items
-    where("char_length(cdfgr) = 1").order("cdfgr")
+    where("level = 1").order("cdfgr")
   end
 
   def children
-    self.class.items.where("cdfgr like '#{self.code}%' AND char_length(cdfgr) = #{self.level + 2}")
+    self.class.items.where("cdfgr like '#{self.code}%' AND level = #{self.level + 2}")
   end
 
   def self.items_for_select
@@ -23,7 +23,7 @@ class FunctionalArea < ActiveRecord::Base
     code = options[:code]
 
     place_conditions = if place
-                         "AND tb_inventario.codente = '#{place.id}AA000'"
+                         "AND tb_inventario.codente = '#{format('%.5i', place.id)}AA000'"
                        else
                          "AND tb_inventario.codente like '%AA000'"
                        end
@@ -34,7 +34,7 @@ class FunctionalArea < ActiveRecord::Base
     if code.present?
       conditions << "tb_funcional.cdfgr = '#{code}'"
     else
-      conditions << "char_length(tb_funcional.cdfgr) = 3"
+      conditions << "tb_funcional.level = 3"
     end
 
     sql = <<-SQL
@@ -46,7 +46,7 @@ INNER join tb_inventario ON tb_inventario.id = tb_funcional.id #{place_condition
 WHERE #{conditions.join(' AND ')}
 GROUP BY tb_funcional.cdfgr, tb_inventario.nombreente, tb_funcional.year, "tb_cuentasProgramas".nombre, tb_inventario.codente
 ORDER BY code, amount DESC
-#{"LIMIT 200" if place.nil?}
+#{"LIMIT 300" if place.nil?}
 SQL
 
     ActiveRecord::Base.connection.execute(sql).map do |row|
@@ -59,8 +59,7 @@ SQL
 select sum(importe) as amount
 FROM tb_funcional
 INNER join tb_inventario ON tb_inventario.id = tb_funcional.id AND tb_inventario.codente = '#{place_id}AA000'
-WHERE year = #{year} AND
-char_length(tb_funcional.cdfgr) = 1
+WHERE year = #{year} AND level = 1
 SQL
 
     ActiveRecord::Base.connection.execute(sql).first['amount'].to_f

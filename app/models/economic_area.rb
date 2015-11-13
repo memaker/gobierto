@@ -6,11 +6,11 @@ class EconomicArea < ActiveRecord::Base
   end
 
   def self.root_items
-    where("char_length(cdcta) = 1").order("cdcta")
+    where("level = 1").order("cdcta")
   end
 
   def children
-    self.class.items.where("cdcta like '#{self.code}%' AND char_length(cdcta) = #{self.level + 2}")
+    self.class.items.where("cdcta like '#{self.code}%' AND level = #{self.level + 2}")
   end
 
   def self.kinds
@@ -27,10 +27,10 @@ class EconomicArea < ActiveRecord::Base
     code = options[:code]
 
     sql = <<-SQL
-select sum(importe) as amount, tb_inventario.nombreente as place_name, tb_economica.year, #{place.id} as place_id
+select sum(importe) as amount, tb_inventario.nombreente as place_name, tb_economica.year, #{format('%.5i', place.id)} as place_id
 FROM tb_economica
 INNER join "tb_cuentasEconomica" ON "tb_cuentasEconomica".cdcta = tb_economica.cdcta
-INNER join tb_inventario ON tb_inventario.id = tb_economica.id AND tb_inventario.codente = '#{place.id}AA000'
+INNER join tb_inventario ON tb_inventario.id = tb_economica.id AND tb_inventario.codente = '#{format('%.5i', place.id)}AA000'
 WHERE year = #{year} AND
 tb_economica.cdcta = '#{code}'
 GROUP BY tb_economica.cdcta, tb_inventario.nombreente, tb_economica.year
@@ -48,7 +48,7 @@ select sum(importe) as amount
 FROM tb_economica
 INNER join tb_inventario ON tb_inventario.id = tb_economica.id AND tb_inventario.codente = '#{place_id}AA000'
 WHERE year = #{year} AND
-char_length(tb_economica.cdcta) = 1
+tb_economica.level = 1
 SQL
 
     ActiveRecord::Base.connection.execute(sql).first['amount'].to_f

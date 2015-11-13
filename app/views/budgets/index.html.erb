@@ -10,29 +10,30 @@
           <%= select_tag :place, options_for_select(INE::Places::Place.all.map{|p| [p.name, p.id]}, params[:place]), class: 'select2', prompt: 'Todos' %>
         </div>
 
-        <div class="form_item">
-          <%= label_tag :functional_area, 'Area funcional' %>
+        <% cache('functional_area') do %>
+          <div class="form_item">
+            <%= label_tag :functional_area, 'Area funcional' %>
 
-          <div class="select_from_tree">
+            <div class="select_from_tree">
 
-            <div class="label"><%= link_to 'Todas <i class="fa fa-sort-down"></i>'.html_safe, '' %></div>
+              <div class="label"><%= link_to 'Todas <i class="fa fa-sort-down"></i>'.html_safe, '' %></div>
 
-            <div class="tree">
+              <div class="tree">
 
-              <ul class="bonsai">
-                <% FunctionalArea.root_items.each do |item| %>
-                  <li>
-                    <%= link_to item.name, '#', data: { 'menu-area' => item.code, 'rel' => 'functional_area' } %>
-                    <%= render_children(item, 'functional_area' ) %>
-                  </li>
-                <% end %>
-              </ul>
+                <ul class="bonsai">
+                  <% FunctionalArea.root_items.each do |item| %>
+                    <li>
+                      <%= link_to item.name, '#', data: { 'menu-area' => item.code, 'rel' => 'functional_area' } %>
+                      <%= render_children(item, 'functional_area' ) %>
+                    </li>
+                  <% end %>
+                </ul>
 
+              </div>
             </div>
+            <%= hidden_field_tag :functional_area, params[:functional_area] %>
           </div>
-          <%= hidden_field_tag :functional_area, params[:functional_area] %>
-
-        </div>
+        <% end %>
 
         <% if false %>
           <div class="form_item">
@@ -106,8 +107,8 @@
             <td><span class="sparkline" data-sparkvalues='<%= budget_line.historic_values.join(',') %>'></span></td>
             <td><%= budget_line.name %></td>
             <td><%= budget_line.place_name %></td>
-            <td class="amount"><%= budget_line.place.population.total %></td>
-            <td class="money"><%= budget_line.amount / budget_line.place.population.total %></td>
+            <td class="amount"><%= budget_line.place.population %></td>
+            <td class="money"><%= budget_line.amount / budget_line.place.population %></td>
             <td class="money"><%= budget_line.amount %></td>
             <td class="percentage"><%= percentage(budget_line.amount, budget_line.place.total_budget) %></td>
             <td><%= link_to 'Compara', '' %></td>

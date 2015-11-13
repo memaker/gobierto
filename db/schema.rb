@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151112094751) do
+ActiveRecord::Schema.define(version: 20151113075716) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,10 +25,13 @@ ActiveRecord::Schema.define(version: 20151112094751) do
   end
 
   create_table "tb_cuentasEconomica", id: false, force: :cascade do |t|
-    t.string "tipreig", limit: 1
-    t.string "cdcta",   limit: 6
-    t.string "nombre",  limit: 125
+    t.string  "tipreig", limit: 1
+    t.string  "cdcta",   limit: 6
+    t.string  "nombre",  limit: 125
+    t.integer "level"
   end
+
+  add_index "tb_cuentasEconomica", ["level"], name: "index_tb_cuentasEconomica_on_level", using: :btree
 
   create_table "tb_cuentasEconomica_2010", id: false, force: :cascade do |t|
     t.string "tipreig", limit: 1
@@ -61,9 +64,12 @@ ActiveRecord::Schema.define(version: 20151112094751) do
   end
 
   create_table "tb_cuentasProgramas", id: false, force: :cascade do |t|
-    t.string "cdfgr",  limit: 6
-    t.string "nombre", limit: 125
+    t.string  "cdfgr",  limit: 6
+    t.string  "nombre", limit: 125
+    t.integer "level"
   end
+
+  add_index "tb_cuentasProgramas", ["level"], name: "index_tb_cuentasProgramas_on_level", using: :btree
 
   create_table "tb_cuentasProgramas_2010", id: false, force: :cascade do |t|
     t.string "cdfgr",  limit: 3
@@ -97,10 +103,12 @@ ActiveRecord::Schema.define(version: 20151112094751) do
     t.string  "cdcta",   limit: 6
     t.decimal "importe",           precision: 15, scale: 2
     t.integer "year",    limit: 2
+    t.integer "level"
   end
 
   add_index "tb_economica", ["cdcta"], name: "index_tb_economica_on_cdcta", using: :btree
   add_index "tb_economica", ["id"], name: "index_tb_economica_on_id", using: :btree
+  add_index "tb_economica", ["level"], name: "index_tb_economica_on_level", using: :btree
   add_index "tb_economica", ["tipreig"], name: "index_tb_economica_on_tipreig", using: :btree
   add_index "tb_economica", ["year"], name: "index_tb_economica_on_year", using: :btree
 
@@ -159,10 +167,12 @@ ActiveRecord::Schema.define(version: 20151112094751) do
     t.string  "cdfgr",   limit: 6
     t.decimal "importe",           precision: 15, scale: 2
     t.integer "year",    limit: 2
+    t.integer "level"
   end
 
   add_index "tb_funcional", ["cdfgr"], name: "index_tb_funcional_on_cdfgr", using: :btree
   add_index "tb_funcional", ["id"], name: "index_tb_funcional_on_id", using: :btree
+  add_index "tb_funcional", ["level"], name: "index_tb_funcional_on_level", using: :btree
   add_index "tb_funcional", ["year"], name: "index_tb_funcional_on_year", using: :btree
 
   create_table "tb_funcional_2010", id: false, force: :cascade do |t|
@@ -225,8 +235,8 @@ ActiveRecord::Schema.define(version: 20151112094751) do
     t.string  "estado",     limit: 1
   end
 
-  add_index "tb_inventario", ["codente"], name: "index_tb_inventario_on_codente", using: :btree
-  add_index "tb_inventario", ["id"], name: "index_tb_inventario_on_id", using: :btree
+  add_index "tb_inventario", ["codente"], name: "tb_inventario_codente_idx", using: :btree
+  add_index "tb_inventario", ["id"], name: "tb_inventario_id_idx", using: :btree
 
   create_table "tb_inventario_2010", id: false, force: :cascade do |t|
     t.decimal "id",                    precision: 15, scale: 2
