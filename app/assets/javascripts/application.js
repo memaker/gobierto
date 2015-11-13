@@ -17,7 +17,7 @@ SPARKLINES_DEFAULTS = {
   width: 60,
   numberDigitGroupSep: '.',
   numberDecimalMark: ',',
-  lineColor: '#82CAD8',
+  lineColor: '#0063EE',
   spotColor: '',
   spotRadius: 0,
   fillColor: false,
