@@ -7,7 +7,7 @@
 
         <div class="form_item">
           <%= label_tag :place, 'Municipio' %>
-          <input type="search" name="query" placeholder="Busca tu municipio, provincia o comunidad" class="place_search" id="search" value="<%= @filter.place.name if @filter.place? %>" />
+          <input type="search" name="query" placeholder="Busca tu municipio, provincia o comunidad" class="place_search input" id="search" value="<%= @filter.place.name if @filter.place? %>" />
           <%= hidden_field_tag :place, params[:place] %>
         </div>
 
