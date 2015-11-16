@@ -66,7 +66,7 @@ SQL
     sql = <<-SQL
 select sum(importe) as amount
 FROM tb_funcional
-INNER join tb_inventario ON tb_inventario.id = tb_funcional.id AND tb_inventario.codente = '#{place_id}AA000'
+INNER join tb_inventario ON tb_inventario.id = tb_funcional.id AND tb_inventario.codente = '#{format('%.5i', place_id)}AA000'
 WHERE year = #{year} AND level = 1
 SQL
 

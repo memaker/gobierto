@@ -11,17 +11,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151113100308) do
+ActiveRecord::Schema.define(version: 20151116123117) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "poblacion_municipal_2014", id: false, force: :cascade do |t|
-    t.string  "codigo",  limit: 5
-    t.string  "nombre",  limit: 255
+    t.decimal "codigo",                            precision: 10
+    t.string  "nombre",                limit: 255
     t.integer "total"
     t.integer "hombres"
     t.integer "mujeres"
+    t.float   "total_functional_2010"
+    t.float   "total_functional_2011"
+    t.float   "total_functional_2012"
+    t.float   "total_functional_2013"
+    t.float   "total_functional_2014"
+    t.float   "total_functional_2015"
   end
 
   create_table "tb_cuentasEconomica", id: false, force: :cascade do |t|
@@ -235,8 +241,8 @@ ActiveRecord::Schema.define(version: 20151113100308) do
     t.string  "estado",     limit: 1
   end
 
-  add_index "tb_inventario", ["codente"], name: "index_tb_inventario_on_codente", using: :btree
-  add_index "tb_inventario", ["id"], name: "index_tb_inventario_on_id", using: :btree
+  add_index "tb_inventario", ["codente"], name: "tb_inventario_codente_idx", using: :btree
+  add_index "tb_inventario", ["id"], name: "tb_inventario_id_idx", using: :btree
 
   create_table "tb_inventario_2010", id: false, force: :cascade do |t|
     t.decimal "id",                    precision: 15, scale: 2
