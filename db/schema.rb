@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151116210051) do
+ActiveRecord::Schema.define(version: 20151116212639) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -169,15 +169,16 @@ ActiveRecord::Schema.define(version: 20151116210051) do
   end
 
   create_table "tb_funcional", id: false, force: :cascade do |t|
-    t.decimal "id",                              precision: 15, scale: 2
-    t.decimal "idente",                          precision: 15, scale: 2
-    t.string  "cdcta",                 limit: 6
-    t.string  "cdfgr",                 limit: 6
-    t.decimal "importe",                         precision: 15, scale: 2
-    t.integer "year",                  limit: 2
+    t.decimal "id",                                    precision: 15, scale: 2
+    t.decimal "idente",                                precision: 15, scale: 2
+    t.string  "cdcta",                       limit: 6
+    t.string  "cdfgr",                       limit: 6
+    t.decimal "importe",                               precision: 15, scale: 2
+    t.integer "year",                        limit: 2
     t.integer "level"
     t.integer "ine_code"
     t.float   "budget_per_inhabitant"
+    t.float   "percentage_total_functional"
   end
 
   add_index "tb_funcional", ["cdfgr"], name: "index_tb_funcional_on_cdfgr", using: :btree

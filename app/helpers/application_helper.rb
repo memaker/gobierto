@@ -1,12 +1,4 @@
 module ApplicationHelper
-  def percentage(part, total)
-    if total > 0
-      (part.to_f * 100.0)/total.to_f
-    else
-      0
-    end
-  end
-
   def render_children(item, area)
     return "" if item.children.empty?
 
