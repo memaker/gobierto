@@ -56,6 +56,9 @@ $color_1_soft: #EFF8F9;
 $color_1_dark: #00909E;
 // $color_1_dark_plus: #172532;
 
+$color_2: #E9A49A;
+$color_2_soft: #FBEEEC;
+$color_2_dark: #B87570;
 
 /* General colors */
 $color_bg_error: #F5D6D2;
@@ -344,10 +347,33 @@ table {
  */
 .widget_container {
   display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  margin: -10px;
 }
 .widget {
-  border: 1px solid orange;
+  background: $color_2;
+  flex: 3 0 auto;
+  margin: 10px;
+  width: 30%;
 
+  h2, h3 {
+    color: $color_2_dark;
+    margin: 0 0 1em 0;
+    font-size: 1em;
+  }
+}
+.sub_element {
+  flex: 2 2 auto;
+  min-width: 40%;
+  border: 1px solid red;
+  margin: 3px; 
+}
+.widget_cont {
+  padding: 1em; 
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
 }
 .widget-1-2 {
 
