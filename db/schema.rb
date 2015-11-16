@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151116123117) do
+ActiveRecord::Schema.define(version: 20151116160332) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -103,17 +103,19 @@ ActiveRecord::Schema.define(version: 20151116123117) do
   end
 
   create_table "tb_economica", id: false, force: :cascade do |t|
-    t.decimal "id",                precision: 15, scale: 2
-    t.decimal "idente",            precision: 15, scale: 2
-    t.string  "tipreig", limit: 1
-    t.string  "cdcta",   limit: 6
-    t.decimal "importe",           precision: 15, scale: 2
-    t.integer "year",    limit: 2
+    t.decimal "id",                 precision: 15, scale: 2
+    t.decimal "idente",             precision: 15, scale: 2
+    t.string  "tipreig",  limit: 1
+    t.string  "cdcta",    limit: 6
+    t.decimal "importe",            precision: 15, scale: 2
+    t.integer "year",     limit: 2
     t.integer "level"
+    t.integer "ine_code"
   end
 
   add_index "tb_economica", ["cdcta"], name: "index_tb_economica_on_cdcta", using: :btree
   add_index "tb_economica", ["id"], name: "index_tb_economica_on_id", using: :btree
+  add_index "tb_economica", ["ine_code"], name: "index_tb_economica_on_ine_code", using: :btree
   add_index "tb_economica", ["level"], name: "index_tb_economica_on_level", using: :btree
   add_index "tb_economica", ["tipreig"], name: "index_tb_economica_on_tipreig", using: :btree
   add_index "tb_economica", ["year"], name: "index_tb_economica_on_year", using: :btree
@@ -167,17 +169,19 @@ ActiveRecord::Schema.define(version: 20151116123117) do
   end
 
   create_table "tb_funcional", id: false, force: :cascade do |t|
-    t.decimal "id",                precision: 15, scale: 2
-    t.decimal "idente",            precision: 15, scale: 2
-    t.string  "cdcta",   limit: 6
-    t.string  "cdfgr",   limit: 6
-    t.decimal "importe",           precision: 15, scale: 2
-    t.integer "year",    limit: 2
+    t.decimal "id",                 precision: 15, scale: 2
+    t.decimal "idente",             precision: 15, scale: 2
+    t.string  "cdcta",    limit: 6
+    t.string  "cdfgr",    limit: 6
+    t.decimal "importe",            precision: 15, scale: 2
+    t.integer "year",     limit: 2
     t.integer "level"
+    t.integer "ine_code"
   end
 
   add_index "tb_funcional", ["cdfgr"], name: "index_tb_funcional_on_cdfgr", using: :btree
   add_index "tb_funcional", ["id"], name: "index_tb_funcional_on_id", using: :btree
+  add_index "tb_funcional", ["ine_code"], name: "index_tb_funcional_on_ine_code", using: :btree
   add_index "tb_funcional", ["level"], name: "index_tb_funcional_on_level", using: :btree
   add_index "tb_funcional", ["year"], name: "index_tb_funcional_on_year", using: :btree
 

@@ -23,12 +23,6 @@ class FunctionalArea < ActiveRecord::Base
     code = options[:code]
     population = options[:population]
 
-    place_conditions = if place
-                         "AND tb_inventario.codente = '#{format('%.5i', place.id)}AA000'"
-                       else
-                         "AND tb_inventario.codente like '%AA000'"
-                       end
-
     conditions = []
     conditions << "year = #{year}" if year.present?
 
@@ -38,21 +32,27 @@ class FunctionalArea < ActiveRecord::Base
       conditions << "tb_funcional.level = 3"
     end
 
+    if place
+      conditions << "ine_code = #{place.id}"
+    else
+      conditions << "ine_code is not null"
+    end
+
     population_filter = if population.any?
                           population_limits = ["total >= #{population.first}"]
                           population_limits << "total <= #{population.last}" if population.last > 0
-                          "INNER JOIN poblacion_municipal_2014 ON poblacion_municipal_2014.codigo = substring(tb_inventario.codente from 0 for 6) AND #{population_limits.join(' AND ')}"
+
+                          "AND #{population_limits.join(' AND ')}"
                         end
 
     sql = <<-SQL
-select sum(importe) as amount, tb_inventario.nombreente as place_name, tb_funcional.year, substring(tb_inventario.codente from 0 for 6) as place_id,
-tb_funcional.cdfgr as code, "tb_cuentasProgramas".nombre as name
+select sum(importe) as amount, poblacion_municipal_2014.nombre as place_name, tb_funcional.year, ine_code as place_id,
+tb_funcional.cdfgr as code, "tb_cuentasProgramas".nombre as name, poblacion_municipal_2014.total::integer as population, poblacion_municipal_2014.total_functional_#{year} as total_functional_budget
 FROM tb_funcional
 INNER join "tb_cuentasProgramas" ON "tb_cuentasProgramas".cdfgr = tb_funcional.cdfgr
-INNER join tb_inventario ON tb_inventario.id = tb_funcional.id #{place_conditions}
-#{population_filter}
+INNER JOIN poblacion_municipal_2014 ON poblacion_municipal_2014.codigo = tb_funcional.ine_code #{population_filter}
 WHERE #{conditions.join(' AND ')}
-GROUP BY tb_funcional.cdfgr, tb_inventario.nombreente, tb_funcional.year, "tb_cuentasProgramas".nombre, tb_inventario.codente
+GROUP BY tb_funcional.cdfgr, tb_funcional.year, "tb_cuentasProgramas".nombre, poblacion_municipal_2014.nombre, tb_funcional.ine_code, poblacion_municipal_2014.total, poblacion_municipal_2014.total_functional_#{year}
 ORDER BY code, amount DESC
 #{"LIMIT 300" if place.nil?}
 SQL
@@ -66,8 +66,7 @@ SQL
     sql = <<-SQL
 select sum(importe) as amount
 FROM tb_funcional
-INNER join tb_inventario ON tb_inventario.id = tb_funcional.id AND tb_inventario.codente = '#{format('%.5i', place_id)}AA000'
-WHERE year = #{year} AND level = 1
+WHERE year = #{year} AND level = 1 AND ine_code = #{place.id}
 SQL
 
     ActiveRecord::Base.connection.execute(sql).first['amount'].to_f
