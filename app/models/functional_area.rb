@@ -23,7 +23,7 @@ class FunctionalArea < ActiveRecord::Base
     code = options[:code]
     population = options[:population]
 
-    conditions = []
+    conditions = ["cdcta is null"] # when cdcta is null, aggregated columns are fetched
     conditions << "year = #{year}" if year.present?
 
     if code.present?
@@ -46,13 +46,13 @@ class FunctionalArea < ActiveRecord::Base
                         end
 
     sql = <<-SQL
-select sum(importe) as amount, poblacion_municipal_2014.nombre as place_name, tb_funcional.year, ine_code as place_id,
-tb_funcional.cdfgr as code, "tb_cuentasProgramas".nombre as name, poblacion_municipal_2014.total::integer as population, poblacion_municipal_2014.total_functional_#{year} as total_functional_budget
+select importe as amount, poblacion_municipal_2014.nombre as place_name, tb_funcional.year, ine_code as place_id,
+tb_funcional.cdfgr as code, "tb_cuentasProgramas".nombre as name, poblacion_municipal_2014.total::integer as population,
+poblacion_municipal_2014.total_functional_#{year} as total_functional_budget
 FROM tb_funcional
 INNER join "tb_cuentasProgramas" ON "tb_cuentasProgramas".cdfgr = tb_funcional.cdfgr
 INNER JOIN poblacion_municipal_2014 ON poblacion_municipal_2014.codigo = tb_funcional.ine_code #{population_filter}
 WHERE #{conditions.join(' AND ')}
-GROUP BY tb_funcional.cdfgr, tb_funcional.year, "tb_cuentasProgramas".nombre, poblacion_municipal_2014.nombre, tb_funcional.ine_code, poblacion_municipal_2014.total, poblacion_municipal_2014.total_functional_#{year}
 ORDER BY code, amount DESC
 #{"LIMIT 300" if place.nil?}
 SQL
