@@ -66,7 +66,7 @@ SQL
     sql = <<-SQL
 select sum(importe) as amount
 FROM tb_funcional
-WHERE year = #{year} AND level = 1 AND ine_code = #{place.id}
+WHERE year = #{year} AND level = 1 AND ine_code = #{place_id}
 SQL
 
     ActiveRecord::Base.connection.execute(sql).first['amount'].to_f
