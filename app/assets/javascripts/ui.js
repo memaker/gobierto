@@ -23,7 +23,7 @@ $(function(){
       searchText: 'Buscar:'
     },
     dataset: {
-      perPageDefault: 25,
+      perPageDefault: 100,
       perPageOptions: [25,50,100, 300],
       sorts: { 'gasto/Hab': -1 }
     },
