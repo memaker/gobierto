@@ -56,7 +56,7 @@ $color_1_soft: #EFF8F9;
 $color_1_dark: #00909E;
 // $color_1_dark_plus: #172532;
 
-$color_2: #E9A49A;
+$color_2: #F69C95;
 $color_2_soft: #FBEEEC;
 $color_2_dark: #B87570;
 
@@ -360,22 +360,93 @@ table {
   h2, h3 {
     color: $color_2_dark;
     margin: 0 0 1em 0;
-    font-size: 1em;
+    font-size: 14px;
+    font-weight: normal;
+    color: $background;
   }
 }
 .sub_element {
-  flex: 2 2 auto;
-  min-width: 40%;
-  border: 1px solid red;
-  margin: 3px; 
+  border-bottom: 1px solid #FFF;
+  width: 50%;
+  float: left;
+  height: 100px;
+  box-sizing: border-box;
+  padding: 1.2em 0 0 1.2em;
+
+  h3 {
+    margin: 0;
+    font-size: 12px;
+    font-weight: normal;
+    color: $color_2_soft;
+  }
+  .number {
+    margin: .2em 0 0 0;
+    font-size: 30px;
+    color: $background;
+
+    .sub {
+      font-size: 18px;
+      opacity: .75;
+    }
+  }
+}
+.sub_element:nth-child(2n) {
+  border-left: 1px solid #FFF;
+  width: calc(50% - 1px);
+
 }
 .widget_cont {
   padding: 1em; 
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
 }
 .widget-1-2 {
 
+}
+
+
+/*
+ * Data sheet
+ *
+ */
+.data_sheet {
+  header {
+    margin: 0 0 1.5em 0;
+    
+  }
+}
+.form_filters {
+  display: inline-block;
+  float: right;
+  font-size: 12px;
+
+  .group {
+    display: inline-block;
+    margin: 0 0 0 1em;
+  }
+  ul, li {
+    margin: 0;
+    padding: 0; 
+    list-style-type: none;
+    display: inline-block;
+  }
+  ul {
+    @include border-radius(2em);
+    background: #EFF8F9;
+    padding: 0 10px;
+    margin: 0 1em 0 0;
+  }
+  li a {
+    display: inline-block;
+    border-right: 1px solid $background;
+    text-decoration: none;
+    padding: 1px 7px;
+    margin: 0;
+    
+  }
+  li:last-child a {
+    border: none;
+  }
+  li a:hover, li a.active {
+    background: #D1EAED;
+  }
 }
 

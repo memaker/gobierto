@@ -61,6 +61,11 @@
           </div>
         <% end %>
 
+        <div class="form_item">
+          <label></label>
+          <%= submit_tag 'Filtrar' %> <%= link_to 'Resetear', budgets_path %>
+        </div>
+
       </div>
 
       <div class="col-2-2">
@@ -81,11 +86,10 @@
       </div>
     </div>
 
-    <%= submit_tag 'Filtrar' %> <%= link_to 'Resetear', budgets_path %>
   <% end %>
 </div>
 
-<%# render 'sandbox/data_sheet' %>
+<%= render 'sandbox/data_sheet' %>
 
 <div>
   <% if @budget_lines && @budget_lines.any? %>
