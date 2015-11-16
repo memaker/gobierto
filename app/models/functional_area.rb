@@ -104,6 +104,86 @@ SQL
     ActiveRecord::Base.connection.execute(sql).first['amount'].to_f
   end
 
+  def budget(place, year)
+    sql = <<-SQL
+select sum(importe) as amount
+FROM tb_funcional
+INNER join tb_inventario ON tb_inventario.id = tb_funcional.id AND tb_inventario.codente = '#{place.id}AA000'
+WHERE year = #{year} AND level = 1 AND tb_funcional.cdfgr = '#{self.code}'
+SQL
+
+    ActiveRecord::Base.connection.execute(sql).first['amount'].to_f
+  end
+
+  def budget_per_person(place, year)
+    total = budget(place, year)
+
+    total / Population.by_place_id(place.id).total
+  end
+
+  def budget_percentage_total(place, year, total)
+    part = budget(place, year)
+    if total > 0
+      (part.to_f * 100.0)/total.to_f
+    else
+      0
+    end
+  end
+
+  def mean_national_per_person(year)
+     sql = <<-SQL
+select avg(x)
+FROM(
+  select sum(importe)/total as x
+  FROM tb_funcional
+  INNER join tb_inventario ON tb_inventario.id = tb_funcional.id
+  INNER JOIN poblacion_municipal_2014 ON poblacion_municipal_2014.codigo = substring(tb_inventario.codente from 0 for 6)
+  WHERE year = #{year} AND level = 1 AND tb_funcional.cdfgr = '#{self.code}'
+  GROUP BY tb_inventario.id, poblacion_municipal_2014.total
+)  as mean
+SQL
+
+    ActiveRecord::Base.connection.execute(sql).first['avg'].to_f
+  end
+
+  def mean_autonomy_per_person(year, place)
+    0
+  end
+
+  def mean_province_per_person(year, place)
+    0
+  end
+
+  def mean_national_percentage(year, total)
+     sql = <<-SQL
+select avg(x)
+FROM(
+  select 
+    (
+      select sum(importe)
+      FROM tb_funcional
+      INNER join tb_inventario ON tb_inventario.id = tb_funcional.id
+      WHERE year = #{year} AND level = 1
+    ) as total, 
+    (sum(importe)::double precision/total::double precision) * 100 as x
+  FROM tb_funcional
+  INNER join tb_inventario ON tb_inventario.id = tb_funcional.id
+  WHERE year = #{year} AND level = 1 AND tb_funcional.cdfgr = '#{self.code}'
+  GROUP BY tb_inventario.id
+)  as mean
+SQL
+
+    ActiveRecord::Base.connection.execute(sql).first['avg'].to_f
+  end
+
+  def mean_autonomy_percentage(year, place, total)
+    0
+  end
+
+  def mean_province_percentage(year, place, total)
+    0
+  end
+
   def level
     code.length - 1
   end

@@ -39,16 +39,28 @@ class Api::DataController < ApplicationController
         ]
       }
 
-      #budgets = FunctionalArea.root_items.map do |item|
-        #{
-          #name: item.name,
-          #per_person: item.budget_per_person(place, year),
-          #percentage: 0,
-          #mean_national: 1200,
-          #mean_autonomy: 12323,
-          #mean_province: 2321
-        #}
-      #end
+      total = FunctionalArea.total_budget(place.id, year)
+
+      budgets = {
+        per_person: FunctionalArea.root_items.map do |item|
+          {
+            name: item.name,
+            value: item.budget_per_person(place, year),
+            mean_national: item.mean_national_per_person(year),
+            mean_autonomy: item.mean_autonomy_per_person(year, place),
+            mean_province: item.mean_province_per_person(year, place)
+          }
+        end,
+        percentage: FunctionalArea.root_items.map do |item|
+          {
+            name: item.name,
+            value: item.budget_percentage_total(place, year, total),
+            mean_national: item.mean_national_percentage(year, total),
+            mean_autonomy: item.mean_autonomy_percentage(year, place, total),
+            mean_province: item.mean_province_percentage(year, place, total),
+          }
+        end
+      }
 
       format.json do
         render json: {
