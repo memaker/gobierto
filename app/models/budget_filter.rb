@@ -25,9 +25,9 @@ class BudgetFilter
 
     @location = if filters[:location_id].present? && filters[:location_type].present?
                case filters[:location_type]
-               when 'Provincia'
+               when 'Province'
                  INE::Places::Province.find(filters[:location_id])
-               when 'Comunidad Autónoma'
+               when 'AutonomousRegion'
                  INE::Places::AutonomousRegion.find(filters[:location_id])
                else
                  INE::Places::Place.find(filters[:location_id])

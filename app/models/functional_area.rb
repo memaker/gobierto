@@ -34,7 +34,7 @@ class FunctionalArea < ActiveRecord::Base
 
     if location
       if location.is_a?(INE::Places::Place)
-        conditions << "ine_code = #{place.id}"
+        conditions << "ine_code = #{location.id}"
       end
     else
       conditions << "ine_code is not null"

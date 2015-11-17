@@ -7,7 +7,7 @@ class INE::Places::AutonomousRegion
           data: {
             category: 'Comunidad Autónoma',
             id: autonomous_region.id,
-            type: self.name
+            type: self.name.demodulize
           }
         }
       end
@@ -24,7 +24,7 @@ class INE::Places::Province
           data: {
             category: 'Provincia',
             id: province.id,
-            type: self.name
+            type: self.name.demodulize
           }
         }
       end
@@ -41,7 +41,7 @@ class INE::Places::Place
           data: {
             category: place.province.name,
             id: place.id,
-            type: self.name
+            type: self.name.demodulize
           }
         }
       end
