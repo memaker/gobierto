@@ -40,7 +40,7 @@ class BudgetFilter
              end
   end
 
-  attr_reader :location
+  attr_reader :location, :year
 
   def location?
     @location.present?

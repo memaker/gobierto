@@ -47,5 +47,9 @@ class INE::Places::Place
       end
     end
   end
-end
 
+  def data
+    @data ||= Population.find_by(codigo: self.id)
+  end
+
+end

@@ -35,15 +35,14 @@
           Gasto total 
           <span class="percenchange" class="tipsit" title="Cambio de -3,56% respecto al año anterior">-3,56%</span>
         </h3>
-        <div class="number">128,6M€</div>
+        <div class="number"><%= number_to_currency(place.data.send("total_functional_#{@filter.year}"), precision: 2) %></div>
       </div>
 
       <div class="sub_element">
         <h3>
           Habitantes
-          <span class="percenchange" class="tipsit" title="Cambio de +3,56% respecto al año anterior">+2,60%</span>
         </h3>
-        <div class="number">3.245.456</div>
+        <div class="number"><%= number_with_delimiter(place.data.total) %></div>
       </div>
 
       <div class="sub_element">
@@ -51,7 +50,7 @@
           <span title="Gasto por habitante">Gasto/habitante</span>
           <span class="percenchange" class="tipsit" title="Cambio de -12,46% respecto al año anterior">-12,46%</span>
         </h3>
-        <div class="number">128,6€</div>
+        <div class="number"><%= number_to_currency(place.data.send("total_functional_#{@filter.year}") / place.data.total, precision: 2) %></div>
       </div>
 
       <div class="sub_element">

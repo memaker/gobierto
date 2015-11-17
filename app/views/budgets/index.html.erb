@@ -92,7 +92,7 @@
 
 <% if @filter.place? %>
   <%= render 'data_sheet', place: @filter.location %>
-<% end %>
+<% else %>
 
 <div>
   <% if @budget_lines && @budget_lines.any? %>
@@ -136,3 +136,4 @@
     </table>
   <% end %>
 </div>
+<% end %>
