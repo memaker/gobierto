@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
 
   rescue_from ActionController::RoutingError, with: :render_404
 
-  helper_method :current_user, :logged_in?, :current_user?, :login_path
+  helper_method :current_user, :logged_in?, :current_user?, :login_path, :reset_filters_parameters
 
   before_action :authenticate
 
@@ -13,6 +13,10 @@ class ApplicationController < ActionController::Base
     render file: "public/404", status: 404, layout: false, handlers: [:erb], formats: [:html]
   end
 
+  def reset_filters_parameters
+    [:location_id, :location_type, :population, :similar_budget_min, :similar_budget_max,
+     :total_similar_budget_min, :total_similar_budget_max, :code]
+  end
   protected
 
   def authenticate
@@ -22,5 +26,6 @@ class ApplicationController < ActionController::Base
       username == 'gobierto' && password == 'presupuestos'
     end
   end
+
 
 end

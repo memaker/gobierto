@@ -122,15 +122,13 @@
             <td>
               <div class="compare_cont">
                 <%= link_to 'Compara', '' %>
-                
                   <div class="compare">
-                    <%= link_to 'Con municipios de la misma CCAA', budgets_path(params.except(:location_id, :location_type, :population, :similar_budget_min, :similar_budget_max, :total_similar_budget_min, :total_similar_budget_max).merge({location_id: budget_line.place.province.autonomous_region.id, location_type: 'AutonomousRegion'}).symbolize_keys) %>
-                    <%= link_to 'Con municipios de la misma Provincia', budgets_path(params.except(:location_id, :location_type, :population, :similar_budget_min, :similar_budget_max, :total_similar_budget_min, :total_similar_budget_max).merge({location_id: budget_line.place.province.id, location_type: 'Province'}).symbolize_keys) %>
-                    <%= link_to 'Con municipios con población similar', budgets_path(params.except(:location_id, :location_type, :population, :similar_budget_min, :similar_budget_max, :total_similar_budget_min, :total_similar_budget_max).merge(similar_population_parameters(budget_line.population)).symbolize_keys) %>
-                    <%= link_to 'Con municipios con presupuesto similar', budgets_path(params.except(:location_id, :location_type, :population, :similar_budget_min, :similar_budget_max, :total_similar_budget_min, :total_similar_budget_max).merge(similar_budget_parameters(budget_line.amount)).symbolize_keys) %>
-                    <%= link_to 'Con municipios con presupuesto total similar', budgets_path(params.except(:location_id, :location_type, :population, :similar_budget_min, :similar_budget_max, :total_similar_budget_min, :total_similar_budget_max).merge(total_similar_budget_parameters(budget_line.total_functional_budget)).symbolize_keys) %>
+                    <%= link_to 'Con municipios de la misma CCAA', budgets_path(params.except(*reset_filters_parameters).merge({location_id: budget_line.place.province.autonomous_region.id, location_type: 'AutonomousRegion'}).symbolize_keys) %>
+                    <%= link_to 'Con municipios de la misma Provincia', budgets_path(params.except(*reset_filters_parameters).merge({location_id: budget_line.place.province.id, location_type: 'Province'}).symbolize_keys) %>
+                    <%= link_to 'Con municipios con población similar', budgets_path(params.except(*reset_filters_parameters).merge(similar_population_parameters(budget_line.population)).symbolize_keys) %>
+                    <%= link_to 'Con municipios con presupuesto similar', budgets_path(params.except(*reset_filters_parameters).merge(similar_budget_parameters(budget_line)).symbolize_keys) %>
+                    <%= link_to 'Con municipios con presupuesto total similar', budgets_path(params.except(*reset_filters_parameters).merge(total_similar_budget_parameters(budget_line.total_functional_budget)).symbolize_keys) %>
                   </div>
-                
               </div>
             </td>
           </tr>
