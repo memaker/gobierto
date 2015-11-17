@@ -50,4 +50,8 @@ module ApplicationHelper
     number_with_precision(((current_year_value.to_f - old_value.to_f)/old_value.to_f) * 100, precision: 2).to_s + " %"
   end
 
+  def place_path(place, params)
+    budgets_path(params.except(*reset_filters_parameters).merge({location_id: place.id, location_type: 'Place'}).symbolize_keys)
+  end
+
 end
