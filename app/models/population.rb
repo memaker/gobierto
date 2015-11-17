@@ -4,4 +4,8 @@ class Population < ActiveRecord::Base
 
   scope :by_place_id, -> (place_id) { find_by(codigo: place_id) }
 
+  def place
+    @place ||= INE::Places::Place.find(self.codigo)
+  end
+
 end

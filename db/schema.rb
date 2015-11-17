@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151116212639) do
+ActiveRecord::Schema.define(version: 20151117073404) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -28,6 +28,8 @@ ActiveRecord::Schema.define(version: 20151116212639) do
     t.float   "total_functional_2013"
     t.float   "total_functional_2014"
     t.float   "total_functional_2015"
+    t.integer "province_id"
+    t.integer "autonomous_region_id"
   end
 
   create_table "tb_cuentasEconomica", id: false, force: :cascade do |t|
