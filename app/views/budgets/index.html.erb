@@ -107,19 +107,23 @@
           <th>Gasto</th>
           <th>% S/Total</th>
           <th></th>
+          <th></th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
         <% @budget_lines.each do |budget_line| %>
           <tr>
             <td><span class="sparkline" data-sparkvalues='<%= budget_line.historic_values.join(',') %>'></span></td>
-            <td><%= budget_line.name %></td>
-            <td><%= budget_line.place_name %></td>
+            <td><%= truncate(budget_line.name, length: 38) %></td>
+            <td><%= truncate(budget_line.place_name, length: 28) %></td>
             <td class="amount"><%= budget_line.population %></td>
             <td class="money"><%= budget_line.budget_per_inhabitant %></td>
             <td class="money"><%= budget_line.amount %></td>
             <td class="percentage"><%= budget_line.percentage_total_functional %></td>
             <td><%= link_to 'Compara', '' %></td>
+            <td><%= link_to 'Compara con Municipios de la misma CCAA', budgets_path(params.except(:location_id, :location_type).merge({location_id: budget_line.place.province.autonomous_region.id, location_type: 'AutonomousRegion'})) %></td>
+            <td><%= link_to 'Compara con Municipios de la misma Provincia', budgets_path(params.except(:location_id, :location_type).merge({location_id: budget_line.place.province.id, location_type: 'Province'})) %></td>
           </tr>
         <% end %>
       </tbody>
