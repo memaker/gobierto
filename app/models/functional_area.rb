@@ -19,7 +19,7 @@ class FunctionalArea < ActiveRecord::Base
 
   def self.budgets(options)
     year = options[:year]
-    place = options[:place]
+    location = options[:location]
     code = options[:code]
     population = options[:population]
 
@@ -32,18 +32,35 @@ class FunctionalArea < ActiveRecord::Base
       conditions << "tb_funcional.level = 3"
     end
 
-    if place
-      conditions << "ine_code = #{place.id}"
+    if location
+      if location.is_a?(INE::Places::Place)
+        conditions << "ine_code = #{place.id}"
+      end
     else
       conditions << "ine_code is not null"
     end
 
-    population_filter = if population.any?
-                          population_limits = ["total >= #{population.first}"]
-                          population_limits << "total <= #{population.last}" if population.last > 0
+    population_filter = []
+    if population.any?
+      population_limits = ["total >= #{population.first}"]
+      population_limits << "total <= #{population.last}" if population.last > 0
 
-                          "AND #{population_limits.join(' AND ')}"
-                        end
+      population_filter << "#{population_limits.join(' AND ')}"
+    end
+
+    if location
+      if location.is_a?(INE::Places::Province)
+        population_filter << "poblacion_municipal_2014.province_id = #{location.id}"
+      elsif location.is_a?(INE::Places::AutonomousRegion)
+        population_filter << "poblacion_municipal_2014.autonomous_region_id = #{location.id}"
+      end
+    end
+
+    if population_filter.any?
+      population_filter = " AND #{population_filter.join(' AND ')}"
+    else
+      population_filter = nil
+    end
 
     sql = <<-SQL
 select importe as amount, poblacion_municipal_2014.nombre as place_name, tb_funcional.year, ine_code as place_id,
@@ -55,7 +72,7 @@ INNER join "tb_cuentasProgramas" ON "tb_cuentasProgramas".cdfgr = tb_funcional.c
 INNER JOIN poblacion_municipal_2014 ON poblacion_municipal_2014.codigo = tb_funcional.ine_code #{population_filter}
 WHERE #{conditions.join(' AND ')}
 ORDER BY code, amount DESC
-#{"LIMIT 300" if place.nil?}
+#{"LIMIT 300" if location.nil?}
 SQL
 
     ActiveRecord::Base.connection.execute(sql).map do |row|

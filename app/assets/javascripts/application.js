@@ -57,7 +57,8 @@ var AUTOCOMPLETE_DEFAULTS = {
 var searchOptions = {
   serviceUrl: '/search',
   onSelect: function (suggestion) {
-    $('#place').val(suggestion.data.id);
+    $('#location_id').val(suggestion.data.id);
+    $('#location_type').val(suggestion.data.category);
     $('#search').val(suggestion.value);
   },
   groupBy: 'category',
