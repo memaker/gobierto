@@ -89,7 +89,9 @@
   <% end %>
 </div>
 
-<%= render 'sandbox/data_sheet' %>
+<% if @filter.place? %>
+  <%= render 'data_sheet', place: @filter.place %>
+<% end %>
 
 <div>
   <% if @budget_lines && @budget_lines.any? %>
