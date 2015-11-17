@@ -16,6 +16,19 @@ ActiveRecord::Schema.define(version: 20151117143919) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "functional_yearly_totals", id: false, force: :cascade do |t|
+    t.string   "cdfgr",      limit: 6
+    t.integer  "ine_code"
+    t.decimal  "total_2010",           precision: 15, scale: 2
+    t.decimal  "total_2011",           precision: 15, scale: 2
+    t.decimal  "total_2012",           precision: 15, scale: 2
+    t.decimal  "total_2013",           precision: 15, scale: 2
+    t.decimal  "total_2014",           precision: 15, scale: 2
+    t.decimal  "total_2015",           precision: 15, scale: 2
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "poblacion_municipal_2014", id: false, force: :cascade do |t|
     t.decimal "codigo",                            precision: 10
     t.string  "nombre",                limit: 255
