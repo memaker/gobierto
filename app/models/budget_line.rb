@@ -22,6 +22,8 @@ class BudgetLine < OpenStruct
   end
 
   def historic_values
+    return [100,200,300,400,500]
+
     sql = <<-SQL
 select importe as amount
 FROM tb_funcional
