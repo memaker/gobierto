@@ -22,6 +22,7 @@ class FunctionalArea < ActiveRecord::Base
     location = options[:location]
     code = options[:code]
     population = options[:population]
+    similar_budget = options[:similar_budget]
 
     conditions = ["cdcta is null"] # when cdcta is null, aggregated columns are fetched
     conditions << "year = #{year}" if year.present?
@@ -60,6 +61,11 @@ class FunctionalArea < ActiveRecord::Base
       population_filter = " AND #{population_filter.join(' AND ')}"
     else
       population_filter = nil
+    end
+
+    if similar_budget.any?
+      conditions << "importe > #{similar_budget.first}"
+      conditions << "importe < #{similar_budget.last}"
     end
 
     sql = <<-SQL
