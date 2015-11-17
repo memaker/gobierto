@@ -83,7 +83,7 @@ FROM tb_funcional
 INNER join "tb_cuentasProgramas" ON "tb_cuentasProgramas".cdfgr = tb_funcional.cdfgr
 INNER JOIN poblacion_municipal_2014 ON poblacion_municipal_2014.codigo = tb_funcional.ine_code #{population_filter}
 WHERE #{conditions.join(' AND ')}
-ORDER BY code, amount DESC
+ORDER BY importe DESC
 #{"LIMIT 300" if location.nil?}
 SQL
 

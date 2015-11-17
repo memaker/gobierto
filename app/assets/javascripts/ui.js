@@ -25,7 +25,7 @@ $(function(){
     dataset: {
       perPageDefault: 100,
       perPageOptions: [25,50,100, 300],
-      sorts: { 'gasto/Hab': -1 }
+      sorts: { 'gasto': -1 }
     },
     readers: {
       'habitantes': function(el, record) { return Number(el.textContent); },
