@@ -37,4 +37,12 @@ module ApplicationHelper
     {total_similar_budget_min: budget_min.to_i, total_similar_budget_max: budget_max.to_i}
   end
 
+  def format_currency(n)
+    if n > 1_0000_000
+      "#{number_with_precision(n.to_f / 1_0000_000.to_f, precision: 2)} M€"
+    else
+      format_currency(n, precision: 2)
+    end
+  end
+
 end

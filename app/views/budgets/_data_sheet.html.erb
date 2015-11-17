@@ -35,7 +35,7 @@
           Gasto total 
           <span class="percenchange" class="tipsit" title="Cambio de -3,56% respecto al año anterior">-3,56%</span>
         </h3>
-        <div class="number"><%= number_to_currency(place.data.send("total_functional_#{@filter.year}"), precision: 2) %></div>
+        <div class="number"><%= format_currency(place.data.send("total_functional_#{@filter.year}")) %></div>
       </div>
 
       <div class="sub_element">
