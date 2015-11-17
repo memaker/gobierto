@@ -34,10 +34,13 @@ $(function(){
       '%S/Total': function(el, record) { return Number(el.textContent); },
     },
     writers: {
-      'habitantes': function(record) { return accounting.formatNumber(record.habitantes, 0); },
+      'habitantes': function(record) { return "<span class='soft'>" + accounting.formatNumber(record.habitantes, 0) +"</span>"; },
       'gasto/Hab': function(record) { return accounting.formatMoney(record['gasto/Hab']); },
-      'gasto': function(record) { return accounting.formatMoney(record.gasto); },
-      '%S/Total': function(record) { return record['%S/Total'].toPrecision(4) + " %"; },
+      'gasto': function(record) { return accounting.formatMoney(record.gasto, '€', 0); },
+      '%S/Total': function(record) { return record['%S/Total'].toPrecision(2) + " %"; },
+    },
+    table: {
+      copyHeaderClass: true
     }
   }).bind('dynatable:afterUpdate', function(){
     sparkRender();

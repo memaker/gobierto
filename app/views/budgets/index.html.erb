@@ -102,10 +102,10 @@
           <th>Evolución</th>
           <th>Partida</th>
           <th>Municipio</th>
-          <th>Habitantes</th>
-          <th>Gasto/Hab</th>
-          <th>Gasto</th>
-          <th>% S/Total</th>
+          <th class="soft right wadus">Habitantes</th>
+          <th class="right wadus">Gasto/Hab</th>
+          <th class="right ">Gasto</th>
+          <th class="right">% S/Total</th>
           <th></th>
         </tr>
       </thead>
@@ -114,11 +114,11 @@
           <tr>
             <td><span class="sparkline" data-sparkvalues='<%= budget_line.historic_values.join(',') %>'></span></td>
             <td><%= truncate(budget_line.name, length: 38) %></td>
-            <td><%= truncate(budget_line.place_name, length: 28) %></td>
-            <td class="amount"><%= budget_line.population %></td>
-            <td class="money"><div class="money"><%= budget_line.budget_per_inhabitant %></div></td>
-            <td class="money"><div class="money"><%= budget_line.amount %></div></td>
-            <td class="percentage"><div class="money"><%= budget_line.percentage_total_functional %></div></td>
+            <td><%= truncate(budget_line.place_name, length: 28) %> <span class="province">(<%= budget_line.place.province.name %>)</span></td>
+            <td ><%= budget_line.population %></td>
+            <td ><%= budget_line.budget_per_inhabitant %></td>
+            <td ><%= budget_line.amount %></td>
+            <td ><%= budget_line.percentage_total_functional %></td>
             <td>
               <div class="compare_cont">
                 <%= link_to 'Compara', '' %>

@@ -207,6 +207,7 @@ header.global {
  */
 table {
   width: 100%;
+  border-collapse: collapse;
 
   th {
     background: #F5F5F5;
@@ -216,7 +217,7 @@ table {
 
   }
   th, td {
-    padding: 3px 6px 3px 10px;
+    padding: 4px 6px 4px 10px;
   }
   td {
     font-size: 13px;
@@ -243,12 +244,30 @@ table {
   .main_col {
     width: 30%;
   }
+  .province {
+    opacity: .6;
+  }
+}
+.soft {
+  opacity: .5;
 }
 
 
 
 /*
- * Tables
+ * Bonsai
+ *
+ */
+.bonsai li {
+  li {
+    font-size: 90%;
+  }
+}
+
+
+
+/*
+ * XXXX
  *
  */
 .form_item {
@@ -304,8 +323,6 @@ table {
     padding: .5em;
     margin-top: -5px;
     border-top: none;
-
-
   }
 }
 
