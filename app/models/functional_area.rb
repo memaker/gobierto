@@ -23,6 +23,7 @@ class FunctionalArea < ActiveRecord::Base
     code = options[:code]
     population = options[:population]
     similar_budget = options[:similar_budget]
+    total_similar_budget = options[:total_similar_budget]
 
     conditions = ["cdcta is null"] # when cdcta is null, aggregated columns are fetched
     conditions << "year = #{year}" if year.present?
@@ -66,6 +67,11 @@ class FunctionalArea < ActiveRecord::Base
     if similar_budget.any?
       conditions << "importe > #{similar_budget.first}"
       conditions << "importe < #{similar_budget.last}"
+    end
+
+    if total_similar_budget.any?
+      conditions << "poblacion_municipal_2014.total_functional_#{year} > #{total_similar_budget.first}"
+      conditions << "poblacion_municipal_2014.total_functional_#{year} < #{total_similar_budget.last}"
     end
 
     sql = <<-SQL

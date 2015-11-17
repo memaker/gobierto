@@ -24,6 +24,9 @@ class BudgetFilter
     end
     @similar_budget_max = filters[:similar_budget_max] if filters[:similar_budget_max].present?
     @similar_budget_min = filters[:similar_budget_min] if filters[:similar_budget_min].present?
+    @total_similar_budget_max = filters[:total_similar_budget_max] if filters[:total_similar_budget_max].present?
+    @total_similar_budget_min = filters[:total_similar_budget_min] if filters[:total_similar_budget_min].present?
+
 
     @location = if filters[:location_id].present? && filters[:location_type].present?
                case filters[:location_type]
@@ -52,9 +55,13 @@ class BudgetFilter
     return [] if @year.nil?
 
     if @economic_area_filter_code
-      EconomicArea.budgets(year: @year, location: @location, code: @economic_area_filter_code, population: [@population_min, @population_max].compact, similar_budget: [@similar_budget_min, @similar_budget_max].compact)
+      EconomicArea.budgets(year: @year, location: @location, code: @economic_area_filter_code,
+                           population: [@population_min, @population_max].compact, similar_budget: [@similar_budget_min, @similar_budget_max].compact,
+                           total_similar_budget: [@total_similar_budget_min, @total_similar_budget_max].compact)
     else
-      FunctionalArea.budgets(year: @year, location: @location, code: @functional_area_filter_code, population: [@population_min, @population_max].compact, similar_budget: [@similar_budget_min, @similar_budget_max].compact)
+      FunctionalArea.budgets(year: @year, location: @location, code: @functional_area_filter_code,
+                             population: [@population_min, @population_max].compact, similar_budget: [@similar_budget_min, @similar_budget_max].compact,
+                             total_similar_budget: [@total_similar_budget_min, @total_similar_budget_max].compact)
     end
   end
 

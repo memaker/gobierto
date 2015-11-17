@@ -28,4 +28,13 @@ module ApplicationHelper
 
     {similar_budget_min: budget_min.to_i, similar_budget_max: budget_max.to_i}
   end
+
+  def total_similar_budget_parameters(budget)
+    p = 0.2
+    budget_min = budget - budget*p
+    budget_max = budget + budget*p
+
+    {total_similar_budget_min: budget_min.to_i, total_similar_budget_max: budget_max.to_i}
+  end
+
 end
