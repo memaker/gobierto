@@ -82,5 +82,13 @@ $(function(){
 
   $('#search').autocomplete($.extend({}, AUTOCOMPLETE_DEFAULTS, searchOptions));
 
+  $('.compare_cont').hover(function(e) {
+    e.preventDefault();
+    $(this).find('.compare').velocity("fadeIn", { duration: 250 });
+  }, function(e) {
+    $(this).find('.compare').velocity("fadeOut", { duration: 250 });
+  });
+
+
 });
 

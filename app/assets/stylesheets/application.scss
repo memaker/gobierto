@@ -219,8 +219,8 @@ table {
     padding: 3px 6px 3px 10px;
   }
   td {
-    font-size: 12px;
-    line-height: 16px;
+    font-size: 13px;
+    line-height: 17px;
   }
   tr:nth-child(even) {
     td {
@@ -450,3 +450,41 @@ table {
   }
 }
 
+
+/*
+ * Compare widget
+ *
+ */
+.compare_cont {
+  position: relative;
+  a {
+    
+  }
+}
+.compare {
+  z-index: 10;
+  position: absolute;
+  top: 0;
+  width: 340px;
+  display: none;
+  background: #FFF;
+  right: 0;
+  border: 3px solid $color_1;
+  @include border-radius(6px);
+  // box-shadow($x: 2px, $y: 2px, $blur: 5px, $color: rgba(0,0,0,.4), $inset: "") {
+  @include box-shadow();
+  padding: 6px 0;
+  line-height: 22px;
+
+  p {
+    padding: 3px 14px;
+    margin: 0 0 .5em 0;
+  }
+  a {
+    padding: 3px 8px 3px 18px;
+    display: block;
+  }
+  a:hover {
+    background: $color_1_soft;
+  }
+}

@@ -107,11 +107,6 @@
           <th>Gasto</th>
           <th>% S/Total</th>
           <th></th>
-          <th></th>
-          <th></th>
-          <th></th>
-          <th></th>
-          <th></th>
         </tr>
       </thead>
       <tbody>
@@ -121,15 +116,23 @@
             <td><%= truncate(budget_line.name, length: 38) %></td>
             <td><%= truncate(budget_line.place_name, length: 28) %></td>
             <td class="amount"><%= budget_line.population %></td>
-            <td class="money"><%= budget_line.budget_per_inhabitant %></td>
-            <td class="money"><%= budget_line.amount %></td>
-            <td class="percentage"><%= budget_line.percentage_total_functional %></td>
-            <td><%= link_to 'Compara', '' %></td>
-            <td><%= link_to 'Compara con Municipios de la misma CCAA', budgets_path(params.except(:location_id, :location_type, :population, :similar_budget_min, :similar_budget_max, :total_similar_budget_min, :total_similar_budget_max).merge({location_id: budget_line.place.province.autonomous_region.id, location_type: 'AutonomousRegion'}).symbolize_keys) %></td>
-            <td><%= link_to 'Compara con Municipios de la misma Provincia', budgets_path(params.except(:location_id, :location_type, :population, :similar_budget_min, :similar_budget_max, :total_similar_budget_min, :total_similar_budget_max).merge({location_id: budget_line.place.province.id, location_type: 'Province'}).symbolize_keys) %></td>
-            <td><%= link_to 'Compara con Municipios con población similar', budgets_path(params.except(:location_id, :location_type, :population, :similar_budget_min, :similar_budget_max, :total_similar_budget_min, :total_similar_budget_max).merge(similar_population_parameters(budget_line.population)).symbolize_keys) %></td>
-            <td><%= link_to 'Compara con Municipios con presupuesto similar', budgets_path(params.except(:location_id, :location_type, :population, :similar_budget_min, :similar_budget_max, :total_similar_budget_min, :total_similar_budget_max).merge(similar_budget_parameters(budget_line.amount)).symbolize_keys) %></td>
-            <td><%= link_to 'Compara con Municipios con presupuesto total similar', budgets_path(params.except(:location_id, :location_type, :population, :similar_budget_min, :similar_budget_max, :total_similar_budget_min, :total_similar_budget_max).merge(total_similar_budget_parameters(budget_line.total_functional_budget)).symbolize_keys) %></td>
+            <td class="money"><div class="money"><%= budget_line.budget_per_inhabitant %></div></td>
+            <td class="money"><div class="money"><%= budget_line.amount %></div></td>
+            <td class="percentage"><div class="money"><%= budget_line.percentage_total_functional %></div></td>
+            <td>
+              <div class="compare_cont">
+                <%= link_to 'Compara', '' %>
+                
+                  <div class="compare">
+                    <%= link_to 'Con municipios de la misma CCAA', budgets_path(params.except(:location_id, :location_type, :population, :similar_budget_min, :similar_budget_max, :total_similar_budget_min, :total_similar_budget_max).merge({location_id: budget_line.place.province.autonomous_region.id, location_type: 'AutonomousRegion'}).symbolize_keys) %>
+                    <%= link_to 'Con municipios de la misma Provincia', budgets_path(params.except(:location_id, :location_type, :population, :similar_budget_min, :similar_budget_max, :total_similar_budget_min, :total_similar_budget_max).merge({location_id: budget_line.place.province.id, location_type: 'Province'}).symbolize_keys) %>
+                    <%= link_to 'Con municipios con población similar', budgets_path(params.except(:location_id, :location_type, :population, :similar_budget_min, :similar_budget_max, :total_similar_budget_min, :total_similar_budget_max).merge(similar_population_parameters(budget_line.population)).symbolize_keys) %>
+                    <%= link_to 'Con municipios con presupuesto similar', budgets_path(params.except(:location_id, :location_type, :population, :similar_budget_min, :similar_budget_max, :total_similar_budget_min, :total_similar_budget_max).merge(similar_budget_parameters(budget_line.amount)).symbolize_keys) %>
+                    <%= link_to 'Con municipios con presupuesto total similar', budgets_path(params.except(:location_id, :location_type, :population, :similar_budget_min, :similar_budget_max, :total_similar_budget_min, :total_similar_budget_max).merge(total_similar_budget_parameters(budget_line.total_functional_budget)).symbolize_keys) %>
+                  </div>
+                
+              </div>
+            </td>
           </tr>
         <% end %>
       </tbody>
