@@ -32,7 +32,7 @@
 
       <div class="sub_element">
         <h3>
-          Gasto total 
+          Gasto total
           <span class="percenchange" class="tipsit" title="Cambio de -3,56% respecto al año anterior">-3,56%</span>
         </h3>
         <div class="number"><%= format_currency(place.data.send("total_functional_#{@filter.year}")) %></div>
@@ -58,7 +58,7 @@
           Ranking
           <span class="percenchange" class="tipsit" title="Cambio de -2 posiciones respecto al año anterior">-2</span>
         </h3>
-        <div class="number">1 <span class="sub">/8.234</span></div>
+        <div class="number"><%= place.data.ranking(@filter.year) %><span class="sub"> / <%= number_with_delimiter(Population.count) %></span></div>
       </div>
 
     </div>
