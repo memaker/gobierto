@@ -122,8 +122,8 @@
             <td class="money"><%= budget_line.amount %></td>
             <td class="percentage"><%= budget_line.percentage_total_functional %></td>
             <td><%= link_to 'Compara', '' %></td>
-            <td><%= link_to 'Compara con Municipios de la misma CCAA', budgets_path(params.except(:location_id, :location_type).merge({location_id: budget_line.place.province.autonomous_region.id, location_type: 'AutonomousRegion'})) %></td>
-            <td><%= link_to 'Compara con Municipios de la misma Provincia', budgets_path(params.except(:location_id, :location_type).merge({location_id: budget_line.place.province.id, location_type: 'Province'})) %></td>
+            <td><%= link_to 'Compara con Municipios de la misma CCAA', budgets_path(params.except(:location_id, :location_type).merge({location_id: budget_line.place.province.autonomous_region.id, location_type: 'AutonomousRegion'}).symbolize_keys) %></td>
+            <td><%= link_to 'Compara con Municipios de la misma Provincia', budgets_path(params.except(:location_id, :location_type).merge({location_id: budget_line.place.province.id, location_type: 'Province'}).symbolize_keys) %></td>
           </tr>
         <% end %>
       </tbody>
