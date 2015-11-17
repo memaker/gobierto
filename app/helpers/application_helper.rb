@@ -21,12 +21,13 @@ module ApplicationHelper
     {population: "#{r.first} - #{r.last}"}
   end
 
-  def similar_budget_parameters(budget)
-    p = 0.2
+  def similar_budget_parameters(budget_line)
+    budget = budget_line.amount
+    p = 0.3
     budget_min = budget - budget*p
     budget_max = budget + budget*p
 
-    {similar_budget_min: budget_min.to_i, similar_budget_max: budget_max.to_i}
+    {similar_budget_min: budget_min.to_i, similar_budget_max: budget_max.to_i, functional_area: budget_line.code}
   end
 
   def total_similar_budget_parameters(budget)
