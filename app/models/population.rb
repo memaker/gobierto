@@ -25,7 +25,7 @@ INNER JOIN poblacion_municipal_2014 ON poblacion_municipal_2014.codigo = tb_func
 WHERE cdcta is null and ine_code = #{self.codigo} AND year = #{year}
 AND tb_funcional.level = 3
 ORDER BY importe DESC
-LIMIT 10
+LIMIT 5
 SQL
 
     ActiveRecord::Base.connection.execute(sql).map do |row|
@@ -42,7 +42,7 @@ INNER JOIN poblacion_municipal_2014 ON poblacion_municipal_2014.codigo = tb_func
 WHERE cdcta is null and ine_code = #{self.codigo} AND year = #{year}
 AND tb_funcional.level = 3
 ORDER BY importe ASC
-LIMIT 10
+LIMIT 5
 SQL
 
     ActiveRecord::Base.connection.execute(sql).map do |row|
