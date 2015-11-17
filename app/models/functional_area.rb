@@ -106,40 +106,29 @@ SQL
 
   def budget(place, year)
     sql = <<-SQL
-select sum(importe) as amount
+select importe as amount, budget_per_inhabitant, percentage_total_functional
 FROM tb_funcional
-INNER join tb_inventario ON tb_inventario.id = tb_funcional.id AND tb_inventario.codente = '#{place.id}AA000'
-WHERE year = #{year} AND level = 1 AND tb_funcional.cdfgr = '#{self.code}'
+WHERE ine_code = #{place.id} AND year = #{year} AND level = 1 AND tb_funcional.cdfgr = '#{self.code}' AND cdcta is null
 SQL
 
-    ActiveRecord::Base.connection.execute(sql).first['amount'].to_f
+    ActiveRecord::Base.connection.execute(sql).first
   end
 
   def budget_per_person(place, year)
-    total = budget(place, year)
-
-    total / Population.by_place_id(place.id).total
+    budget(place, year)['budget_per_inhabitant'].to_f
   end
 
   def budget_percentage_total(place, year, total)
-    part = budget(place, year)
-    if total > 0
-      (part.to_f * 100.0)/total.to_f
-    else
-      0
-    end
+    budget(place, year)['percentage_total_functional'].to_f
   end
 
   def mean_national_per_person(year)
      sql = <<-SQL
 select avg(x)
 FROM(
-  select sum(importe)/total as x
+  select budget_per_inhabitant as x
   FROM tb_funcional
-  INNER join tb_inventario ON tb_inventario.id = tb_funcional.id
-  INNER JOIN poblacion_municipal_2014 ON poblacion_municipal_2014.codigo = substring(tb_inventario.codente from 0 for 6)
-  WHERE year = #{year} AND level = 1 AND tb_funcional.cdfgr = '#{self.code}'
-  GROUP BY tb_inventario.id, poblacion_municipal_2014.total
+  WHERE year = #{year} AND level = 1 AND tb_funcional.cdfgr = '#{self.code}' AND cdcta is null
 )  as mean
 SQL
 
@@ -147,29 +136,39 @@ SQL
   end
 
   def mean_autonomy_per_person(year, place)
-    0
+     sql = <<-SQL
+select avg(x)
+FROM(
+  select budget_per_inhabitant as x
+  FROM tb_funcional
+  INNER JOIN poblacion_municipal_2014 ON poblacion_municipal_2014.codigo = tb_funcional.ine_code AND poblacion_municipal_2014.autonomous_region_id = #{place.province.autonomous_region.id}
+  WHERE year = #{year} AND level = 1 AND tb_funcional.cdfgr = '#{self.code}' AND cdcta is null
+)  as mean
+SQL
+    ActiveRecord::Base.connection.execute(sql).first['avg'].to_f
   end
 
   def mean_province_per_person(year, place)
-    0
+     sql = <<-SQL
+select avg(x)
+FROM(
+  select budget_per_inhabitant as x
+  FROM tb_funcional
+  INNER JOIN poblacion_municipal_2014 ON poblacion_municipal_2014.codigo = tb_funcional.ine_code AND poblacion_municipal_2014.province_id = #{place.province.id}
+  WHERE year = #{year} AND level = 1 AND tb_funcional.cdfgr = '#{self.code}' AND cdcta is null
+)  as mean
+SQL
+    ActiveRecord::Base.connection.execute(sql).first['avg'].to_f
+
   end
 
   def mean_national_percentage(year, total)
      sql = <<-SQL
 select avg(x)
 FROM(
-  select 
-    (
-      select sum(importe)
-      FROM tb_funcional
-      INNER join tb_inventario ON tb_inventario.id = tb_funcional.id
-      WHERE year = #{year} AND level = 1
-    ) as total, 
-    (sum(importe)::double precision/total::double precision) * 100 as x
+  select percentage_total_functional as x
   FROM tb_funcional
-  INNER join tb_inventario ON tb_inventario.id = tb_funcional.id
-  WHERE year = #{year} AND level = 1 AND tb_funcional.cdfgr = '#{self.code}'
-  GROUP BY tb_inventario.id
+  WHERE year = #{year} AND level = 1 AND tb_funcional.cdfgr = '#{self.code}' AND cdcta is null
 )  as mean
 SQL
 
@@ -177,11 +176,29 @@ SQL
   end
 
   def mean_autonomy_percentage(year, place, total)
-    0
+     sql = <<-SQL
+select avg(x)
+FROM(
+  select percentage_total_functional as x
+  FROM tb_funcional
+  INNER JOIN poblacion_municipal_2014 ON poblacion_municipal_2014.codigo = tb_funcional.ine_code AND poblacion_municipal_2014.autonomous_region_id = #{place.province.autonomous_region.id}
+  WHERE year = #{year} AND level = 1 AND tb_funcional.cdfgr = '#{self.code}' AND cdcta is null
+)  as mean
+SQL
+    ActiveRecord::Base.connection.execute(sql).first['avg'].to_f
   end
 
   def mean_province_percentage(year, place, total)
-    0
+     sql = <<-SQL
+select avg(x)
+FROM(
+  select percentage_total_functional as x
+  FROM tb_funcional
+  INNER JOIN poblacion_municipal_2014 ON poblacion_municipal_2014.codigo = tb_funcional.ine_code AND poblacion_municipal_2014.province_id = #{place.province.id}
+  WHERE year = #{year} AND level = 1 AND tb_funcional.cdfgr = '#{self.code}' AND cdcta is null
+)  as mean
+SQL
+    ActiveRecord::Base.connection.execute(sql).first['avg'].to_f
   end
 
   def level

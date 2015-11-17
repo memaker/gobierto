@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151117143919) do
+ActiveRecord::Schema.define(version: 20151117183625) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -42,6 +42,11 @@ ActiveRecord::Schema.define(version: 20151117143919) do
     t.integer "province_id"
     t.integer "autonomous_region_id"
   end
+
+  add_index "poblacion_municipal_2014", ["autonomous_region_id"], name: "index_poblacion_municipal_2014_on_autonomous_region_id", using: :btree
+  add_index "poblacion_municipal_2014", ["codigo"], name: "index_poblacion_municipal_2014_on_codigo", using: :btree
+  add_index "poblacion_municipal_2014", ["province_id"], name: "index_poblacion_municipal_2014_on_province_id", using: :btree
+  add_index "poblacion_municipal_2014", ["total"], name: "index_poblacion_municipal_2014_on_total", using: :btree
 
   create_table "tb_cuentasEconomica", id: false, force: :cascade do |t|
     t.string  "tipreig", limit: 1
@@ -194,6 +199,7 @@ ActiveRecord::Schema.define(version: 20151117143919) do
     t.float   "percentage_total_functional"
   end
 
+  add_index "tb_funcional", ["cdcta"], name: "index_tb_funcional_on_cdcta", using: :btree
   add_index "tb_funcional", ["cdfgr"], name: "index_tb_funcional_on_cdfgr", using: :btree
   add_index "tb_funcional", ["id"], name: "index_tb_funcional_on_id", using: :btree
   add_index "tb_funcional", ["ine_code"], name: "index_tb_funcional_on_ine_code", using: :btree

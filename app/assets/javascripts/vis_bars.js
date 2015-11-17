@@ -6,7 +6,7 @@ var BarsVis = Class.extend({
     
     // Chart dimensions
     this.containerWidth = null;
-    this.margin = {top: 20, right: 100, bottom: 60, left: 100};
+    this.margin = {top: 20, right: 10, bottom: 60, left: 80};
     this.width = null;
     this.height = null;
     
