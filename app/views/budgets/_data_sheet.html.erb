@@ -52,7 +52,7 @@
           <% p = percentage(place.data.send("total_functional_#{@filter.year}") / place.data.total,  place.data.send("total_functional_#{@filter.year - 1}") / place.data.total) %> 
           <span class="percenchange" class="tipsit" title="Cambio de <%= p %> respecto al año anterior"><%= p %></span>
         </h3>
-        <div class="number"><%= number_to_currency(place.data.send("total_functional_#{@filter.year}") / place.data.total, precision: 2) %></div>
+        <div class="number"><%= number_to_currency(place.data.send("total_functional_#{@filter.year}") / place.data.total, precision: 2, strip_insignificant_zeros: true) %></div>
       </div>
 
       <div class="sub_element">
@@ -92,6 +92,12 @@
 
         <h2>Partidas con mayor gasto</h2>
 
+        <ul>
+        <% place.data.bigger_functional_budgets(@filter.year).each do |budget_line|  %>
+          <li><%= budget_line.name %> - <%= format_currency(budget_line.amount) %></li>
+        <% end %>
+        </ul>
+
       </div>
     </div>
 
@@ -99,6 +105,12 @@
       <div class="widget_cont">
 
         <h2>Partidas con menor gasto</h2>
+
+        <ul>
+        <% place.data.smaller_functional_budgets(@filter.year).each do |budget_line|  %>
+          <li><%= budget_line.name %> - <%= format_currency(budget_line.amount) %></li>
+        <% end %>
+        </ul>
 
       </div>
     </div>
