@@ -99,11 +99,14 @@
 
         <h2>Partidas con mayor gasto</h2>
 
-        <ul>
+        <table>
         <% place.data.bigger_functional_budgets(@filter.year).each do |budget_line|  %>
-          <li><%= budget_line.name %> - <%= format_currency(budget_line.amount) %></li>
+        <tr>
+          <td><%= budget_line.name %></td>
+          <td class="right"><%= format_currency(budget_line.amount) %></td>
+        </tr>
         <% end %>
-        </ul>
+        </table>
 
       </div>
     </div>
@@ -113,11 +116,14 @@
 
         <h2>Partidas con menor gasto</h2>
 
-        <ul>
+        <table>
         <% place.data.smaller_functional_budgets(@filter.year).each do |budget_line|  %>
-          <li><%= budget_line.name %> - <%= format_currency(budget_line.amount) %></li>
+        <tr>
+          <td><%= budget_line.name %></td>
+          <td class="right"><%= format_currency(budget_line.amount) %></td>
         <% end %>
-        </ul>
+        </tr>
+        </table>
 
       </div>
     </div>
