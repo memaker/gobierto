@@ -46,4 +46,8 @@ module ApplicationHelper
     end
   end
 
+  def percentage(current_year_value, old_value)
+    number_with_precision(((current_year_value.to_f - old_value.to_f)/old_value.to_f) * 100, precision: 2).to_s + " %"
+  end
+
 end

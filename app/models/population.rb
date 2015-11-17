@@ -13,7 +13,7 @@ class Population < ActiveRecord::Base
       "select ine_code,rank() OVER (ORDER BY importe DESC) FROM tb_funcional WHERE (cdcta IS NULL AND year = #{year} AND cdfgr = '#{code}')"
     end
 
-    results = ActiveRecord::Base.connection.execute(query).detect{|r| r['ine_code'].to_i == self.codigo }['rank']
+    ActiveRecord::Base.connection.execute(query).detect{|r| r['ine_code'].to_i == self.codigo }['rank'].to_i
   end
 
 end
