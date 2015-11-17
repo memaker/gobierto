@@ -39,8 +39,8 @@ module ApplicationHelper
   end
 
   def format_currency(n)
-    if n > 1_0000_000
-      "#{number_with_precision(n.to_f / 1_0000_000.to_f, precision: 2, strip_insignificant_zeros: true)} M€"
+    if n > 1_000_000
+      "#{number_with_precision(n.to_f / 1_000_000.to_f, precision: 2, strip_insignificant_zeros: true)} M€"
     else
       number_to_currency(n, precision: 2, strip_insignificant_zeros: true)
     end
