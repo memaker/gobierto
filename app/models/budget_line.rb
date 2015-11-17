@@ -22,15 +22,6 @@ class BudgetLine < OpenStruct
   end
 
   def historic_values
-    return [100,200,300,400,500]
-
-    sql = <<-SQL
-select importe as amount
-FROM tb_funcional
-WHERE cdfgr = '#{code}' AND ine_code = #{place.id} AND cdcta is null
-ORDER BY year ASC
-    SQL
-
-    ActiveRecord::Base.connection.execute(sql).map{|row| row['amount'] }
+    [total_2010,total_2011,total_2012,total_2013,total_2014,total_2015]
   end
 end

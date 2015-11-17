@@ -36,10 +36,10 @@ class FunctionalArea < ActiveRecord::Base
 
     if location
       if location.is_a?(INE::Places::Place)
-        conditions << "ine_code = #{location.id}"
+        conditions << "tb_funcional.ine_code = #{location.id}"
       end
     else
-      conditions << "ine_code is not null"
+      conditions << "tb_funcional.ine_code is not null"
     end
 
     population_filter = []
@@ -75,13 +75,15 @@ class FunctionalArea < ActiveRecord::Base
     end
 
     sql = <<-SQL
-select importe as amount, poblacion_municipal_2014.nombre as place_name, tb_funcional.year, ine_code as place_id,
+select importe as amount, poblacion_municipal_2014.nombre as place_name, tb_funcional.year, tb_funcional.ine_code as place_id,
 tb_funcional.cdfgr as code, "tb_cuentasProgramas".nombre as name, poblacion_municipal_2014.total::integer as population,
-poblacion_municipal_2014.total_functional_#{year} as total_functional_budget,
-budget_per_inhabitant, percentage_total_functional
+poblacion_municipal_2014.total_functional_#{year} as total_functional_budget, 
+budget_per_inhabitant, percentage_total_functional,
+total_2010, total_2011, total_2012, total_2013, total_2014, total_2015
 FROM tb_funcional
 INNER join "tb_cuentasProgramas" ON "tb_cuentasProgramas".cdfgr = tb_funcional.cdfgr
 INNER JOIN poblacion_municipal_2014 ON poblacion_municipal_2014.codigo = tb_funcional.ine_code #{population_filter}
+INNER JOIN functional_yearly_totals ON tb_funcional.cdfgr = functional_yearly_totals.cdfgr AND tb_funcional.ine_code = functional_yearly_totals.ine_code
 WHERE #{conditions.join(' AND ')}
 ORDER BY importe DESC
 #{"LIMIT 300" if location.nil?}
