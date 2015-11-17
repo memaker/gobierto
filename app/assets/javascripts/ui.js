@@ -37,7 +37,8 @@ $(function(){
       'habitantes': function(record) { return "<span class='soft'>" + accounting.formatNumber(record.habitantes, 0) +"</span>"; },
       'gasto/Hab': function(record) { return accounting.formatMoney(record['gasto/Hab']); },
       'gasto': function(record) { return accounting.formatMoney(record.gasto, '€', 0); },
-      '%S/Total': function(record) { return record['%S/Total'].toPrecision(2) + " %"; },
+      // '%S/Total': function(record) { return record['%S/Total'].toPrecision(4) + " %"; },
+      '%S/Total': function(record) { return accounting.formatNumber(record['%S/Total'], 2) + " %"; },
     },
     table: {
       copyHeaderClass: true
