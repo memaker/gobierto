@@ -23,10 +23,9 @@ class BudgetLine < OpenStruct
 
   def historic_values
     sql = <<-SQL
-select sum(importe) as amount
+select importe as amount
 FROM tb_funcional
-WHERE tb_funcional.cdfgr = '#{code}' AND ine_code = #{place.id}
-GROUP BY tb_funcional.cdfgr, tb_funcional.year
+WHERE cdfgr = '#{code}' AND ine_code = #{place.id} AND cdcta is null
 ORDER BY year ASC
     SQL
 
