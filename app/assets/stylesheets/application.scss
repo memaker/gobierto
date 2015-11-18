@@ -59,6 +59,7 @@ $color_1_dark: #00909E;
 $color_2: #F69C95;
 $color_2_soft: #FBEEEC;
 $color_2_dark: #B87570;
+$color_2_bg: #FFDED4;
 
 /* General colors */
 $color_bg_error: #F5D6D2;
@@ -369,8 +370,9 @@ table {
   margin: -10px;
   margin-bottom: 3em;
 }
+
 .widget {
-  background: $color_2;
+  background: $color_2_bg;
   flex: 3 0 auto;
   margin: 10px;
   width: 30%;
@@ -380,9 +382,14 @@ table {
     margin: 0 0 1em 0;
     font-size: 14px;
     font-weight: normal;
-    color: $background;
+    // color: $background;
   }
 }
+
+.widget.clearfix {
+  background: $color_2;
+}
+
 .sub_element {
   border-bottom: 1px solid #FFF;
   width: 50%;

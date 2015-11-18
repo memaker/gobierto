@@ -134,15 +134,14 @@
   var barsVis = new BarsVis('#bars_vis_fun', 'per_person', 'mean_national');
 
   barsVis.render('/api/data/<%= @filter.location.id %>/<%= @filter.year %>/functional.json');
+  // barsVis.render('/functional.json');
 
   d3.selectAll('.measure.button')
     .on('click', function(d){
       d3.selectAll(".measure.button.buttonSelected").classed("buttonSelected", false);
       d3.select(this).classed("buttonSelected", true);
       barsVis.measure = this.id;
-      console.log(barsVis.measure)
-        console.log(barsVis.context)
-        // barsVis.updateRender();
+      barsVis.updateRender();
     });
 
   d3.selectAll('.context.button')
@@ -150,6 +149,6 @@
     d3.selectAll(".context.button.buttonSelected").classed("buttonSelected", false);
     d3.select(this).classed("buttonSelected", true);
     barsVis.context = this.id;
-    // barsVis.updateRender();
+    barsVis.updateRender();
   });
 </script>

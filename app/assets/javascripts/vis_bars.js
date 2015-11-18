@@ -6,7 +6,7 @@ var BarsVis = Class.extend({
     
     // Chart dimensions
     this.containerWidth = null;
-    this.margin = {top: 20, right: 10, bottom: 60, left: 80};
+    this.margin = {top: 10, right: 50, bottom: 20, left: 75};
     this.width = null;
     this.height = null;
     
@@ -40,7 +40,9 @@ var BarsVis = Class.extend({
     this.opacity = .7;
     this.opacityLow = .4;
     this.duration = 1500;
-    this.mainColor = '#E6A39A';
+    this.mainColor = '#F69C95';
+    this.darkColor = '#B87570';
+    this.niceCategory = null;
   },
 
   render: function(urlData) {
@@ -62,7 +64,16 @@ var BarsVis = Class.extend({
         .style('background-color', d3.rgb(this.mainColor).brighter(1))
       .append('g')
         .attr('transform', 'translate(' + this.margin.left + ',' + this.margin.top + ')');
-
+    
+    // Set nice category
+    this.niceCategory = {
+      "Actuaciones de carácter general": "Actuaciones Generales",
+      "Actuaciones de carácter económico": "Actuaciones Económicas",
+      "Producción de bienes públicos de carácter preferente": "Bienes Públicos",
+      "Actuaciones de protección y promoción social": "Protección Social",
+      "Servicios públicos básicos": "Servicios Públicos",
+      "Deuda pública": "Deuda Pública"
+    }
 
     // Load the data
     d3.json(urlData, function(error, jsonData){
@@ -70,8 +81,17 @@ var BarsVis = Class.extend({
       
       // Map the data
       this.data = jsonData;
+      this.data.budgets['percentage'].forEach(function(d) {
+        d.value = d.value / 100;
+        d.mean_national = d.mean_national / 100;
+        d.mean_autonomy = d.mean_autonomy / 100;
+        d.mean_province = d.mean_province / 100;
+      });
+      
       this.dataChart = this.data.budgets[this.measure];
       this.chartTitle = this.data.title;
+
+
       // Get the values array to take the max
       var values = [];
       this.dataChart.forEach(function(d) {
@@ -98,7 +118,8 @@ var BarsVis = Class.extend({
           .orient("bottom");
 
       this.yAxis
-          .scale(this.yScale)       
+          .scale(this.yScale)  
+          .tickFormat(function(d) { return this.niceCategory[d]; }.bind(this))
           .orient("left");
 
       // --> DRAW THE AXIS
@@ -116,8 +137,7 @@ var BarsVis = Class.extend({
 
       // Change ticks color
       d3.selectAll('.axis').selectAll('text')
-        .attr('fill', this.mainColor);
-      
+        .attr('fill', this.darkColor);
       
 
       // --> DRAW BARS CHART 
@@ -132,12 +152,16 @@ var BarsVis = Class.extend({
         .append('rect')
           .attr('class', 'bar')
           .attr('x', this.margin.left)
-          .attr('width', function(d) { return this.xScale(d.value); }.bind(this))
+          .attr('width', 0)
           .attr('y', function(d) { return this.yScale(d.name); }.bind(this))
           .attr('height', this.yScale.rangeBand())
           .attr('fill', this.mainColor)
           .on('mouseover', this._mouseover.bind(this))
 
+      this.chart.selectAll('.bar')
+          .transition()
+          .duration(this.duration)
+          .attr('width', function(d) { return this.xScale(d.value); }.bind(this));
 
       // --> DRAW THE MEAN LINE 
       var meanGroup = this.chart.append('g')
@@ -154,25 +178,22 @@ var BarsVis = Class.extend({
           .attr('y1', function(d) { return this.yScale(d.name); }.bind(this))
           .attr('x2', function(d) { return this.xScale(d[this.context]); }.bind(this))
           .attr('y2', function(d) { return this.yScale(d.name) + this.yScale.rangeBand(); }.bind(this))
-          .attr('stroke', 'black');
-      
-      // Append title
-      this.chart
-        .append('text')
-        .attr('class', 'chartTitle')
-        .attr('x', 0)
-        .attr('y', - (this.margin.top/2))
-        .attr('fill', d3.rgb(this.mainColor).darker(1))
-        .text(this.chartTitle)
+          .attr('stroke', this.darkColor)
+          .attr('stroke-width', 2)
+          .style('opacity', 0);
+
+      this.chart.selectAll('.mean_line')
+          .transition()
+          .delay(this.duration / 1.2)
+          .duration(this.duration / 2)
+          .style('opacity', 1)
 
     }.bind(this)); // end load data
   }, // end render
 
   updateRender: function () {
     
-    this.dataChart = this.data.budgets[this.measure]
-    console.log(this.xScale.domain())
-
+    this.dataChart = this.data.budgets[this.measure];
     var values = [];
       this.dataChart.forEach(function(d) {
         values.push(d.value, d.mean_national, d.mean_autonomy, d.mean_province)
@@ -202,15 +223,15 @@ var BarsVis = Class.extend({
       .ease("sin-in-out") 
       .call(this.xAxis);
 
-     // Change ticks color
-      d3.selectAll('.axis').selectAll('text')
-        .attr('fill', this.mainColor);
+    // Change ticks color
+    d3.selectAll('.axis').selectAll('text')
+      .attr('fill', this.mainColor);
 
     this.svgBars.selectAll('.bar')
       .data(this.dataChart)
       .transition()
       .duration(this.duration)
-      .attr('width', function(d) { return this.xScale(d.value); }.bind(this))
+      .attr('width', function(d) { console.log(d); return this.xScale(d.value); }.bind(this))
 
     this.svgBars.selectAll('.mean_line')
       .data(this.dataChart)
