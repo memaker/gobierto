@@ -10,32 +10,22 @@ body {
 }
 
 #bars_vis_fun {
-  width: 50%;
+  width: 70%;
   float: left;
 }
 
 #bars_vis_eco {
-  width: 50%;
+  width: 30%;
   overflow: hidden;
 }
 
-.x.axis path {
+.axis path {
   fill: none;
-  stroke: #DEE5E7; /*customGrey*/
-  stroke-width: 1px;
 }
-
-.x.axis line {
-
-  stroke: #DEE5E7; /*customGrey*/
-  stroke-width: 1px;
-  /*shape-rendering: crispEdges;*/
-}
-
 
 /*Tooltip*/
 
-.ass_main_tooltip {
+.vis_tooltip {
   top: 0;
   right: 0;
   position: absolute;

@@ -18,7 +18,7 @@
 
     <div id="bars_vis_fun"></div>
     
-<script type="text/javascript">
+  <script type="text/javascript">
     var barsVis = new BarsVis('#bars_vis_fun', 'per_person', 'mean_national');
     barsVis.render('http://localhost:3000/api/data/28079/2015/functional.json');
 
@@ -27,9 +27,8 @@
         d3.selectAll(".measure.button.buttonSelected").classed("buttonSelected", false);
         d3.select(this).classed("buttonSelected", true);
         barsVis.measure = this.id;
-            console.log(barsVis.measure)
-    console.log(barsVis.context)
-        // barsVis.updateRender();
+
+        barsVis.updateRender();
       });
 
     d3.selectAll('.context.button')
@@ -39,9 +38,7 @@
         d3.select(this).classed("buttonSelected", true);
         barsVis.context = this.id;
 
-                console.log(barsVis.measure)
-    console.log(barsVis.context)
-        // barsVis.updateRender();
+        barsVis.updateRender();
       });
 
 
