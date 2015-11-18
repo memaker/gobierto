@@ -1,11 +1,9 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
-  include SessionsManagement
-
   rescue_from ActionController::RoutingError, with: :render_404
 
-  helper_method :current_user, :logged_in?, :current_user?, :login_path, :reset_filters_parameters
+  helper_method :reset_filters_parameters
 
   before_action :authenticate
 
@@ -17,6 +15,7 @@ class ApplicationController < ActionController::Base
     [:location_id, :location_type, :population, :similar_budget_min, :similar_budget_max,
      :total_similar_budget_min, :total_similar_budget_max, :code]
   end
+
   protected
 
   def authenticate
@@ -26,6 +25,5 @@ class ApplicationController < ActionController::Base
       username == 'gobierto' && password == 'presupuestos'
     end
   end
-
 
 end
