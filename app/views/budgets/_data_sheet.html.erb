@@ -101,7 +101,7 @@
         <table>
         <% place.data.bigger_functional_budgets(@filter.year).each do |budget_line|  %>
         <tr>
-          <td><%= budget_line.name %></td>
+          <td><%= link_to(truncate(budget_line.name, length: 72), budget_functional_item_path(budget_line.place_id, budget_line.code, params), title: budget_line.name) %></td>
           <td class="right"><%= format_currency(budget_line.amount) %></td>
         </tr>
         <% end %>
@@ -118,7 +118,7 @@
         <table>
         <% place.data.smaller_functional_budgets(@filter.year).each do |budget_line|  %>
         <tr>
-          <td><%= budget_line.name %></td>
+          <td><%= link_to(truncate(budget_line.name, length: 72), budget_functional_item_path(budget_line.place_id, budget_line.code, params), title: budget_line.name) %></td>
           <td class="right"><%= format_currency(budget_line.amount) %></td>
         <% end %>
         </tr>

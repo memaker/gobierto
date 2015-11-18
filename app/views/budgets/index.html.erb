@@ -113,7 +113,7 @@
         <% @budget_lines.each do |budget_line| %>
           <tr>
             <td><span class="sparkline" data-sparkvalues='<%= budget_line.historic_values.join(',') %>'></span></td>
-            <td><%= truncate(budget_line.name, length: 38) %></td>
+            <td><%= link_to(truncate(budget_line.name, length: 38), budget_functional_item_path(budget_line.place_id, budget_line.code, params)) %></td>
             <td><%= link_to(truncate(budget_line.place_name, length: 28), place_path(budget_line.place, params)) %> <span class="province">(<%= budget_line.place.province.name %>)</span></td>
             <td ><%= budget_line.population %></td>
             <td ><%= budget_line.budget_per_inhabitant %></td>

@@ -18,7 +18,7 @@ class Population < ActiveRecord::Base
 
   def bigger_functional_budgets(year)
     sql = <<-SQL
-select importe as amount, "tb_cuentasProgramas".nombre as name
+select importe as amount, "tb_cuentasProgramas".nombre as name, ine_code as place_id, codigo as code
 FROM tb_funcional
 INNER join "tb_cuentasProgramas" ON "tb_cuentasProgramas".cdfgr = tb_funcional.cdfgr
 INNER JOIN poblacion_municipal_2014 ON poblacion_municipal_2014.codigo = tb_funcional.ine_code
@@ -35,7 +35,7 @@ SQL
 
   def smaller_functional_budgets(year)
     sql = <<-SQL
-select importe as amount, "tb_cuentasProgramas".nombre as name
+select importe as amount, "tb_cuentasProgramas".nombre as name, ine_code as place_id, codigo as code
 FROM tb_funcional
 INNER join "tb_cuentasProgramas" ON "tb_cuentasProgramas".cdfgr = tb_funcional.cdfgr
 INNER JOIN poblacion_municipal_2014 ON poblacion_municipal_2014.codigo = tb_funcional.ine_code
