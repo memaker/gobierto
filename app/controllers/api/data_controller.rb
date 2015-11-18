@@ -9,20 +9,20 @@ class Api::DataController < ApplicationController
       budgets = {
         per_person: FunctionalArea.root_items.map do |item|
           {
-            name: item.name.downcase.humanize,
-            value: item.budget_per_person(place, year),
-            mean_national: item.mean_national_per_person(year),
-            mean_autonomy: item.mean_autonomy_per_person(year, place),
-            mean_province: item.mean_province_per_person(year, place)
+            name: item.name,
+            value: item.budget_per_person(place, year).round(1),
+            mean_national: item.mean_national_per_person(year).round(1),
+            mean_autonomy: item.mean_autonomy_per_person(year, place).round(1),
+            mean_province: item.mean_province_per_person(year, place).round(1)
           }
         end,
         percentage: FunctionalArea.root_items.map do |item|
           {
-            name: item.name.downcase.humanize,
-            value: item.budget_percentage_total(place, year, total),
-            mean_national: item.mean_national_percentage(year, total),
-            mean_autonomy: item.mean_autonomy_percentage(year, place, total),
-            mean_province: item.mean_province_percentage(year, place, total),
+            name: item.name,
+            value: item.budget_percentage_total(place, year, total).round(1),
+            mean_national: item.mean_national_percentage(year, total).round(1),
+            mean_autonomy: item.mean_autonomy_percentage(year, place, total).round(1),
+            mean_province: item.mean_province_percentage(year, place, total).round(1),
           }
         end
       }
