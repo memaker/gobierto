@@ -16,9 +16,17 @@ class BudgetFilter
   end
 
   def initialize(filters)
+    @kind = filters[:kind]                                   if filters[:kind].present?
     @year = filters[:year].to_i                              if filters[:year].present?
-    @economic_area_filter_code = filters[:economic_area]     if filters[:economic_area].present?
-    @functional_area_filter_code = filters[:functional_area] if filters[:functional_area].present?
+    if filters[:economic_area].present?
+      @economic_area_filter_code = filters[:economic_area]
+      @economic_area_filter = filters[:economic_area]
+    end
+    if filters[:functional_area].present?
+      @functional_area_filter_code = filters[:functional_area]
+      @functional_area_filter = filters[:functional_area]
+    end
+
     if filters[:population].present?
       @population_min, @population_max = filters[:population].split(' - ').map{|s| s.tr('.','').to_f }
     end
@@ -40,10 +48,26 @@ class BudgetFilter
              end
   end
 
-  attr_reader :location, :year
+  attr_reader :location, :year, :kind
 
   def location?
     @location.present?
+  end
+
+  def functional?
+    @functional_area_filter.present?
+  end
+
+  def economic?
+    @functional_area_filter.blank? && @economic_area_filter.present?
+  end
+
+  def expending?
+    @kind.nil? || @kind == 'G'
+  end
+
+  def income?
+    @kind == 'I'
   end
 
   def place?
@@ -55,10 +79,13 @@ class BudgetFilter
     return [] if @year.nil?
 
     if @economic_area_filter_code
+      @economic_area_filter_code = nil if @economic_area_filter_code == 'all'
       EconomicArea.budgets(year: @year, location: @location, code: @economic_area_filter_code,
+                           kind: @kind,
                            population: [@population_min, @population_max].compact, similar_budget: [@similar_budget_min, @similar_budget_max].compact,
                            total_similar_budget: [@total_similar_budget_min, @total_similar_budget_max].compact)
     else
+      @functional_area_filter_code = nil if @functional_area_filter_code == 'all'
       FunctionalArea.budgets(year: @year, location: @location, code: @functional_area_filter_code,
                              population: [@population_min, @population_max].compact, similar_budget: [@similar_budget_min, @similar_budget_max].compact,
                              total_similar_budget: [@total_similar_budget_min, @total_similar_budget_max].compact)

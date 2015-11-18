@@ -1,6 +1,8 @@
 module ApplicationHelper
   def render_children(item, area)
-    return "" if item.children.empty?
+    children = item.children.all.to_a
+
+    return "" if children.empty?
 
     "<ul>
       #{item.children.map do |c|
@@ -27,7 +29,10 @@ module ApplicationHelper
     budget_min = budget - budget*p
     budget_max = budget + budget*p
 
-    {similar_budget_min: budget_min.to_i, similar_budget_max: budget_max.to_i, functional_area: budget_line.code}
+    params = {similar_budget_min: budget_min.to_i, similar_budget_max: budget_max.to_i}
+    params.merge!({functional_area: budget_line.code}) if @filter.functional?
+    params.merge!({economic_area: budget_line.code}) if @filter.economic?
+    params
   end
 
   def total_similar_budget_parameters(budget)

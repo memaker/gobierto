@@ -1,0 +1,3 @@
+$('.js-economic .select_from_tree').html('<%= escape_javascript(render(partial: 'budgets/economic_area_tree', locals: {kind: @kind})) %>');
+$('.js-functional .select_from_tree').html('<%= escape_javascript(render(partial: 'budgets/functional_area_tree', locals: {kind: @kind})) %>');
+$('.bonsai').bonsai();
