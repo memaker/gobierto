@@ -27,6 +27,7 @@ var BarsVis = Class.extend({
     this.data = null;
     this.dataChart = null;
     this.chartTitle = null;
+    this.kind= null;
 
     // Objects
     this.tooltip = null;
@@ -72,7 +73,13 @@ var BarsVis = Class.extend({
       "Producción de bienes públicos de carácter preferente": "Bienes Públicos",
       "Actuaciones de protección y promoción social": "Protección Social",
       "Servicios públicos básicos": "Servicios Públicos",
-      "Deuda pública": "Deuda Pública"
+      "Deuda pública": "Deuda Pública",
+      "mean_national": "Media Nacional",
+      "mean_autonomy": "Media Autonómica",
+      "mean_province": "Media Provincial",
+      "gastos": "Gasto/habitante",
+      "ingresos": "Ingreso/habitante",
+      "percentage": "% sobre el total"
     }
 
     // Load the data
@@ -90,7 +97,7 @@ var BarsVis = Class.extend({
       
       this.dataChart = this.data.budgets[this.measure];
       this.chartTitle = this.data.title;
-
+      this.kind = this.data.kind; 
 
       // Get the values array to take the max
       var values = [];
@@ -150,13 +157,14 @@ var BarsVis = Class.extend({
           .data(this.dataChart)
           .enter()
         .append('rect')
-          .attr('class', 'bar')
+          .attr('class', function(d) { return 'bar ' + this._normalize(this.niceCategory[d.name]); }.bind(this))
           .attr('x', this.margin.left)
           .attr('width', 0)
           .attr('y', function(d) { return this.yScale(d.name); }.bind(this))
           .attr('height', this.yScale.rangeBand())
           .attr('fill', this.mainColor)
           .on('mouseover', this._mouseover.bind(this))
+          .on('mouseout', this._mouseout.bind(this))
 
       this.chart.selectAll('.bar')
           .transition()
@@ -173,7 +181,7 @@ var BarsVis = Class.extend({
           .data(this.dataChart)
           .enter()
         .append('line')
-          .attr('class', 'mean_line')
+          .attr('class', function(d) { return 'mean_line ' + this._normalize(this.niceCategory[d.name]); }.bind(this))
           .attr('x1', function(d) { return this.xScale(d[this.context]); }.bind(this))
           .attr('y1', function(d) { return this.yScale(d.name); }.bind(this))
           .attr('x2', function(d) { return this.xScale(d[this.context]); }.bind(this))
@@ -224,14 +232,14 @@ var BarsVis = Class.extend({
       .call(this.xAxis);
 
     // Change ticks color
-    d3.selectAll('.axis').selectAll('text')
+    d3.selectAll('.x.axis').selectAll('text')
       .attr('fill', this.mainColor);
 
     this.svgBars.selectAll('.bar')
       .data(this.dataChart)
       .transition()
       .duration(this.duration)
-      .attr('width', function(d) { console.log(d); return this.xScale(d.value); }.bind(this))
+      .attr('width', function(d) { return this.xScale(d.value); }.bind(this))
 
     this.svgBars.selectAll('.mean_line')
       .data(this.dataChart)
@@ -253,59 +261,18 @@ var BarsVis = Class.extend({
   _mouseover: function () {
     var selected = d3.event.target,
         selectedClass = selected.classList,
-        selectedData = d3.select(selected).data();
-    console.log(selectedData)
-    if (selectedData.name == 'influence') {
-      var text = '<strong>' + formatPercent(selectedData.percentage) + '</strong> of respondents<br> are influenced<br>by <strong> ' + selectedData.tpClass + ' media</strong>'
-    } else {
-      var text = '<strong>' + formatPercent(selectedData.percentage) + '</strong> of respondents<br>associates<strong> ' + selectedData.tpClass + ' media</strong> to <strong>' + this.subindustry + '</strong>'
-    }
-    
-    d3.selectAll('.marker.' + selectedClass[1])
-      .filter(function(d) { return d.represent == selectedClass[2]; })
+        selectedData = d3.select(selected).data()[0];
+
+
+    var text = this.niceCategory[this.kind] + ': <strong>' + this.formatPercent(selectedData.value) + 
+              '</strong>€<br>' + this.niceCategory[this.context] + ': <strong>' + selectedData[this.context] +
+              '</strong>€<br>'+ this.niceCategory['percentage']+': <strong>' + (selectedData.value/100);              
+
+    this.svgBars.selectAll('.bar')
+      .filter(function(d) { return this._normalize(this.niceCategory[d.name]) != selectedClass[1]; }.bind(this))
       .transition()
       .duration(this.duration / 4)
-      .attr('markerWidth', this.markerSize * 2)
-      .attr('markerHeight', this.markerSize * 2)
-      .style('fill', customGrey)
-      .attr('stroke-width', .3);
-
-    var xMouseoverLine = this.xScale(selectedData.percentage),
-        yMouseoverLine = this.yScale(selectedData.tpClass) + this.ySecondaryScale(selectedData.name);
-  
-     d3.select(selected.parentNode).selectAll('mouseover_line')
-        .data([xMouseoverLine, yMouseoverLine])
-        .enter()
-        .append('line')
-        .attr('class', 'mouseover_line')
-        .attr('x1', xMouseoverLine)
-        .attr('y1', yMouseoverLine)
-        .attr('x2', xMouseoverLine)
-        .attr('y2', yMouseoverLine)
-        .attr('stroke-width', 1)
-        .style('stroke', this.colorScale(selectedData.tpClass))
-        .transition()
-        .duration(this.duration)
-        .attr('y1', function(d, i) { return i == 0 ? this.margin.top : yMouseoverLine; }.bind(this))
-        .attr('y2', function(d, i) { return i == 1 ? (this.height - this.margin.top) : yMouseoverLine; }.bind(this));
-
-   
-    d3.selectAll('.legend_line').selectAll('text.' + selectedData.name)
-      .attr('font-size', '1.5em');
-
-
-    this.svgBars.selectAll('.barLine')
-      .filter(function(d) { return d.name != selectedClass[2]; })
-      .transition()
-      .duration(this.duration / 4)
-      .style('stroke', function(d) { return this.brighterColorScale(d.tpClass); }.bind(this));
-
-    var toBright = this.ySecondaryScale.domain().filter(function(d) { return d != selectedClass[2]; })  
-    this.chart.selectAll('.' + toBright)
-      .transition()
-      .duration(this.duration / 4)
-      .style('stroke', function(d) { return this.brighterColorScale(d.tpClass); }.bind(this))
-      .attr('fill', function(d) { return this.brighterColorScale(d.tpClass); }.bind(this));
+      .style('opacity', .5);
     
     this.tooltip
         .transition()
@@ -321,42 +288,40 @@ var BarsVis = Class.extend({
 
   _mouseout: function () {
     var selected = d3.event.target,
-        selectedClass = selected.classList,
-        selectedData = d3.select(selected).data()[0],
-        labelsOn = d3.select('#myonoffswitch-labels').property('checked');
+        selectedClass = selected.classList;
 
-    d3.selectAll('.marker.' + selectedClass[1])
-      .filter(function(d) { return d.represent == selectedClass[2]; })
+    this.svgBars.selectAll('.bar')
+      .filter(function(d) { return this._normalize(this.niceCategory[d.name]) != selectedClass[1]; }.bind(this))
       .transition()
       .duration(this.duration / 4)
-      .attr('markerWidth', this.markerSize)
-      .attr('markerHeight', this.markerSize)
-      .style('fill', this.colorScale(selectedClass[1]))
-      .attr('stroke-width', 0);
-
-    var yMouseoverLine = this.yScale(selectedData.tpClass) + this.ySecondaryScale(selectedData.name);
-
-    d3.selectAll('.mouseover_line')
-      .transition()
-      .duration(this.duration / 2)
-      .attr('y2', yMouseoverLine)
-      .attr('y1', yMouseoverLine)
-      .remove();
-    
-    var toBright = this.ySecondaryScale.domain().filter(function(d) { return d != selectedClass[2]; })  
-    this.chart.selectAll('.' + toBright)
-      .transition()
-      .duration(this.duration / 4)
-      .style('stroke', function(d) { return this.colorScale(d.tpClass); }.bind(this))
-      .attr('fill', function(d) { return this.colorScale(d.tpClass); }.bind(this));
-
-    d3.selectAll('.legend_line').selectAll('text.' + selectedData.name)
-      .attr('font-size', '1.1em');
+      .style('opacity', 1);
 
     this.tooltip.transition()
         .duration(this.duration / 4)
         .style("opacity", 0);
-  }
+  },
+
+  _normalize: (function() {
+    var from = "ÃÀÁÄÂÈÉËÊÌÍÏÎÒÓÖÔÙÚÜÛãàáäâèéëêìíïîòóöôùúüûÑñÇç ", 
+        to   = "AAAAAEEEEIIIIOOOOUUUUaaaaaeeeeiiiioooouuuunncc_",
+        mapping = {};
+   
+    for(var i = 0, j = from.length; i < j; i++ )
+        mapping[ from.charAt( i ) ] = to.charAt( i );
+   
+    return function( str ) {
+        var ret = [];
+        for( var i = 0, j = str.length; i < j; i++ ) {
+            var c = str.charAt( i );
+            if( mapping.hasOwnProperty( str.charAt( i ) ) )
+                ret.push( mapping[ c ] );
+            else
+                ret.push( c );
+        }      
+        return ret.join( '' ).toLowerCase();
+    }
+ 
+  })()
 
 }); // End object
 
