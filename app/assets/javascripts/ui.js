@@ -25,7 +25,7 @@ $(function(){
     dataset: {
       perPageDefault: 100,
       perPageOptions: [25,50,100, 300],
-      sorts: { 'gasto/Hab': -1 }
+      sorts: { 'gasto': -1 }
     },
     readers: {
       'habitantes': function(el, record) { return Number(el.textContent); },
@@ -34,10 +34,14 @@ $(function(){
       '%S/Total': function(el, record) { return Number(el.textContent); },
     },
     writers: {
-      'habitantes': function(record) { return accounting.formatNumber(record.habitantes, 0); },
+      'habitantes': function(record) { return "<span class='soft'>" + accounting.formatNumber(record.habitantes, 0) +"</span>"; },
       'gasto/Hab': function(record) { return accounting.formatMoney(record['gasto/Hab']); },
-      'gasto': function(record) { return accounting.formatMoney(record.gasto); },
-      '%S/Total': function(record) { return record['%S/Total'].toPrecision(4) + " %"; },
+      'gasto': function(record) { return accounting.formatMoney(record.gasto, '€', 0); },
+      // '%S/Total': function(record) { return record['%S/Total'].toPrecision(4) + " %"; },
+      '%S/Total': function(record) { return accounting.formatNumber(record['%S/Total'], 2) + " %"; },
+    },
+    table: {
+      copyHeaderClass: true
     }
   }).bind('dynatable:afterUpdate', function(){
     sparkRender();
@@ -81,6 +85,14 @@ $(function(){
   }
 
   $('#search').autocomplete($.extend({}, AUTOCOMPLETE_DEFAULTS, searchOptions));
+
+  $('.compare_cont').hover(function(e) {
+    e.preventDefault();
+    $(this).find('.compare').velocity("fadeIn", { duration: 250 });
+  }, function(e) {
+    $(this).find('.compare').velocity("fadeOut", { duration: 250 });
+  });
+
 
 });
 

@@ -32,8 +32,12 @@
 
       <div class="sub_element">
         <h3>
-          Gasto total 
-          <span class="percenchange" class="tipsit" title="Cambio de -3,56% respecto al año anterior">-3,56%</span>
+          Gasto total
+          <% if @filter.year > 2010 %>
+            <% p = percentage(place.data.send("total_functional_#{@filter.year}"),
+                              place.data.send("total_functional_#{@filter.year-1}")) %>
+            <span class="percenchange" class="tipsit" title="Cambio de <%= p %> respecto al año anterior"><%= p %></span>
+          <% end %>
         </h3>
         <div class="number"><%= format_currency(place.data.send("total_functional_#{@filter.year}")) %></div>
       </div>
@@ -48,17 +52,24 @@
       <div class="sub_element">
         <h3>
           <span title="Gasto por habitante">Gasto/habitante</span>
-          <span class="percenchange" class="tipsit" title="Cambio de -12,46% respecto al año anterior">-12,46%</span>
+          <% if @filter.year > 2010 %>
+            <% p = percentage(place.data.send("total_functional_#{@filter.year}") / place.data.total,  place.data.send("total_functional_#{@filter.year - 1}") / place.data.total) %> 
+            <span class="percenchange" class="tipsit" title="Cambio de <%= p %> respecto al año anterior"><%= p %></span>
+          <% end %>
         </h3>
-        <div class="number"><%= number_to_currency(place.data.send("total_functional_#{@filter.year}") / place.data.total, precision: 2) %></div>
+        <div class="number"><%= number_to_currency(place.data.send("total_functional_#{@filter.year}") / place.data.total, precision: 2, strip_insignificant_zeros: true) %></div>
       </div>
 
       <div class="sub_element">
         <h3>
+          <% r1 = place.data.ranking(@filter.year) %>
           Ranking
-          <span class="percenchange" class="tipsit" title="Cambio de -2 posiciones respecto al año anterior">-2</span>
+          <% if @filter.year > 2010 %>
+            <% r2 = place.data.ranking(@filter.year - 1)%> 
+            <span class="percenchange" class="tipsit" title="Cambio de <%= r1 - r2 %> posiciones respecto al año anterior"><%= r1 - r2 %></span>
+          <% end %>
         </h3>
-        <div class="number">1 <span class="sub">/8.234</span></div>
+        <div class="number"><%= number_with_delimiter(r1) %><span class="sub"> / <%= number_with_delimiter(Population.count) %></span></div>
       </div>
 
     </div>
@@ -68,8 +79,7 @@
 
         <h2>Gasto por áreas funcionales</h2>
 
-        BARS GRAPH
-
+        <div id="bars_vis_fun"></div>
       </div>
     </div>
 
@@ -78,7 +88,7 @@
 
         <h2>Gasto por áreas económicas</h2>
 
-        BARS GRAPH
+        <div id="bars_vis_econ"></div>
 
       </div>
     </div>
@@ -88,6 +98,15 @@
 
         <h2>Partidas con mayor gasto</h2>
 
+        <table>
+        <% place.data.bigger_functional_budgets(@filter.year).each do |budget_line|  %>
+        <tr>
+          <td><%= link_to(truncate(budget_line.name, length: 72), budget_functional_item_path(budget_line.place_id, budget_line.code, params), title: budget_line.name) %></td>
+          <td class="right"><%= format_currency(budget_line.amount) %></td>
+        </tr>
+        <% end %>
+        </table>
+
       </div>
     </div>
 
@@ -96,8 +115,41 @@
 
         <h2>Partidas con menor gasto</h2>
 
+        <table>
+        <% place.data.smaller_functional_budgets(@filter.year).each do |budget_line|  %>
+        <tr>
+          <td><%= link_to(truncate(budget_line.name, length: 72), budget_functional_item_path(budget_line.place_id, budget_line.code, params), title: budget_line.name) %></td>
+          <td class="right"><%= format_currency(budget_line.amount) %></td>
+        <% end %>
+        </tr>
+        </table>
+
       </div>
     </div>
 
   </div>
 </div>
+
+<script type="text/javascript">
+  var barsVis = new BarsVis('#bars_vis_fun', 'per_person', 'mean_national');
+
+  barsVis.render('/api/data/<%= @filter.location.id %>/<%= @filter.year %>/functional.json');
+
+  d3.selectAll('.measure.button')
+    .on('click', function(d){
+      d3.selectAll(".measure.button.buttonSelected").classed("buttonSelected", false);
+      d3.select(this).classed("buttonSelected", true);
+      barsVis.measure = this.id;
+      console.log(barsVis.measure)
+        console.log(barsVis.context)
+        // barsVis.updateRender();
+    });
+
+  d3.selectAll('.context.button')
+  .on('click', function(d) {
+    d3.selectAll(".context.button.buttonSelected").classed("buttonSelected", false);
+    d3.select(this).classed("buttonSelected", true);
+    barsVis.context = this.id;
+    // barsVis.updateRender();
+  });
+</script>

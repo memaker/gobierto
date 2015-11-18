@@ -21,12 +21,13 @@ module ApplicationHelper
     {population: "#{r.first} - #{r.last}"}
   end
 
-  def similar_budget_parameters(budget)
-    p = 0.2
+  def similar_budget_parameters(budget_line)
+    budget = budget_line.amount
+    p = 0.3
     budget_min = budget - budget*p
     budget_max = budget + budget*p
 
-    {similar_budget_min: budget_min.to_i, similar_budget_max: budget_max.to_i}
+    {similar_budget_min: budget_min.to_i, similar_budget_max: budget_max.to_i, functional_area: budget_line.code}
   end
 
   def total_similar_budget_parameters(budget)
@@ -38,11 +39,14 @@ module ApplicationHelper
   end
 
   def format_currency(n)
-    if n > 1_0000_000
-      "#{number_with_precision(n.to_f / 1_0000_000.to_f, precision: 2)} M€"
+    if n > 1_000_000
+      "#{number_with_precision(n.to_f / 1_000_000.to_f, precision: 0, strip_insignificant_zeros: true)} M€"
     else
-      format_currency(n, precision: 2)
+      number_to_currency(n, precision: 0, strip_insignificant_zeros: true)
     end
   end
 
+  def percentage(current_year_value, old_value)
+    number_with_precision(((current_year_value.to_f - old_value.to_f)/old_value.to_f) * 100, precision: 2).to_s + " %"
+  end
 end
