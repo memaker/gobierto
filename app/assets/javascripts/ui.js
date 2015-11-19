@@ -78,6 +78,8 @@ $(function(){
     var text = $(this).text();
     $('.js-' + $(this).data('rel') + ' a').text(text);
     $(this).parents('.tree').hide();
+
+    submitForm();
   });
 
   var $option = $('#functional_area');
@@ -110,17 +112,25 @@ $(function(){
     $.ajax('/categories/economic/' + $(this).val());
   });
 
+  $('#year,#population').on('change', function(e){
+    submitForm();
+  });
+
   $(document).on('click', '.js-disabled', function(e){
     e.preventDefault();
   });
 
   var selector = '#bars_vis_fun';
-  var barsVisFun = new BarsVis(selector, 'mean_national');
-  barsVisFun.render($(selector).data('url'));
+  if($(selector).length > 0){
+    var barsVisFun = new BarsVis(selector, 'mean_national');
+    barsVisFun.render($(selector).data('url'));
+  }
 
   var selector = '#bars_vis_econ';
-  var barsVisEcon = new BarsVis(selector, 'mean_national');
-  barsVisEcon.render($(selector).data('url'));
+  if($(selector).length > 0){
+    var barsVisEcon = new BarsVis(selector, 'mean_national');
+    barsVisEcon.render($(selector).data('url'));
+  }
 
   d3.selectAll('.context.button')
   .on('click', function(d) {
@@ -143,7 +153,14 @@ $(function(){
       $('#' + selector).val('');
       $('.js-' + selector + ' a').html('&nbsp; <i class="fa fa-sort-down"></i>');
     }
+    submitForm();
   });
 
-});
+  function submitForm(){
+    if($('#location_type').val() === '' && $('#functional_area').val() === '' && $('#economic_area').val() === ''){
+      return false;
+    } 
+    document.forms[0].submit();
+  }
 
+});

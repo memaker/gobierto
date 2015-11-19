@@ -61,6 +61,7 @@ var searchOptions = {
     $('#location_id').val(suggestion.data.id);
     $('#location_type').val(suggestion.data.type);
     $('#search').val(suggestion.value);
+    $('form').submit();
   },
   groupBy: 'category',
 };
