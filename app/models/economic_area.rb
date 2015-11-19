@@ -141,11 +141,19 @@ SQL
   end
 
   def budget_per_person(place, year, kind)
-    budget(place, year, kind)['budget_per_inhabitant'].to_f
+    if r = budget(place, year, kind)
+      r['budget_per_inhabitant'].to_f
+    else
+      0
+    end
   end
 
   def budget_percentage_total(place, year, total, kind)
-    budget(place, year, kind)['percentage_total_economic'].to_f
+    if r = budget(place, year, kind)
+      r['percentage_total_economic'].to_f
+    else
+      0
+    end
   end
 
   def mean_national_per_person(year, kind)
