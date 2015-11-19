@@ -33,6 +33,8 @@ class EconomicArea < ActiveRecord::Base
     population = options[:population]
     similar_budget = options[:similar_budget]
     total_similar_budget = options[:total_similar_budget]
+    pagination = options[:pagination]
+    sort_by = options[:sort_by]
 
     conditions = ["tb_economica.tipreig = '#{options[:kind]}'"]
     conditions << "idente is null" # when id is null we are fetching the aggregated data
@@ -85,24 +87,31 @@ class EconomicArea < ActiveRecord::Base
       conditions << "poblacion_municipal_2014.total_economic_#{year}_#{kind_sql} < #{total_similar_budget.last}"
     end
 
+    count_sql = <<-SQL
+select count(*) as count FROM tb_economica
+INNER JOIN poblacion_municipal_2014 ON poblacion_municipal_2014.codigo = tb_economica.ine_code #{population_filter}
+WHERE #{conditions.join(' AND ')}
+SQL
+
+    total_records = ActiveRecord::Base.connection.execute(count_sql).first['count'].to_i
+
     sql = <<-SQL
-select importe as amount, poblacion_municipal_2014.nombre as place_name, tb_economica.year, tb_economica.ine_code as place_id,
+select importe as budget, poblacion_municipal_2014.nombre as place_name, tb_economica.year, tb_economica.ine_code as place_id,
 tb_economica.cdcta as code, "tb_cuentasEconomica".nombre as name, poblacion_municipal_2014.total::integer as population,
 poblacion_municipal_2014.total_economic_#{year}_#{kind_sql} as total_economic_budget, 
-budget_per_inhabitant, percentage_total_economic,
+budget_per_inhabitant, percentage_total_economic as percentage_from_total,
 total_2010, total_2011, total_2012, total_2013, total_2014, total_2015
 FROM tb_economica
 INNER join "tb_cuentasEconomica" ON "tb_cuentasEconomica".cdcta = tb_economica.cdcta AND "tb_cuentasEconomica".tipreig = '#{options[:kind]}'
 INNER JOIN poblacion_municipal_2014 ON poblacion_municipal_2014.codigo = tb_economica.ine_code #{population_filter}
 INNER JOIN economic_yearly_totals ON tb_economica.ine_code = economic_yearly_totals.ine_code AND tb_economica.cdcta = economic_yearly_totals.cdcta AND tb_economica.tipreig = economic_yearly_totals.kind
 WHERE #{conditions.join(' AND ')}
-ORDER BY importe DESC
-#{"LIMIT 300" if location.nil?}
+ORDER BY #{sort_by[:attribute]} #{sort_by[:direction]}
+LIMIT #{pagination[:per_page]}
+OFFSET #{pagination[:offset]}
 SQL
 
-    ActiveRecord::Base.connection.execute(sql).map do |row|
-      BudgetLine.new row
-    end
+    PaginatedResult.new total_records, ActiveRecord::Base.connection.execute(sql).map { |row| BudgetLine.new(row) }
   end
 
   def self.total_budget(kind, place_id, year)

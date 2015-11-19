@@ -24,6 +24,8 @@ class FunctionalArea < ActiveRecord::Base
     population = options[:population]
     similar_budget = options[:similar_budget]
     total_similar_budget = options[:total_similar_budget]
+    pagination = options[:pagination]
+    sort_by = options[:sort_by]
 
     conditions = ["cdcta is null"] # when cdcta is null, aggregated columns are fetched
     conditions << "year = #{year}" if year.present?
@@ -74,24 +76,31 @@ class FunctionalArea < ActiveRecord::Base
       conditions << "poblacion_municipal_2014.total_functional_#{year} < #{total_similar_budget.last}"
     end
 
+    count_sql = <<-SQL
+select count(*) as count FROM tb_funcional
+INNER JOIN poblacion_municipal_2014 ON poblacion_municipal_2014.codigo = tb_funcional.ine_code #{population_filter}
+WHERE #{conditions.join(' AND ')}
+SQL
+
+    total_records = ActiveRecord::Base.connection.execute(count_sql).first['count'].to_i
+
     sql = <<-SQL
-select importe as amount, poblacion_municipal_2014.nombre as place_name, tb_funcional.year, tb_funcional.ine_code as place_id,
+select importe as budget, poblacion_municipal_2014.nombre as place_name, tb_funcional.year, tb_funcional.ine_code as place_id,
 tb_funcional.cdfgr as code, "tb_cuentasProgramas".nombre as name, poblacion_municipal_2014.total::integer as population,
 poblacion_municipal_2014.total_functional_#{year} as total_functional_budget, 
-budget_per_inhabitant, percentage_total_functional,
+budget_per_inhabitant, percentage_total_functional as percentage_from_total,
 total_2010, total_2011, total_2012, total_2013, total_2014, total_2015
 FROM tb_funcional
 INNER join "tb_cuentasProgramas" ON "tb_cuentasProgramas".cdfgr = tb_funcional.cdfgr
 INNER JOIN poblacion_municipal_2014 ON poblacion_municipal_2014.codigo = tb_funcional.ine_code #{population_filter}
 INNER JOIN functional_yearly_totals ON tb_funcional.cdfgr = functional_yearly_totals.cdfgr AND tb_funcional.ine_code = functional_yearly_totals.ine_code
 WHERE #{conditions.join(' AND ')}
-ORDER BY importe DESC
-#{"LIMIT 300" if location.nil?}
+ORDER BY #{sort_by[:attribute]} #{sort_by[:direction]}
+LIMIT #{pagination[:per_page]}
+OFFSET #{pagination[:offset]}
 SQL
 
-    ActiveRecord::Base.connection.execute(sql).map do |row|
-      BudgetLine.new row
-    end
+    PaginatedResult.new total_records, ActiveRecord::Base.connection.execute(sql).map { |row| BudgetLine.new(row) }
   end
 
   def self.total_budget(place_id, year)

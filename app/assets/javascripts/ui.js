@@ -23,37 +23,44 @@ $(function(){
       searchText: 'Buscar:'
     },
     dataset: {
-      perPageDefault: 100,
-      perPageOptions: [25,50,100, 300],
-      sorts: { 'gasto': -1, 'ingreso': -1 }
+      perPageDefault: 50,
+      perPageOptions: [25,50,100],
+      //sorts: { 'budget': -1 },
+      ajax: true,
+      ajaxUrl: window.location.pathname + '.json/' + window.location.search,
+      ajaxOnLoad: true,
+      records: []
     },
     readers: {
-      'habitantes': function(el, record) { return Number(el.textContent); },
-      'gasto/Hab': function(el, record) { return Number(el.textContent); },
-      'ingreso/Hab': function(el, record) { return Number(el.textContent); },
-      'gasto': function(el, record) { return Number(el.textContent); },
-      'ingreso': function(el, record) { return Number(el.textContent); },
-      '%S/Total': function(el, record) { return Number(el.textContent); },
+      'population': function(el, record) { return Number(el.textContent); },
+      'budget_per_inhabitant': function(el, record) { return Number(el.textContent); },
+      'budget': function(el, record) { return Number(el.textContent); },
+      'percentage_from_total': function(el, record) { return Number(el.textContent); },
     },
     writers: {
-      'habitantes': function(record) { return "<span class='soft'>" + accounting.formatNumber(record.habitantes, 0) +"</span>"; },
-      'gasto/Hab': function(record) { return accounting.formatMoney(record['gasto/Hab']); },
-      'ingreso/Hab': function(record) { return accounting.formatMoney(record['ingreso/Hab']); },
-      'gasto': function(record) { return accounting.formatMoney(record.gasto, '€', 0); },
-      'ingreso': function(record) { return accounting.formatMoney(record.ingreso, '€', 0); },
-      '%S/Total': function(record) { return accounting.formatNumber(record['%S/Total'], 2) + " %"; },
+      'population': function(record) { return "<span class='soft'>" + accounting.formatNumber(record.population, 0) +"</span>"; },
+      'budget_per_inhabitant': function(record) { return accounting.formatMoney(record.budget_per_inhabitant); },
+      'budget': function(record) { return accounting.formatMoney(record.budget, '€', 0); },
+      'percentage_from_total': function(record) { return accounting.formatNumber(record.percentage_from_total, 2) + " %"; },
     },
     table: {
-      copyHeaderClass: true
+      copyHeaderClass: true,
     }
   }).bind('dynatable:afterUpdate', function(){
     sparkRender();
+    updateHeaders();
   });
 
   function sparkRender(){
     $('.sparkline').sparkline('html',SPARKLINES_DEFAULTS);
   }
   sparkRender();
+
+  function updateHeaders(){
+    $('.dynatable th a').each(function(){
+      $(this).text(window.headerName[$(this).text().replace(' ▼', '').replace(' ▲', '')]);
+    });
+  }
 
   $('.bonsai').bonsai();
 
