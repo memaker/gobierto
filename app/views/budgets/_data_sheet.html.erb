@@ -131,18 +131,18 @@
 </div>
 
 <script type="text/javascript">
-  var barsVis = new BarsVis('#bars_vis_fun', 'per_person', 'mean_national');
+  var barsVis = new BarsVis('#bars_vis_fun', 'mean_national');
 
   barsVis.render('/api/data/<%= @filter.location.id %>/<%= @filter.year %>/functional.json');
   // barsVis.render('/functional.json');
 
-  d3.selectAll('.measure.button')
-    .on('click', function(d){
-      d3.selectAll(".measure.button.buttonSelected").classed("buttonSelected", false);
-      d3.select(this).classed("buttonSelected", true);
-      barsVis.measure = this.id;
-      barsVis.updateRender();
-    });
+  // d3.selectAll('.measure.button')
+  //   .on('click', function(d){
+  //     d3.selectAll(".measure.button.buttonSelected").classed("buttonSelected", false);
+  //     d3.select(this).classed("buttonSelected", true);
+  //     barsVis.measure = this.id;
+  //     barsVis.updateRender();
+  //   });
 
   d3.selectAll('.context.button')
   .on('click', function(d) {

@@ -1,7 +1,7 @@
 'use strict';
 
 var BarsVis = Class.extend({
-  init: function(divId, measure, context) {
+  init: function(divId, context) {
     this.container = divId;
     
     // Chart dimensions
@@ -11,7 +11,6 @@ var BarsVis = Class.extend({
     this.height = null;
     
     // Variable 
-    this.measure = measure;
     this.context = context;
 
     // Scales
@@ -54,7 +53,7 @@ var BarsVis = Class.extend({
 
     // Append tooltip
     this.tooltip = d3.select('body').append('div')
-      .attr('class', 'vis_tooltip')
+      .attr('class', 'vis_bars_tooltip')
       .style('opacity', 0);
 
     // Append svg
@@ -77,8 +76,8 @@ var BarsVis = Class.extend({
       "mean_national": "Media Nacional",
       "mean_autonomy": "Media Autonómica",
       "mean_province": "Media Provincial",
-      "gastos": "Gasto/habitante",
-      "ingresos": "Ingreso/habitante",
+      "G": "Gasto/habitante",
+      "I": "Ingreso/habitante",
       "percentage": "% sobre el total"
     }
 
@@ -86,19 +85,10 @@ var BarsVis = Class.extend({
     d3.json(urlData, function(error, jsonData){
       if (error) throw error;
       
-      // Map the data
-      this.data = jsonData;
-      this.data.budgets['percentage'].forEach(function(d) {
-        d.value = d.value / 100;
-        d.mean_national = d.mean_national / 100;
-        d.mean_autonomy = d.mean_autonomy / 100;
-        d.mean_province = d.mean_province / 100;
-      });
+      this.dataChart = jsonData.budgets;
+      this.kind = jsonData.kind; 
       
-      this.dataChart = this.data.budgets[this.measure];
-      this.chartTitle = this.data.title;
-      this.kind = this.data.kind; 
-
+      
       // Get the values array to take the max
       var values = [];
       this.dataChart.forEach(function(d) {
@@ -200,49 +190,7 @@ var BarsVis = Class.extend({
   }, // end render
 
   updateRender: function () {
-    
-    this.dataChart = this.data.budgets[this.measure];
-    var values = [];
-      this.dataChart.forEach(function(d) {
-        values.push(d.value, d.mean_national, d.mean_autonomy, d.mean_province)
-      });
-
-    // Update the scales
-    this.xScale
-      .domain([0, d3.max(values)])
-
-    // Update the axis
-    this.xAxis
-        .scale(this.xScale)
-        .tickValues(this._tickValues(this.xScale));
-
-    if (this.measure != 'percentage') {
-      this.xAxis
-        .tickFormat(d3.format('.f'));
-    } else {
-      this.xAxis
-        .tickFormat(d3.format('%'));
-    }
-
-    this.svgBars.select(".x.axis")
-      .transition()
-      .duration(this.duration)
-      .delay(this.duration/2)
-      .ease("sin-in-out") 
-      .call(this.xAxis);
-
-    // Change ticks color
-    d3.selectAll('.x.axis').selectAll('text')
-      .attr('fill', this.mainColor);
-
-    this.svgBars.selectAll('.bar')
-      .data(this.dataChart)
-      .transition()
-      .duration(this.duration)
-      .attr('width', function(d) { return this.xScale(d.value); }.bind(this))
-
     this.svgBars.selectAll('.mean_line')
-      .data(this.dataChart)
       .transition()
       .duration(this.duration)
       .attr('x1', function(d) { return this.xScale(d[this.context]); }.bind(this))
@@ -266,7 +214,7 @@ var BarsVis = Class.extend({
 
     var text = this.niceCategory[this.kind] + ': <strong>' + this.formatPercent(selectedData.value) + 
               '</strong>€<br>' + this.niceCategory[this.context] + ': <strong>' + selectedData[this.context] +
-              '</strong>€<br>'+ this.niceCategory['percentage']+': <strong>' + (selectedData.value/100);              
+              '</strong>€<br>'+ this.niceCategory['percentage']+': <strong>' + selectedData.percentage + '</strong>%<br>';              
 
     this.svgBars.selectAll('.bar')
       .filter(function(d) { return this._normalize(this.niceCategory[d.name]) != selectedClass[1]; }.bind(this))
