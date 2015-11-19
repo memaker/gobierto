@@ -130,6 +130,77 @@ SQL
     end
   end
 
+  def budget(place, year, kind)
+    sql = <<-SQL
+select importe as amount, budget_per_inhabitant, percentage_total_economic
+FROM tb_economica
+WHERE ine_code = #{place.id} AND year = #{year} AND level = 1 AND tb_economica.cdcta = '#{self.code}' AND idente is null AND tipreig = '#{kind}'
+SQL
+
+    ActiveRecord::Base.connection.execute(sql).first
+  end
+
+  def budget_per_person(place, year, kind)
+    if r = budget(place, year, kind)
+      r['budget_per_inhabitant'].to_f
+    else
+      0
+    end
+  end
+
+  def budget_percentage_total(place, year, total, kind)
+    if r = budget(place, year, kind)
+      r['percentage_total_economic'].to_f
+    else
+      0
+    end
+  end
+
+  def mean_national_per_person(year, kind)
+    Rails.cache.fetch("economic/national/#{kind}/#{self.code}/#{year}") do
+       sql = <<-SQL
+select avg(x)
+FROM(
+  select budget_per_inhabitant as x
+  FROM tb_economica
+  WHERE year = #{year} AND level = 1 AND tb_economica.cdcta = '#{self.code}' AND idente is null AND  tipreig = '#{kind}'
+)  as mean
+SQL
+
+      ActiveRecord::Base.connection.execute(sql).first['avg'].to_f
+    end
+  end
+
+  def mean_autonomy_per_person(year, place, kind)
+    Rails.cache.fetch("economic/autonomous_region/#{place.province.autonomous_region.id}/#{kind}/#{self.code}/#{year}") do
+      sql = <<-SQL
+select avg(x)
+FROM(
+  select budget_per_inhabitant as x
+  FROM tb_economica
+  INNER JOIN poblacion_municipal_2014 ON poblacion_municipal_2014.codigo = tb_economica.ine_code AND poblacion_municipal_2014.autonomous_region_id = #{place.province.autonomous_region.id}
+  WHERE year = #{year} AND level = 1 AND tb_economica.cdcta = '#{self.code}' AND idente is null AND  tipreig = '#{kind}'
+)  as mean
+  SQL
+      ActiveRecord::Base.connection.execute(sql).first['avg'].to_f
+    end
+  end
+
+  def mean_province_per_person(year, place, kind)
+    Rails.cache.fetch("economic/province/#{place.province.id}/#{kind}/#{self.code}/#{year}") do
+     sql = <<-SQL
+select avg(x)
+FROM(
+  select budget_per_inhabitant as x
+  FROM tb_economica
+  INNER JOIN poblacion_municipal_2014 ON poblacion_municipal_2014.codigo = tb_economica.ine_code AND poblacion_municipal_2014.province_id = #{place.province.id}
+  WHERE year = #{year} AND level = 1 AND tb_economica.cdcta = '#{self.code}' AND idente is null AND  tipreig = '#{kind}'
+)  as mean
+SQL
+      ActiveRecord::Base.connection.execute(sql).first['avg'].to_f
+    end
+  end
+
   def level
     code.length - 1
   end
@@ -141,5 +212,4 @@ SQL
   def name
     nombre
   end
-
 end

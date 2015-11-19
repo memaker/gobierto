@@ -36,6 +36,8 @@ module RailsTemplate
       'Access-Control-Allow-Origin' => '*',
       'Access-Control-Request-Method' => '*'
     })
+
+    config.action_controller.page_cache_directory = "#{Rails.root.to_s}/public/cache"
   end
 end
 

@@ -6,7 +6,7 @@ var BarsVis = Class.extend({
     
     // Chart dimensions
     this.containerWidth = null;
-    this.margin = {top: 10, right: 50, bottom: 20, left: 75};
+    this.margin = {top: 10, right: 50, bottom: 20, left: 82};
     this.width = null;
     this.height = null;
     
@@ -78,7 +78,16 @@ var BarsVis = Class.extend({
       "mean_province": "Media Provincial",
       "G": "Gasto/habitante",
       "I": "Ingreso/habitante",
-      "percentage": "% sobre el total"
+      "percentage": "% sobre el total",
+      "Gastos de personal": "Gastos de Personal",
+      "Gastos en bienes corrientes y servicios": "Bienes y Servicios",
+      "Gastos financieros": "Gastos Financieros",
+      "Transferencias corrientes": "Transferencias Corrientes",
+      "Fondo de contingencia y otros imprevistos": "Contingencias e Imprevistos",
+      "Inversiones reales": "Inversiones Reales",
+      "Transferencias de capital": "Transferencia de Capital",
+      "Activos financieros": "Activos Financieros",
+      "Pasivos financieros": "Pasivos Financieros",
     }
 
     // Load the data
