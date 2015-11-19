@@ -1,6 +1,7 @@
 <div class="label js-economic_area"><%= link_to '&nbsp; <i class="fa fa-sort-down"></i>'.html_safe, '' %></div>
 
 <div class="tree">
+  <% cache('economic_area') do %>
   <ul class="bonsai">
     <li><%= link_to 'Todas', '#', data: {'menu-area' => 'all', 'rel' => 'economic_area' } %></li>
     <% EconomicArea.root_items(kind).each do |item| %>
@@ -10,4 +11,5 @@
       </li>
     <% end %>
   </ul>
+  <% end %>
 </div>
