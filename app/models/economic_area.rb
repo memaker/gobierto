@@ -13,7 +13,7 @@ class EconomicArea < ActiveRecord::Base
   end
 
   def children
-    self.class.items.where("cdcta like '#{self.code}%' AND level = #{self.level + 2}")
+    self.class.items.where("cdcta like '#{self.code}%' AND level = #{self.level + 2} AND tipreig = '#{self.tipreig}'")
   end
 
   def self.kinds

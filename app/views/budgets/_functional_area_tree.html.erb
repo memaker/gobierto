@@ -2,7 +2,6 @@
   <div class="label js-functional_area"><%= link_to '&nbsp; <i class="fa fa-sort-down"></i>'.html_safe, '' %></div>
 
   <div class="tree">
-    <% cache('functional_area') do %>
     <ul class="bonsai">
       <li><%= link_to 'Todas', '#', data: {'menu-area' => 'all', 'rel' => 'functional_area' } %></li>
       <% FunctionalArea.root_items.each do |item| %>
@@ -12,7 +11,6 @@
         </li>
       <% end %>
     </ul>
-    <% end %>
   </div>
 <% else %>
   <div class="label js-functional_area"><%= link_to '&nbsp; <i class="fa fa-times"></i>'.html_safe, '', class: 'js-disabled' %></div>
