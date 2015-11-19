@@ -64,7 +64,7 @@
 <% end %>
 
 <div>
-  <% if @paginated_result && @paginated_result.records.any? %>
+  <% if @filter.active? %>
     <table class="dynatable">
       <thead>
         <tr>
@@ -79,35 +79,6 @@
         </tr>
       </thead>
       <tbody>
-        <% if false %>
-          <% @budget_lines.each do |budget_line| %>
-            <tr>
-              <td><span class="sparkline" data-sparkvalues='<%= budget_line.historic_values.join(',') %>'></span></td>
-              <% if @filter.functional? %>
-                <td><%= link_to(truncate(budget_line.name, length: 58), budget_functional_item_path(budget_line.place_id, budget_line.code, params), title: budget_line.name) %></td>
-              <% else %>
-                <td><%= link_to(truncate(budget_line.name, length: 58), budget_economic_item_path(budget_line.place_id, budget_line.code, params), title: budget_line.name) %></td>
-              <% end %>
-              <td><%= link_to(truncate(budget_line.place_name, length: 28), place_path(budget_line.place, params), title: budget_line.place_name) %> <span class="province">(<%= budget_line.place.province.name %>)</span></td>
-              <td><%= budget_line.population %></td>
-              <td><%= budget_line.budget_per_inhabitant %></td>
-              <td><%= budget_line.amount %></td>
-              <td><%= budget_line.percentage_from_total %></td>
-              <td>
-                <div class="compare_cont">
-                  <%= link_to 'Compara', '' %>
-                    <div class="compare">
-                      <%= link_to 'Con municipios de la misma CCAA', budgets_path(params.except(*reset_filters_parameters).merge({location_id: budget_line.place.province.autonomous_region.id, location_type: 'AutonomousRegion'}).symbolize_keys) %>
-                      <%= link_to 'Con municipios de la misma Provincia', budgets_path(params.except(*reset_filters_parameters).merge({location_id: budget_line.place.province.id, location_type: 'Province'}).symbolize_keys) %>
-                      <%= link_to 'Con municipios con población similar', budgets_path(params.except(*reset_filters_parameters).merge(similar_population_parameters(budget_line.population)).symbolize_keys) %>
-                      <%= link_to 'Con municipios con presupuesto similar', budgets_path(params.except(*reset_filters_parameters).merge(similar_budget_parameters(budget_line)).symbolize_keys) %>
-                      <%= link_to 'Con municipios con presupuesto total similar', budgets_path(params.except(*reset_filters_parameters).merge(total_similar_budget_parameters(budget_line.total_functional_budget)).symbolize_keys) %>
-                    </div>
-                </div>
-              </td>
-            </tr>
-          <% end %>
-        <% end %>
       </tbody>
     </table>
   <% end %>
