@@ -131,5 +131,19 @@ $(function(){
     barsVisEcon.context = this.id;
     barsVisEcon.updateRender();
   });
+
+  $('[data-reset]').on('click', function(e){
+    e.preventDefault();
+    var selector = $(this).data('reset');
+    if(selector == 'location'){
+      $('#location_id').val('');
+      $('#location_type').val('');
+      $('#search').val('');
+    } else {
+      $('#' + selector).val('');
+      $('.js-' + selector + ' a').html('&nbsp; <i class="fa fa-sort-down"></i>');
+    }
+  });
+
 });
 
