@@ -17,3 +17,6 @@ config/secrets.yml
 
 # Byebug
 .byebug_history
+
+public/cache
+

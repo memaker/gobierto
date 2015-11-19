@@ -6,19 +6,6 @@
     <%= place.province.autonomous_region.name %> > <%= place.province.name %> > <%= place.name %>
 
     <div class="form_filters" id="selectors">
-
-      <div class="group">
-        <% if @filter.expending? %>
-          Gasto
-        <% else %>
-          Ingreso
-        <% end %>
-        <ul id="measure_selector" class="measure buttons">
-          <li><a href="javascript:void(null)" id="per_person" class ="measure button buttonSelected">por habitante</a></li>
-          <li><a href="javascript:void(null)" id="percentage" class ="measure button">% sobre el total</a></li>
-        </ul>
-      </div>
-
       <div class="group">
         Contexto
         <ul id="context_selector" class="context buttons">
@@ -101,7 +88,7 @@
           <h2>Ingreso por áreas económicas</h2>
         <% end %>
 
-        <div id="bars_vis_fun"></div>
+        <div id="bars_vis_fun" data-url="/cache/api/data/<%= @filter.location.id %>/<%= @filter.year %>/functional.json"></div>
       </div>
     </div>
 
@@ -110,8 +97,7 @@
 
         <h2>Gasto por áreas económicas</h2>
 
-        <div id="bars_vis_econ"></div>
-
+        <div id="bars_vis_econ" data-url="/cache/api/data/<%= @filter.location.id %>/<%= @filter.year %>/<%= @filter.kind %>/economic.json"></div>
       </div>
     </div>
 
@@ -177,26 +163,3 @@
 
   </div>
 </div>
-
-<script type="text/javascript">
-  var barsVis = new BarsVis('#bars_vis_fun', 'mean_national');
-
-  barsVis.render('/api/data/<%= @filter.location.id %>/<%= @filter.year %>/functional.json');
-  // barsVis.render('/functional.json');
-
-  // d3.selectAll('.measure.button')
-  //   .on('click', function(d){
-  //     d3.selectAll(".measure.button.buttonSelected").classed("buttonSelected", false);
-  //     d3.select(this).classed("buttonSelected", true);
-  //     barsVis.measure = this.id;
-  //     barsVis.updateRender();
-  //   });
-
-  d3.selectAll('.context.button')
-  .on('click', function(d) {
-    d3.selectAll(".context.button.buttonSelected").classed("buttonSelected", false);
-    d3.select(this).classed("buttonSelected", true);
-    barsVis.context = this.id;
-    barsVis.updateRender();
-  });
-</script>

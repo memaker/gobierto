@@ -114,5 +114,22 @@ $(function(){
     e.preventDefault();
   });
 
+  var selector = '#bars_vis_fun';
+  var barsVisFun = new BarsVis(selector, 'mean_national');
+  barsVisFun.render($(selector).data('url'));
+
+  var selector = '#bars_vis_econ';
+  var barsVisEcon = new BarsVis(selector, 'mean_national');
+  barsVisEcon.render($(selector).data('url'));
+
+  d3.selectAll('.context.button')
+  .on('click', function(d) {
+    d3.selectAll(".context.button.buttonSelected").classed("buttonSelected", false);
+    d3.select(this).classed("buttonSelected", true);
+    barsVisFun.context = this.id;
+    barsVisFun.updateRender();
+    barsVisEcon.context = this.id;
+    barsVisEcon.updateRender();
+  });
 });
 
