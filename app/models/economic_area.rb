@@ -130,6 +130,103 @@ SQL
     end
   end
 
+  def budget(place, year, kind)
+    sql = <<-SQL
+select importe as amount, budget_per_inhabitant, percentage_total_economic
+FROM tb_economica
+WHERE ine_code = #{place.id} AND year = #{year} AND level = 1 AND tb_economica.cdcta = '#{self.code}' AND idente is null AND tipreig = '#{kind}'
+SQL
+
+    ActiveRecord::Base.connection.execute(sql).first
+  end
+
+  def budget_per_person(place, year, kind)
+    budget(place, year, kind)['budget_per_inhabitant'].to_f
+  end
+
+  def budget_percentage_total(place, year, total, kind)
+    budget(place, year, kind)['percentage_total_economic'].to_f
+  end
+
+  def mean_national_per_person(year, kind)
+     sql = <<-SQL
+select avg(x)
+FROM(
+  select budget_per_inhabitant as x
+  FROM tb_economica
+  WHERE year = #{year} AND level = 1 AND tb_economica.cdcta = '#{self.code}' AND idente is null AND  tipreig = '#{kind}'
+)  as mean
+SQL
+
+    ActiveRecord::Base.connection.execute(sql).first['avg'].to_f
+  end
+
+  def mean_autonomy_per_person(year, place, kind)
+     sql = <<-SQL
+select avg(x)
+FROM(
+  select budget_per_inhabitant as x
+  FROM tb_economica
+  INNER JOIN poblacion_municipal_2014 ON poblacion_municipal_2014.codigo = tb_economica.ine_code AND poblacion_municipal_2014.autonomous_region_id = #{place.province.autonomous_region.id}
+  WHERE year = #{year} AND level = 1 AND tb_economica.cdcta = '#{self.code}' AND idente is null AND  tipreig = '#{kind}'
+)  as mean
+SQL
+    ActiveRecord::Base.connection.execute(sql).first['avg'].to_f
+  end
+
+  def mean_province_per_person(year, place, kind)
+     sql = <<-SQL
+select avg(x)
+FROM(
+  select budget_per_inhabitant as x
+  FROM tb_economica
+  INNER JOIN poblacion_municipal_2014 ON poblacion_municipal_2014.codigo = tb_economica.ine_code AND poblacion_municipal_2014.province_id = #{place.province.id}
+  WHERE year = #{year} AND level = 1 AND tb_economica.cdcta = '#{self.code}' AND idente is null AND  tipreig = '#{kind}'
+)  as mean
+SQL
+    ActiveRecord::Base.connection.execute(sql).first['avg'].to_f
+
+  end
+
+  def mean_national_percentage(year, total, kind)
+     sql = <<-SQL
+select avg(x)
+FROM(
+  select percentage_total_functional as x
+  FROM tb_economica
+  WHERE year = #{year} AND level = 1 AND tb_economica.cdcta = '#{self.code}' AND idente is null AND  tipreig = '#{kind}'
+)  as mean
+SQL
+
+    ActiveRecord::Base.connection.execute(sql).first['avg'].to_f
+  end
+
+  def mean_autonomy_percentage(year, place, total, kind)
+     sql = <<-SQL
+select avg(x)
+FROM(
+  select percentage_total_functional as x
+  FROM tb_economica
+  INNER JOIN poblacion_municipal_2014 ON poblacion_municipal_2014.codigo = tb_economica.ine_code AND poblacion_municipal_2014.autonomous_region_id = #{place.province.autonomous_region.id}
+  WHERE year = #{year} AND level = 1 AND tb_economica.cdcta = '#{self.code}' AND idente is null AND  tipreig = '#{kind}'
+)  as mean
+SQL
+    ActiveRecord::Base.connection.execute(sql).first['avg'].to_f
+  end
+
+  def mean_province_percentage(year, place, total, kind)
+     sql = <<-SQL
+select avg(x)
+FROM(
+  select percentage_total_functional as x
+  FROM tb_economica
+  INNER JOIN poblacion_municipal_2014 ON poblacion_municipal_2014.codigo = tb_economica.ine_code AND poblacion_municipal_2014.province_id = #{place.province.id}
+  WHERE year = #{year} AND level = 1 AND tb_economica.cdcta = '#{self.code}' AND idente is null AND  tipreig = '#{kind}'
+)  as mean
+SQL
+    ActiveRecord::Base.connection.execute(sql).first['avg'].to_f
+  end
+
   def level
     code.length - 1
   end

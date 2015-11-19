@@ -10,6 +10,7 @@ gem 'rollbar'
 gem 'meta-tags'
 gem 'ine-places', require: 'ine/places/places'
 gem 'jbuilder'
+gem 'actionpack-page_caching'
 
 # Frontend
 gem 'jquery-rails'
