@@ -8,7 +8,11 @@
     <div class="form_filters" id="selectors">
 
       <div class="group">
-        Gasto
+        <% if @filter.expending? %>
+          Gasto
+        <% else %>
+          Ingreso
+        <% end %>
         <ul id="measure_selector" class="measure buttons">
           <li><a href="javascript:void(null)" id="per_person" class ="measure button buttonSelected">por habitante</a></li>
           <li><a href="javascript:void(null)" id="percentage" class ="measure button">% sobre el total</a></li>
@@ -32,7 +36,12 @@
 
       <div class="sub_element">
         <h3>
-          Gasto total
+          <% if @filter.expending? %>
+            Gasto total
+          <% else %>
+            Ingreso total
+          <% end %>
+
           <% if @filter.year > 2010 %>
             <% p = percentage(place.data.send("total_functional_#{@filter.year}"),
                               place.data.send("total_functional_#{@filter.year-1}")) %>
@@ -51,7 +60,12 @@
 
       <div class="sub_element">
         <h3>
-          <span title="Gasto por habitante">Gasto/habitante</span>
+          <% if @filter.expending? %>
+            <span title="Gasto por habitante">Gasto/habitante</span>
+          <% else %>
+            <span title="Ingreso por habitante">Ingreso/habitante</span>
+          <% end %>
+
           <% if @filter.year > 2010 %>
             <% p = percentage(place.data.send("total_functional_#{@filter.year}") / place.data.total,  place.data.send("total_functional_#{@filter.year - 1}") / place.data.total) %> 
             <span class="percenchange" class="tipsit" title="Cambio de <%= p %> respecto al año anterior"><%= p %></span>
@@ -77,7 +91,15 @@
     <div class="widget">
       <div class="widget_cont">
 
-        <h2>Gasto por áreas funcionales</h2>
+        <% if @filter.expending? %>
+          <% if @filter.functional? %>
+            <h2>Gasto por áreas funcionales</h2>
+          <% else %>
+            <h2>Gasto por áreas económicas</h2>
+          <% end %>
+        <% else %>
+          <h2>Ingreso por áreas económicas</h2>
+        <% end %>
 
         <div id="bars_vis_fun"></div>
       </div>
@@ -96,14 +118,27 @@
     <div class="widget ">
       <div class="widget_cont">
 
-        <h2>Partidas con mayor gasto</h2>
+        <% if @filter.expending? %>
+          <h2>Partidas con mayor gasto</h2>
+        <% else %>
+          <h2>Partidas con mayor ingreso</h2>
+        <% end %>
 
         <table>
-        <% place.data.bigger_functional_budgets(@filter.year).each do |budget_line|  %>
-        <tr>
-          <td><%= link_to(truncate(budget_line.name, length: 72), budget_functional_item_path(budget_line.place_id, budget_line.code, params), title: budget_line.name) %></td>
-          <td class="right"><%= format_currency(budget_line.amount) %></td>
-        </tr>
+        <% if @filter.functional? %>
+          <% place.data.bigger_functional_budgets(@filter.year).each do |budget_line|  %>
+          <tr>
+            <td><%= link_to(truncate(budget_line.name, length: 72), budget_functional_item_path(budget_line.place_id, budget_line.code, params), title: budget_line.name) %></td>
+            <td class="right"><%= format_currency(budget_line.amount) %></td>
+          </tr>
+          <% end %>
+        <% else %>
+          <% place.data.bigger_economic_budgets(@filter.year, @filter.kind).each do |budget_line|  %>
+          <tr>
+            <td><%= link_to(truncate(budget_line.name, length: 72), budget_economic_item_path(budget_line.place_id, budget_line.code, params), title: budget_line.name) %></td>
+            <td class="right"><%= format_currency(budget_line.amount) %></td>
+          </tr>
+          <% end %>
         <% end %>
         </table>
 
@@ -113,15 +148,28 @@
     <div class="widget ">
       <div class="widget_cont">
 
-        <h2>Partidas con menor gasto</h2>
+        <% if @filter.expending? %>
+          <h2>Partidas con menor gasto</h2>
+        <% else %>
+          <h2>Partidas con menor ingreso</h2>
+        <% end %>
 
         <table>
-        <% place.data.smaller_functional_budgets(@filter.year).each do |budget_line|  %>
-        <tr>
-          <td><%= link_to(truncate(budget_line.name, length: 72), budget_functional_item_path(budget_line.place_id, budget_line.code, params), title: budget_line.name) %></td>
-          <td class="right"><%= format_currency(budget_line.amount) %></td>
+        <% if @filter.functional? %>
+          <% place.data.smaller_functional_budgets(@filter.year).each do |budget_line|  %>
+          <tr>
+            <td><%= link_to(truncate(budget_line.name, length: 72), budget_functional_item_path(budget_line.place_id, budget_line.code, params), title: budget_line.name) %></td>
+            <td class="right"><%= format_currency(budget_line.amount) %></td>
+          </tr>
+          <% end %>
+        <% else %>
+          <% place.data.smaller_economic_budgets(@filter.year, @filter.kind).each do |budget_line|  %>
+          <tr>
+            <td><%= link_to(truncate(budget_line.name, length: 72), budget_economic_item_path(budget_line.place_id, budget_line.code, params), title: budget_line.name) %></td>
+            <td class="right"><%= format_currency(budget_line.amount) %></td>
+          </tr>
+          <% end %>
         <% end %>
-        </tr>
         </table>
 
       </div>
@@ -130,6 +178,7 @@
   </div>
 </div>
 
+<% if false %>
 <script type="text/javascript">
   var barsVis = new BarsVis('#bars_vis_fun', 'mean_national');
 
@@ -152,3 +201,4 @@
     barsVis.updateRender();
   });
 </script>
+<% end %>

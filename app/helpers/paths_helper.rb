@@ -1,11 +1,19 @@
 module PathsHelper
 
   def place_path(place, params)
-    budgets_path(params.except(*reset_filters_parameters).merge({location_id: place.id, location_type: 'Place', functional_area: nil}).symbolize_keys)
+    place_params = {location_id: place.id, location_type: 'Place'}
+    place_params.merge!({functional_area: 'all', economic_area: nil}) if @filter.functional?
+    place_params.merge!({functional_area: nil, economic_area: 'all'}) if @filter.economic?
+
+    budgets_path(params.except(*reset_filters_parameters).merge(place_params).symbolize_keys)
   end
 
   def budget_functional_item_path(place_id, code, params)
-    budgets_path(params.except(*reset_filters_parameters).merge({location_id: place_id, location_type: 'Place', functional_area: code}).symbolize_keys)
+    budgets_path(params.except(*reset_filters_parameters).merge({location_id: place_id, location_type: 'Place', functional_area: code, economic_area: nil}).symbolize_keys)
+  end
+
+  def budget_economic_item_path(place_id, code, params)
+    budgets_path(params.except(*reset_filters_parameters).merge({location_id: place_id, location_type: 'Place', economic_area: code, functional_area: nil}).symbolize_keys)
   end
 
 end

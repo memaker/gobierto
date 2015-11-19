@@ -9,6 +9,7 @@ gem 'bcrypt'
 gem 'rollbar'
 gem 'meta-tags'
 gem 'ine-places', require: 'ine/places/places'
+gem 'jbuilder'
 
 # Frontend
 gem 'jquery-rails'

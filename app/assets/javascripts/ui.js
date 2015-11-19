@@ -23,28 +23,32 @@ $(function(){
       searchText: 'Buscar:'
     },
     dataset: {
-      perPageDefault: 100,
-      perPageOptions: [25,50,100, 300],
-      sorts: { 'gasto': -1 }
+      perPageDefault: 50,
+      perPageOptions: [25,50,100],
+      //sorts: { 'budget': -1 },
+      ajax: true,
+      ajaxUrl: window.location.pathname + '.json/' + window.location.search,
+      ajaxOnLoad: true,
+      records: []
     },
     readers: {
-      'habitantes': function(el, record) { return Number(el.textContent); },
-      'gasto/Hab': function(el, record) { return Number(el.textContent); },
-      'gasto': function(el, record) { return Number(el.textContent); },
-      '%S/Total': function(el, record) { return Number(el.textContent); },
+      'population': function(el, record) { return Number(el.textContent); },
+      'budget_per_inhabitant': function(el, record) { return Number(el.textContent); },
+      'budget': function(el, record) { return Number(el.textContent); },
+      'percentage_from_total': function(el, record) { return Number(el.textContent); },
     },
     writers: {
-      'habitantes': function(record) { return "<span class='soft'>" + accounting.formatNumber(record.habitantes, 0) +"</span>"; },
-      'gasto/Hab': function(record) { return accounting.formatMoney(record['gasto/Hab']); },
-      'gasto': function(record) { return accounting.formatMoney(record.gasto, '€', 0); },
-      // '%S/Total': function(record) { return record['%S/Total'].toPrecision(4) + " %"; },
-      '%S/Total': function(record) { return accounting.formatNumber(record['%S/Total'], 2) + " %"; },
+      'population': function(record) { return "<span class='soft'>" + accounting.formatNumber(record.population, 0) +"</span>"; },
+      'budget_per_inhabitant': function(record) { return accounting.formatMoney(record.budget_per_inhabitant); },
+      'budget': function(record) { return accounting.formatMoney(record.budget, '€', 0); },
+      'percentage_from_total': function(record) { return accounting.formatNumber(record.percentage_from_total, 2) + " %"; },
     },
     table: {
-      copyHeaderClass: true
+      copyHeaderClass: true,
     }
   }).bind('dynatable:afterUpdate', function(){
     sparkRender();
+    updateHeaders();
   });
 
   function sparkRender(){
@@ -52,8 +56,14 @@ $(function(){
   }
   sparkRender();
 
+  function updateHeaders(){
+    $('.dynatable th a').each(function(){
+      $(this).text(window.headerName[$(this).text().replace(' ▼', '').replace(' ▲', '')]);
+    });
+  }
+
   $('.bonsai').bonsai();
-  
+
   $('.select_from_tree').hover(function(e) {
     e.preventDefault();
     $(this).find('.tree').show();
@@ -61,27 +71,27 @@ $(function(){
     $(this).find('.tree').hide();
   });
 
-  $('[data-menu-area]').click(function(e){
+  $(document).on('click', '[data-menu-area]', function(e){
     e.preventDefault();
     $('#' + $(this).data('rel')).val($(this).data('menu-area'));
 
     var text = $(this).text();
-    $(this).parents('.select_from_tree').find('.label a').text(text);
+    $('.js-' + $(this).data('rel') + ' a').text(text);
     $(this).parents('.tree').hide();
   });
 
   var $option = $('#functional_area');
   var value = $option.val();
   if(value !== undefined && value !== ""){
-    var text = $('[data-menu-area=' + value + ']').text();
-    $option.parent().find('.label a').text(text);
+    var text = $('.js-functional [data-menu-area=' + value + ']').text();
+    $('.js-functional_area a').text(text);
   }
 
-  var $option = $('#functional_area');
+  var $option = $('#economic_area');
   var value = $option.val();
   if(value !== undefined && value !== ""){
-    var text = $('[data-menu-area=' + value + ']').text();
-    $option.parent().find('.label a').text(text);
+    var text = $('.js-economic [data-menu-area=' + value + ']').text();
+    $('.js-economic_area a').text(text);
   }
 
   $('#search').autocomplete($.extend({}, AUTOCOMPLETE_DEFAULTS, searchOptions));
@@ -93,6 +103,16 @@ $(function(){
     $(this).find('.compare').velocity("fadeOut", { duration: 250 });
   });
 
+  // TODO
+  //window.filters = new Filters($('form'));
+
+  $('#kind').on('change', function(e){
+    $.ajax('/categories/economic/' + $(this).val());
+  });
+
+  $(document).on('click', '.js-disabled', function(e){
+    e.preventDefault();
+  });
 
 });
 

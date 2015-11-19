@@ -1,4 +1,7 @@
 class BudgetLine < OpenStruct
+  include Rails.application.routes.url_helpers
+  include PathsHelper
+
   def amount
     super.to_f
   end
@@ -24,4 +27,5 @@ class BudgetLine < OpenStruct
   def historic_values
     [total_2010,total_2011,total_2012,total_2013,total_2014,total_2015]
   end
+
 end

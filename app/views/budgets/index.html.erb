@@ -12,55 +12,24 @@
           <%= hidden_field_tag :location_type, params[:location_type] %>
         </div>
 
-        <div class="form_item">
+        <div class="form_item js-functional">
           <%= label_tag :functional_area, 'Area funcional' %>
 
           <div class="select_from_tree">
-
-            <div class="label"><%= link_to 'Todas <i class="fa fa-sort-down"></i>'.html_safe, '' %></div>
-
-            <div class="tree">
-
-              <% cache('functional_area') do %>
-                <ul class="bonsai">
-                  <% FunctionalArea.root_items.each do |item| %>
-                    <li>
-                      <%= link_to item.name, '#', data: { 'menu-area' => item.code, 'rel' => 'functional_area' } %>
-                      <%= render_children(item, 'functional_area' ) %>
-                    </li>
-                  <% end %>
-                </ul>
-              <% end %>
-
-            </div>
+            <%= render partial: 'functional_area_tree', locals: {kind: EconomicArea::EXPENDING} %>
           </div>
           <%= hidden_field_tag :functional_area, params[:functional_area] %>
         </div>
 
-        <% if false %>
-          <div class="form_item">
-            <%= label_tag :economic_area, 'Area económica' %>
+        <div class="form_item js-economic">
+          <%= label_tag :economic_area, 'Area económica' %>
 
-            <div class="select_from_tree">
-
-              <div class="label"><%= link_to 'Todas <i class="fa fa-sort-down"></i>'.html_safe, '' %></div>
-
-              <div class="tree">
-                <ul class="bonsai">
-                  <% EconomicArea.root_items.each do |item| %>
-                    <li>
-                      <%= link_to item.name, '#', data: { 'menu' => item.code, 'rel' => 'economic_area'  } %>
-                      <%= render_children(item, 'economic_area') %>
-                    </li>
-                  <% end %>
-                </ul>
-
-              </div>
-            </div>
-
-            <%= hidden_field_tag :economic_area, params[:economic_area] %>
+          <div class="select_from_tree">
+            <%= render partial: 'economic_area_tree', locals: {kind: EconomicArea::EXPENDING} %>
           </div>
-        <% end %>
+
+          <%= hidden_field_tag :economic_area, params[:economic_area] %>
+        </div>
 
         <div class="form_item">
           <label></label>
@@ -95,46 +64,35 @@
 <% end %>
 
 <div>
-  <% if @budget_lines && @budget_lines.any? %>
+  <% if @filter.active? %>
     <table class="dynatable">
       <thead>
         <tr>
-          <th>Evolución</th>
-          <th>Partida</th>
-          <th>Municipio</th>
-          <th class="soft right wadus">Habitantes</th>
-          <th class="right wadus">Gasto/Hab</th>
-          <th class="right ">Gasto</th>
-          <th class="right">% S/Total</th>
-          <th></th>
+          <th>evolution</th>
+          <th>name</th>
+          <th>place_name</th>
+          <th class="soft right wadus">population</th>
+          <th class="right wadus">budget_per_inhabitant</th>
+          <th class="right">budget</th>
+          <th class="right">percentage_from_total</th>
+          <th>compare_links</th>
         </tr>
       </thead>
       <tbody>
-        <% @budget_lines.each do |budget_line| %>
-          <tr>
-            <td><span class="sparkline" data-sparkvalues='<%= budget_line.historic_values.join(',') %>'></span></td>
-            <td><%= link_to(truncate(budget_line.name, length: 58), budget_functional_item_path(budget_line.place_id, budget_line.code, params), title: budget_line.name) %></td>
-            <td><%= link_to(truncate(budget_line.place_name, length: 28), place_path(budget_line.place, params), title: budget_line.place_name) %> <span class="province">(<%= budget_line.place.province.name %>)</span></td>
-            <td ><%= budget_line.population %></td>
-            <td ><%= budget_line.budget_per_inhabitant %></td>
-            <td ><%= budget_line.amount %></td>
-            <td ><%= budget_line.percentage_total_functional %></td>
-            <td>
-              <div class="compare_cont">
-                <%= link_to 'Compara', '' %>
-                  <div class="compare">
-                    <%= link_to 'Con municipios de la misma CCAA', budgets_path(params.except(*reset_filters_parameters).merge({location_id: budget_line.place.province.autonomous_region.id, location_type: 'AutonomousRegion'}).symbolize_keys) %>
-                    <%= link_to 'Con municipios de la misma Provincia', budgets_path(params.except(*reset_filters_parameters).merge({location_id: budget_line.place.province.id, location_type: 'Province'}).symbolize_keys) %>
-                    <%= link_to 'Con municipios con población similar', budgets_path(params.except(*reset_filters_parameters).merge(similar_population_parameters(budget_line.population)).symbolize_keys) %>
-                    <%= link_to 'Con municipios con presupuesto similar', budgets_path(params.except(*reset_filters_parameters).merge(similar_budget_parameters(budget_line)).symbolize_keys) %>
-                    <%= link_to 'Con municipios con presupuesto total similar', budgets_path(params.except(*reset_filters_parameters).merge(total_similar_budget_parameters(budget_line.total_functional_budget)).symbolize_keys) %>
-                  </div>
-              </div>
-            </td>
-          </tr>
-        <% end %>
       </tbody>
     </table>
   <% end %>
 </div>
 
+<script>
+  window.headerName = {
+    'evolution': 'Evolución',
+    'name': 'Partida',
+    'place_name': 'Municipio',
+    'population': 'Población',
+    'budget_per_inhabitant': '<%= @filter.expending? ? 'Gasto/Hab' : 'Ingreso/Hab' %>',
+    'budget': '<%= @filter.expending? ? 'Gasto' : 'Ingreso' %>',
+    'percentage_from_total': '% S/Total',
+    'compare_links': ''
+  };
+</script>

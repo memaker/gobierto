@@ -11,8 +11,10 @@ Rails.application.routes.draw do
   get 'presupuestos' => 'budgets#index', as: :budgets
   get 'search' => 'search#index'
 
+  get 'categories/economic/:kind' => 'categories#economic'
+
   namespace :api do
-    get '/data/:place_id/:year/economic' => 'data#economic'
+    get '/data/:place_id/:year/:kind/economic' => 'data#economic'
     get '/data/:place_id/:year/functional' => 'data#functional'
   end
 

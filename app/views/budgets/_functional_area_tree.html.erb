@@ -1,0 +1,17 @@
+<% if kind == EconomicArea::EXPENDING %>
+  <div class="label js-functional_area"><%= link_to '&nbsp; <i class="fa fa-sort-down"></i>'.html_safe, '' %></div>
+
+  <div class="tree">
+    <ul class="bonsai">
+      <li><%= link_to 'Todas', '#', data: {'menu-area' => 'all', 'rel' => 'functional_area' } %></li>
+      <% FunctionalArea.root_items.each do |item| %>
+        <li>
+          <%= link_to item.name, '#', data: { 'menu-area' => item.code, 'rel' => 'functional_area' } %>
+          <%= render_children(item, 'functional_area' ) %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+<% else %>
+  <div class="label js-functional_area"><%= link_to '&nbsp; <i class="fa fa-times"></i>'.html_safe, '', class: 'js-disabled' %></div>
+<% end %>
