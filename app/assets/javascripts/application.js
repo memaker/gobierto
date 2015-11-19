@@ -14,6 +14,7 @@
 //= require vendor/d3-legend
 //= require vendor/klass
 //= require vis_bars
+//= require vis_distribution
 // require vis
 
 //= require ui

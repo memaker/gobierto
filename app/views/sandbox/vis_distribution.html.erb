@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<link rel="shortcut icon" href="images/favicon.ico">
+<!-- fonts -->
+<link href='http://fonts.googleapis.com/css?family=Share+Tech' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Raleway:600,400,300' rel='stylesheet' type='text/css'>
+
+<!-- libraries -->
+<script src="assets/js/d3.v3.min.js"></script>
+<script src="assets/js/d3-legend.js"></script>
+<script src="assets/js/Klass.js"></script>
+
+
+
+<!-- stylesheets -->
+<link rel="stylesheet" href="assets/css/vis_distribution.css"/>
+
+
+<body>
+  <div class="main">
+    <div id="selectors">
+        <ul id="measure_selector" class="measure buttons">
+           <li><a href="javascript:void(null)" id="per_person" class ="measure button buttonSelected">por habitante</a></li><!--
+        --><li><a href="javascript:void(null)" id="percentage" class ="measure button">% sobre el total</a></li>
+        </ul>
+        <ul id="context_selector" class="context buttons">
+           <li><a href="javascript:void(null)" id="mean_national" class ="context button buttonSelected">País</a></li><!--
+        --><li><a href="javascript:void(null)" id="mean_autonomy" class ="context button">CCAA</a></li><!--
+        --><li><a href="javascript:void(null)" id="mean_province" class ="context button">Provincia</a></li>
+        </ul>
+    </div>
+    <div id="vis_distribution"></div>
+  </div>
+    
+
+  
+  <script src="assets/js/vis_distribution.js"></script>
+
+  <script type="text/javascript">
+    var visDistribution = new VisDistribution('#vis_distribution', 'percentage', 'mean_province');
+    visDistribution.render('data/data_random.json');
+
+    d3.selectAll('.measure.button')
+      .on('click', function(d) {
+        d3.selectAll(".measure.button.buttonSelected").classed("buttonSelected", false);
+        d3.select(this).classed("buttonSelected", true);
+        visDistribution.measure = this.id;
+        
+        visDistribution.updateRender();
+      });
+
+    d3.selectAll('.context.button')
+      .on('click', function(d) {
+        d3.selectAll(".context.button.buttonSelected").classed("buttonSelected", false);
+        d3.select(this).classed("buttonSelected", true);
+        visDistribution.mean = this.id;
+
+        visDistribution.updateRender();
+      });
+  </script>
+
+</body>
+</html>
