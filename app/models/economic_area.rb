@@ -149,7 +149,8 @@ SQL
   end
 
   def mean_national_per_person(year, kind)
-     sql = <<-SQL
+    Rails.cache.fetch("economic/national/#{kind}/#{self.code}/#{year}") do
+       sql = <<-SQL
 select avg(x)
 FROM(
   select budget_per_inhabitant as x
@@ -158,11 +159,13 @@ FROM(
 )  as mean
 SQL
 
-    ActiveRecord::Base.connection.execute(sql).first['avg'].to_f
+      ActiveRecord::Base.connection.execute(sql).first['avg'].to_f
+    end
   end
 
   def mean_autonomy_per_person(year, place, kind)
-     sql = <<-SQL
+    Rails.cache.fetch("economic/autonomous_region/#{place.province.autonomous_region.id}/#{kind}/#{self.code}/#{year}") do
+      sql = <<-SQL
 select avg(x)
 FROM(
   select budget_per_inhabitant as x
@@ -170,11 +173,13 @@ FROM(
   INNER JOIN poblacion_municipal_2014 ON poblacion_municipal_2014.codigo = tb_economica.ine_code AND poblacion_municipal_2014.autonomous_region_id = #{place.province.autonomous_region.id}
   WHERE year = #{year} AND level = 1 AND tb_economica.cdcta = '#{self.code}' AND idente is null AND  tipreig = '#{kind}'
 )  as mean
-SQL
-    ActiveRecord::Base.connection.execute(sql).first['avg'].to_f
+  SQL
+      ActiveRecord::Base.connection.execute(sql).first['avg'].to_f
+    end
   end
 
   def mean_province_per_person(year, place, kind)
+    Rails.cache.fetch("economic/province/#{place.province.id}/#{kind}/#{self.code}/#{year}") do
      sql = <<-SQL
 select avg(x)
 FROM(
@@ -184,47 +189,8 @@ FROM(
   WHERE year = #{year} AND level = 1 AND tb_economica.cdcta = '#{self.code}' AND idente is null AND  tipreig = '#{kind}'
 )  as mean
 SQL
-    ActiveRecord::Base.connection.execute(sql).first['avg'].to_f
-
-  end
-
-  def mean_national_percentage(year, total, kind)
-     sql = <<-SQL
-select avg(x)
-FROM(
-  select percentage_total_functional as x
-  FROM tb_economica
-  WHERE year = #{year} AND level = 1 AND tb_economica.cdcta = '#{self.code}' AND idente is null AND  tipreig = '#{kind}'
-)  as mean
-SQL
-
-    ActiveRecord::Base.connection.execute(sql).first['avg'].to_f
-  end
-
-  def mean_autonomy_percentage(year, place, total, kind)
-     sql = <<-SQL
-select avg(x)
-FROM(
-  select percentage_total_functional as x
-  FROM tb_economica
-  INNER JOIN poblacion_municipal_2014 ON poblacion_municipal_2014.codigo = tb_economica.ine_code AND poblacion_municipal_2014.autonomous_region_id = #{place.province.autonomous_region.id}
-  WHERE year = #{year} AND level = 1 AND tb_economica.cdcta = '#{self.code}' AND idente is null AND  tipreig = '#{kind}'
-)  as mean
-SQL
-    ActiveRecord::Base.connection.execute(sql).first['avg'].to_f
-  end
-
-  def mean_province_percentage(year, place, total, kind)
-     sql = <<-SQL
-select avg(x)
-FROM(
-  select percentage_total_functional as x
-  FROM tb_economica
-  INNER JOIN poblacion_municipal_2014 ON poblacion_municipal_2014.codigo = tb_economica.ine_code AND poblacion_municipal_2014.province_id = #{place.province.id}
-  WHERE year = #{year} AND level = 1 AND tb_economica.cdcta = '#{self.code}' AND idente is null AND  tipreig = '#{kind}'
-)  as mean
-SQL
-    ActiveRecord::Base.connection.execute(sql).first['avg'].to_f
+      ActiveRecord::Base.connection.execute(sql).first['avg'].to_f
+    end
   end
 
   def level
@@ -238,5 +204,4 @@ SQL
   def name
     nombre
   end
-
 end
