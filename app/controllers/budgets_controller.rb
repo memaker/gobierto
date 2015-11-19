@@ -1,11 +1,12 @@
 class BudgetsController < ApplicationController
   def index
     @filter = BudgetFilter.new(params)
-    @paginated_result = @filter.apply
 
     respond_to do |format|
       format.html
-      format.json
+      format.json do
+        @paginated_result = @filter.apply
+      end
     end
   end
 end

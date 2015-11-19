@@ -58,6 +58,10 @@ class BudgetFilter
 
   attr_reader :location, :year, :kind, :per_page, :offset
 
+  def active?
+    @year.present?
+  end
+
   def location?
     @location.present?
   end
@@ -84,7 +88,7 @@ class BudgetFilter
 
   def apply
     # If the year is nil we assume there are no filters applied
-    return PaginatedResult.new(0, []) if @year.nil?
+    return PaginatedResult.new(0, []) if !active?
 
     if @economic_area_filter_code
       @economic_area_filter_code = nil if @economic_area_filter_code == 'all'
