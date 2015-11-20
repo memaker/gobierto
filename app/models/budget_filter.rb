@@ -46,7 +46,7 @@ class BudgetFilter
     @offset = filters[:offset].to_i
     @sort_by = {
       attribute: (filters[:sorts].keys.first rescue 'budget'),
-      direction: (filters[:sorts].values.first == '1' ? 'DESC' : 'ASC' rescue 'DESC')
+      direction: (filters[:sorts].values.first == '-1' ? 'DESC' : 'ASC' rescue 'DESC')
     }
 
     @location = if filters[:location_id].present? && filters[:location_type].present?
