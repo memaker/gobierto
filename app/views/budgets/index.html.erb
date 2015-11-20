@@ -7,7 +7,7 @@
 
         <div class="form_item">
           <%= label_tag :query, 'Municipio' %>
-          <input type="search" name="query" placeholder="Busca tu municipio, provincia o comunidad" class="place_search input" id="search" value="<%= @filter.location.name if @filter.location? %>" />
+          <input type="search" name="query" placeholder="Busca tu municipio, provincia o comunidad" class="place_search input" id="search" value="<%= filter_location_name %>" />
 
           <%= link_to 'x', '', data: {reset: 'location'}  %>
 

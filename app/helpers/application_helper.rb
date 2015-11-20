@@ -54,4 +54,18 @@ module ApplicationHelper
   def percentage(current_year_value, old_value)
     number_with_precision(((current_year_value.to_f - old_value.to_f)/old_value.to_f) * 100, precision: 2).to_s + " %"
   end
+
+  def filter_location_name
+    name = ""
+    if @filter.location?
+      name = @filter.location.name
+      if @filter.location.is_a?(INE::Places::Province)
+        name += " (Provincia)"
+      elsif @filter.location.is_a?(INE::Places::AutonomousRegion)
+        name += " (CCAA)"
+      end
+    end
+
+    name
+  end
 end
