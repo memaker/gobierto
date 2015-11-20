@@ -20,7 +20,7 @@ module ApplicationHelper
       Range.new *array
     end.detect{|r| r.include?(population) }
 
-    {population: "#{r.first} - #{r.last}"}
+    {format: nil, population: "#{r.first} - #{r.last}"}
   end
 
   def similar_budget_parameters(budget_line)
@@ -29,7 +29,7 @@ module ApplicationHelper
     budget_min = budget - budget*p
     budget_max = budget + budget*p
 
-    params = {similar_budget_min: budget_min.to_i, similar_budget_max: budget_max.to_i}
+    params = {format: nil, similar_budget_min: budget_min.to_i, similar_budget_max: budget_max.to_i}
     params.merge!({functional_area: budget_line.code}) if @filter.functional?
     params.merge!({economic_area: budget_line.code}) if @filter.economic?
     params
@@ -40,7 +40,7 @@ module ApplicationHelper
     budget_min = budget - budget*p
     budget_max = budget + budget*p
 
-    {total_similar_budget_min: budget_min.to_i, total_similar_budget_max: budget_max.to_i}
+    {format: nil, total_similar_budget_min: budget_min.to_i, total_similar_budget_max: budget_max.to_i}
   end
 
   def format_currency(n)
@@ -53,5 +53,19 @@ module ApplicationHelper
 
   def percentage(current_year_value, old_value)
     number_with_precision(((current_year_value.to_f - old_value.to_f)/old_value.to_f) * 100, precision: 2).to_s + " %"
+  end
+
+  def filter_location_name
+    name = ""
+    if @filter.location?
+      name = @filter.location.name
+      if @filter.location.is_a?(INE::Places::Province)
+        name += " (Provincia)"
+      elsif @filter.location.is_a?(INE::Places::AutonomousRegion)
+        name += " (CCAA)"
+      end
+    end
+
+    name
   end
 end

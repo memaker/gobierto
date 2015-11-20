@@ -1,6 +1,15 @@
 'use strict';
 
+function submitForm(){
+  if($('#location_type').val() === '' && $('#functional_area').val() === '' && $('#economic_area').val() === ''){
+    return false;
+  } 
+  $('.spinner').show();
+  document.forms[0].submit();
+}
+
 $(function(){
+  $('.spinner').hide();
 
   if($(window).width() > 740) {
     function rebindAll() {
@@ -78,6 +87,8 @@ $(function(){
     var text = $(this).text();
     $('.js-' + $(this).data('rel') + ' a').text(text);
     $(this).parents('.tree').hide();
+
+    submitForm();
   });
 
   var $option = $('#functional_area');
@@ -94,12 +105,26 @@ $(function(){
     $('.js-economic_area a').text(text);
   }
 
+  var searchOptions = {
+    serviceUrl: '/search',
+    onSelect: function (suggestion) {
+      $('#location_id').val(suggestion.data.id);
+      $('#location_type').val(suggestion.data.type);
+      $('#search').val(suggestion.value);
+      submitForm();
+    },
+    groupBy: 'category',
+  };
+
   $('#search').autocomplete($.extend({}, AUTOCOMPLETE_DEFAULTS, searchOptions));
 
-  $('.compare_cont').hover(function(e) {
+  $(document).on('mouseenter', '.compare_cont', function(e){
     e.preventDefault();
     $(this).find('.compare').velocity("fadeIn", { duration: 250 });
-  }, function(e) {
+  });
+
+  $(document).on('mouseleave', '.compare_cont', function(e){
+    e.preventDefault();
     $(this).find('.compare').velocity("fadeOut", { duration: 250 });
   });
 
@@ -110,17 +135,25 @@ $(function(){
     $.ajax('/categories/economic/' + $(this).val());
   });
 
+  $('#year,#population').on('change', function(e){
+    submitForm();
+  });
+
   $(document).on('click', '.js-disabled', function(e){
     e.preventDefault();
   });
 
   var selector = '#bars_vis_fun';
-  var barsVisFun = new BarsVis(selector, 'mean_national');
-  barsVisFun.render($(selector).data('url'));
+  if($(selector).length > 0){
+    var barsVisFun = new BarsVis(selector, 'mean_national');
+    barsVisFun.render($(selector).data('url'));
+  }
 
   var selector = '#bars_vis_econ';
-  var barsVisEcon = new BarsVis(selector, 'mean_national');
-  barsVisEcon.render($(selector).data('url'));
+  if($(selector).length > 0){
+    var barsVisEcon = new BarsVis(selector, 'mean_national');
+    barsVisEcon.render($(selector).data('url'));
+  }
 
   d3.selectAll('.context.button')
   .on('click', function(d) {
@@ -131,5 +164,19 @@ $(function(){
     barsVisEcon.context = this.id;
     barsVisEcon.updateRender();
   });
-});
 
+  $('[data-reset]').on('click', function(e){
+    e.preventDefault();
+    var selector = $(this).data('reset');
+    if(selector == 'location'){
+      $('#location_id').val('');
+      $('#location_type').val('');
+      $('#search').val('');
+      submitForm();
+    } else {
+      $('#' + selector).val('');
+      $('.js-' + selector + ' a').html('&nbsp; <i class="fa fa-sort-down"></i>');
+    }
+  });
+
+});

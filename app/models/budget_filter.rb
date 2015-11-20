@@ -5,20 +5,24 @@ class BudgetFilter
 
   def self.populations
     [
-      ['0 - 5.000',                '0 - 5000'],
-      ['5.000 - 10.000',        '5000 - 10000'],
-      ['10.000 - 50.000',      '10000 - 50000'],
-      ['50.000 - 150.000',     '50000 - 150000'],
-      ['150.000 - 500.000',   '150000 - 500000'],
-      ['500.000 - 1.500.000', '500000 - 1500000'],
-      ['1.500.000 - máximo', '1500000 - 100000000']
+      ['0 - 1.000',                  '0 - 1000'],
+      ['1.000 - 5.000',           '1000 - 5000'],
+      ['5.000 - 10.000',         '5000 - 10000'],
+      ['10.000 - 50.000',       '10000 - 50000'],
+      ['50.000 - 100.000',     '50000 - 100000'],
+      ['100.000 - 500.000',   '100000 - 500000'],
+      ['500.000 - máximo', '500000 - 100000000']
     ]
   end
 
-  # "sorts"=>{"budget"=>"-1"}, "page"=>"1", "perPage"=>"100", "offset"=>"0"}
   def initialize(filters)
     @kind = filters[:kind]                                   if filters[:kind].present?
     @year = filters[:year].to_i                              if filters[:year].present?
+
+    if active? && filters[:economic_area].blank? && filters[:functional_area].blank?
+      filters[:functional_area] = 'all'
+    end
+
     if filters[:economic_area].present?
       @economic_area_filter_code = filters[:economic_area]
       @economic_area_filter = filters[:economic_area]
@@ -41,7 +45,7 @@ class BudgetFilter
     @offset = filters[:offset].to_i
     @sort_by = {
       attribute: (filters[:sorts].keys.first rescue 'budget'),
-      direction: (filters[:sorts].values.first == '1' ? 'DESC' : 'ASC' rescue 'DESC')
+      direction: (filters[:sorts].values.first == '-1' ? 'DESC' : 'ASC' rescue 'DESC')
     }
 
     @location = if filters[:location_id].present? && filters[:location_type].present?

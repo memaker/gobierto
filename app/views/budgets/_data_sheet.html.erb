@@ -79,23 +79,24 @@
       <div class="widget_cont">
 
         <% if @filter.expending? %>
-          <% if @filter.functional? %>
-            <h2>Gasto por áreas funcionales</h2>
-          <% else %>
-            <h2>Gasto por áreas económicas</h2>
-          <% end %>
+          <h2>Gasto por áreas funcionales</h2>
+          <div id="bars_vis_fun" data-url="/api/data/<%= @filter.location.id %>/<%= @filter.year %>/functional.json"></div>
         <% else %>
-          <h2>Ingreso por áreas económicas</h2>
+          <h2>Ingreso por áreas funcionales</h2>
+          <div><p>No hay desglose de ingresos por áreas funcionales</p></div>
         <% end %>
 
-        <div id="bars_vis_fun" data-url="/api/data/<%= @filter.location.id %>/<%= @filter.year %>/functional.json"></div>
       </div>
     </div>
 
     <div class="widget">
       <div class="widget_cont">
 
-        <h2>Gasto por áreas económicas</h2>
+        <% if @filter.expending? %>
+          <h2>Gasto por áreas económicas</h2>
+        <% else %>
+          <h2>Ingreso por áreas económicas</h2>
+        <% end %>
 
         <div id="bars_vis_econ" data-url="/api/data/<%= @filter.location.id %>/<%= @filter.year %>/<%= @filter.kind %>/economic.json"></div>
       </div>

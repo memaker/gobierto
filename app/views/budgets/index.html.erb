@@ -7,7 +7,10 @@
 
         <div class="form_item">
           <%= label_tag :query, 'Municipio' %>
-          <input type="search" name="query" placeholder="Busca tu municipio, provincia o comunidad" class="place_search input" id="search" value="<%= @filter.location.name if @filter.location? %>" />
+          <input type="search" name="query" placeholder="Busca tu municipio, provincia o comunidad" class="place_search input" id="search" value="<%= filter_location_name %>" />
+
+          <%= link_to 'x', '', data: {reset: 'location'}  %>
+
           <%= hidden_field_tag :location_id, params[:location_id] %>
           <%= hidden_field_tag :location_type, params[:location_type] %>
         </div>
@@ -18,6 +21,8 @@
           <div class="select_from_tree">
             <%= render partial: 'functional_area_tree', locals: {kind: EconomicArea::EXPENDING} %>
           </div>
+          <%= link_to 'x', '', data: {reset: 'functional_area'}  %>
+
           <%= hidden_field_tag :functional_area, params[:functional_area] %>
         </div>
 
@@ -25,17 +30,12 @@
           <%= label_tag :economic_area, 'Area económica' %>
 
           <div class="select_from_tree">
-            <%= render partial: 'economic_area_tree', locals: {kind: EconomicArea::EXPENDING} %>
+            <%= render partial: 'economic_area_tree', locals: {kind: params[:kind] || EconomicArea::EXPENDING} %>
           </div>
+          <%= link_to 'x', '', data: {reset: 'economic_area'}  %>
 
           <%= hidden_field_tag :economic_area, params[:economic_area] %>
         </div>
-
-        <div class="form_item">
-          <label></label>
-          <%= submit_tag 'Filtrar' %> <%= link_to 'Resetear', budgets_path %>
-        </div>
-
       </div>
 
       <div class="col-2-2">

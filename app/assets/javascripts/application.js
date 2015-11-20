@@ -56,13 +56,3 @@ var AUTOCOMPLETE_DEFAULTS = {
   triggerSelectOnValidInput: false
 };
 
-var searchOptions = {
-  serviceUrl: '/search',
-  onSelect: function (suggestion) {
-    $('#location_id').val(suggestion.data.id);
-    $('#location_type').val(suggestion.data.type);
-    $('#search').val(suggestion.value);
-  },
-  groupBy: 'category',
-};
-

@@ -13,7 +13,7 @@ class ApplicationController < ActionController::Base
 
   def reset_filters_parameters
     [:location_id, :location_type, :population, :similar_budget_min, :similar_budget_max,
-     :total_similar_budget_min, :total_similar_budget_max, :code]
+     :total_similar_budget_min, :total_similar_budget_max, :code, :format]
   end
 
   protected
