@@ -55,8 +55,8 @@ class Api::DataController < ApplicationController
   end
 
   def distribution
-    filter = BudgetFilter.new(params)
-    budget_lines = filter.apply
+    filter = BudgetFilter.new(params.merge!({ perPage: 10000, offset: 0}))
+    budget_lines = filter.apply.records
 
     respond_to do |format|
       format.json do
@@ -79,6 +79,7 @@ class Api::DataController < ApplicationController
     max = per_inhabitant.last.budget_per_inhabitant.to_f
     range = max - min
     width = range / 20
+    mean = per_inhabitant.map { |r| r.budget_per_inhabitant.to_f }.reduce(:+) / per_inhabitant.size
 
     cuts = {}
     (min...max).step(width).each do |f|
@@ -89,14 +90,16 @@ class Api::DataController < ApplicationController
     cut_number = 0
     items = []
     cuts.each_pair do |cut,budget_lines|
+      label = "de #{cut.begin.round(2)}€ a #{cut.end.round(2)}€"
       budget_lines.each do |bl|
         item = {}
         item['name'] = bl.place_name
         item['cut'] = cut_number
-        item['label'] = "de #{cut.begin.round(2)}€ a #{cut.end.round(2)}€"
+        item['label'] = label
         item['value'] = bl.budget_per_inhabitant.to_f.round(2)
         items << item
       end
+      items << mean_item(label, cut_number, mean) if cut.include?(mean)
       cut_number += 1
     end
     items
@@ -104,35 +107,49 @@ class Api::DataController < ApplicationController
 
   def percentage_items(budget_lines)
     
-    percentage_method = if budget_lines.first.respond_to?(:percentage_total_functional)
+    percentage_method = if budget_lines.first.respond_to?(:percentage_from_total)
+      :percentage_from_total
+    elsif budget_lines.first.respond_to?(:percentage_total_functional)
       :percentage_total_functional
     else
       :percentage_total_economic
     end
 
-    percentage = budget_lines.sort_by{ |bl| bl.send(percentage_method).to_f }
+    percentages = budget_lines.sort_by{ |bl| bl.send(percentage_method).to_f }
     width = 5
-
+    mean = percentages.map { |r| r.send(percentage_method).to_f }.reduce(:+) / percentages.size
+    
     cuts = {}
     (0...100).step(width).each do |i|
       bucket = (i..i+width)
-      cuts[bucket] = percentage.select { |bl| bucket.include?(bl.send(percentage_method).to_f) }
+      cuts[bucket] = percentages.select { |bl| bucket.include?(bl.send(percentage_method).to_f) }
     end
 
     cut_number = 0
     items = []
     cuts.each_pair do |cut, budget_lines|
+      label = "de #{cut.begin}% a #{cut.end}%"
       budget_lines.each do |bl|
         item = {}
         item['name'] = bl.place_name
         item['cut'] = cut_number
-        item['label'] = "de #{cut.begin}% a #{cut.end}%"
+        item['label'] = label
         item['value'] = bl.send(percentage_method).to_f.round(2)
         items << item
       end
+      items << mean_item(label, cut_number, mean) if cut.include?(mean)
       cut_number += 1
     end
     items
+  end
+
+  def mean_item(label, cut_number, mean)
+    item = {}
+    item['name'] = "mean"
+    item['cut'] = cut_number
+    item['label'] = label
+    item['value'] = mean.round(2)
+    item
   end
 
 end

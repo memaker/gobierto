@@ -58,12 +58,14 @@
 
     </div>
 
+    <% if not @filter.location? %>
     <div class="widget">
       <div class="widget_cont">
         <h2>Distribución</h2>
         <div id="vis_distribution"></div>
       </div>
     </div>
+    <% end %>
 
     <div class="widget">
       <div class="widget_cont">

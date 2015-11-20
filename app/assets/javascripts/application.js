@@ -56,4 +56,3 @@ var AUTOCOMPLETE_DEFAULTS = {
   autoSelectFirst: true,
   triggerSelectOnValidInput: false
 };
-

@@ -179,4 +179,28 @@ $(function(){
     }
   });
 
+  if($('#vis_distribution').size() > 0) {
+
+    var visDistribution = new VisDistribution('#vis_distribution');//, 'percentage', 'mean_province');
+    visDistribution.render('api/data/distribution.json' + location.search);
+
+    d3.selectAll('.measure.button')
+      .on('click', function(d) {
+        d3.selectAll(".measure.button.buttonSelected").classed("buttonSelected", false);
+        d3.select(this).classed("buttonSelected", true);
+        visDistribution.measure = this.id;
+        
+        visDistribution.updateRender();
+      });
+
+    d3.selectAll('.context.button')
+      .on('click', function(d) {
+        d3.selectAll(".context.button.buttonSelected").classed("buttonSelected", false);
+        d3.select(this).classed("buttonSelected", true);
+        visDistribution.mean = this.id;
+
+        visDistribution.updateRender();
+      });
+  }
+
 });

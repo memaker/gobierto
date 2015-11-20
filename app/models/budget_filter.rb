@@ -41,7 +41,6 @@ class BudgetFilter
     @total_similar_budget_min = filters[:total_similar_budget_min] if filters[:total_similar_budget_min].present?
 
     @per_page = filters[:perPage].nil? ? 100 : filters[:perPage].to_i
-    @per_page = 100 if @per_page > 100
     @offset = filters[:offset].to_i
     @sort_by = {
       attribute: (filters[:sorts].keys.first rescue 'budget'),
