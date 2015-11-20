@@ -9,8 +9,29 @@ class FunctionalArea < ActiveRecord::Base
     where("level = 1").order("cdfgr")
   end
 
+  def self.find(code)
+    find_by(cdfgr: code)
+  end
+
   def children
     self.class.items.where("cdfgr like '#{self.code}%' AND level = #{self.level + 2}")
+  end
+
+  def parents
+    if self.level == 1
+      []
+    else
+      parents = []
+      category = self
+
+      while(category.level >= 1)
+        code = category.code[0..-2]
+        category = self.class.find(code)
+        parents.push category
+      end
+
+      return parents
+    end
   end
 
   def self.items_for_select
