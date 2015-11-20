@@ -16,6 +16,7 @@
 //= require vis_bars
 //= require vis_distribution
 //= require vis_dispersion
+//= require vis_evolution
 // require vis
 
 //= require ui
