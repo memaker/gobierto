@@ -78,6 +78,19 @@ class BudgetFilter
     @functional_area_filter.blank? && @economic_area_filter.present?
   end
 
+  def category_filter?
+    (@functional_area_filter.present? && @functional_area_filter != 'all') ||
+      (@economic_area_filter.present? && @economic_area_filter != 'all')
+  end
+
+  def category_filter
+    if @functional_area_filter.present? && @functional_area_filter != 'all'
+      {functional: @functional_area_filter}
+    elsif @economic_area_filter.present? && @economic_area_filter != 'all'
+      {economic: @economic_area_filter}
+    end
+  end
+
   def expending?
     @kind.nil? || @kind == 'G'
   end

@@ -60,7 +60,11 @@
 </div>
 
 <% if @filter.place? %>
-  <%= render 'data_sheet', place: @filter.location %>
+  <%= render 'location_data_sheet', place: @filter.location %>
+<% end %>
+
+<% if @filter.category_filter? %>
+  <%= render 'category_data_sheet' %>
 <% end %>
 
 <div>

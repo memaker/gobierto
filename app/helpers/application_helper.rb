@@ -68,4 +68,8 @@ module ApplicationHelper
 
     name
   end
+
+  def category_breadcrumb(category_filter)
+    "Padre > Hijo > #{category_filter.values.first}"
+  end
 end
