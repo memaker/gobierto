@@ -88,6 +88,11 @@ var BarsVis = Class.extend({
       "Transferencias de capital": "Transferencia de Capital",
       "Activos financieros": "Activos Financieros",
       "Pasivos financieros": "Pasivos Financieros",
+      "Impuestos directos": "Impuestos Directos",
+      "Impuestos indirectos": "Impuestos Indirectos",
+      "Tasas y otros ingresos": "Tasas y Otros Ingresos",
+      "Ingresos patrimoniales": "Ingresos Patrimoniales",
+      "Enajenación de inversiones reales": "Enaj. Inversiones Reales"
     }
 
     // Load the data
