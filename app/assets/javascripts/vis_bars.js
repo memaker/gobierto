@@ -102,6 +102,7 @@ var BarsVis = Class.extend({
       this.dataChart = jsonData.budgets;
       this.kind = jsonData.kind; 
       
+      this.dataChart.sort(function(a, b) { return a.value - b.value; })
       
       // Get the values array to take the max
       var values = [];
