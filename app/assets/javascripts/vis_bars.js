@@ -229,7 +229,7 @@ var BarsVis = Class.extend({
 
     var text = this.niceCategory[this.kind] + ': <strong>' + this.formatPercent(selectedData.value) + 
               '</strong>€<br>' + this.niceCategory[this.context] + ': <strong>' + selectedData[this.context] +
-              '</strong>€<br>'+ this.niceCategory['percentage']+': <strong>' + selectedData.percentage + '</strong>%<br>';              
+              '</strong>€<br>'+ this.niceCategory['percentage']+': <strong>' + selectedData.percentage + '</strong>%<br>';
 
     this.svgBars.selectAll('.bar')
       .filter(function(d) { return this._normalize(this.niceCategory[d.name]) != selectedClass[1]; }.bind(this))

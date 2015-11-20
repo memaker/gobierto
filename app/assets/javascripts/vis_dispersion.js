@@ -59,7 +59,7 @@ var VisDispersion = Class.extend({
 
     // Append tooltip
     this.tooltip = d3.select('body').append('div')
-      .attr('class', 'vis_distribution_tooltip')
+      .attr('class', 'vis_dispersion_tooltip')
       .style('opacity', 0);
 
 
@@ -84,7 +84,8 @@ var VisDispersion = Class.extend({
       "mean_province": "Media Provincial",
       "G": "Gasto/habitante",
       "I": "Ingreso/habitante",
-      "percentage": "% sobre el total"
+      "percentage": "% sobre el total",
+      "per_person": "Gasto/Hab"
     }
 
     // Load the data
@@ -96,6 +97,10 @@ var VisDispersion = Class.extend({
         d.per_person = +d.per_person;
         d.population = +d.population;
       });
+
+
+      var randomMean = 5320; // Get real mean from the data;
+
 
       // Sort by population, to get the right order of the cuts.  
       this.data.sort(function(a, b) { return a.population - b.population; }) 
@@ -139,16 +144,44 @@ var VisDispersion = Class.extend({
           .attr('class', 'dispersion_chart');
 
       this.chart.append('g')
-        .selectAll('cricle')
+        .attr('class', 'dots')
+        .selectAll('circle')
           .data(this.data)
           .enter()
         .append('circle')
-          // .attr('class', function(d) { return 'bar_distribution x' + d.key; })
+          .attr('class', function(d, i) { return 'dot x' + d.codigo; }.bind(this))
           .attr('cx', function(d) { return this.xScale(Math.log(d.population)); }.bind(this))
           .attr('cy', function(d) { return this.yScale(d.per_person); }.bind(this))
           .attr('r', this.radius)
           .attr('fill', function(d) { return this.colorScale(d.cut); }.bind(this))
-          .attr('opacity', this.opacity);
+          .attr('opacity', this.opacityLow)
+          .on('mouseover', this._mouseover.bind(this))
+          .on('mouseout', this._mouseout.bind(this))
+
+
+      // --> DRAW THE MEAN LINE
+      this.chart.append('g')
+        .attr('class', 'mean')
+          .selectAll('.mean_line')
+          .data([randomMean])
+           .enter()
+        .append('line')
+          .attr('x1', this.margin.left)
+          .attr('x2', this.width)
+          .attr('y1', function(d) { return this.yScale(d); }.bind(this))
+          .attr('y2', function(d) { return this.yScale(d); }.bind(this))
+          .attr('stroke', this.darkColor);
+
+      this.chart.select('.mean')
+        .append('text')
+          .attr('class', 'mean_text')
+          .attr('x', this.width)
+          .attr('y', function(d) { return this.yScale(randomMean); }.bind(this))
+          .attr('dx', 0)
+          .attr('dy', -4)
+          .attr('text-anchor', 'end')
+          .style('fill', this.darkColor)
+          .text('Media'); 
 
       // --> DRAW THE Legend 
       var svg = d3.select("svg");
@@ -258,60 +291,18 @@ var VisDispersion = Class.extend({
         selectedClass = selected.classList,
         selectedData = d3.select(selected).data()[0],
         selectedCx = d3.select(selected).attr('cx'),
-        selectedCy = d3.select(selected).attr('cy'),
-        labelsOn = d3.select('#myonoffswitch-labels').property('checked');
-  
-    if (selectedData.name == 'influence') {
-      var text = '<strong>' + formatPercent(selectedData.percentage) + '</strong> of respondents<br> are influenced<br>by <strong> ' + selectedData.tpClass + ' media</strong>'
-    } else {
-      var text = '<strong>' + formatPercent(selectedData.percentage) + '</strong> of respondents<br>associates<strong> ' + selectedData.tpClass + ' media</strong> to <strong>' + this.subindustry + '</strong>'
-    }
+        selectedCy = d3.select(selected).attr('cy');
     
-    d3.selectAll('.marker.' + selectedClass[1])
-      .filter(function(d) { return d.represent == selectedClass[2]; })
+    var text = '<strong>' + selectedData.name + '</strong><br>' + 
+              this.niceCategory[this.measure] + ': <strong>' + d3.round(selectedData.per_person, 2) + 
+              '</strong>€<br>' + 'Población: <strong>' + selectedData.population;
+
+    this.svgDispersion.selectAll('.dot.' + selectedClass[1])
       .transition()
       .duration(this.duration / 4)
-      .attr('markerWidth', this.markerSize * 2)
-      .attr('markerHeight', this.markerSize * 2)
-      .style('fill', customGrey)
-      .attr('stroke-width', .3);
-
-    var xMouseoverLine = this.xScale(selectedData.percentage),
-        yMouseoverLine = this.yScale(selectedData.tpClass) + this.ySecondaryScale(selectedData.name);
-  
-     d3.select(selected.parentNode).selectAll('mouseover_line')
-        .data([xMouseoverLine, yMouseoverLine])
-        .enter()
-        .append('line')
-        .attr('class', 'mouseover_line')
-        .attr('x1', xMouseoverLine)
-        .attr('y1', yMouseoverLine)
-        .attr('x2', xMouseoverLine)
-        .attr('y2', yMouseoverLine)
-        .attr('stroke-width', 1)
-        .style('stroke', this.colorScale(selectedData.tpClass))
-        .transition()
-        .duration(this.duration)
-        .attr('y1', function(d, i) { return i == 0 ? this.margin.top : yMouseoverLine; }.bind(this))
-        .attr('y2', function(d, i) { return i == 1 ? (this.height - this.margin.top) : yMouseoverLine; }.bind(this));
-
-   
-    d3.selectAll('.legend_line').selectAll('text.' + selectedData.name)
-      .attr('font-size', '1.5em');
-
-
-    this.svgDispersion.selectAll('.barLine')
-      .filter(function(d) { return d.name != selectedClass[2]; })
-      .transition()
-      .duration(this.duration / 4)
-      .style('stroke', function(d) { return this.brighterColorScale(d.tpClass); }.bind(this));
-
-    var toBright = this.ySecondaryScale.domain().filter(function(d) { return d != selectedClass[2]; })  
-    this.chart.selectAll('.' + toBright)
-      .transition()
-      .duration(this.duration / 4)
-      .style('stroke', function(d) { return this.brighterColorScale(d.tpClass); }.bind(this))
-      .attr('fill', function(d) { return this.brighterColorScale(d.tpClass); }.bind(this));
+      .attr('r', this.radius * 1.5)
+      .attr('fill', '#cccc')
+      .attr('opacity', this.opacity);
     
     this.tooltip
         .transition()
@@ -328,36 +319,15 @@ var VisDispersion = Class.extend({
   _mouseout: function () {
     var selected = d3.event.target,
         selectedClass = selected.classList,
-        selectedData = d3.select(selected).data()[0],
-        labelsOn = d3.select('#myonoffswitch-labels').property('checked');
+        selectedData = d3.select(selected).data()[0];
 
-    d3.selectAll('.marker.' + selectedClass[1])
-      .filter(function(d) { return d.represent == selectedClass[2]; })
+      
+    this.svgDispersion.selectAll('.dot.' + selectedClass[1])
       .transition()
       .duration(this.duration / 4)
-      .attr('markerWidth', this.markerSize)
-      .attr('markerHeight', this.markerSize)
-      .style('fill', this.colorScale(selectedClass[1]))
-      .attr('stroke-width', 0);
-
-    var yMouseoverLine = this.yScale(selectedData.tpClass) + this.ySecondaryScale(selectedData.name);
-
-    d3.selectAll('.mouseover_line')
-      .transition()
-      .duration(this.duration / 2)
-      .attr('y2', yMouseoverLine)
-      .attr('y1', yMouseoverLine)
-      .remove();
-    
-    var toBright = this.ySecondaryScale.domain().filter(function(d) { return d != selectedClass[2]; })  
-    this.chart.selectAll('.' + toBright)
-      .transition()
-      .duration(this.duration / 4)
-      .style('stroke', function(d) { return this.colorScale(d.tpClass); }.bind(this))
-      .attr('fill', function(d) { return this.colorScale(d.tpClass); }.bind(this));
-
-    d3.selectAll('.legend_line').selectAll('text.' + selectedData.name)
-      .attr('font-size', '1.1em');
+      .attr('r', this.radius)
+      .attr('fill', this.colorScale(selectedData.cut))
+      .attr('opacity', this.opacityLow);
 
     this.tooltip.transition()
         .duration(this.duration / 4)

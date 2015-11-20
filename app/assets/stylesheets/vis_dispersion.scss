@@ -30,16 +30,27 @@ body {
   /*shape-rendering: crispEdges;*/
 }
 
+.mean_text {
+  font-size: 0.7em;
+}
+
+.mean_text {
+  font-size: 0.7em;
+}
+
+.legend_dispersion text {
+  font-size: 0.7em;
+}
 
 /*Tooltip*/
 
-.ass_main_tooltip {
+.vis_dispersion_tooltip {
   top: 0;
   right: 0;
   position: absolute;
   padding: 5px;
   line-height: 140%;
-  width: 150px;
+  width: 180px;
   height: 50px;
   font-size: 12px;
   background: #FAF7F5;
