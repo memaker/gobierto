@@ -192,9 +192,9 @@ WHERE #{conditions.join(' AND ')}
   def budget_national_total(year)
     Rails.cache.fetch("economic/sum_national/#{kind}/#{self.code}/#{year}") do
        sql = <<-SQL
-  select sum(total_#{year}) as total
-  FROM economic_yearly_totals
-  WHERE cdcta = '#{self.code}' AND kind = '#{kind}'
+ select sum(importe) as total
+ from tb_economica
+ where tipreig='#{kind}' and year=#{year} and cdcta='#{code}' and idente is null
   SQL
 
       ActiveRecord::Base.connection.execute(sql).first['total'].to_f
@@ -210,21 +210,6 @@ FROM(
   FROM tb_economica
   WHERE year = #{year} AND tb_economica.cdcta = '#{self.code}' AND idente is null AND  tipreig = '#{kind}'
 )  as mean
-SQL
-
-      ActiveRecord::Base.connection.execute(sql).first['avg'].to_f
-    end
-  end
-
-  def mean_national_per_place(year)
-    Rails.cache.fetch("economic/national_per_place/#{kind}/#{self.code}/#{year}") do
-       sql = <<-SQL
-select avg(x)
-FROM(
-  select total_#{year} as x
-  FROM economic_yearly_totals
-  WHERE cdcta = '#{self.code}' AND kind = '#{kind}'
-) as mean
 SQL
 
       ActiveRecord::Base.connection.execute(sql).first['avg'].to_f

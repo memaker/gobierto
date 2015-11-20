@@ -5,16 +5,6 @@
 
     <%= category_breadcrumb(category) %>
 
-    <div class="form_filters" id="selectors">
-      <div class="group">
-        Contexto
-        <ul id="context_selector" class="context buttons">
-          <li><a href="javascript:void(null)" id="mean_national" class ="context button buttonSelected">País</a></li>
-          <li><a href="javascript:void(null)" id="mean_autonomy" class ="context button">CCAA</a></li>
-          <li><a href="javascript:void(null)" id="mean_province" class ="context button">Provincia</a></li>
-        </ul>
-      </div>
-    </div>
   </header>
 
   <div class="widget_container">
@@ -35,9 +25,9 @@
 
       <div class="sub_element">
         <h3>
-          Media de gasto por municipio
+          Media de gasto/municipio
         </h3>
-        <div class="number"><%= format_currency(category.mean_national_per_place(@filter.year)) %></div>
+        <div class="number"><%= format_currency(category.budget_national_total(@filter.year)/Population.count) %></div>
       </div>
 
       <div class="sub_element">
@@ -49,14 +39,21 @@
           <% end %>
 
         </h3>
-        <div class="number"><%= format_currency(category.mean_national_per_person(@filter.year)) %></div>
+        <div class="number"><%= format_currency(category.budget_national_total(@filter.year)/Population.total) %></div>
       </div>
 
       <div class="sub_element">
         <h3>
           Ranking
         </h3>
-        <div class="number"><%= number_with_delimiter(category.national_ranking(@filter.year)) %><span class="sub"> / <%= number_with_delimiter(category.class.categories_count(category.level, category.kind)) %></span></div>
+        <div class="number">
+
+        <% if @filter.functional? %>
+            <%= number_with_delimiter(category.national_ranking(@filter.year)) %><span class="sub"> / <%= number_with_delimiter(category.class.categories_count(category.level)) %></span>
+          <% else %>
+            <%= number_with_delimiter(category.national_ranking(@filter.year)) %><span class="sub"> / <%= number_with_delimiter(category.class.categories_count(category.level, category.kind)) %></span>
+          <% end %>
+        </div>
       </div>
 
     </div>
