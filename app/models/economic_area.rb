@@ -12,8 +12,29 @@ class EconomicArea < ActiveRecord::Base
     where(level: 1, tipreig: kind).order("cdcta")
   end
 
+  def self.find(code, kind)
+    find_by(cdcta: code, tipreig: kind)
+  end
+
   def children
     self.class.items.where("cdcta like '#{self.code}%' AND level = #{self.level + 2} AND tipreig = '#{self.tipreig}'")
+  end
+
+  def parents
+    if self.level == 1
+      []
+    else
+      parents = []
+      category = self
+
+      while(category.level >= 1)
+        code = category.code[0..-2]
+        category = self.class.find(code, self.tipreig)
+        parents.push category
+      end
+
+      return parents
+    end
   end
 
   def self.kinds

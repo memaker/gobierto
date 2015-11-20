@@ -1,0 +1,110 @@
+<div class="data_sheet">
+
+  <header class="clearfix">
+    Estás viendo
+
+    <%= category_breadcrumb(@filter.category_filter) %>
+
+    <div class="form_filters" id="selectors">
+      <div class="group">
+        Contexto
+        <ul id="context_selector" class="context buttons">
+          <li><a href="javascript:void(null)" id="mean_national" class ="context button buttonSelected">País</a></li>
+          <li><a href="javascript:void(null)" id="mean_autonomy" class ="context button">CCAA</a></li>
+          <li><a href="javascript:void(null)" id="mean_province" class ="context button">Provincia</a></li>
+        </ul>
+      </div>
+    </div>
+  </header>
+
+  <div class="widget_container">
+
+    <div class="widget clearfix">
+
+      <div class="sub_element">
+        <h3>
+          <% if @filter.expending? %>
+            Gasto total
+          <% else %>
+            Ingreso total
+          <% end %>
+
+        </h3>
+        <div class="number"><%= format_currency(123323123123) %></div>
+      </div>
+
+      <div class="sub_element">
+        <h3>
+          Media de gasto por municipio
+        </h3>
+        <div class="number"><%= number_with_delimiter(3232132) %></div>
+      </div>
+
+      <div class="sub_element">
+        <h3>
+          <% if @filter.expending? %>
+            <span title="Gasto por habitante">Gasto/habitante</span>
+          <% else %>
+            <span title="Ingreso por habitante">Ingreso/habitante</span>
+          <% end %>
+
+        </h3>
+        <div class="number"><%= number_to_currency(98) %></div>
+      </div>
+
+      <div class="sub_element">
+        <h3>
+          Ranking
+        </h3>
+        <div class="number"><%= number_with_delimiter(23) %><span class="sub"> / <%= number_with_delimiter(Population.count) %></span></div>
+      </div>
+
+    </div>
+
+    <div class="widget">
+      <div class="widget_cont">
+        <h2>Distribución</h2>
+        <div id="vis_distribution"></div>
+      </div>
+    </div>
+
+    <div class="widget">
+      <div class="widget_cont">
+
+        <h2>Dispersión</h2>
+
+        <div id="vis_dispersion"></div>
+      </div>
+    </div>
+
+    <div class="widget ">
+      <div class="widget_cont">
+
+        <% if @filter.expending? %>
+          <h2>Municipios con mayor gasto / habitante</h2>
+        <% else %>
+          <h2>Municipios con mayor ingreso / habitante</h2>
+        <% end %>
+
+        <table>
+        </table>
+
+      </div>
+    </div>
+
+    <div class="widget ">
+      <div class="widget_cont">
+
+        <% if @filter.expending? %>
+          <h2>Municipios con menor gasto / habitante</h2>
+        <% else %>
+          <h2>Municipios con menor ingreso / habitante</h2>
+        <% end %>
+
+        <table>
+        </table>
+
+      </div>
+    </div>
+  </div>
+</div>

@@ -68,4 +68,14 @@ module ApplicationHelper
 
     name
   end
+
+  def category_breadcrumb(category_filter)
+    category = if category_filter.keys.first == :functional
+              FunctionalArea.find(category_filter.values.first)
+            else
+              EconomicArea.find(category_filter.values.first, @filter.kind)
+            end
+
+    (category.parents + [category]).map(&:name).join(' > ')
+  end
 end
