@@ -20,7 +20,7 @@ module ApplicationHelper
       Range.new *array
     end.detect{|r| r.include?(population) }
 
-    {population: "#{r.first} - #{r.last}"}
+    {format: nil, population: "#{r.first} - #{r.last}"}
   end
 
   def similar_budget_parameters(budget_line)
@@ -29,7 +29,7 @@ module ApplicationHelper
     budget_min = budget - budget*p
     budget_max = budget + budget*p
 
-    params = {similar_budget_min: budget_min.to_i, similar_budget_max: budget_max.to_i}
+    params = {format: nil, similar_budget_min: budget_min.to_i, similar_budget_max: budget_max.to_i}
     params.merge!({functional_area: budget_line.code}) if @filter.functional?
     params.merge!({economic_area: budget_line.code}) if @filter.economic?
     params
@@ -40,7 +40,7 @@ module ApplicationHelper
     budget_min = budget - budget*p
     budget_max = budget + budget*p
 
-    {total_similar_budget_min: budget_min.to_i, total_similar_budget_max: budget_max.to_i}
+    {format: nil, total_similar_budget_min: budget_min.to_i, total_similar_budget_max: budget_max.to_i}
   end
 
   def format_currency(n)

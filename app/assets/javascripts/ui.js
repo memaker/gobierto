@@ -118,10 +118,13 @@ $(function(){
 
   $('#search').autocomplete($.extend({}, AUTOCOMPLETE_DEFAULTS, searchOptions));
 
-  $('.compare_cont').hover(function(e) {
+  $(document).on('mouseenter', '.compare_cont', function(e){
     e.preventDefault();
     $(this).find('.compare').velocity("fadeIn", { duration: 250 });
-  }, function(e) {
+  });
+
+  $(document).on('mouseleave', '.compare_cont', function(e){
+    e.preventDefault();
     $(this).find('.compare').velocity("fadeOut", { duration: 250 });
   });
 
@@ -169,11 +172,11 @@ $(function(){
       $('#location_id').val('');
       $('#location_type').val('');
       $('#search').val('');
+      submitForm();
     } else {
       $('#' + selector).val('');
       $('.js-' + selector + ' a').html('&nbsp; <i class="fa fa-sort-down"></i>');
     }
-    submitForm();
   });
 
 });
