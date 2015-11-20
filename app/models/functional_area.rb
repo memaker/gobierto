@@ -160,6 +160,19 @@ SQL
     end
   end
 
+  def budget_national_total(year)
+    Rails.cache.fetch("functional/sum_national/#{self.code}/#{year}") do
+       sql = <<-SQL
+  select sum(total_#{year}) as total
+  FROM functional_yearly_totals
+  WHERE cdfgr = '#{self.code}'
+  SQL
+
+      ActiveRecord::Base.connection.execute(sql).first['total'].to_f
+    end
+  end
+
+
   def mean_national_per_person(year)
     Rails.cache.fetch("functional/national/#{self.code}/#{year}") do
        sql = <<-SQL
@@ -170,6 +183,21 @@ SQL
     WHERE year = #{year} AND level = 1 AND tb_funcional.cdfgr = '#{self.code}' AND cdcta is null
   )  as mean
   SQL
+
+      ActiveRecord::Base.connection.execute(sql).first['avg'].to_f
+    end
+  end
+
+def mean_national_per_place(year)
+    Rails.cache.fetch("functional/national_per_place/#{self.code}/#{year}") do
+       sql = <<-SQL
+select avg(x)
+FROM(
+  select total_#{year} as x
+  FROM functional_yearly_totals
+  WHERE cdfgr = '#{self.code}'
+) as mean
+SQL
 
       ActiveRecord::Base.connection.execute(sql).first['avg'].to_f
     end

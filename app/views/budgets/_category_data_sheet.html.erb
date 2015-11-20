@@ -1,7 +1,7 @@
 <div class="data_sheet">
 
   <header class="clearfix">
-    Estás viendo
+    Estás viendo <%= @filter.expending? ? 'gasto' : 'ingresos' %> en
 
     <%= category_breadcrumb(category) %>
 
@@ -30,33 +30,33 @@
           <% end %>
 
         </h3>
-        <div class="number"><%= format_currency(123323123123) %></div>
+        <div class="number"><%= format_currency(category.budget_national_total(@filter.year)) %></div>
       </div>
 
       <div class="sub_element">
         <h3>
           Media de gasto por municipio
         </h3>
-        <div class="number"><%= number_with_delimiter(3232132) %></div>
+        <div class="number"><%= format_currency(category.mean_national_per_place(@filter.year)) %></div>
       </div>
 
       <div class="sub_element">
         <h3>
           <% if @filter.expending? %>
-            <span title="Gasto por habitante">Gasto/habitante</span>
+            <span title="Gasto por habitante">Media gasto/habitante</span>
           <% else %>
-            <span title="Ingreso por habitante">Ingreso/habitante</span>
+            <span title="Ingreso por habitante">Media ingreso/habitante</span>
           <% end %>
 
         </h3>
-        <div class="number"><%= number_to_currency(98) %></div>
+        <div class="number"><%= format_currency(category.mean_national_per_person(@filter.year)) %></div>
       </div>
 
       <div class="sub_element">
         <h3>
           Ranking
         </h3>
-        <div class="number"><%= number_with_delimiter(23) %><span class="sub"> / <%= number_with_delimiter(Population.count) %></span></div>
+        <div class="number"><%= number_with_delimiter(category.national_ranking(@filter.year)) %><span class="sub"> / <%= number_with_delimiter(category.class.categories_count(category.level, category.kind)) %></span></div>
       </div>
 
     </div>
