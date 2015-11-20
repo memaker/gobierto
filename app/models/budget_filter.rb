@@ -19,6 +19,11 @@ class BudgetFilter
   def initialize(filters)
     @kind = filters[:kind]                                   if filters[:kind].present?
     @year = filters[:year].to_i                              if filters[:year].present?
+
+    if active? && filters[:economic_area].blank? && filters[:functional_area].blank?
+      filters[:functional_area] = 'all'
+    end
+
     if filters[:economic_area].present?
       @economic_area_filter_code = filters[:economic_area]
       @economic_area_filter = filters[:economic_area]

@@ -1,6 +1,15 @@
 'use strict';
 
+function submitForm(){
+  if($('#location_type').val() === '' && $('#functional_area').val() === '' && $('#economic_area').val() === ''){
+    return false;
+  } 
+  $('.spinner').show();
+  document.forms[0].submit();
+}
+
 $(function(){
+  $('.spinner').hide();
 
   if($(window).width() > 740) {
     function rebindAll() {
@@ -96,6 +105,17 @@ $(function(){
     $('.js-economic_area a').text(text);
   }
 
+  var searchOptions = {
+    serviceUrl: '/search',
+    onSelect: function (suggestion) {
+      $('#location_id').val(suggestion.data.id);
+      $('#location_type').val(suggestion.data.type);
+      $('#search').val(suggestion.value);
+      submitForm();
+    },
+    groupBy: 'category',
+  };
+
   $('#search').autocomplete($.extend({}, AUTOCOMPLETE_DEFAULTS, searchOptions));
 
   $('.compare_cont').hover(function(e) {
@@ -155,12 +175,5 @@ $(function(){
     }
     submitForm();
   });
-
-  function submitForm(){
-    if($('#location_type').val() === '' && $('#functional_area').val() === '' && $('#economic_area').val() === ''){
-      return false;
-    } 
-    document.forms[0].submit();
-  }
 
 });

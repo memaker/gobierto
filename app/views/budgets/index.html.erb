@@ -30,7 +30,7 @@
           <%= label_tag :economic_area, 'Area económica' %>
 
           <div class="select_from_tree">
-            <%= render partial: 'economic_area_tree', locals: {kind: EconomicArea::EXPENDING} %>
+            <%= render partial: 'economic_area_tree', locals: {kind: params[:kind] || EconomicArea::EXPENDING} %>
           </div>
           <%= link_to 'x', '', data: {reset: 'economic_area'}  %>
 
