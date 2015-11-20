@@ -9,6 +9,10 @@ class FunctionalArea < ActiveRecord::Base
     where("level = 1").order("cdfgr")
   end
 
+  def self.categories_count(level)
+    where(level: level + 1).count
+  end
+
   def self.find(code)
     find_by(cdfgr: code)
   end
@@ -160,6 +164,18 @@ SQL
     end
   end
 
+  def budget_national_total(year)
+    Rails.cache.fetch("functional/sum_national/#{self.code}/#{year}") do
+       sql = <<-SQL
+ select sum(importe) as total
+ from tb_funcional
+ where year=#{year} and cdfgr='#{code}' and cdcta is null
+  SQL
+
+      ActiveRecord::Base.connection.execute(sql).first['total'].to_f
+    end
+  end
+
   def mean_national_per_person(year)
     Rails.cache.fetch("functional/national/#{self.code}/#{year}") do
        sql = <<-SQL
@@ -203,6 +219,12 @@ FROM(
 SQL
       ActiveRecord::Base.connection.execute(sql).first['avg'].to_f
     end
+  end
+
+  def national_ranking(year)
+    query = "select sum(total_2015) as sum,cdfgr FROM functional_yearly_totals where char_length(cdfgr) = #{self.level + 1} GROUP BY cdfgr ORDER BY sum DESC"
+
+    ActiveRecord::Base.connection.execute(query).map{|r| r['cdfgr'] }.index(self.code) + 1
   end
 
   def level

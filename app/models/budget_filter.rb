@@ -83,6 +83,14 @@ class BudgetFilter
       (@economic_area_filter.present? && @economic_area_filter != 'all')
   end
 
+  def category
+    @category ||= if functional?
+      FunctionalArea.find(@functional_area_filter)
+    else
+      EconomicArea.find(@economic_area_filter, @kind)
+    end
+  end
+
   def category_filter
     if @functional_area_filter.present? && @functional_area_filter != 'all'
       {functional: @functional_area_filter}

@@ -1,20 +1,10 @@
 <div class="data_sheet">
 
   <header class="clearfix">
-    Estás viendo
+    Estás viendo <%= @filter.expending? ? 'gasto' : 'ingresos' %> en
 
-    <%= category_breadcrumb(@filter.category_filter) %>
+    <%= category_breadcrumb(category) %>
 
-    <div class="form_filters" id="selectors">
-      <div class="group">
-        Contexto
-        <ul id="context_selector" class="context buttons">
-          <li><a href="javascript:void(null)" id="mean_national" class ="context button buttonSelected">País</a></li>
-          <li><a href="javascript:void(null)" id="mean_autonomy" class ="context button">CCAA</a></li>
-          <li><a href="javascript:void(null)" id="mean_province" class ="context button">Provincia</a></li>
-        </ul>
-      </div>
-    </div>
   </header>
 
   <div class="widget_container">
@@ -30,33 +20,40 @@
           <% end %>
 
         </h3>
-        <div class="number"><%= format_currency(123323123123) %></div>
+        <div class="number"><%= format_currency(category.budget_national_total(@filter.year)) %></div>
       </div>
 
       <div class="sub_element">
         <h3>
-          Media de gasto por municipio
+          Media de gasto/municipio
         </h3>
-        <div class="number"><%= number_with_delimiter(3232132) %></div>
+        <div class="number"><%= format_currency(category.budget_national_total(@filter.year)/Population.count) %></div>
       </div>
 
       <div class="sub_element">
         <h3>
           <% if @filter.expending? %>
-            <span title="Gasto por habitante">Gasto/habitante</span>
+            <span title="Gasto por habitante">Media gasto/habitante</span>
           <% else %>
-            <span title="Ingreso por habitante">Ingreso/habitante</span>
+            <span title="Ingreso por habitante">Media ingreso/habitante</span>
           <% end %>
 
         </h3>
-        <div class="number"><%= number_to_currency(98) %></div>
+        <div class="number"><%= format_currency(category.budget_national_total(@filter.year)/Population.total) %></div>
       </div>
 
       <div class="sub_element">
         <h3>
           Ranking
         </h3>
-        <div class="number"><%= number_with_delimiter(23) %><span class="sub"> / <%= number_with_delimiter(Population.count) %></span></div>
+        <div class="number">
+
+        <% if @filter.functional? %>
+            <%= number_with_delimiter(category.national_ranking(@filter.year)) %><span class="sub"> / <%= number_with_delimiter(category.class.categories_count(category.level)) %></span>
+          <% else %>
+            <%= number_with_delimiter(category.national_ranking(@filter.year)) %><span class="sub"> / <%= number_with_delimiter(category.class.categories_count(category.level, category.kind)) %></span>
+          <% end %>
+        </div>
       </div>
 
     </div>

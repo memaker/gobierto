@@ -12,6 +12,10 @@ class EconomicArea < ActiveRecord::Base
     where(level: 1, tipreig: kind).order("cdcta")
   end
 
+  def self.categories_count(level, kind)
+    where(level: level + 1, tipreig: kind).count
+  end
+
   def self.find(code, kind)
     find_by(cdcta: code, tipreig: kind)
   end
@@ -151,40 +155,60 @@ SQL
     end
   end
 
-  def budget(place, year, kind)
+  def budget(place, year)
+    conditions = []
+    conditions << "ine_code = #{place.id}"
+    conditions << "year = #{year}"
+    conditions << "level = 1"
+    conditions << "tb_economica.cdcta = '#{self.code}'"
+    conditions << "idente is null"
+    conditions << "tipreig = '#{self.tipreig}'"
+
     sql = <<-SQL
 select importe as amount, budget_per_inhabitant, percentage_total_economic
 FROM tb_economica
-WHERE ine_code = #{place.id} AND year = #{year} AND level = 1 AND tb_economica.cdcta = '#{self.code}' AND idente is null AND tipreig = '#{kind}'
-SQL
+WHERE #{conditions.join(' AND ')}
+    SQL
 
     ActiveRecord::Base.connection.execute(sql).first
   end
 
-  def budget_per_person(place, year, kind)
-    if r = budget(place, year, kind)
+  def budget_per_person(place, year)
+    if r = budget(place, year)
       r['budget_per_inhabitant'].to_f
     else
       0
     end
   end
 
-  def budget_percentage_total(place, year, total, kind)
-    if r = budget(place, year, kind)
+  def budget_percentage_total(place, year, total)
+    if r = budget(place, year)
       r['percentage_total_economic'].to_f
     else
       0
     end
   end
 
-  def mean_national_per_person(year, kind)
+  def budget_national_total(year)
+    Rails.cache.fetch("economic/sum_national/#{kind}/#{self.code}/#{year}") do
+       sql = <<-SQL
+ select sum(importe) as total
+ from tb_economica
+ where tipreig='#{kind}' and year=#{year} and cdcta='#{code}' and idente is null
+  SQL
+
+      ActiveRecord::Base.connection.execute(sql).first['total'].to_f
+    end
+  end
+
+  def mean_national_per_person(year)
     Rails.cache.fetch("economic/national/#{kind}/#{self.code}/#{year}") do
        sql = <<-SQL
 select avg(x)
 FROM(
   select budget_per_inhabitant as x
   FROM tb_economica
-  WHERE year = #{year} AND level = 1 AND tb_economica.cdcta = '#{self.code}' AND idente is null AND  tipreig = '#{kind}'
+  WHERE year = #{year} AND tb_economica.cdcta = '#{self.code}' AND idente is null AND  tipreig = '#{kind}'
 )  as mean
 SQL
 
@@ -192,7 +216,7 @@ SQL
     end
   end
 
-  def mean_autonomy_per_person(year, place, kind)
+  def mean_autonomy_per_person(year, place)
     Rails.cache.fetch("economic/autonomous_region/#{place.province.autonomous_region.id}/#{kind}/#{self.code}/#{year}") do
       sql = <<-SQL
 select avg(x)
@@ -200,14 +224,14 @@ FROM(
   select budget_per_inhabitant as x
   FROM tb_economica
   INNER JOIN poblacion_municipal_2014 ON poblacion_municipal_2014.codigo = tb_economica.ine_code AND poblacion_municipal_2014.autonomous_region_id = #{place.province.autonomous_region.id}
-  WHERE year = #{year} AND level = 1 AND tb_economica.cdcta = '#{self.code}' AND idente is null AND  tipreig = '#{kind}'
+  WHERE year = #{year} AND tb_economica.cdcta = '#{self.code}' AND idente is null AND  tipreig = '#{kind}'
 )  as mean
   SQL
       ActiveRecord::Base.connection.execute(sql).first['avg'].to_f
     end
   end
 
-  def mean_province_per_person(year, place, kind)
+  def mean_province_per_person(year, place)
     Rails.cache.fetch("economic/province/#{place.province.id}/#{kind}/#{self.code}/#{year}") do
      sql = <<-SQL
 select avg(x)
@@ -215,11 +239,17 @@ FROM(
   select budget_per_inhabitant as x
   FROM tb_economica
   INNER JOIN poblacion_municipal_2014 ON poblacion_municipal_2014.codigo = tb_economica.ine_code AND poblacion_municipal_2014.province_id = #{place.province.id}
-  WHERE year = #{year} AND level = 1 AND tb_economica.cdcta = '#{self.code}' AND idente is null AND  tipreig = '#{kind}'
+  WHERE year = #{year} AND tb_economica.cdcta = '#{self.code}' AND idente is null AND  tipreig = '#{kind}'
 )  as mean
 SQL
       ActiveRecord::Base.connection.execute(sql).first['avg'].to_f
     end
+  end
+
+  def national_ranking(year)
+    query = "select sum(total_2015) as sum,cdcta FROM economic_yearly_totals where kind='#{self.kind}' AND char_length(cdcta) = #{self.level + 1} GROUP BY cdcta ORDER BY sum DESC"
+
+    ActiveRecord::Base.connection.execute(query).map{|r| r['cdcta'] }.index(self.code) + 1
   end
 
   def level
@@ -232,5 +262,9 @@ SQL
 
   def name
     nombre
+  end
+
+  def kind
+    tipreig
   end
 end

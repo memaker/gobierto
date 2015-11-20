@@ -37,11 +37,11 @@ class Api::DataController < ApplicationController
       budgets = EconomicArea.root_items(kind).map do |item|
         {
           name: item.name,
-          value: item.budget_per_person(place, year, kind).round(1),
-          percentage: item.budget_percentage_total(place, year, total, kind).round(1),
-          mean_national: item.mean_national_per_person(year, kind).round(1),
-          mean_autonomy: item.mean_autonomy_per_person(year, place, kind).round(1),
-          mean_province: item.mean_province_per_person(year, place, kind).round(1)
+          value: item.budget_per_person(place, year).round(1),
+          percentage: item.budget_percentage_total(place, year, total).round(1),
+          mean_national: item.mean_national_per_person(year).round(1),
+          mean_autonomy: item.mean_autonomy_per_person(year, place).round(1),
+          mean_province: item.mean_province_per_person(year, place).round(1)
         }
       end
 
