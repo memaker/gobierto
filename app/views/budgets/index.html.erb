@@ -64,7 +64,7 @@
 <% end %>
 
 <% if @filter.category_filter? %>
-  <%= render 'category_data_sheet' %>
+  <%= render 'category_data_sheet', category: @filter.category %>
 <% end %>
 
 <div>
