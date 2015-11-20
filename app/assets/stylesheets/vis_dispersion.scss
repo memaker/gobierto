@@ -9,9 +9,10 @@ body {
   margin-top: 100px;
 }
 
-#vis_distribution {
+#vis_dispersion {
   width: 50%;
   float: left;
+  background-color: #FFDED4;
 }
 
 #density_vis_per {
@@ -19,15 +20,12 @@ body {
   overflow: hidden;
 }
 
-.x.axis path {
+.axis path {
   fill: none;
-  // stroke: #DEE5E7; /*customGrey*/
   stroke-width: 1px;
 }
 
-.x.axis line {
-
-  stroke: #DEE5E7; /*customGrey*/
+.axis line {
   stroke-width: 1px;
   /*shape-rendering: crispEdges;*/
 }

@@ -11,10 +11,11 @@
 //= require vendor/accounting.min
 //= require vendor/jquery.autocomplete
 //= require vendor/d3.v3.min
-//= require vendor/d3-legend
+//= require vendor/d3-legend.min
 //= require vendor/klass
 //= require vis_bars
 //= require vis_distribution
+//= require vis_dispersion
 // require vis
 
 //= require ui
