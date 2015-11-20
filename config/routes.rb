@@ -16,6 +16,7 @@ Rails.application.routes.draw do
   namespace :api do
     get '/data/:place_id/:year/:kind/economic' => 'data#economic'
     get '/data/:place_id/:year/functional' => 'data#functional'
+    get '/data/distribution' => 'data#distribution'
   end
 
 end
