@@ -181,8 +181,9 @@ $(function(){
 
   if($('#vis_distribution').size() > 0) {
 
-    var visDistribution = new VisDistribution('#vis_distribution');//, 'percentage', 'mean_province');
-    visDistribution.render('api/data/distribution.json' + location.search);
+    var visDistribution = new VisDistribution('#vis_distribution', 'per_person');//, 'percentage', 'mean_province');
+    // visDistribution.render('api/data/distribution.json' + location.search);
+    visDistribution.render('/distribution_sample.json');
 
     d3.selectAll('.measure.button')
       .on('click', function(d) {
