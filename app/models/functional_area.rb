@@ -222,7 +222,7 @@ SQL
   end
 
   def national_ranking(year)
-    query = "select sum(total_2015) as sum,cdfgr FROM functional_yearly_totals where char_length(cdfgr) = #{self.level + 1} GROUP BY cdfgr ORDER BY sum DESC"
+    query = "select sum(total_#{year}) as sum,cdfgr FROM functional_yearly_totals where char_length(cdfgr) = #{self.level + 1} GROUP BY cdfgr ORDER BY sum DESC"
 
     ActiveRecord::Base.connection.execute(query).map{|r| r['cdfgr'] }.index(self.code) + 1
   end
@@ -237,6 +237,32 @@ SQL
 
   def name
     nombre
+  end
+
+  def smaller_budgets_per_inhabitant(year)
+    sql = <<-SQL
+  select ine_code as place_id,budget_per_inhabitant as amount
+  FROM tb_funcional
+  WHERE year = #{year} AND tb_funcional.cdfgr = '#{self.code}' AND cdcta is null and ine_code is not null AND budget_per_inhabitant is not null
+  ORDER BY budget_per_inhabitant ASC
+  LIMIT 5
+SQL
+    ActiveRecord::Base.connection.execute(sql).map do |row|
+      BudgetLine.new row
+    end
+  end
+
+  def bigger_budgets_per_inhabitant(year)
+    sql = <<-SQL
+  select ine_code as place_id,budget_per_inhabitant as amount
+  FROM tb_funcional
+  WHERE year = #{year} AND tb_funcional.cdfgr = '#{self.code}' AND cdcta is null AND ine_code is not null AND budget_per_inhabitant is not null
+  ORDER BY budget_per_inhabitant DESC
+  LIMIT 5
+SQL
+    ActiveRecord::Base.connection.execute(sql).map do |row|
+      BudgetLine.new row
+    end
   end
 
 end

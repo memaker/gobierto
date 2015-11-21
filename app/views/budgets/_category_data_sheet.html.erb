@@ -86,6 +86,12 @@
         <% end %>
 
         <table>
+          <% category.bigger_budgets_per_inhabitant(@filter.year).each do |budget_line|  %>
+            <tr>
+              <td><%= link_to(truncate(budget_line.place.name, length: 72), place_path(budget_line.place, params), title: budget_line.place.name) %></td>
+              <td class="right"><%= format_currency(budget_line.amount) %></td>
+            </tr>
+          <% end %>
         </table>
 
       </div>
@@ -101,8 +107,13 @@
         <% end %>
 
         <table>
+          <% category.smaller_budgets_per_inhabitant(@filter.year).each do |budget_line|  %>
+            <tr>
+              <td><%= link_to(truncate(budget_line.place.name, length: 72), place_path(budget_line.place, params), title: budget_line.place.name) %></td>
+              <td class="right"><%= format_currency(budget_line.amount) %></td>
+            </tr>
+          <% end %>
         </table>
-
       </div>
     </div>
   </div>

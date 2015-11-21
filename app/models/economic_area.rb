@@ -247,7 +247,7 @@ SQL
   end
 
   def national_ranking(year)
-    query = "select sum(total_2015) as sum,cdcta FROM economic_yearly_totals where kind='#{self.kind}' AND char_length(cdcta) = #{self.level + 1} GROUP BY cdcta ORDER BY sum DESC"
+    query = "select sum(total_#{year}) as sum,cdcta FROM economic_yearly_totals where kind='#{self.kind}' AND char_length(cdcta) = #{self.level + 1} GROUP BY cdcta ORDER BY sum DESC"
 
     ActiveRecord::Base.connection.execute(query).map{|r| r['cdcta'] }.index(self.code) + 1
   end
@@ -266,5 +266,31 @@ SQL
 
   def kind
     tipreig
+  end
+
+  def smaller_budgets_per_inhabitant(year)
+    sql = <<-SQL
+  select ine_code as place_id,budget_per_inhabitant as amount
+  FROM tb_economica
+  WHERE year = #{year} AND tb_economica.cdcta = '#{self.code}' AND idente is null AND tipreig = '#{kind}' AND ine_code is not null AND budget_per_inhabitant is not null
+  ORDER BY budget_per_inhabitant ASC
+  LIMIT 5
+SQL
+    ActiveRecord::Base.connection.execute(sql).map do |row|
+      BudgetLine.new row
+    end
+  end
+
+  def bigger_budgets_per_inhabitant(year)
+    sql = <<-SQL
+  select ine_code as place_id,budget_per_inhabitant as amount
+  FROM tb_economica
+  WHERE year = #{year} AND tb_economica.cdcta = '#{self.code}' AND idente is null AND tipreig = '#{kind}' AND ine_code is not null AND budget_per_inhabitant is not null
+  ORDER BY budget_per_inhabitant DESC
+  LIMIT 5
+SQL
+    ActiveRecord::Base.connection.execute(sql).map do |row|
+      BudgetLine.new row
+    end
   end
 end
