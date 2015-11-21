@@ -22,7 +22,7 @@ class FunctionalArea < ActiveRecord::Base
   end
 
   def parents
-    if self.level == 1
+    if self.level == 0
       []
     else
       parents = []
@@ -34,7 +34,7 @@ class FunctionalArea < ActiveRecord::Base
         parents.push category
       end
 
-      return parents
+      return parents.reverse
     end
   end
 

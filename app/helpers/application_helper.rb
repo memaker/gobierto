@@ -70,6 +70,8 @@ module ApplicationHelper
   end
 
   def category_breadcrumb(category)
-    (category.parents + [category]).map(&:name).join(' > ')
+    (category.parents.map do |category|
+      link_to(category.name, category_path(category, params))
+    end + [category.name]).join(' > ').html_safe
   end
 end

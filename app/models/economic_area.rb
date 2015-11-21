@@ -25,7 +25,7 @@ class EconomicArea < ActiveRecord::Base
   end
 
   def parents
-    if self.level == 1
+    if self.level == 0
       []
     else
       parents = []
@@ -37,7 +37,7 @@ class EconomicArea < ActiveRecord::Base
         parents.push category
       end
 
-      return parents
+      return parents.reverse
     end
   end
 
