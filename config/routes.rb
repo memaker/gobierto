@@ -17,6 +17,7 @@ Rails.application.routes.draw do
     get '/data/:place_id/:year/:kind/economic' => 'data#economic'
     get '/data/:place_id/:year/functional' => 'data#functional'
     get '/data/distribution' => 'data#distribution'
+    get '/data/dispersion' => 'data#dispersion'
   end
 
 end

@@ -6,7 +6,7 @@ var VisDispersion = Class.extend({
     
     // Chart dimensions
     this.containerWidth = null;
-    this.margin = {top: 20, right: 20, bottom: 40, left: 40};
+    this.margin = {top: 10, right: 40, bottom: 20, left: 10};
     this.width = null;
     this.height = null;
     
@@ -89,10 +89,12 @@ var VisDispersion = Class.extend({
     }
 
     // Load the data
-    d3.csv(urlData, function(error, csvData){
+    d3.json(urlData, function(error, jsonData){
+      console.log(urlData);
+      console.log(jsonData);
       if (error) throw error;
       
-      this.data = csvData;
+      this.data = jsonData;
       this.data.forEach(function(d) { 
         d.per_person = +d.per_person;
         d.population = +d.population;

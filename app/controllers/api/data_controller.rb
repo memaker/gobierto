@@ -11,7 +11,7 @@ class Api::DataController < ApplicationController
         {
           name: item.name,
           value: item.budget_per_person(place, year).round(1),
-          percentage: item.budget_percentage_total(place, year, total).round(1),
+          percentage: item.budget_percentage_total(place, year).round(1),
           mean_national: item.mean_national_per_person(year).round(1),
           mean_autonomy: item.mean_autonomy_per_person(year, place).round(1),
           mean_province: item.mean_province_per_person(year, place).round(1)
@@ -38,7 +38,7 @@ class Api::DataController < ApplicationController
         {
           name: item.name,
           value: item.budget_per_person(place, year).round(1),
-          percentage: item.budget_percentage_total(place, year, total).round(1),
+          percentage: item.budget_percentage_total(place, year).round(1),
           mean_national: item.mean_national_per_person(year).round(1),
           mean_autonomy: item.mean_autonomy_per_person(year, place).round(1),
           mean_province: item.mean_province_per_person(year, place).round(1)
@@ -72,7 +72,18 @@ class Api::DataController < ApplicationController
     end
   end
 
+  def dispersion
+    filter = BudgetFilter.new(params.merge!({ perPage: 10000, offset: 0}))
+
+    respond_to do |format|
+      format.json do
+        render json: dispersion_items(filter).to_json
+      end
+    end
+  end
+
   private
+
   def per_person_items(budget_lines)
     per_inhabitant = budget_lines.sort_by{|bl| bl.budget_per_inhabitant.to_f }
     min = per_inhabitant.first.budget_per_inhabitant.to_f
@@ -150,6 +161,27 @@ class Api::DataController < ApplicationController
     item['label'] = label
     item['value'] = mean.round(2)
     item
+  end
+
+  def dispersion_items(filter)
+    [
+      {
+        "name": "Murcia",
+        "codigo": "1234",
+        "population": 2132323,
+        "total": 2323,
+        "per_person": 12,
+        "cut": "Menos de 10000"
+      },
+      {
+        "codigo": 2344,
+        "name": "Getafe",
+        "population": 321123,
+        "total": 2323,
+        "per_person": 453,
+        "cut": "Entre 133 y 231232"
+      }
+    ]
   end
 
 end

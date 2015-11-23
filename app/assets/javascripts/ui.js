@@ -190,7 +190,7 @@ $(function(){
         d3.selectAll(".measure.button.buttonSelected").classed("buttonSelected", false);
         d3.select(this).classed("buttonSelected", true);
         visDistribution.measure = this.id;
-        
+
         visDistribution.updateRender();
       });
 
@@ -202,6 +202,11 @@ $(function(){
 
         visDistribution.updateRender();
       });
+  }
+
+  if($('#vis_dispersion').size() > 0) {
+    var visDispersion = new VisDispersion('#vis_dispersion', 'wadus');
+    visDispersion.render('/api/data/dispersion.json' + location.search);
   }
 
 });
