@@ -151,6 +151,7 @@ var VisDistribution = Class.extend({
       this.xMinMaxAxis = d3.svg.axis()
           .scale(this.xMinMaxScale)
           .tickValues(this.dataDomain)
+          .tickFormat(function(d) { return this.measure != 'percentage' ? d3.round(d, 2) : d + '%'; }.bind(this))
           .orient("bottom");
       
       // --> DRAW THE AXIS
@@ -162,7 +163,8 @@ var VisDistribution = Class.extend({
 
       // Change ticks color
       d3.selectAll('.x.axis').selectAll('text')
-        .attr('fill', this.mainColor);
+        .style('fill', this.darkColor)
+        .style('text-anchor', function(d, i) { return i == 0 ? 'start' : 'end'; });
 
 
       // --> DRAW THE BAR CHART 
@@ -199,7 +201,6 @@ var VisDistribution = Class.extend({
     this.dataBuckets = this.data.buckets[this.measure];
     this.dataMean = this.data.budgets[this.measure].filter(function(d) { return d.name.match(/^mean/) ; });
     this.kind = this.data.kind;
-
     
     // dataDomain, to plot the min & max labels    
     this.dataDomain = ([
@@ -240,27 +241,21 @@ var VisDistribution = Class.extend({
     
     // Update the axis
     this.xMinMaxAxis 
-          .scale(this.xMinMaxScale)
-          .tickValues(this.dataDomain);
-
-    if (this.measure != 'percentage') {
-      this.xMinMaxAxis
-        .tickFormat(d3.format('.f'));
-    } else {
-      this.xMinMaxAxis
-        .tickFormat(d3.format('%'));
-    }
+      .scale(this.xMinMaxScale)
+      .tickValues(this.dataDomain)
+      .tickFormat(function(d) { return this.measure != 'percentage' ? d3.round(d, 2) : d + '%'; }.bind(this));
 
     this.svgDistribution.select(".x.axis")
       .transition()
       .duration(this.duration)
-      .delay(this.duration/2)
+      .delay(this.duration/4)
       .ease("sin-in-out") 
       .call(this.xMinMaxAxis);
 
     // Change ticks color
     d3.selectAll('.x.axis').selectAll('text')
-      .attr('fill', this.mainColor);
+      .style('fill', this.darkColor)
+      .style('text-anchor', function(d, i) { return i == 0 ? 'start' : 'end'; });
 
     this.svgDistribution.selectAll('.bar_distribution')
         .data(this.dataFreq)
