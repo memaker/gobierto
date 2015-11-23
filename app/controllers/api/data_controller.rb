@@ -90,11 +90,11 @@ class Api::DataController < ApplicationController
 
   def per_person(budget_lines, structure = :items)
     per_inhabitant = budget_lines.sort_by{|bl| bl.budget_per_inhabitant.to_f }
-    min = per_inhabitant.first.budget_per_inhabitant.to_f
-    max = per_inhabitant.last.budget_per_inhabitant.to_f
+    min = BigDecimal.new(per_inhabitant.first.budget_per_inhabitant)
+    max = BigDecimal.new(per_inhabitant.last.budget_per_inhabitant)
     range = max - min
     width = range / 20
-    mean = per_inhabitant.map { |r| r.budget_per_inhabitant.to_f }.reduce(:+) / per_inhabitant.size
+    mean = per_inhabitant.map { |r| BigDecimal.new(r.budget_per_inhabitant) }.reduce(:+) / per_inhabitant.size
 
     cuts = {}
     (min...max).step(width).each do |f|
@@ -105,7 +105,7 @@ class Api::DataController < ApplicationController
     cut_number = 0
     items = []
     cuts.each_pair do |cut,budget_lines|
-      label = "de #{cut.begin.round(2)}€ a #{cut.end.round(2)}€"
+      label = "de #{cut.begin.round(2).to_s}€ a #{cut.end.round(2).to_s}€"
       if (structure == :items)
         budget_lines.each do |bl|
           item = {}
@@ -129,28 +129,24 @@ class Api::DataController < ApplicationController
 
   def percentage(budget_lines, structure = :items)
     
-    percentage_method = if budget_lines.first.respond_to?(:percentage_from_total)
-      :percentage_from_total
-    elsif budget_lines.first.respond_to?(:percentage_total_functional)
-      :percentage_total_functional
-    else
-      :percentage_total_economic
-    end
+    percentage_method = derive_percentage_method(budget_lines.first)
 
-    percentages = budget_lines.sort_by{ |bl| bl.send(percentage_method).to_f }
-    width = 5
-    mean = percentages.map { |r| r.send(percentage_method).to_f }.reduce(:+) / percentages.size
+    percentages = budget_lines.sort_by{ |bl| BigDecimal.new(bl.send(percentage_method)) }
+    width = BigDecimal.new(5)
+    mean = percentages.map { |r| BigDecimal.new(r.send(percentage_method)) }.reduce(:+) / percentages.size
     
     cuts = {}
     (0...100).step(width).each do |i|
-      bucket = (i..i+width)
-      cuts[bucket] = percentages.select { |bl| bucket.include?(bl.send(percentage_method).to_f) }
+      extreme = i + width
+      extreme += 0.1 if extreme == 100
+      bucket = (i...extreme)
+      cuts[bucket] = percentages.select { |bl| bucket.include?(BigDecimal.new(bl.send(percentage_method))) }
     end
 
     cut_number = 0
     items = []
     cuts.each_pair do |cut, budget_lines|
-      label = "de #{cut.begin}% a #{cut.end}%"
+      label = "de #{cut.begin.floor.round(0)}% a #{cut.end.floor.round(0)}%"
       if (structure == :items)
         budget_lines.each do |bl|
           item = {}
@@ -177,8 +173,14 @@ class Api::DataController < ApplicationController
     item['name'] = "mean"
     item['cut'] = cut_number
     item['label'] = label
-    item['value'] = mean.round(2)
+    item['value'] = mean.round(2).to_s
     item
+  end
+
+  def derive_percentage_method(budget_line)
+    return :percentage_from_total if budget_line.respond_to?(:percentage_from_total)
+    return :percentage_total_functional if budget_line.respond_to?(:percentage_total_functional)
+    :percentage_total_economic
   end
 
   def dispersion_items(filter)
