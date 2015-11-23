@@ -196,8 +196,8 @@ $(function(){
   }
 
   if($('#vis_dispersion').size() > 0) {
-    // var visDispersion = new VisDispersion('#vis_dispersion', 'wadus');
-    // visDispersion.render('/api/data/dispersion.json' + location.search);
+    var visDispersion = new VisDispersion('#vis_dispersion', 'per_person');
+    visDispersion.render('/api/data/dispersion.json' + location.search);
   }
 
 });

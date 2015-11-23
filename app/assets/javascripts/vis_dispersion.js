@@ -6,7 +6,7 @@ var VisDispersion = Class.extend({
     
     // Chart dimensions
     this.containerWidth = null;
-    this.margin = {top: 10, right: 40, bottom: 20, left: 10};
+    this.margin = {top: 5, right: 30, bottom: 10, left: 20};
     this.width = null;
     this.height = null;
     
@@ -67,7 +67,7 @@ var VisDispersion = Class.extend({
     this.svgDispersion = d3.select(this.container).append('svg')
         .attr('width', this.width + this.margin.left + this.margin.right)
         .attr('height', this.height + this.margin.top + this.margin.bottom)
-        .attr('class', 'svg_distribution')
+        .attr('class', 'svg_dispersion')
       .append('g')
         .attr('transform', 'translate(' + this.margin.left + ',' + this.margin.top + ')');
 
@@ -186,8 +186,9 @@ var VisDispersion = Class.extend({
           .text('Media'); 
 
       // --> DRAW THE Legend 
-      var svg = d3.select("svg");
+      var svg = d3.select(this.container + " svg");
 
+      debugger;
       svg.append("g")
         .attr("class", "legend_dispersion")
         .attr("transform", "translate(" + (this.width - (this.margin.right * 3)) + ",20)");
@@ -254,7 +255,7 @@ var VisDispersion = Class.extend({
   //   d3.selectAll('.x.axis').selectAll('text')
   //     .attr('fill', this.mainColor);
 
-  //   this.svgDispersion.selectAll('.bar_distribution')
+  //   this.svgDispersion.selectAll('.bar_dispersion')
   //     .data(this.dataChart)
   //     .transition()
   //     .duration(this.duration)
@@ -270,12 +271,12 @@ var VisDispersion = Class.extend({
   //                   .map(function(d) { return d.cut; });
 
   //   if (this.meanCut != prevMeanCut) {
-  //     this.svgDispersion.selectAll('.bar_distribution')
+  //     this.svgDispersion.selectAll('.bar_dispersion')
   //       .transition()
   //       .duration(this.duration / 2)
   //       .attr('fill', this.mainColor);
 
-  //     this.svgDispersion.selectAll('.bar_distribution.x' + this.meanCut[0])
+  //     this.svgDispersion.selectAll('.bar_dispersion.x' + this.meanCut[0])
   //       .transition()
   //       .duration(this.duration)
   //       .attr('fill', d3.rgb(this.mainColor).darker(1));
@@ -297,7 +298,7 @@ var VisDispersion = Class.extend({
     
     var text = '<strong>' + selectedData.name + '</strong><br>' + 
               this.niceCategory[this.measure] + ': <strong>' + d3.round(selectedData.per_person, 2) + 
-              '</strong>€<br>' + 'Población: <strong>' + selectedData.population;
+              '</strong>€<br>' + 'Población: <strong>' + accounting.formatNumber(selectedData.population, 0);
 
     this.svgDispersion.selectAll('.dot.' + selectedClass[1])
       .transition()

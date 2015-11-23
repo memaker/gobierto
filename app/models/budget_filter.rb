@@ -15,6 +15,27 @@ class BudgetFilter
     ]
   end
 
+  def self.populations_ranges
+    @populations_ranges ||= begin
+                              populations.map(&:last).map do |e|
+                                r = e.split(' - ')
+                                (r.first.to_i..r.last.to_i)
+                              end
+                            end
+  end
+
+  def self.nice_range(population)
+    if r = populations_ranges.detect{|r| r.include?(population) }
+      if r.last == 100000000
+        "Más de #{ActionController::Base.helpers.number_with_delimiter(r.first)}"
+      elsif r.first == 0
+        "Menos de #{ActionController::Base.helpers.number_with_delimiter(r.last)}"
+      else
+        "De #{ActionController::Base.helpers.number_with_delimiter(r.first)} a #{ActionController::Base.helpers.number_with_delimiter(r.last)}"
+      end
+    end
+  end
+
   def initialize(filters)
     @kind = filters[:kind]                                   if filters[:kind].present?
     @year = filters[:year].to_i                              if filters[:year].present?
