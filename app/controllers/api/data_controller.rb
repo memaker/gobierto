@@ -62,9 +62,13 @@ class Api::DataController < ApplicationController
       format.json do
         render json: {
           kind: filter.kind,
+          buckets: {
+            per_person: per_person(budget_lines, :buckets),
+            percentage: percentage(budget_lines, :buckets)
+          },
           budgets: {
-            per_person: per_person_items(budget_lines),
-            percentage: percentage_items(budget_lines)
+            per_person: per_person(budget_lines),
+            percentage: percentage(budget_lines)
           }
         }.to_json
       end
@@ -84,7 +88,7 @@ class Api::DataController < ApplicationController
 
   private
 
-  def per_person_items(budget_lines)
+  def per_person(budget_lines, structure = :items)
     per_inhabitant = budget_lines.sort_by{|bl| bl.budget_per_inhabitant.to_f }
     min = per_inhabitant.first.budget_per_inhabitant.to_f
     max = per_inhabitant.last.budget_per_inhabitant.to_f
@@ -102,21 +106,28 @@ class Api::DataController < ApplicationController
     items = []
     cuts.each_pair do |cut,budget_lines|
       label = "de #{cut.begin.round(2)}€ a #{cut.end.round(2)}€"
-      budget_lines.each do |bl|
+      if (structure == :items)
+        budget_lines.each do |bl|
+          item = {}
+          item['name'] = bl.place_name
+          item['cut'] = cut_number
+          item['label'] = label
+          item['value'] = bl.budget_per_inhabitant.to_f.round(2)
+          items << item
+        end
+        items << mean_item(label, cut_number, mean) if cut.include?(mean)
+      else
         item = {}
-        item['name'] = bl.place_name
         item['cut'] = cut_number
         item['label'] = label
-        item['value'] = bl.budget_per_inhabitant.to_f.round(2)
         items << item
       end
-      items << mean_item(label, cut_number, mean) if cut.include?(mean)
       cut_number += 1
     end
     items
   end
 
-  def percentage_items(budget_lines)
+  def percentage(budget_lines, structure = :items)
     
     percentage_method = if budget_lines.first.respond_to?(:percentage_from_total)
       :percentage_from_total
@@ -140,15 +151,22 @@ class Api::DataController < ApplicationController
     items = []
     cuts.each_pair do |cut, budget_lines|
       label = "de #{cut.begin}% a #{cut.end}%"
-      budget_lines.each do |bl|
+      if (structure == :items)
+        budget_lines.each do |bl|
+          item = {}
+          item['name'] = bl.place_name
+          item['cut'] = cut_number
+          item['label'] = label
+          item['value'] = bl.send(percentage_method).to_f.round(2)
+          items << item
+        end
+        items << mean_item(label, cut_number, mean) if cut.include?(mean)
+      else
         item = {}
-        item['name'] = bl.place_name
         item['cut'] = cut_number
         item['label'] = label
-        item['value'] = bl.send(percentage_method).to_f.round(2)
         items << item
       end
-      items << mean_item(label, cut_number, mean) if cut.include?(mean)
       cut_number += 1
     end
     items
