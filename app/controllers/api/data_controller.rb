@@ -99,7 +99,7 @@ class Api::DataController < ApplicationController
     cuts = {}
     (min...max).step(width).each do |f|
       bucket = (f..f+width)
-      cuts[bucket] = per_inhabitant.select {|bl| bucket.include?(bl.budget_per_inhabitant.to_f)}
+      cuts[bucket] = per_inhabitant.select {|bl| bucket.include?(BigDecimal.new(bl.budget_per_inhabitant))}
     end
 
     cut_number = 0
