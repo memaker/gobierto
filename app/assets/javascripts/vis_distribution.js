@@ -6,7 +6,7 @@ var VisDistribution = Class.extend({
     
     // Chart dimensions
     this.containerWidth = null;
-    this.margin = {top: 10, right: 15, bottom: 20, left: 8};
+    this.margin = {top: 10, right: 22, bottom: 20, left: 10};
     this.width = null;
     this.height = null;
     
@@ -83,8 +83,8 @@ var VisDistribution = Class.extend({
       "mean_national": "Media Nacional",
       "mean_autonomy": "Media Autonómica",
       "mean_province": "Media Provincial",
-      "G": "Gasto/habitante",
-      "I": "Ingreso/habitante",
+      "G": "gasto/habitante",
+      "I": "ingreso/habitante",
       "percentage": "% sobre el total"
     }
 
@@ -112,8 +112,15 @@ var VisDistribution = Class.extend({
      
       this.dataFreq = d3.nest()
             .key(function(d) { return d.cut; })
-            .rollup(function(v) { return v.length; })
-            .entries(this.dataChart);
+            .rollup(function(v) { return {"values": v.length, "label": v[0].label}; })
+            .entries(this.dataChart)
+            .map(function(d) {
+              var key = d.key;
+              var values = d.values.values;
+              var label = d.values.label;
+              
+              return {'key':key, 'values':values, 'label': label}; 
+            });
 
       // And the cuts with some frequency
       var currentBuckets = this.dataFreq.map(function(d) { return d.key; })
@@ -124,6 +131,7 @@ var VisDistribution = Class.extend({
         if (currentBuckets.indexOf(d.cut) == -1) {
           var obj = {
             "key": d.cut,
+            "label": d.label,
             "values": 0
           }
           this.dataFreq.push(obj)
@@ -163,8 +171,7 @@ var VisDistribution = Class.extend({
 
       // Change ticks color
       d3.selectAll('.x.axis').selectAll('text')
-        .style('fill', this.darkColor)
-        .style('text-anchor', function(d, i) { return i == 0 ? 'start' : 'end'; });
+        .style('fill', this.darkColor);
 
 
       // --> DRAW THE BAR CHART 
@@ -181,7 +188,9 @@ var VisDistribution = Class.extend({
           .attr('width', this.xScale.rangeBand())
           .attr('y', function(d) { return this.yScale(d.values); }.bind(this))
           .attr('height', function(d) { return this.height - this.yScale(d.values); }.bind(this))
-          .attr('fill', this.mainColor);
+          .attr('fill', this.mainColor)
+        .on('mouseover', this._mouseover.bind(this))
+        .on('mouseout', this._mouseout.bind(this));
 
       // --> HIGHLIGHT THE MEAN CUT 
       this.meanCut = this.dataMean[0].cut; 
@@ -194,7 +203,6 @@ var VisDistribution = Class.extend({
   }, // end render
 
   updateRender: function () {
-
     
     // re-map the data
     this.dataChart = this.data.budgets[this.measure].filter(function(d) { return d.name.match(/^(?!^mean)/) ; });
@@ -208,13 +216,18 @@ var VisDistribution = Class.extend({
       d3.max(this.dataChart, function(d) { return d.value; })
           ]);
     
-
     // Get the frequencies for every cut
-   
     this.dataFreq = d3.nest()
           .key(function(d) { return d.cut; })
-          .rollup(function(v) { return v.length; })
-          .entries(this.dataChart);
+          .rollup(function(v) { return {"values": v.length, "label": v[0].label}; })
+          .entries(this.dataChart)
+          .map(function(d) {
+              var key = d.key;
+              var values = d.values.values;
+              var label = d.values.label;
+              
+              return {'key':key, 'values':values, 'label': label}; 
+            });
 
     // And the cuts with some frequency
     var currentBuckets = this.dataFreq.map(function(d) { return d.key; })
@@ -225,6 +238,7 @@ var VisDistribution = Class.extend({
       if (currentBuckets.indexOf(d.cut) == -1) {
         var obj = {
           "key": d.cut,
+          "label": d.label,
           "values": 0
         }
         this.dataFreq.push(obj)
@@ -233,6 +247,7 @@ var VisDistribution = Class.extend({
 
     this.dataFreq.sort(function(a,b) { return (+a.key) - (+b.key); })
 
+    console.log(this.dataFreq)
     this.meanCut = this.dataMean[0].cut.toString()
     
     // Update the scales
@@ -253,15 +268,14 @@ var VisDistribution = Class.extend({
       .call(this.xMinMaxAxis);
 
     // Change ticks color
-    d3.selectAll('.x.axis').selectAll('text')
-      .style('fill', this.darkColor)
-      .style('text-anchor', function(d, i) { return i == 0 ? 'start' : 'end'; });
+    this.svgDistribution.selectAll('.x.axis').selectAll('text')
+      .style('fill', this.darkColor);
 
     this.svgDistribution.selectAll('.bar_distribution')
         .data(this.dataFreq)
         .transition()
         .duration(this.duration/2)
-        .attr('y', function(d) { return this.yScale(d.values); }.bind(this))
+        .attr('y', function(d, i) { return this.yScale(d.values); }.bind(this))
         .attr('height', function(d) { return this.height - this.yScale(d.values); }.bind(this))
         .attr('fill', function(d) { return d.key != this.meanCut ? this.mainColor : this.darkColor; }.bind(this));
   },
@@ -276,62 +290,15 @@ var VisDistribution = Class.extend({
   _mouseover: function () {
     var selected = d3.event.target,
         selectedClass = selected.classList,
-        selectedData = d3.select(selected).data()[0],
-        selectedCx = d3.select(selected).attr('cx'),
-        selectedCy = d3.select(selected).attr('cy'),
-        labelsOn = d3.select('#myonoffswitch-labels').property('checked');
-  
-    if (selectedData.name == 'influence') {
-      var text = '<strong>' + formatPercent(selectedData.percentage) + '</strong> of respondents<br> are influenced<br>by <strong> ' + selectedData.tpClass + ' media</strong>'
+        selectedData = d3.select(selected).data()[0];
+
+    if (this.measure == 'per_person') {
+      var text = '<strong>' + selectedData.values + '</strong> municipios tienen un <strong><br>' + 
+        this.niceCategory[this.kind] + ' <br>' + selectedData.label + '</strong>' 
     } else {
-      var text = '<strong>' + formatPercent(selectedData.percentage) + '</strong> of respondents<br>associates<strong> ' + selectedData.tpClass + ' media</strong> to <strong>' + this.subindustry + '</strong>'
+      var text = 'Para <strong>' + selectedData.values + '</strong> municipios el <strong><br>' + 
+        this.niceCategory['percentage'] + ' es<strong><br>' + selectedData.label + '</strong>' 
     }
-    
-    d3.selectAll('.marker.' + selectedClass[1])
-      .filter(function(d) { return d.represent == selectedClass[2]; })
-      .transition()
-      .duration(this.duration / 4)
-      .attr('markerWidth', this.markerSize * 2)
-      .attr('markerHeight', this.markerSize * 2)
-      .style('fill', customGrey)
-      .attr('stroke-width', .3);
-
-    var xMouseoverLine = this.xScale(selectedData.percentage),
-        yMouseoverLine = this.yScale(selectedData.tpClass) + this.ySecondaryScale(selectedData.name);
-  
-     d3.select(selected.parentNode).selectAll('mouseover_line')
-        .data([xMouseoverLine, yMouseoverLine])
-        .enter()
-        .append('line')
-        .attr('class', 'mouseover_line')
-        .attr('x1', xMouseoverLine)
-        .attr('y1', yMouseoverLine)
-        .attr('x2', xMouseoverLine)
-        .attr('y2', yMouseoverLine)
-        .attr('stroke-width', 1)
-        .style('stroke', this.colorScale(selectedData.tpClass))
-        .transition()
-        .duration(this.duration)
-        .attr('y1', function(d, i) { return i == 0 ? this.margin.top : yMouseoverLine; }.bind(this))
-        .attr('y2', function(d, i) { return i == 1 ? (this.height - this.margin.top) : yMouseoverLine; }.bind(this));
-
-   
-    d3.selectAll('.legend_line').selectAll('text.' + selectedData.name)
-      .attr('font-size', '1.5em');
-
-
-    this.svgDistribution.selectAll('.barLine')
-      .filter(function(d) { return d.name != selectedClass[2]; })
-      .transition()
-      .duration(this.duration / 4)
-      .style('stroke', function(d) { return this.brighterColorScale(d.tpClass); }.bind(this));
-
-    var toBright = this.ySecondaryScale.domain().filter(function(d) { return d != selectedClass[2]; })  
-    this.chart.selectAll('.' + toBright)
-      .transition()
-      .duration(this.duration / 4)
-      .style('stroke', function(d) { return this.brighterColorScale(d.tpClass); }.bind(this))
-      .attr('fill', function(d) { return this.brighterColorScale(d.tpClass); }.bind(this));
     
     this.tooltip
         .transition()
@@ -343,45 +310,25 @@ var VisDistribution = Class.extend({
         .style('left', (d3.event.pageX + 50) + 'px')
         .style('top', (d3.event.pageY - 25) + 'px');
 
+    this.svgDistribution.selectAll('.bar_distribution')
+      .filter(function(d) { return 'c' + d.key != selectedClass[1]; }.bind(this))
+      .transition()
+      .duration(this.duration / 4)
+      .style('opacity', .5);
+
   },
 
   _mouseout: function () {
-    var selected = d3.event.target,
-        selectedClass = selected.classList,
-        selectedData = d3.select(selected).data()[0],
-        labelsOn = d3.select('#myonoffswitch-labels').property('checked');
 
-    d3.selectAll('.marker.' + selectedClass[1])
-      .filter(function(d) { return d.represent == selectedClass[2]; })
-      .transition()
-      .duration(this.duration / 4)
-      .attr('markerWidth', this.markerSize)
-      .attr('markerHeight', this.markerSize)
-      .style('fill', this.colorScale(selectedClass[1]))
-      .attr('stroke-width', 0);
-
-    var yMouseoverLine = this.yScale(selectedData.tpClass) + this.ySecondaryScale(selectedData.name);
-
-    d3.selectAll('.mouseover_line')
-      .transition()
-      .duration(this.duration / 2)
-      .attr('y2', yMouseoverLine)
-      .attr('y1', yMouseoverLine)
-      .remove();
-    
-    var toBright = this.ySecondaryScale.domain().filter(function(d) { return d != selectedClass[2]; })  
-    this.chart.selectAll('.' + toBright)
-      .transition()
-      .duration(this.duration / 4)
-      .style('stroke', function(d) { return this.colorScale(d.tpClass); }.bind(this))
-      .attr('fill', function(d) { return this.colorScale(d.tpClass); }.bind(this));
-
-    d3.selectAll('.legend_line').selectAll('text.' + selectedData.name)
-      .attr('font-size', '1.1em');
-
-    this.tooltip.transition()
+    this.tooltip
+        .transition()
         .duration(this.duration / 4)
-        .style("opacity", 0);
+        .style('opacity', 0);
+
+    this.svgDistribution.selectAll('.bar_distribution')
+      .transition()
+      .duration(this.duration / 4)
+      .style('opacity', 1);
   }
 
 }); // End object
