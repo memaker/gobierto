@@ -107,24 +107,14 @@ class Api::DataController < ApplicationController
     cuts.each_pair do |cut,budget_lines|
       label = "de #{cut.begin.round(2).to_s}€ a #{cut.end.round(2).to_s}€"
       if (structure == :items)
-        budget_lines.each do |bl|
-          item = {}
-          item['name'] = bl.place_name
-          item['cut'] = cut_number
-          item['label'] = label
-          item['value'] = bl.budget_per_inhabitant.to_f.round(2)
-          items << item
-        end
-        items << mean_item(label, cut_number, mean) if cut.include?(mean)
+        items << budget_lines.map { |bl| budget_item(bl.place_name, label, cut_number, bl.budget_per_inhabitant) }
+        items << budget_item("mean", label, cut_number, mean) if cut.include?(mean)
       else
-        item = {}
-        item['cut'] = cut_number
-        item['label'] = label
-        items << item
+        items << {'cut' => cut_number, 'label' => label}
       end
       cut_number += 1
     end
-    items
+    items.flatten
   end
 
   def percentage(budget_lines, structure = :items)
@@ -148,33 +138,21 @@ class Api::DataController < ApplicationController
     cuts.each_pair do |cut, budget_lines|
       label = "de #{cut.begin.floor.round(0)}% a #{cut.end.floor.round(0)}%"
       if (structure == :items)
-        budget_lines.each do |bl|
-          item = {}
-          item['name'] = bl.place_name
-          item['cut'] = cut_number
-          item['label'] = label
-          item['value'] = bl.send(percentage_method).to_f.round(2)
-          items << item
-        end
-        items << mean_item(label, cut_number, mean) if cut.include?(mean)
+        items << budget_lines.map { |bl| budget_item(bl.place_name, label, cut_number, bl.send(percentage_method)) }
+        items << budget_item("mean", label, cut_number, mean) if cut.include?(mean)
       else
-        item = {}
-        item['cut'] = cut_number
-        item['label'] = label
-        items << item
+        items << {'cut' => cut_number, 'label' => label}
       end
       cut_number += 1
     end
-    items
+    items.flatten
   end
 
-  def mean_item(label, cut_number, mean)
-    item = {}
-    item['name'] = "mean"
-    item['cut'] = cut_number
-    item['label'] = label
-    item['value'] = mean.round(2).to_s
-    item
+  def budget_item(name, label, cut_number, value)
+    {'name' => name,
+     'cut'  => cut_number,
+     'label'=> label,
+     'value'=> value.to_f.round(2)}
   end
 
   def derive_percentage_method(budget_line)
