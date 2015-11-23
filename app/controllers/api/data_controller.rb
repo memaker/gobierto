@@ -87,7 +87,6 @@ class Api::DataController < ApplicationController
   end
 
   private
-
   def per_person(budget_lines, structure = :items)
     per_inhabitant = budget_lines.sort_by{|bl| bl.budget_per_inhabitant.to_f }
     min = BigDecimal.new(per_inhabitant.first.budget_per_inhabitant)
@@ -96,85 +95,59 @@ class Api::DataController < ApplicationController
     width = range / 20
     mean = per_inhabitant.map { |r| BigDecimal.new(r.budget_per_inhabitant) }.reduce(:+) / per_inhabitant.size
 
-    cuts = {}
+    items = []
+    cut_number = 0
     (min...max).step(width).each do |f|
       bucket = (f..f+width)
-      cuts[bucket] = per_inhabitant.select {|bl| bucket.include?(bl.budget_per_inhabitant.to_f)}
-    end
-
-    cut_number = 0
-    items = []
-    cuts.each_pair do |cut,budget_lines|
-      label = "de #{cut.begin.round(2).to_s}€ a #{cut.end.round(2).to_s}€"
+      label = "de #{bucket.begin.round(2).to_s}€ a #{bucket.end.round(2).to_s}€"
       if (structure == :items)
-        budget_lines.each do |bl|
-          item = {}
-          item['name'] = bl.place_name
-          item['cut'] = cut_number
-          item['label'] = label
-          item['value'] = bl.budget_per_inhabitant.to_f.round(2)
-          items << item
-        end
-        items << mean_item(label, cut_number, mean) if cut.include?(mean)
+        items << budget_items(per_inhabitant,bucket, :budget_per_inhabitant, label, cut_number)
+        items << budget_item("mean", label, cut_number, mean) if bucket.include?(mean)
       else
-        item = {}
-        item['cut'] = cut_number
-        item['label'] = label
-        items << item
+        items << {'cut' => cut_number, 'label' => label}
       end
       cut_number += 1
     end
-    items
+    items.flatten
   end
 
   def percentage(budget_lines, structure = :items)
     
-    percentage_method = derive_percentage_method(budget_lines.first)
+    method = derive_percentage_method(budget_lines.first)
 
-    percentages = budget_lines.sort_by{ |bl| BigDecimal.new(bl.send(percentage_method)) }
+    percentages = budget_lines.sort_by{ |bl| BigDecimal.new(bl.send(method)) }
     width = BigDecimal.new(5)
-    mean = percentages.map { |r| BigDecimal.new(r.send(percentage_method)) }.reduce(:+) / percentages.size
+    mean = percentages.map { |r| BigDecimal.new(r.send(method)) }.reduce(:+) / percentages.size
     
-    cuts = {}
+    items = []
+    cut_number = 0
     (0...100).step(width).each do |i|
       extreme = i + width
       extreme += 0.1 if extreme == 100
       bucket = (i...extreme)
-      cuts[bucket] = percentages.select { |bl| bucket.include?(BigDecimal.new(bl.send(percentage_method))) }
-    end
-
-    cut_number = 0
-    items = []
-    cuts.each_pair do |cut, budget_lines|
-      label = "de #{cut.begin.floor.round(0)}% a #{cut.end.floor.round(0)}%"
+      label = "de #{bucket.begin.floor.round(0).to_s}% a #{bucket.end.floor.round(0).to_s}%"
       if (structure == :items)
-        budget_lines.each do |bl|
-          item = {}
-          item['name'] = bl.place_name
-          item['cut'] = cut_number
-          item['label'] = label
-          item['value'] = bl.send(percentage_method).to_f.round(2)
-          items << item
-        end
-        items << mean_item(label, cut_number, mean) if cut.include?(mean)
+        items << budget_items(percentages, bucket, method, label, cut_number)
+        items << budget_item("mean", label, cut_number, mean) if bucket.include?(mean)
       else
-        item = {}
-        item['cut'] = cut_number
-        item['label'] = label
-        items << item
+        items << {'cut' => cut_number, 'label' => label}
       end
       cut_number += 1
     end
-    items
+    items.flatten
   end
 
-  def mean_item(label, cut_number, mean)
-    item = {}
-    item['name'] = "mean"
-    item['cut'] = cut_number
-    item['label'] = label
-    item['value'] = mean.round(2).to_s
-    item
+  def budget_items(lines, bucket, method, label, cut_number)
+    lines.select { |bl| bucket.include?(BigDecimal.new(bl.send(method))) }.map do |bl|
+      budget_item(bl.place_name, label, cut_number, bl.send(method))
+    end
+  end
+
+  def budget_item(name, label, cut_number, value)
+    {'name' => name,
+     'cut'  => cut_number,
+     'label'=> label,
+     'value'=> value.to_f.round(2)}
   end
 
   def derive_percentage_method(budget_line)
