@@ -90,8 +90,6 @@ var VisDispersion = Class.extend({
 
     // Load the data
     d3.json(urlData, function(error, jsonData){
-      console.log(urlData);
-      console.log(jsonData);
       if (error) throw error;
       
       this.data = jsonData;
@@ -188,7 +186,6 @@ var VisDispersion = Class.extend({
       // --> DRAW THE Legend 
       var svg = d3.select(this.container + " svg");
 
-      debugger;
       svg.append("g")
         .attr("class", "legend_dispersion")
         .attr("transform", "translate(" + (this.width - (this.margin.right * 3)) + ",20)");
