@@ -12,23 +12,41 @@ class CreateYearTotalsEconomic < ActiveRecord::Migration
       t.decimal :total_2015, precision: 15, scale: 2
     end
 
-    sql = %{select cdcta,ine_code,year,importe as amount,tipreig from tb_economica
-where ine_code IS NOT NULL order by cdcta, ine_code, year ASC}
+    ActiveRecord::Base.logger = nil
+    EconomicArea.items.all.each do |category|
+      INE::Places::Place.all.each do |place|
+        sql = <<-SQL
+select importe as amount, year
+FROM tb_economica
+WHERE ine_code = #{place.id} AND tb_economica.cdcta = '#{category.code}' AND idente is null
+AND tipreig = '#{category.tipreig}'
+ORDER BY year ASC
+SQL
 
-    total_rows = ActiveRecord::Base.connection.execute(sql)
-    total_rows.group_by {|row| [row['cdcta'],row['ine_code'],row['tipreig']] }.each do |g, values|
-      total_amounts = ["'#{g[0]}'", g[1], "'#{g[2]}'"]
-      (2010..2015).each do |year|
-        if row = values.detect {|v| v['year'] == year.to_s }
-          total_amounts << row['amount']
-        else
-          total_amounts << 'NULL'
-        end
+        results = ActiveRecord::Base.connection.execute(sql)
+
+        values = []
+        values << (results.detect{|r| r['year'] == '2010'}.try(:[], 'amount') || 0)
+        values << (results.detect{|r| r['year'] == '2011'}.try(:[], 'amount') || 0)
+        values << (results.detect{|r| r['year'] == '2012'}.try(:[], 'amount') || 0)
+        values << (results.detect{|r| r['year'] == '2013'}.try(:[], 'amount') || 0)
+        values << (results.detect{|r| r['year'] == '2014'}.try(:[], 'amount') || 0)
+        values << (results.detect{|r| r['year'] == '2015'}.try(:[], 'amount') || 0)
+
+        sql = <<-SQL
+INSERT INTO economic_yearly_totals VALUES ('#{category.code}', #{place.id}, '#{category.kind}',
+        #{values[0]},
+        #{values[1]},
+        #{values[2]},
+        #{values[3]},
+        #{values[4]},
+        #{values[5]})
+SQL
+        ActiveRecord::Base.connection.execute(sql)
+
       end
-      insert = "INSERT INTO economic_yearly_totals VALUES (#{total_amounts.join(',')})"
-      # puts insert
-      ActiveRecord::Base.connection.execute(insert)
-    end
+      putc '.'
+    end.size
   end
 
   def down

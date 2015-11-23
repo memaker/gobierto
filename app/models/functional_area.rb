@@ -132,18 +132,24 @@ SQL
     sql = <<-SQL
 select sum(importe) as amount
 FROM tb_funcional
-WHERE year = #{year} AND level = 1 AND ine_code = #{place_id}
+WHERE year = #{year} AND level = 1 AND ine_code = #{place_id} AND cdcta is null
 SQL
 
     ActiveRecord::Base.connection.execute(sql).first['amount'].to_f
   end
 
   def budget(place, year)
+    conditions = []
+    conditions << "ine_code = #{place.id}"
+    conditions << "year = #{year}"
+    conditions << "tb_funcional.cdfgr = '#{self.code}'"
+    conditions << "cdcta is null"
+
     sql = <<-SQL
 select importe as amount, budget_per_inhabitant, percentage_total_functional
 FROM tb_funcional
-WHERE ine_code = #{place.id} AND year = #{year} AND level = 1 AND tb_funcional.cdfgr = '#{self.code}' AND cdcta is null
-SQL
+WHERE #{conditions.join(' AND ')}
+    SQL
 
     ActiveRecord::Base.connection.execute(sql).first
   end
@@ -156,7 +162,7 @@ SQL
     end
   end
 
-  def budget_percentage_total(place, year, total)
+  def budget_percentage_total(place, year)
     if r = budget(place, year)
       r['percentage_total_functional'].to_f
     else

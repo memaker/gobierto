@@ -27,7 +27,7 @@ where cdcta IS NULL AND ine_code IS NOT NULL order by cdfgr, ine_code, year ASC;
       insert = "INSERT INTO functional_yearly_totals VALUES (#{total_amounts.join(',')})"
       # puts insert
       ActiveRecord::Base.connection.execute(insert)
-    end
+    end.size
   end
 
   def down

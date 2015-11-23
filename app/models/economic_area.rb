@@ -143,7 +143,7 @@ SQL
     sql = <<-SQL
 select sum(importe) as amount
 FROM tb_economica
-WHERE year = #{year} AND tb_economica.level = 1 AND ine_code = #{place_id} AND idente is null 
+WHERE year = #{year} AND tb_economica.level = 1 AND ine_code = #{place_id} AND idente is null
 AND tipreig = '#{kind}'
 SQL
 
@@ -159,7 +159,6 @@ SQL
     conditions = []
     conditions << "ine_code = #{place.id}"
     conditions << "year = #{year}"
-    conditions << "level = 1"
     conditions << "tb_economica.cdcta = '#{self.code}'"
     conditions << "idente is null"
     conditions << "tipreig = '#{self.tipreig}'"
@@ -181,7 +180,7 @@ WHERE #{conditions.join(' AND ')}
     end
   end
 
-  def budget_percentage_total(place, year, total)
+  def budget_percentage_total(place, year)
     if r = budget(place, year)
       r['percentage_total_economic'].to_f
     else
@@ -195,7 +194,7 @@ WHERE #{conditions.join(' AND ')}
  select sum(importe) as total
  from tb_economica
  where tipreig='#{kind}' and year=#{year} and cdcta='#{code}' and idente is null
-  SQL
+SQL
 
       ActiveRecord::Base.connection.execute(sql).first['total'].to_f
     end
