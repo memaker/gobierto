@@ -6,7 +6,7 @@ var VisDistribution = Class.extend({
     
     // Chart dimensions
     this.containerWidth = null;
-    this.margin = {top: 20, right: 20, bottom: 40, left: 20};
+    this.margin = {top: 10, right: 15, bottom: 20, left: 8};
     this.width = null;
     this.height = null;
     
@@ -27,7 +27,8 @@ var VisDistribution = Class.extend({
     // Data
     this.data = null;
     this.dataChart = null;
-    this.dataMeans = null;
+    this.dataBuckets = null;
+    this.dataMean = null;
     this.dataFreq = null; 
     this.dataDomain = null;
     this.kind = null;
@@ -92,21 +93,44 @@ var VisDistribution = Class.extend({
       if (error) throw error;
       
       this.data = jsonData;
+      
       // Map the data
       this.dataChart = this.data.budgets[this.measure].filter(function(d) { return d.name.match(/^(?!^mean)/) ; });
-      this.dataMeans = this.data.budgets[this.measure].filter(function(d) { return d.name.match(/^mean/) ; });
+      this.dataBuckets = this.data.buckets[this.measure];
+      this.dataMean = this.data.budgets[this.measure].filter(function(d) { return d.name.match(/^mean/) ; });
       this.kind = this.data.kind;
 
+      
       // dataDomain, to plot the min & max labels    
       this.dataDomain = ([
         d3.min(this.dataChart, function(d) { return d.value; }),
         d3.max(this.dataChart, function(d) { return d.value; })
             ]);
+      
+
       // Get the frequencies for every cut
+     
       this.dataFreq = d3.nest()
-            .key(function(d) { return d.cut; }).sortKeys(function(a,b) { return a - b; })
+            .key(function(d) { return d.cut; })
             .rollup(function(v) { return v.length; })
             .entries(this.dataChart);
+
+      // And the cuts with some frequency
+      var currentBuckets = this.dataFreq.map(function(d) { return d.key; })
+
+      // Fill the empty buckets
+      this.dataBuckets.forEach(function(d) { 
+        d.cut = d.cut.toString();
+        if (currentBuckets.indexOf(d.cut) == -1) {
+          var obj = {
+            "key": d.cut,
+            "values": 0
+          }
+          this.dataFreq.push(obj)
+        }
+      }.bind(this));
+
+      this.dataFreq.sort(function(a,b) { return (+a.key) - (+b.key); })
 
       // Set the scales
       this.xScale
@@ -150,7 +174,7 @@ var VisDistribution = Class.extend({
           .data(this.dataFreq)
           .enter()
         .append('rect')
-          .attr('class', function(d) { return 'bar_distribution x' + d.key; })
+          .attr('class', function(d) { return 'bar_distribution c' + d.key; })
           .attr('x', function(d) { return this.xScale(d.key); }.bind(this))
           .attr('width', this.xScale.rangeBand())
           .attr('y', function(d) { return this.yScale(d.values); }.bind(this))
@@ -158,12 +182,9 @@ var VisDistribution = Class.extend({
           .attr('fill', this.mainColor);
 
       // --> HIGHLIGHT THE MEAN CUT 
+      this.meanCut = this.dataMean[0].cut; 
 
-      this.meanCut = this.dataMeans
-                      .filter(function(d) { return d.name == this.mean; }.bind(this))
-                      .map(function(d) { return d.cut; });
-
-      this.svgDistribution.selectAll('.bar_distribution.x' + this.meanCut[0])
+      this.svgDistribution.selectAll('.bar_distribution.c' + this.meanCut)
           .attr('fill', d3.rgb(this.mainColor).darker(1));
 
 
@@ -172,28 +193,51 @@ var VisDistribution = Class.extend({
 
   updateRender: function () {
 
+    
     // re-map the data
     this.dataChart = this.data.budgets[this.measure].filter(function(d) { return d.name.match(/^(?!^mean)/) ; });
-    this.dataMeans = this.data.budgets[this.measure].filter(function(d) { return d.name.match(/^mean/) ; });
+    this.dataBuckets = this.data.buckets[this.measure];
+    this.dataMean = this.data.budgets[this.measure].filter(function(d) { return d.name.match(/^mean/) ; });
     this.kind = this.data.kind;
 
-    // dataDomain, to plot the min & max labels    
-      this.dataDomain = ([
-        d3.min(this.dataChart, function(d) { return d.value; }),
-        d3.max(this.dataChart, function(d) { return d.value; })
-            ]);
     
-    // Update the frequencies for every cut
+    // dataDomain, to plot the min & max labels    
+    this.dataDomain = ([
+      d3.min(this.dataChart, function(d) { return d.value; }),
+      d3.max(this.dataChart, function(d) { return d.value; })
+          ]);
+    
+
+    // Get the frequencies for every cut
+   
     this.dataFreq = d3.nest()
-          .key(function(d) { return d.cut; }).sortKeys(function(a,b) { return a - b; })
+          .key(function(d) { return d.cut; })
           .rollup(function(v) { return v.length; })
           .entries(this.dataChart);
 
+    // And the cuts with some frequency
+    var currentBuckets = this.dataFreq.map(function(d) { return d.key; })
+
+    // Fill the empty buckets
+    this.dataBuckets.forEach(function(d) { 
+      d.cut = d.cut.toString();
+      if (currentBuckets.indexOf(d.cut) == -1) {
+        var obj = {
+          "key": d.cut,
+          "values": 0
+        }
+        this.dataFreq.push(obj)
+      }
+    }.bind(this));
+
+    this.dataFreq.sort(function(a,b) { return (+a.key) - (+b.key); })
+
+    this.meanCut = this.dataMean[0].cut.toString()
+    
     // Update the scales
-    this.xScale.domain(this.dataFreq.map(function(d) { return d.key; }));
     this.xMinMaxScale.domain(this.dataDomain);
     this.yScale.domain([0, d3.max(this.dataFreq, function(d) { return d.values; })]);
-
+    
     // Update the axis
     this.xMinMaxAxis 
           .scale(this.xMinMaxScale)
@@ -219,32 +263,14 @@ var VisDistribution = Class.extend({
       .attr('fill', this.mainColor);
 
     this.svgDistribution.selectAll('.bar_distribution')
-      .data(this.dataChart)
-      .transition()
-      .duration(this.duration)
-      .attr('y', function(d) { return this.yScale(d.values); }.bind(this))
-      .attr('height', function(d) { return this.height - this.yScale(d.values); }.bind(this))
-
-
-    // --> HIGHLIGHT THE MEAN CUT 
-
-    var prevMeanCut = this.meanCut;
-    this.meanCut = this.dataMeans
-                    .filter(function(d) { return d.name == this.mean; }.bind(this))
-                    .map(function(d) { return d.cut; });
-
-    if (this.meanCut != prevMeanCut) {
-      this.svgDistribution.selectAll('.bar_distribution')
+        .data(this.dataFreq)
         .transition()
-        .duration(this.duration / 2)
-        .attr('fill', this.mainColor);
-
-      this.svgDistribution.selectAll('.bar_distribution.x' + this.meanCut[0])
-        .transition()
-        .duration(this.duration)
-        .attr('fill', d3.rgb(this.mainColor).darker(1));
-    }
+        .duration(this.duration/2)
+        .attr('y', function(d) { return this.yScale(d.values); }.bind(this))
+        .attr('height', function(d) { return this.height - this.yScale(d.values); }.bind(this))
+        .attr('fill', function(d) { return d.key != this.meanCut ? this.mainColor : this.darkColor; }.bind(this));
   },
+
   //PRIVATE
   _tickValues:  function (scale) {
     var range = scale.domain()[1] - scale.domain()[0];

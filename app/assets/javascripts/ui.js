@@ -183,7 +183,7 @@ $(function(){
 
     var visDistribution = new VisDistribution('#vis_distribution', 'per_person');//, 'percentage', 'mean_province');
     // visDistribution.render('api/data/distribution.json' + location.search);
-    visDistribution.render('/distribution_sample.json');
+    visDistribution.render('/distribution_sample_with_buckets.json');
 
     d3.selectAll('.measure.button')
       .on('click', function(d) {
@@ -193,20 +193,11 @@ $(function(){
 
         visDistribution.updateRender();
       });
-
-    d3.selectAll('.context.button')
-      .on('click', function(d) {
-        d3.selectAll(".context.button.buttonSelected").classed("buttonSelected", false);
-        d3.select(this).classed("buttonSelected", true);
-        visDistribution.mean = this.id;
-
-        visDistribution.updateRender();
-      });
   }
 
   if($('#vis_dispersion').size() > 0) {
-    var visDispersion = new VisDispersion('#vis_dispersion', 'wadus');
-    visDispersion.render('/api/data/dispersion.json' + location.search);
+    // var visDispersion = new VisDispersion('#vis_dispersion', 'wadus');
+    // visDispersion.render('/api/data/dispersion.json' + location.search);
   }
 
 });

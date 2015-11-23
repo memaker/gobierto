@@ -10,14 +10,10 @@ body {
 }
 
 #vis_distribution {
-  width: 50%;
+  width: 100%;
   float: left;
 }
 
-#density_vis_per {
-  width: 50%;
-  overflow: hidden;
-}
 
 .x.axis path {
   fill: none;
@@ -35,7 +31,7 @@ body {
 
 /*Tooltip*/
 
-.ass_main_tooltip {
+.vis_distribution_tooltip {
   top: 0;
   right: 0;
   position: absolute;
