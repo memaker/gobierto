@@ -271,4 +271,20 @@ SQL
     end
   end
 
+  def dispersion_items(year)
+     sql = <<-SQL
+  select ine_code as place_id,budget_per_inhabitant as budget_per_inhabitant,importe as amount,
+  poblacion_municipal_2014.nombre as place_name, poblacion_municipal_2014.total as population
+  FROM tb_funcional
+  INNER JOIN poblacion_municipal_2014 ON poblacion_municipal_2014.codigo = tb_funcional.ine_code
+  WHERE year = #{year} AND tb_funcional.cdfgr = '#{self.code}' AND cdcta is null AND ine_code is not null
+SQL
+
+    ActiveRecord::Base.connection.execute(sql).map do |row|
+      BudgetLine.new(row).tap do |item|
+        item.cut = BudgetFilter.nice_range(item.population)
+      end
+    end
+  end
+
 end

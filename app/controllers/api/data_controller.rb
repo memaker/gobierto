@@ -200,6 +200,17 @@ class Api::DataController < ApplicationController
         "cut": "Entre 133 y 231232"
       }
     ]
+
+    filter.category.dispersion_items(filter.year).map do |item|
+      {
+        "name": item.place_name,
+        "codigo": item.place_id,
+        "population": item.population,
+        "total": item.amount,
+        "per_person": item.budget_per_inhabitant,
+        "cut": item.cut
+      }
+    end
   end
 
 end
