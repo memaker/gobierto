@@ -157,25 +157,6 @@ class Api::DataController < ApplicationController
   end
 
   def dispersion_items(filter)
-    [
-      {
-        "name": "Murcia",
-        "codigo": "1234",
-        "population": 2132323,
-        "total": 2323,
-        "per_person": 12,
-        "cut": "Menos de 10000"
-      },
-      {
-        "codigo": 2344,
-        "name": "Getafe",
-        "population": 321123,
-        "total": 2323,
-        "per_person": 453,
-        "cut": "Entre 133 y 231232"
-      }
-    ]
-
     filter.category.dispersion_items(filter.year).map do |item|
       {
         "name": item.place_name,
@@ -183,6 +164,7 @@ class Api::DataController < ApplicationController
         "population": item.population,
         "total": item.amount,
         "per_person": item.budget_per_inhabitant,
+        "percentage": item.percentage,
         "cut": item.cut
       }
     end

@@ -196,8 +196,9 @@ $(function(){
   }
 
   if($('#vis_dispersion').size() > 0) {
-    var visDispersion = new VisDispersion('#vis_dispersion', 'per_person');
+    var visDispersion = new VisDispersion('#vis_dispersion', 'per_person'); // percentage
     visDispersion.render('/api/data/dispersion.json' + location.search);
+
 
     // d3.selectAll('.measure.button')
     //   .on('click', function(d) {

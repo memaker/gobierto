@@ -274,6 +274,7 @@ SQL
   def dispersion_items(year)
      sql = <<-SQL
   select ine_code as place_id,budget_per_inhabitant as budget_per_inhabitant,importe as amount,
+  percentage_total_functional as percentage,
   poblacion_municipal_2014.nombre as place_name, poblacion_municipal_2014.total as population
   FROM tb_funcional
   INNER JOIN poblacion_municipal_2014 ON poblacion_municipal_2014.codigo = tb_funcional.ine_code

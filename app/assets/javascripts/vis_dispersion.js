@@ -42,7 +42,7 @@ var VisDispersion = Class.extend({
 
     // Constant values
     this.radius = 5;
-    this.opacity = .7;
+    this.opacity = 1;
     this.opacityLow = .4;
     this.duration = 1500;
     this.mainColor = '#F69C95';

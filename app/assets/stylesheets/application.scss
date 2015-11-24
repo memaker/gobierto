@@ -185,6 +185,8 @@ header.global {
   .form_item {
     margin: 0 0 1em 0;
     height: 30px;
+    position: relative;
+    padding: 0 25px 0 0;
   }
   .col-1-2 {
     width: 60%;
@@ -201,6 +203,13 @@ header.global {
     display: inline-block;
     width: 125px;
     text-align: right; 
+  }
+  .reset_filter {
+    position: absolute;
+    top: 0; 
+    right: 0;
+    padding: 3px 6px;
+    display: inline-block;
   }
 }
 
@@ -289,7 +298,12 @@ table {
   padding: 6px 2px 5px;
   font: 1em $font_text;
 }
-
+.reset_filter {
+  // position: absolute;
+  // top: 0;
+  // right: -17px;
+  // padding: 5px;
+}
 .select_from_tree {
   width: calc(100% - 141px);
   display: inline-block;
