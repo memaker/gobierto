@@ -109,7 +109,7 @@
       ],
       "percentage":[
          {
-            "name":"municipio1",
+            "name":"municipio11",
             "values": [
                {
                   "date":"2008",
@@ -130,7 +130,7 @@
             ]
          },
          {
-            "name":"municipio2",
+            "name":"municipio12",
             "values": [
                {
                   "date":"2008",
@@ -151,7 +151,7 @@
             ]
          },
          {
-            "name":"municipio3",
+            "name":"municipio1",
             "values": [
                {
                   "date":"2008",
@@ -171,7 +171,7 @@
                }
             ]
          },
-         {"name":"municipio4",
+         {"name":"municipio13",
             "values": [
                {
                   "date":"2008",
@@ -192,7 +192,7 @@
             ]
          },
          {
-            "name":"municipio5",
+            "name":"municipio14",
             "values": [
                {
                   "date":"2008",

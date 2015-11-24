@@ -29,6 +29,9 @@ var VisEvolution = Class.extend({
     this.dataDomain = null;
     this.kind = null;
 
+    // Legend
+    this.legendEvolution = d3.legend.color();
+
     // Objects
     this.tooltip = null;
     this.formatPercent = this.measure == 'percentage' ? d3.format('%') : d3.format(".2f");
@@ -130,13 +133,13 @@ var VisEvolution = Class.extend({
       // Define the axis 
       this.xAxis
           .scale(this.xScale)
-          // .tickValues(this._tickValues(this.xScale))
           .orient("bottom");  
 
 
       this.yAxis
           .scale(this.yScale)
           .tickValues(this._tickValues(this.yScale))
+          .tickFormat(function(d) { return this.measure != 'percentage' ? d3.round(d, 2) : d + '%'; }.bind(this))
           .orient("left");
       
       // --> DRAW THE AXIS
@@ -168,7 +171,7 @@ var VisEvolution = Class.extend({
           .data(this.dataChart)
           .enter()
         .append('path')
-          .attr('class', function(d) { return 'evolution ' + this._normalize(d.name); }.bind(this))
+          .attr('class', function(d) { return 'evolution_line ' + this._normalize(d.name); }.bind(this))
           .attr('d', function(d) { return this.line(d.values); }.bind(this))
           .style('stroke', function(d) { return this.colorScale(d.name); }.bind(this));
 
@@ -184,94 +187,97 @@ var VisEvolution = Class.extend({
         .attr("class", "legend_evolution")
         .attr("transform", "translate(" + (this.width - (this.margin.right * 3)) + ",20)");
 
-      var legendEvolution = d3.legend.color()
+      this.legendEvolution
         .shape('path', d3.svg.symbol().type('circle').size(80)())
         .shapeWidth(14)
         .shapePadding(this.radius)
         .scale(this.colorScale);
 
-      svg.select(".legend_evolution")
-        .call(legendEvolution);
+      d3.select(".legend_evolution")
+        .call(this.legendEvolution);
 
 
     }.bind(this)); // end load data
   }, // end render
 
-  // updateRender: function () {
+  updateRender: function () {
 
-  //   // re-map the data
-  //   this.dataChart = this.data.budgets[this.measure].filter(function(d) { return d.name.match(/^(?!^mean)/) ; });
-  //   this.dataMeans = this.data.budgets[this.measure].filter(function(d) { return d.name.match(/^mean/) ; });
-  //   this.kind = this.data.kind;
+    // re-map the data
+    this.dataChart = this.data.budgets[this.measure];
+    this.kind = this.data.kind;
 
-  //   // dataDomain, to plot the min & max labels    
-  //     this.dataDomain = ([
-  //       d3.min(this.dataChart, function(d) { return d.value; }),
-  //       d3.max(this.dataChart, function(d) { return d.value; })
-  //           ]);
+    var values = [];
+    var municipalities = [];
+    this.dataChart.forEach(function(d) { 
+      d.values.forEach(function(v) { 
+        v.date = this.yearDate(this.parseDate(v.date));
+        values.push(v.value)
+      }.bind(this));
+      municipalities.push(d.name)
+    }.bind(this));
+
+    // // dataDomain, to plot the min & max labels    
+    //   this.dataDomain = ([
+    //     d3.min(this.dataChart, function(d) { return d.value; }),
+    //     d3.max(this.dataChart, function(d) { return d.value; })
+    //         ]);
     
-  //   // Update the frequencies for every cut
-  //   this.dataFreq = d3.nest()
-  //         .key(function(d) { return d.cut; }).sortKeys(function(a,b) { return a - b; })
-  //         .rollup(function(v) { return v.length; })
-  //         .entries(this.dataChart);
+    // // Update the frequencies for every cut
+    // this.dataFreq = d3.nest()
+    //       .key(function(d) { return d.cut; }).sortKeys(function(a,b) { return a - b; })
+    //       .rollup(function(v) { return v.length; })
+    //       .entries(this.dataChart);
 
-  //   // Update the scales
-  //   this.xScale.domain(this.dataFreq.map(function(d) { return d.key; }));
-  //   this.xMinMaxScale.domain(this.dataDomain);
-  //   this.yScale.domain([0, d3.max(this.dataFreq, function(d) { return d.values; })]);
+    // Update the scales
+    this.xScale.domain(this.dataChart[0].values.map(function(d) { return d.date; }))
+    this.yScale.domain([d3.min(values) * .3, d3.max(values) * 1.2])
+    this.colorScale.domain(municipalities);
 
-  //   // Update the axis
-  //   this.xMinMaxAxis 
-  //         .scale(this.xMinMaxScale)
-  //         .tickValues(this.dataDomain);
+    // Update the axis
+    this.xAxis.scale(this.xScale);
+ 
+    this.yAxis
+        .scale(this.yScale)
+        .tickValues(this._tickValues(this.yScale))
+        .tickFormat(function(d) { return this.measure != 'percentage' ? d3.round(d, 2) : d + '%'; }.bind(this));
 
-  //   if (this.measure != 'percentage') {
-  //     this.xMinMaxAxis
-  //       .tickFormat(d3.format('.f'));
-  //   } else {
-  //     this.xMinMaxAxis
-  //       .tickFormat(d3.format('%'));
-  //   }
+    this.svgEvolution.select(".x.axis")
+      .transition()
+      .duration(this.duration)
+      .delay(this.duration/2)
+      .ease("sin-in-out") 
+      .call(this.xAxis);
 
-  //   this.svgEvolution.select(".x.axis")
-  //     .transition()
-  //     .duration(this.duration)
-  //     .delay(this.duration/2)
-  //     .ease("sin-in-out") 
-  //     .call(this.xMinMaxAxis);
+    this.svgEvolution.select(".y.axis")
+      .transition()
+      .duration(this.duration)
+      .delay(this.duration/2)
+      .ease("sin-in-out") 
+      .call(this.yAxis);
 
-  //   // Change ticks color
-  //   d3.selectAll('.x.axis').selectAll('text')
-  //     .attr('fill', this.mainColor);
+    // Change ticks color
+    d3.selectAll('.axis').selectAll('text')
+      .attr('fill', this.darkColor);
 
-  //   this.svgEvolution.selectAll('.bar_distribution')
-  //     .data(this.dataChart)
-  //     .transition()
-  //     .duration(this.duration)
-  //     .attr('y', function(d) { return this.yScale(d.values); }.bind(this))
-  //     .attr('height', function(d) { return this.height - this.yScale(d.values); }.bind(this))
+    d3.selectAll('.axis').selectAll('path')
+      .attr('stroke', this.darkColor);
 
+    // Update lines
+    this.svgEvolution.selectAll('.evolution_line')
+      .data(this.dataChart)
+      .transition()
+      .duration(this.duration)
+      .attr('d', function(d) { return this.line(d.values); }.bind(this))
+      .style('stroke', function(d) { return this.colorScale(d.name); }.bind(this));
 
-  //   // --> HIGHLIGHT THE MEAN CUT 
+    // Update legends
+    this.legendEvolution
+        .scale(this.colorScale);
 
-  //   var prevMeanCut = this.meanCut;
-  //   this.meanCut = this.dataMeans
-  //                   .filter(function(d) { return d.name == this.mean; }.bind(this))
-  //                   .map(function(d) { return d.cut; });
-
-  //   if (this.meanCut != prevMeanCut) {
-  //     this.svgEvolution.selectAll('.bar_distribution')
-  //       .transition()
-  //       .duration(this.duration / 2)
-  //       .attr('fill', this.mainColor);
-
-  //     this.svgEvolution.selectAll('.bar_distribution.x' + this.meanCut[0])
-  //       .transition()
-  //       .duration(this.duration)
-  //       .attr('fill', d3.rgb(this.mainColor).darker(1));
-  //   }
-  // },
+    d3.select(".legend_evolution")
+        .call(this.legendEvolution);
+    
+  },
   //PRIVATE
   _tickValues:  function (scale) {
     var range = scale.domain()[1] - scale.domain()[0];

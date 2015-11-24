@@ -1,0 +1,53 @@
+{  
+   "kind":"G",
+   "budgets":[  
+      {  
+         "name":"Deuda pública",
+         "value":141.5,
+         "percentage":15.9,
+         "mean_national":70.6,
+         "mean_autonomy":59.4,
+         "mean_province":53.0
+      },
+      {  
+         "name":"Servicios públicos básicos",
+         "value":304.2,
+         "percentage":34.3,
+         "mean_national":403.3,
+         "mean_autonomy":433.9,
+         "mean_province":512.7
+      },
+      {  
+         "name":"Actuaciones de protección y promoción social",
+         "value":131.1,
+         "percentage":14.8,
+         "mean_national":101.8,
+         "mean_autonomy":120.9,
+         "mean_province":131.8
+      },
+      {  
+         "name":"Producción de bienes públicos de carácter preferente",
+         "value":115.9,
+         "percentage":13.0,
+         "mean_national":175.0,
+         "mean_autonomy":158.8,
+         "mean_province":154.3
+      },
+      {  
+         "name":"Actuaciones de carácter económico",
+         "value":37.3,
+         "percentage":4.2,
+         "mean_national":143.2,
+         "mean_autonomy":122.0,
+         "mean_province":206.5
+      },
+      {  
+         "name":"Actuaciones de carácter general",
+         "value":158.1,
+         "percentage":17.8,
+         "mean_national":446.5,
+         "mean_autonomy":452.9,
+         "mean_province":518.7
+      }
+   ]
+}

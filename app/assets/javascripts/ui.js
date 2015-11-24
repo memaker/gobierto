@@ -198,6 +198,15 @@ $(function(){
   if($('#vis_dispersion').size() > 0) {
     var visDispersion = new VisDispersion('#vis_dispersion', 'per_person');
     visDispersion.render('/api/data/dispersion.json' + location.search);
+
+    // d3.selectAll('.measure.button')
+    //   .on('click', function(d) {
+    //     d3.selectAll(".measure.button.buttonSelected").classed("buttonSelected", false);
+    //     d3.select(this).classed("buttonSelected", true);
+    //     visDispersion.measure = this.id;
+
+        // visDispersion.updateRender();
+      // });
   }
 
 });

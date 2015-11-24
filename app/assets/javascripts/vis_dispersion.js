@@ -98,7 +98,7 @@ var VisDispersion = Class.extend({
         d.population = +d.population;
       });
 
-
+      console.log(this.data)
       var randomMean = 5320; // Get real mean from the data;
 
 
@@ -204,81 +204,81 @@ var VisDispersion = Class.extend({
     }.bind(this)); // end load data
   }, // end render
 
-  // updateRender: function () {
+  updateRender: function () {
 
-  //   // re-map the data
-  //   this.dataChart = this.data.budgets[this.measure].filter(function(d) { return d.name.match(/^(?!^mean)/) ; });
-  //   this.dataMeans = this.data.budgets[this.measure].filter(function(d) { return d.name.match(/^mean/) ; });
-  //   this.kind = this.data.kind;
+    // re-map the data
+    this.dataChart = this.data.budgets[this.measure].filter(function(d) { return d.name.match(/^(?!^mean)/) ; });
+    this.dataMeans = this.data.budgets[this.measure].filter(function(d) { return d.name.match(/^mean/) ; });
+    this.kind = this.data.kind;
 
-  //   // dataDomain, to plot the min & max labels    
-  //     this.dataDomain = ([
-  //       d3.min(this.dataChart, function(d) { return d.value; }),
-  //       d3.max(this.dataChart, function(d) { return d.value; })
-  //           ]);
+    // dataDomain, to plot the min & max labels    
+      this.dataDomain = ([
+        d3.min(this.dataChart, function(d) { return d.value; }),
+        d3.max(this.dataChart, function(d) { return d.value; })
+            ]);
     
-  //   // Update the frequencies for every cut
-  //   this.dataFreq = d3.nest()
-  //         .key(function(d) { return d.cut; }).sortKeys(function(a,b) { return a - b; })
-  //         .rollup(function(v) { return v.length; })
-  //         .entries(this.dataChart);
+    // Update the frequencies for every cut
+    this.dataFreq = d3.nest()
+          .key(function(d) { return d.cut; }).sortKeys(function(a,b) { return a - b; })
+          .rollup(function(v) { return v.length; })
+          .entries(this.dataChart);
 
-  //   // Update the scales
-  //   this.xScale.domain(this.dataFreq.map(function(d) { return d.key; }));
-  //   this.xMinMaxScale.domain(this.dataDomain);
-  //   this.yScale.domain([0, d3.max(this.dataFreq, function(d) { return d.values; })]);
+    // Update the scales
+    this.xScale.domain(this.dataFreq.map(function(d) { return d.key; }));
+    this.xMinMaxScale.domain(this.dataDomain);
+    this.yScale.domain([0, d3.max(this.dataFreq, function(d) { return d.values; })]);
 
-  //   // Update the axis
-  //   this.xMinMaxAxis 
-  //         .scale(this.xMinMaxScale)
-  //         .tickValues(this.dataDomain);
+    // Update the axis
+    this.xMinMaxAxis 
+          .scale(this.xMinMaxScale)
+          .tickValues(this.dataDomain);
 
-  //   if (this.measure != 'percentage') {
-  //     this.xMinMaxAxis
-  //       .tickFormat(d3.format('.f'));
-  //   } else {
-  //     this.xMinMaxAxis
-  //       .tickFormat(d3.format('%'));
-  //   }
+    if (this.measure != 'percentage') {
+      this.xMinMaxAxis
+        .tickFormat(d3.format('.f'));
+    } else {
+      this.xMinMaxAxis
+        .tickFormat(d3.format('%'));
+    }
 
-  //   this.svgDispersion.select(".x.axis")
-  //     .transition()
-  //     .duration(this.duration)
-  //     .delay(this.duration/2)
-  //     .ease("sin-in-out") 
-  //     .call(this.xMinMaxAxis);
+    this.svgDispersion.select(".x.axis")
+      .transition()
+      .duration(this.duration)
+      .delay(this.duration/2)
+      .ease("sin-in-out") 
+      .call(this.xMinMaxAxis);
 
-  //   // Change ticks color
-  //   d3.selectAll('.x.axis').selectAll('text')
-  //     .attr('fill', this.mainColor);
+    // Change ticks color
+    d3.selectAll('.x.axis').selectAll('text')
+      .attr('fill', this.mainColor);
 
-  //   this.svgDispersion.selectAll('.bar_dispersion')
-  //     .data(this.dataChart)
-  //     .transition()
-  //     .duration(this.duration)
-  //     .attr('y', function(d) { return this.yScale(d.values); }.bind(this))
-  //     .attr('height', function(d) { return this.height - this.yScale(d.values); }.bind(this))
+    this.svgDispersion.selectAll('.bar_dispersion')
+      .data(this.dataChart)
+      .transition()
+      .duration(this.duration)
+      .attr('y', function(d) { return this.yScale(d.values); }.bind(this))
+      .attr('height', function(d) { return this.height - this.yScale(d.values); }.bind(this))
 
 
-  //   // --> HIGHLIGHT THE MEAN CUT 
+    // --> HIGHLIGHT THE MEAN CUT 
 
-  //   var prevMeanCut = this.meanCut;
-  //   this.meanCut = this.dataMeans
-  //                   .filter(function(d) { return d.name == this.mean; }.bind(this))
-  //                   .map(function(d) { return d.cut; });
+    var prevMeanCut = this.meanCut;
+    this.meanCut = this.dataMeans
+                    .filter(function(d) { return d.name == this.mean; }.bind(this))
+                    .map(function(d) { return d.cut; });
 
-  //   if (this.meanCut != prevMeanCut) {
-  //     this.svgDispersion.selectAll('.bar_dispersion')
-  //       .transition()
-  //       .duration(this.duration / 2)
-  //       .attr('fill', this.mainColor);
+    if (this.meanCut != prevMeanCut) {
+      this.svgDispersion.selectAll('.bar_dispersion')
+        .transition()
+        .duration(this.duration / 2)
+        .attr('fill', this.mainColor);
 
-  //     this.svgDispersion.selectAll('.bar_dispersion.x' + this.meanCut[0])
-  //       .transition()
-  //       .duration(this.duration)
-  //       .attr('fill', d3.rgb(this.mainColor).darker(1));
-  //   }
-  // },
+      this.svgDispersion.selectAll('.bar_dispersion.x' + this.meanCut[0])
+        .transition()
+        .duration(this.duration)
+        .attr('fill', d3.rgb(this.mainColor).darker(1));
+    }
+  },
   //PRIVATE
   _tickValues:  function (scale) {
     var range = scale.domain()[1] - scale.domain()[0];

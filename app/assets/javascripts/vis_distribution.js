@@ -247,7 +247,6 @@ var VisDistribution = Class.extend({
 
     this.dataFreq.sort(function(a,b) { return (+a.key) - (+b.key); })
 
-    console.log(this.dataFreq)
     this.meanCut = this.dataMean[0].cut.toString()
     
     // Update the scales
