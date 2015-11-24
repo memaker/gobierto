@@ -1,10 +1,7 @@
 <div class="data_sheet">
 
   <header class="clearfix">
-    Estás viendo <%= @filter.expending? ? 'gasto' : 'ingresos' %> en
-
-    <%= category_breadcrumb(category) %>
-
+    
     <div class="form_filters" id="selectors">
       <div class="group">
         Ver
@@ -14,6 +11,10 @@
         </ul>
       </div>
     </div>
+
+    Estás viendo <%= @filter.expending? ? 'gasto' : 'ingresos' %> en
+    
+    <%= category_breadcrumb(category) %>
 
   </header>
 

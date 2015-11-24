@@ -1,9 +1,6 @@
 <div class="data_sheet">
 
   <header class="clearfix">
-    Estás viendo
-
-    <%= place.province.autonomous_region.name %> > <%= place.province.name %> > <%= place.name %>
 
     <div class="form_filters" id="selectors">
       <div class="group">
@@ -15,6 +12,12 @@
         </ul>
       </div>
     </div>
+
+    Estás viendo
+
+    <%= place.province.autonomous_region.name %> > <%= place.province.name %> > 
+    <h1><%= place.name %></h1>
+    
   </header>
 
   <div class="widget_container">
