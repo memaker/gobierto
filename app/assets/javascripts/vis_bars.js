@@ -1,17 +1,18 @@
 'use strict';
 
 var BarsVis = Class.extend({
-  init: function(divId, context) {
+  init: function(divId, mean, divLegend) {
     this.container = divId;
+    this.containerLegend = divLegend;
     
     // Chart dimensions
     this.containerWidth = null;
     this.margin = {top: 10, right: 50, bottom: 20, left: 82};
     this.width = null;
-    this.height = null;
+    this.height = null;    
     
     // Variable 
-    this.context = context;
+    this.mean = mean;
 
     // Scales
     this.xScale = d3.scale.linear();
@@ -21,6 +22,11 @@ var BarsVis = Class.extend({
     // Axis
     this.xAxis = d3.svg.axis();
     this.yAxis = d3.svg.axis();
+
+    // Legend
+    this.legendScale = d3.scale.ordinal()
+    this.svgLegendBars = null;
+    this.legendBars = d3.legend.color();
 
     // Data
     this.data = null;
@@ -187,9 +193,9 @@ var BarsVis = Class.extend({
           .enter()
         .append('line')
           .attr('class', function(d) { return 'mean_line ' + this._normalize(this.niceCategory[d.name]); }.bind(this))
-          .attr('x1', function(d) { return this.xScale(d[this.context]); }.bind(this))
+          .attr('x1', function(d) { return this.xScale(d[this.mean]); }.bind(this))
           .attr('y1', function(d) { return this.yScale(d.name); }.bind(this))
-          .attr('x2', function(d) { return this.xScale(d[this.context]); }.bind(this))
+          .attr('x2', function(d) { return this.xScale(d[this.mean]); }.bind(this))
           .attr('y2', function(d) { return this.yScale(d.name) + this.yScale.rangeBand(); }.bind(this))
           .attr('stroke', this.darkColor)
           .attr('stroke-width', 2)
@@ -201,15 +207,50 @@ var BarsVis = Class.extend({
           .duration(this.duration / 2)
           .style('opacity', 1)
 
+
+      // --> DRAW THE Legend 
+      
+      this.legendScale.domain([this.niceCategory[this.mean]]).range([this.darkColor]);
+
+      this.svgLegendBars = d3.select(this.containerLegend).append('svg');
+
+      this.svgLegendBars.append("g")
+        .attr("class", "legend_bar")
+        .attr('transform', 'translate(' + (this.margin.left / 1.5) + ',' + 2 + ')')
+        
+      this.legendBars
+          .shapeWidth(2)
+          .shapeHeight(20)
+          .scale(this.legendScale);
+
+      this.svgLegendBars.select(".legend_bar")
+        .call(this.legendBars);
+
+      this.svgLegendBars.select("text")
+        .attr('fill', this.mainColor)
+        .attr('font-size', '14px');
+
+
     }.bind(this)); // end load data
   }, // end render
 
   updateRender: function () {
+    
+    // Update the mean lines
     this.svgBars.selectAll('.mean_line')
       .transition()
       .duration(this.duration)
-      .attr('x1', function(d) { return this.xScale(d[this.context]); }.bind(this))
-      .attr('x2', function(d) { return this.xScale(d[this.context]); }.bind(this))
+      .attr('x1', function(d) { return this.xScale(d[this.mean]); }.bind(this))
+      .attr('x2', function(d) { return this.xScale(d[this.mean]); }.bind(this));
+
+    // Update the legend
+    this.legendScale.domain([this.niceCategory[this.mean]]);
+
+    this.legendBars
+        .scale(this.legendScale);
+    
+    this.svgLegendBars.select(".legend_bar")
+        .call(this.legendBars);
 
   }, // end updateRender
 
@@ -228,7 +269,7 @@ var BarsVis = Class.extend({
 
 
     var text = this.niceCategory[this.kind] + ': <strong>' + this.formatPercent(selectedData.value) + 
-              '</strong>€<br>' + this.niceCategory[this.context] + ': <strong>' + selectedData[this.context] +
+              '</strong>€<br>' + this.niceCategory[this.mean] + ': <strong>' + selectedData[this.mean] +
               '</strong>€<br>'+ this.niceCategory['percentage']+': <strong>' + selectedData.percentage + '</strong>%<br>';
 
     this.svgBars.selectAll('.bar')
