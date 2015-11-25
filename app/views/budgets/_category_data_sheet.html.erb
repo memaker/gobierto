@@ -1,10 +1,7 @@
 <div class="data_sheet">
 
   <header class="clearfix">
-    Estás viendo <%= @filter.expending? ? 'gasto' : 'ingresos' %> en
-
-    <%= category_breadcrumb(category) %>
-
+    
     <div class="form_filters" id="selectors">
       <div class="group">
         Ver
@@ -15,6 +12,10 @@
       </div>
     </div>
 
+    Estás viendo <%= @filter.expending? ? 'gasto' : 'ingresos' %> en
+    
+    <%= category_breadcrumb(category) %>
+
   </header>
 
   <div class="widget_container">
@@ -24,9 +25,9 @@
       <div class="sub_element">
         <h3>
           <% if @filter.expending? %>
-            Gasto total
+            Gasto total nacional
           <% else %>
-            Ingreso total
+            Ingreso total nacional
           <% end %>
 
         </h3>
@@ -54,14 +55,14 @@
 
       <div class="sub_element">
         <h3>
-          Ranking
+          Ránking de la partida
         </h3>
         <div class="number">
 
         <% if @filter.functional? %>
-            <%= number_with_delimiter(category.national_ranking(@filter.year)) %><span class="sub"> / <%= number_with_delimiter(category.class.categories_count(category.level)) %></span>
+            <%= number_with_delimiter(category.national_ranking(@filter.year)) %>ª <span class="sub"> de <%= number_with_delimiter(category.class.categories_count(category.level)) %> partidas</span>
           <% else %>
-            <%= number_with_delimiter(category.national_ranking(@filter.year)) %><span class="sub"> / <%= number_with_delimiter(category.class.categories_count(category.level, category.kind)) %></span>
+            <%= number_with_delimiter(category.national_ranking(@filter.year)) %>ª <span class="sub"> de <%= number_with_delimiter(category.class.categories_count(category.level, category.kind)) %> partidas</span>
           <% end %>
         </div>
       </div>
