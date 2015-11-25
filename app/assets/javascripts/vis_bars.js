@@ -132,7 +132,7 @@ var BarsVis = Class.extend({
       this.xAxis
           .scale(this.xScale)
           .tickValues(this._tickValues(this.xScale))
-          .tickFormat(this.formatPercent)
+          .tickFormat(function(d) { return d3.round(d, 2) + '€/hab'; })
           .orient("bottom");
 
       this.yAxis
@@ -156,6 +156,9 @@ var BarsVis = Class.extend({
       // Change ticks color
       d3.selectAll('.axis').selectAll('text')
         .attr('fill', this.darkColor);
+
+      d3.selectAll('.x.axis').selectAll('text')
+        .style('text-anchor', function(d, i) { return i == 0 ? 'start' : 'end' ; });
       
 
       // --> DRAW BARS CHART 

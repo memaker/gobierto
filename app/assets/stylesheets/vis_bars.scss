@@ -36,8 +36,9 @@ body {
   overflow: hidden;
 }
 
-.axis path {
+.x.axis path {
   fill: none;
+  stroke: #B87570;
 }
 
 .axis text {
