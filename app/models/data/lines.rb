@@ -3,7 +3,7 @@ class Data::Lines
     @filter = filter
   end
 
-  def name
+  def title_name
     if @filter.category_filter?
       if @filter.expending?
         "Gasto en #{@filter.category.name}"
@@ -16,6 +16,14 @@ class Data::Lines
       else
         "Ingreso total #{@filter.location.name}"
       end
+    end
+  end
+
+  def name
+    if @filter.category_filter?
+      @filter.category.name
+    else
+      @filter.location.name
     end
   end
 
