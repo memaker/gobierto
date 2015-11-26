@@ -63,9 +63,7 @@
 
 <% if @filter.place? %>
   <%= render 'location_data_sheet', place: @filter.location %>
-<% end %>
-
-<% if @filter.category_filter? %>
+<% elsif @filter.category_filter? %>
   <%= render 'category_data_sheet', category: @filter.category %>
 <% end %>
 
