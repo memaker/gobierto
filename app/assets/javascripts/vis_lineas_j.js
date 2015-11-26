@@ -308,14 +308,25 @@ var VisLineasJ = Class.extend({
         .attr('cx', function(d) { return this.xScale(d.date); }.bind(this))
         .attr('cy', function(d) { return this.yScale(d.value); }.bind(this))
         // .style('fill', function(v) { return this.colorScale(d3.select('.dot_line.x'+v.value).node().parentNode.__data__.name); }.bind(this)); 
+        //
+    var series = this.colorScale.domain();
+
+    var labels = [];
+    for (var i = 0; i < series.length; i++) {
+      if (this.niceCategory[series[i]] != undefined) {
+        labels.push(this.niceCategory[series[i]])
+      } else {
+        labels.push(series[i])
+      }
+    }
 
     // Update legends
     this.legendEvolution
+        .labels(labels)
         .scale(this.colorScale);
 
     d3.select(".legend_evolution")
         .call(this.legendEvolution);
-    
   },
 
   //PRIVATE
