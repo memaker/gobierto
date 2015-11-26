@@ -28,7 +28,6 @@ var VisLineasJ = Class.extend({
     this.dataDomain = null;
     this.kind = null;
     this.dataYear = null;
-    this.dataPoints = [];
 
     // Legend
     this.legendEvolution = d3.legend.color();
@@ -98,25 +97,24 @@ var VisLineasJ = Class.extend({
       
       this.data = jsonData;
 
+      this.data.budgets.per_person.forEach(function(d) { 
+        d.values.forEach(function(v) {
+          v.date = this.parseDate(v.date) 
+        }.bind(this));
+      }.bind(this));
+
+      this.data.budgets.percentage.forEach(function(d) { 
+        d.values.forEach(function(v) {
+          v.date = this.parseDate(v.date) 
+        }.bind(this));
+      }.bind(this));
+
       this.dataChart = this.data.budgets[this.measure];
       this.kind = this.data.kind;
       this.dataYear = this.parseDate(this.data.year);
 
-
-      this.dataChart.forEach(function(d) { 
-        var obj;
-        d.values.forEach(function(v) { 
-          v.date = this.parseDate(v.date);
-          obj = {"name": d.name, "date": v.date, "value": v.value};
-          this.dataPoints.push(obj)
-        }.bind(this));      
-      }.bind(this));
-      
-      // Define the line
-      this.line
-        .interpolate("cardinal")
-        .x(function(d) { return this.xScale(d.date); }.bind(this))
-        .y(function(d) { return this.yScale(d.value); }.bind(this));
+      this.dataDomain = [d3.min(this.dataChart.map(function(d) { return d3.min(d.values.map(function(v) { return v.value; })); })), 
+              d3.max(this.dataChart.map(function(d) { return d3.max(d.values.map(function(v) { return v.value; })); }))];
 
 
       // Set the scales
@@ -125,12 +123,11 @@ var VisLineasJ = Class.extend({
         .range([this.margin.left, this.width]);
 
       this.yScale
-        .domain([d3.min(this.dataPoints, function(d) { return d.value; }) * .3, d3.max(this.dataPoints, function(d) { return d.value; }) * 1.2])
+        .domain([this.dataDomain[0] * .3, this.dataDomain[1] * 1.2])
         .range([this.height, this.margin.top]);
       
       this.colorScale
         .domain(this.dataChart.map(function(d) { return d.name; }));
-
       
       // Define the axis 
       this.xAxis
@@ -142,6 +139,13 @@ var VisLineasJ = Class.extend({
           .tickValues(this._tickValues(this.yScale))
           .tickFormat(function(d) { return this.measure != 'percentage' ? d3.round(d, 2) : d + '%'; }.bind(this))
           .orient("left");
+
+      // Define the line
+      this.line
+        .interpolate("cardinal")
+        .x(function(d) { return this.xScale(d.date); }.bind(this))
+        .y(function(d) { return this.yScale(d.value); }.bind(this));
+
       
       // --> DRAW THE AXIS
       this.svgLines.append("g")
@@ -178,19 +182,25 @@ var VisLineasJ = Class.extend({
 
 
       // Add dot to lines
-      this.chart.append('g')
-          .attr('class', 'dotLines')
+      this.chart.selectAll('g.dots')
+          .data(this.dataChart)
+          .enter()
+        .append('g')
+          .attr('class', 'dots')
         .selectAll('circle')
-          .data(this.dataPoints)
+          .data(function(d) { return d.values; })
           .enter()
         .append('circle')
+          .attr('class', 'dot_line')
           .attr('cx', function(d) { return this.xScale(d.date); }.bind(this))
           .attr('cy', function(d) { return this.yScale(d.value); }.bind(this))
           .attr('r', this.radius)
-          .style('fill', function(d) { return this.colorScale(d.name); }.bind(this));  
+          // .style('fill', function(d) { return this.colorScale(d.name); }.bind(this)); 
+          .style('fill', function(d) { console.log(d);return ; }.bind(this)); 
 
-      // Add focus
-      this.focus = this.svgLines.append("g");
+      
+      // --> ADD FOCUS
+      this.focus = this.svgLines.append('g');
 
       // append a line at the year
       this.focus.selectAll('.yearLine')
@@ -198,7 +208,7 @@ var VisLineasJ = Class.extend({
           .enter()
         .append('line')
           .attr('class', 'yearLine')
-          .attr('x1', function(d) { console.log(this.xScale(d));return this.xScale(d); }.bind(this))
+          .attr('x1', function(d) { return this.xScale(d); }.bind(this))
           .attr('y1', this.margin.bottom)
           .attr('x2', function(d) { return this.xScale(d); }.bind(this))
           .attr('y2', this.height)
@@ -212,7 +222,7 @@ var VisLineasJ = Class.extend({
           .style('fill', 'none')
           .style('pointer-events', 'all')
           .on("mousemove", this._mousemove.bind(this));
-
+      
       // --> DRAW THE Legend 
       var svg = d3.select("svg");
 
@@ -238,21 +248,20 @@ var VisLineasJ = Class.extend({
     // re-map the data
     this.dataChart = this.data.budgets[this.measure];
     this.kind = this.data.kind;
+    this.dataYear = this.parseDate(this.data.year);
 
-    var values = [];
-    var municipalities = [];
-    this.dataChart.forEach(function(d) { 
-      d.values.forEach(function(v) { 
-        v.date = this.yearDate(this.parseDate(v.date));
-        values.push(v.value)
-      }.bind(this));
-      municipalities.push(d.name)
-    }.bind(this));
+    this.dataDomain = [d3.min(this.dataChart.map(function(d) { return d3.min(d.values.map(function(v) { return v.value; })); })), 
+              d3.max(this.dataChart.map(function(d) { return d3.max(d.values.map(function(v) { return v.value; })); }))];
 
     // Update the scales
-    this.xScale.domain(this.dataChart[0].values.map(function(d) { return d.date; }))
-    this.yScale.domain([d3.min(values) * .3, d3.max(values) * 1.2])
-    this.colorScale.domain(municipalities);
+    this.xScale
+      .domain(d3.extent(this.dataChart[0].values, function(d) { return d.date; }));
+
+    this.yScale
+      .domain([this.dataDomain[0] * .3, this.dataDomain[1] * 1.2]);
+
+    this.colorScale
+      .domain(this.dataChart.map(function(d) { return d.name; }));
 
     // Update the axis
     this.xAxis.scale(this.xScale);
@@ -291,6 +300,16 @@ var VisLineasJ = Class.extend({
       .attr('d', function(d) { return this.line(d.values); }.bind(this))
       .style('stroke', function(d) { return this.colorScale(d.name); }.bind(this));
 
+    // Update the points
+    this.svgLines.selectAll(".dots")
+        .data(this.dataChart)
+      .selectAll(".dot_line")
+        .data(function(d) { return d.values; })
+        .transition()
+        .duration(this.duration)
+        .attr('cx', function(d) { return this.xScale(d.date); }.bind(this))
+        .attr('cy', function(d) { return this.yScale(d.value); }.bind(this));
+
     // Update legends
     this.legendEvolution
         .scale(this.colorScale);
@@ -299,6 +318,7 @@ var VisLineasJ = Class.extend({
         .call(this.legendEvolution);
     
   },
+
   //PRIVATE
   _tickValues:  function (scale) {
     var range = scale.domain()[1] - scale.domain()[0];
