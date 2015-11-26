@@ -183,12 +183,10 @@ class Api::DataController < ApplicationController
   def lines_items(filter)
     data_lines = Data::Lines.new(filter)
 
-    title = data_lines.name
-    
     return {
       "kind": filter.kind,
       "year": filter.year.to_s,
-      "title": title,
+      "title": data_lines.title_name,
       "budgets":{
         "per_person":[
           {
@@ -209,7 +207,7 @@ class Api::DataController < ApplicationController
         ],
         "percentage":[
           {
-            "name": "Porcentaje #{data_lines.name} sobre el total",
+            "name": data_lines.name,
             "values": data_lines.data_percentage
           },
           {
