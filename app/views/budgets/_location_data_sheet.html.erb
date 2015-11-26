@@ -114,65 +114,67 @@
       </div>
     </div>
 
-    <div class="widget ">
-      <div class="widget_cont">
+    <% if false %>
+      <div class="widget ">
+        <div class="widget_cont">
 
-        <% if @filter.expending? %>
-          <h2>Partidas con mayor gasto</h2>
-        <% else %>
-          <h2>Partidas con mayor ingreso</h2>
-        <% end %>
-
-        <table>
-        <% if @filter.functional? %>
-          <% place.data.bigger_functional_budgets(@filter.year).each do |budget_line|  %>
-          <tr>
-            <td><%= link_to(truncate(budget_line.name, length: 72), budget_functional_item_path(budget_line.place_id, budget_line.code, params), title: budget_line.name) %></td>
-            <td class="right"><%= format_currency(budget_line.amount) %></td>
-          </tr>
+          <% if @filter.expending? %>
+            <h2>Partidas con mayor gasto</h2>
+          <% else %>
+            <h2>Partidas con mayor ingreso</h2>
           <% end %>
-        <% else %>
-          <% place.data.bigger_economic_budgets(@filter.year, @filter.kind).each do |budget_line|  %>
-          <tr>
-            <td><%= link_to(truncate(budget_line.name, length: 72), budget_economic_item_path(budget_line.place_id, budget_line.code, params), title: budget_line.name) %></td>
-            <td class="right"><%= format_currency(budget_line.amount) %></td>
-          </tr>
-          <% end %>
-        <% end %>
-        </table>
 
+          <table>
+          <% if @filter.functional? %>
+            <% place.data.bigger_functional_budgets(@filter.year).each do |budget_line|  %>
+            <tr>
+              <td><%= link_to(truncate(budget_line.name, length: 72), budget_functional_item_path(budget_line.place_id, budget_line.code, params), title: budget_line.name) %></td>
+              <td class="right"><%= format_currency(budget_line.amount) %></td>
+            </tr>
+            <% end %>
+          <% else %>
+            <% place.data.bigger_economic_budgets(@filter.year, @filter.kind).each do |budget_line|  %>
+            <tr>
+              <td><%= link_to(truncate(budget_line.name, length: 72), budget_economic_item_path(budget_line.place_id, budget_line.code, params), title: budget_line.name) %></td>
+              <td class="right"><%= format_currency(budget_line.amount) %></td>
+            </tr>
+            <% end %>
+          <% end %>
+          </table>
+
+        </div>
       </div>
-    </div>
 
-    <div class="widget ">
-      <div class="widget_cont">
+      <div class="widget ">
+        <div class="widget_cont">
 
-        <% if @filter.expending? %>
-          <h2>Partidas con menor gasto</h2>
-        <% else %>
-          <h2>Partidas con menor ingreso</h2>
-        <% end %>
-
-        <table>
-        <% if @filter.functional? %>
-          <% place.data.smaller_functional_budgets(@filter.year).each do |budget_line|  %>
-          <tr>
-            <td><%= link_to(truncate(budget_line.name, length: 72), budget_functional_item_path(budget_line.place_id, budget_line.code, params), title: budget_line.name) %></td>
-            <td class="right"><%= format_currency(budget_line.amount) %></td>
-          </tr>
+          <% if @filter.expending? %>
+            <h2>Partidas con menor gasto</h2>
+          <% else %>
+            <h2>Partidas con menor ingreso</h2>
           <% end %>
-        <% else %>
-          <% place.data.smaller_economic_budgets(@filter.year, @filter.kind).each do |budget_line|  %>
-          <tr>
-            <td><%= link_to(truncate(budget_line.name, length: 72), budget_economic_item_path(budget_line.place_id, budget_line.code, params), title: budget_line.name) %></td>
-            <td class="right"><%= format_currency(budget_line.amount) %></td>
-          </tr>
-          <% end %>
-        <% end %>
-        </table>
 
+          <table>
+          <% if @filter.functional? %>
+            <% place.data.smaller_functional_budgets(@filter.year).each do |budget_line|  %>
+            <tr>
+              <td><%= link_to(truncate(budget_line.name, length: 72), budget_functional_item_path(budget_line.place_id, budget_line.code, params), title: budget_line.name) %></td>
+              <td class="right"><%= format_currency(budget_line.amount) %></td>
+            </tr>
+            <% end %>
+          <% else %>
+            <% place.data.smaller_economic_budgets(@filter.year, @filter.kind).each do |budget_line|  %>
+            <tr>
+              <td><%= link_to(truncate(budget_line.name, length: 72), budget_economic_item_path(budget_line.place_id, budget_line.code, params), title: budget_line.name) %></td>
+              <td class="right"><%= format_currency(budget_line.amount) %></td>
+            </tr>
+            <% end %>
+          <% end %>
+          </table>
+
+        </div>
       </div>
-    </div>
+    <% end %>
   </div>
 
   <% if @filter.category_filter? %>
