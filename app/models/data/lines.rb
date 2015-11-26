@@ -54,7 +54,7 @@ class Data::Lines
       BudgetFilter.years.map do |year|
         {
           date: year.to_s,
-          value: category_budget.sum(column_name % year) / Population.sum('total')
+          value: (category_budget.sum(column_name % year) / Population.sum('total')).to_f
         }
       end
     else
@@ -87,7 +87,7 @@ class Data::Lines
       BudgetFilter.years.map do |year|
         {
           date: year.to_s,
-          value: category_budget.sum(column_name % year) / population_scoped.sum('total')
+          value: (category_budget.sum(column_name % year) / population_scoped.sum('total')).to_f
         }
       end
     else
@@ -120,7 +120,7 @@ class Data::Lines
       BudgetFilter.years.map do |year|
         {
           date: year.to_s,
-          value: category_budget.sum(column_name % year) / population_scoped.sum('total')
+          value: (category_budget.sum(column_name % year) / population_scoped.sum('total')).to_f
         }
       end
     else
@@ -140,35 +140,32 @@ class Data::Lines
     end
   end
 
+
+
   def data_percentage
+    population = Population.find @filter.location.id
     if @filter.category_filter?
-      category_budget = if @filter.functional?
-        FunctionalYearlyTotal.where(cdfgr: @filter.category.code)
-      else
-        EconomicYearlyTotal.where(cdcta: @filter.category.code, kind: @filter.kind)
-      end
-      column_name = "total_%d"
-      BudgetFilter.years.map do |year|
-        {
-          date: year.to_s,
-          value: category_budget.where(ine_code: @filter.location.id).sum(column_name % year) / category_budget.sum(column_name % year)
-        }
-      end
-    else
-      population = Population.find @filter.location.id
-      column_name = if @filter.functional?
+      total_column_name = if @filter.functional?
                       "total_functional_%d"
                     elsif @filter.expending?
                       "total_economic_%d_expending"
                     else
                       "total_economic_%d_incoming"
                     end
+      category_budget = if @filter.functional?
+        FunctionalYearlyTotal.where(cdfgr: @filter.category.code, ine_code: @filter.location.id).first
+      else
+        EconomicYearlyTotal.where(cdcta: @filter.category.code, kind: @filter.kind, ine_code: @filter.location.id).first
+      end
+      column_name = "total_%d"
       BudgetFilter.years.map do |year|
         {
           date: year.to_s,
-          value: (population.send(column_name % year)) / Population.sum(column_name % year)
+          value: percentage(category_budget.send(column_name % year), population.send(total_column_name % year))
         }
       end
+    else
+      return []
     end
   end
 
@@ -183,24 +180,11 @@ class Data::Lines
       BudgetFilter.years.map do |year|
         {
           date: year.to_s,
-          value: category_budget.sum(column_name % year) / category_budget.sum(column_name % year)
+          value: percentage(category_budget.where(ine_code: @filter.location.id).first.send(column_name % year), category_budget.sum(column_name % year))
         }
       end
     else
-      population = Population.find @filter.location.id
-      column_name = if @filter.functional?
-                      "total_functional_%d"
-                    elsif @filter.expending?
-                      "total_economic_%d_expending"
-                    else
-                      "total_economic_%d_incoming"
-                    end
-      BudgetFilter.years.map do |year|
-        {
-          date: year.to_s,
-          value: (population.send(column_name % year)) / Population.sum(column_name % year)
-        }
-      end
+      return []
     end
   end
 
@@ -219,23 +203,11 @@ class Data::Lines
       BudgetFilter.years.map do |year|
         {
           date: year.to_s,
-          value: category_budget.sum(column_name % year) / category_budget_scoped.sum(column_name % year)
+          value: percentage(category_budget.where(ine_code: @filter.location.id).first.send(column_name % year), category_budget_scoped.sum(column_name % year))
         }
       end
     else
-      column_name = if @filter.functional?
-                      "total_functional_%d"
-                    elsif @filter.expending?
-                      "total_economic_%d_expending"
-                    else
-                      "total_economic_%d_incoming"
-                    end
-      BudgetFilter.years.map do |year|
-        {
-          date: year.to_s,
-          value: (population.send(column_name % year)) / population_scoped.sum(column_name % year)
-        }
-      end
+      return []
     end
   end
 
@@ -254,23 +226,11 @@ class Data::Lines
       BudgetFilter.years.map do |year|
         {
           date: year.to_s,
-          value: category_budget.sum(column_name % year) / category_budget_scoped.sum(column_name % year)
+          value: percentage(category_budget.where(ine_code: @filter.location.id).first.send(column_name % year), category_budget_scoped.sum(column_name % year))
         }
       end
     else
-      column_name = if @filter.functional?
-                      "total_functional_%d"
-                    elsif @filter.expending?
-                      "total_economic_%d_expending"
-                    else
-                      "total_economic_%d_incoming"
-                    end
-      BudgetFilter.years.map do |year|
-        {
-          date: year.to_s,
-          value: (population.send(column_name % year)) / population_scoped.sum(column_name % year)
-        }
-      end
+      return []
     end
   end
 
@@ -278,6 +238,10 @@ class Data::Lines
 
   def totals_klass
     @filter.functional? ? FunctionalYearlyTotal : EconomicYearlyTotal
+  end
+
+  def percentage(v1,v2)
+    return v1.to_f/v2.to_f
   end
 
 end
