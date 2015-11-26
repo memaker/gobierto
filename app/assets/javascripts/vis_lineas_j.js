@@ -6,7 +6,7 @@ var VisLineasJ = Class.extend({
     
     // Chart dimensions
     this.containerWidth = null;
-    this.margin = {top: 20, right: 20, bottom: 40, left: 40};
+    this.margin = {top: 20, right: 120, bottom: 40, left: 40};
     this.width = null;
     this.height = null;
     
@@ -16,7 +16,7 @@ var VisLineasJ = Class.extend({
     // Scales
     this.xScale = d3.time.scale();
     this.yScale = d3.scale.linear();
-    this.colorScale = d3.scale.ordinal().range(['#F69C95', '#00646E', '#00909E', '#99BFBE']);
+    this.colorScale = d3.scale.ordinal().range(['#99BFBE', '#00909E', '#00646E', '#F69C95']);
 
     // Axis
     this.xAxis = d3.svg.axis();
@@ -124,7 +124,7 @@ var VisLineasJ = Class.extend({
       // Set the scales
       this.xScale
         .domain(d3.extent(this.dataChart[0].values, function(d) { return d.date; }))
-        .range([this.margin.left, this.width]);
+        .range([this.margin.left, this.width - (this.margin.right)]);
 
       this.yScale
         .domain([this.dataDomain[0] * .3, this.dataDomain[1] * 1.2])
@@ -183,7 +183,7 @@ var VisLineasJ = Class.extend({
           .attr('class', function(d) { return 'evolution_line ' + this._normalize(d.name); }.bind(this))
           .attr('d', function(d) { return this.line(d.values); }.bind(this))
           .style('stroke', function(d) { return this.colorScale(d.name); }.bind(this))
-          .style('stroke-width', function(d, i) { return i == 0 ? this.heavyLine : this.lightLine; }.bind(this))
+          .style('stroke-width', function(d, i) { return i == 3 ? this.heavyLine : this.lightLine; }.bind(this))
 
 
       // Add dot to lines
@@ -221,12 +221,13 @@ var VisLineasJ = Class.extend({
     
       svgLegend.append("g")
         .attr("class", "legend_evolution")
-        .attr("transform", "translate(" + (this.width - (this.margin.right * 6)) + ",20)");
+        .attr("transform", "translate(" + this.width + "," + (this.height/2) + ")");
 
       this.legendEvolution
         .shape('path', d3.svg.symbol().type('circle').size(80)())
         .shapeWidth(14)
         .shapePadding(10)
+        .ascending(true)
         .scale(this.colorScale)
         .labels(labels);
 
@@ -348,7 +349,7 @@ var VisLineasJ = Class.extend({
     this.dataChart.map(function(d, i) { 
       d.values.map(function(v) { 
         if ('x' + v.date.getFullYear() == selectedClass[2]) {
-          if (i != 0) {
+          if (i != 3) {
             tooltipData[v.name] = v.value
           } else {
             tooltipData['municipio'] = v.name;

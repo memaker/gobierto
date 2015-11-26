@@ -190,36 +190,38 @@ class Api::DataController < ApplicationController
       "budgets":{
         "per_person":[
           {
-            "name": data_lines.name,
-            "values": data_lines.data_per_person
+            "name":"mean_province",
+            "values": data_lines.data_mean_province_per_person
+          },
+          {
+            "name":"mean_autonomy",
+            "values": data_lines.data_mean_autonomy_per_person
           },
           {
             "name":"mean_national",
             "values": data_lines.data_mean_national_per_person
           },
           {
-            "name":"mean_autonomy",
-            "values": data_lines.data_mean_autonomy_per_person
-          },
-          {"name":"mean_province",
-           "values": data_lines.data_mean_province_per_person
+            "name": data_lines.name,
+            "values": data_lines.data_per_person
           }
         ],
         "percentage":[
           {
-            "name": data_lines.name,
-            "values": data_lines.data_percentage
-          },
-          {
-            "name":"mean_national",
-            "values": data_lines.data_mean_national_percentage
+            "name":"mean_province",
+            "values": data_lines.data_mean_province_percentage
           },
           {
             "name":"mean_autonomy",
             "values": data_lines.data_mean_autonomy_percentage
           },
-          {"name":"mean_province",
-           "values": data_lines.data_mean_province_percentage
+                    {
+            "name":"mean_national",
+            "values": data_lines.data_mean_national_percentage
+          },
+          {
+            "name": data_lines.name,
+            "values": data_lines.data_percentage
           }
         ]
       }
