@@ -16,7 +16,7 @@ var VisLineasJ = Class.extend({
     // Scales
     this.xScale = d3.time.scale();
     this.yScale = d3.scale.linear();
-    this.colorScale = d3.scale.ordinal().range(['#00909E', '#F1B41B', '#B3CC57', '#A984FF']);
+    this.colorScale = d3.scale.ordinal().range(['#F69C95', '#172532', '#00909E', '#EFF8F9']);
 
     // Axis
     this.xAxis = d3.svg.axis();
@@ -45,7 +45,7 @@ var VisLineasJ = Class.extend({
     this.focus = null;
 
     // Constant values
-    this.radius = 3;
+    this.radius = 6;
     this.opacity = .7;
     this.opacityLow = .4;
     this.duration = 1500;
@@ -63,7 +63,7 @@ var VisLineasJ = Class.extend({
 
     // Append tooltip
     this.tooltip = d3.select('body').append('div')
-      .attr('class', 'vis_evolution_tooltip')
+      .attr('class', 'vis_lineas_j_tooltip')
       .style('opacity', 0);
 
 
@@ -194,37 +194,13 @@ var VisLineasJ = Class.extend({
           .data(function(d) { return d.values; })
           .enter()
         .append('circle')
-          .attr('class', function(d) { return 'dot_line ' + d.name; }.bind(this))
+          .attr('class', function(d) { return 'dot_line ' + d.name + ' x' + d.date.getFullYear(); }.bind(this))
           .attr('cx', function(d) { return this.xScale(d.date); }.bind(this))
           .attr('cy', function(d) { return this.yScale(d.value); }.bind(this))
           .attr('r', this.radius)
           .style('fill', function(d) { return this.colorScale(d.name); }.bind(this))
-        .on('mouseover', this._mouseover.bind(this)); 
-      
-      // // --> ADD FOCUS
-      this.focus = this.svgLines.append('g');
-
-      // append a line at the year
-      this.focus.selectAll('.yearLine')
-          .data([this.dataYear])
-          .enter()
-        .append('line')
-          .attr('class', 'yearLine')
-          .attr('x1', function(d) { return this.xScale(d); }.bind(this))
-          .attr('y1', this.margin.bottom)
-          .attr('x2', function(d) { return this.xScale(d); }.bind(this))
-          .attr('y2', this.height)
-          .style('stroke', this.mainColor)
-          .style('stroke-width', 2);
-
-      // append the rectangle to capture mouse
-      this.svgLines.append('rect')
-          .attr('class', 'focus_rect')
-          .attr('width', this.width)
-          .attr('height', this.height)
-          .style('fill', 'none')
-          .style('pointer-events', 'all')
-          // .on("mousemove", this._mousemove.bind(this));
+        .on('mouseover', this._mouseover.bind(this))
+        .on('mouseout', this._mouseout.bind(this)); 
       
 
       // --> DRAW THE Legend 
@@ -317,7 +293,7 @@ var VisLineasJ = Class.extend({
       .data(this.dataChart)
       .transition()
       .duration(this.duration)
-      .attr('d', function(d) { console.log(d);return this.line(d.values); }.bind(this))
+      .attr('d', function(d) { return this.line(d.values); }.bind(this))
       .style('stroke', function(d) { return this.colorScale(d.name); }.bind(this));
 
     // Update the points
@@ -352,60 +328,60 @@ var VisLineasJ = Class.extend({
         selectedClass = selected.classList,
         selectedData = d3.select(selected).data()[0],
         selectedCx = d3.select(selected).attr('cx'),
-        selectedCy = d3.select(selected).attr('cy'),
-        labelsOn = d3.select('#myonoffswitch-labels').property('checked');
-  
-    if (selectedData.name == 'influence') {
-      var text = '<strong>' + formatPercent(selectedData.percentage) + '</strong> of respondents<br> are influenced<br>by <strong> ' + selectedData.tpClass + ' media</strong>'
-    } else {
-      var text = '<strong>' + formatPercent(selectedData.percentage) + '</strong> of respondents<br>associates<strong> ' + selectedData.tpClass + ' media</strong> to <strong>' + this.subindustry + '</strong>'
-    }
-    
-    d3.selectAll('.marker.' + selectedClass[1])
-      .filter(function(d) { return d.represent == selectedClass[2]; })
-      .transition()
-      .duration(this.duration / 4)
-      .attr('markerWidth', this.markerSize * 2)
-      .attr('markerHeight', this.markerSize * 2)
-      .style('fill', customGrey)
-      .attr('stroke-width', .3);
+        selectedCy = d3.select(selected).attr('cy');
 
-    var xMouseoverLine = this.xScale(selectedData.percentage),
-        yMouseoverLine = this.yScale(selectedData.tpClass) + this.ySecondaryScale(selectedData.name);
-  
-     d3.select(selected.parentNode).selectAll('mouseover_line')
-        .data([xMouseoverLine, yMouseoverLine])
-        .enter()
-        .append('line')
-        .attr('class', 'mouseover_line')
-        .attr('x1', xMouseoverLine)
-        .attr('y1', yMouseoverLine)
-        .attr('x2', xMouseoverLine)
-        .attr('y2', yMouseoverLine)
-        .attr('stroke-width', 1)
-        .style('stroke', this.colorScale(selectedData.tpClass))
+    var tooltipData = {};
+
+    this.dataChart.map(function(d, i) { 
+      d.values.map(function(v) { 
+        if ('x' + v.date.getFullYear() == selectedClass[2]) {
+          if (i != 0) {
+            tooltipData[v.name] = v.value
+          } else {
+            tooltipData['municipio'] = v.name;
+            tooltipData['municipio_value'] = v.value;
+          } 
+        }
+      }); 
+    });
+    
+    var text = tooltipData.municipio + ':<strong> ' + d3.round(tooltipData.municipio_value) +
+              '</strong>€/hab<br>Media Nacional: <strong>' + d3.round(tooltipData.mean_national)+ 
+              '</strong>€/hab<br>Media Autonómica: <strong>' + d3.round(tooltipData.mean_autonomy) +
+              '</strong>€/hab<br>Media Provincial: <strong>' + d3.round(tooltipData.mean_province) + '</strong>€/hab';
+
+    // Append vertical line
+    this.svgLines.selectAll('.v_line')
+        .data([selectedCx, selectedCy])
+        .enter().append('line')
+        .attr('class', 'v_line')
+            .attr('x1', selectedCx)
+            .attr('y1', selectedCy)
+            .attr('x2', selectedCx)
+            .attr('y2', selectedCy)
+            .style('stroke', this.mainColor);
+
+    this.svgLines.selectAll('.v_line')
         .transition()
         .duration(this.duration)
-        .attr('y1', function(d, i) { return i == 0 ? this.margin.top : yMouseoverLine; }.bind(this))
-        .attr('y2', function(d, i) { return i == 1 ? (this.height - this.margin.top) : yMouseoverLine; }.bind(this));
+        .attr('y1', function(d, i) { return i == 0 ? this.margin.top : selectedCy; }.bind(this))
+        .attr('y2', function(d, i) { return i == 0 ? selectedCy : this.height; }.bind(this));
 
-   
-    d3.selectAll('.legend_line').selectAll('text.' + selectedData.name)
-      .attr('font-size', '1.5em');
+    d3.select(selected).transition()
+      .duration(this.duration / 4)
+      .attr('r', this.radius * 1.5);
 
-
-    this.svgLines.selectAll('.barLine')
-      .filter(function(d) { return d.name != selectedClass[2]; })
+    this.svgLines.selectAll('.dot_line')
+      .filter(function(d) { return d.name != selectedClass[1] && 'x' + d.date.getFullYear() != selectedClass[2]; })
       .transition()
       .duration(this.duration / 4)
-      .style('stroke', function(d) { return this.brighterColorScale(d.tpClass); }.bind(this));
+      .style('opacity', this.opacityLow);
 
-    var toBright = this.ySecondaryScale.domain().filter(function(d) { return d != selectedClass[2]; })  
-    this.chart.selectAll('.' + toBright)
+    this.svgLines.selectAll('.evolution_line')
+      .filter(function(d) { return d.name != selectedClass[1]; })
       .transition()
       .duration(this.duration / 4)
-      .style('stroke', function(d) { return this.brighterColorScale(d.tpClass); }.bind(this))
-      .attr('fill', function(d) { return this.brighterColorScale(d.tpClass); }.bind(this));
+      .style('opacity', this.opacityLow);
     
     this.tooltip
         .transition()
@@ -423,57 +399,34 @@ var VisLineasJ = Class.extend({
     var selected = d3.event.target,
         selectedClass = selected.classList,
         selectedData = d3.select(selected).data()[0],
-        labelsOn = d3.select('#myonoffswitch-labels').property('checked');
+        selectedCx = d3.select(selected).attr('cx'),
+        selectedCy = d3.select(selected).attr('cy');
 
-    d3.selectAll('.marker.' + selectedClass[1])
-      .filter(function(d) { return d.represent == selectedClass[2]; })
-      .transition()
-      .duration(this.duration / 4)
-      .attr('markerWidth', this.markerSize)
-      .attr('markerHeight', this.markerSize)
-      .style('fill', this.colorScale(selectedClass[1]))
-      .attr('stroke-width', 0);
+    var text = 'pepe fúe a la playa'
 
-    var yMouseoverLine = this.yScale(selectedData.tpClass) + this.ySecondaryScale(selectedData.name);
-
-    d3.selectAll('.mouseover_line')
-      .transition()
-      .duration(this.duration / 2)
-      .attr('y2', yMouseoverLine)
-      .attr('y1', yMouseoverLine)
-      .remove();
-    
-    var toBright = this.ySecondaryScale.domain().filter(function(d) { return d != selectedClass[2]; })  
-    this.chart.selectAll('.' + toBright)
-      .transition()
-      .duration(this.duration / 4)
-      .style('stroke', function(d) { return this.colorScale(d.tpClass); }.bind(this))
-      .attr('fill', function(d) { return this.colorScale(d.tpClass); }.bind(this));
-
-    d3.selectAll('.legend_line').selectAll('text.' + selectedData.name)
-      .attr('font-size', '1.1em');
-
-    this.tooltip.transition()
-        .duration(this.duration / 4)
-        .style("opacity", 0);
-  },
-
-  _mousemove: function() {
-    var selected = d3.event.target;
-
-    var x0 = this.xScale.invert(d3.mouse(selected)[0]),
-              i = 5,
-            // i = this.bisectDate(this.dataChart[0].values, x0, 1),                   
-            d0 = this.dataChart[0].values[i - 1],                              
-            d1 = this.dataChart[0].values[i],                                  
-            d = x0 - d0.date > d1.date - x0 ? d1 : d0;     
-
-    this.focus.select(".yearLine")
+    this.svgLines.selectAll('.v_line')
         .transition()
-        .duration(this.duration/100)
-        .attr("x1", this.xScale(d.date))                    
-        .attr("x2", this.xScale(d.date));        
+        .duration(this.duration / 4)
+        .attr('y1', selectedCy)
+        .attr('y2', selectedCy)
+        .remove();
+
+
+    this.svgLines.selectAll('.dot_line')
+      .transition()
+      .duration(this.duration / 4)
+      .attr('r', this.radius)
+      .style('opacity', 1);
+
+    this.svgLines.selectAll('.evolution_line')
+      .transition()
+      .duration(this.duration / 4)
+      .style('opacity', 1);
     
+    this.tooltip
+        .transition()
+        .duration(this.duration / 4)
+        .style('opacity', 0);
   },
 
   _normalize: (function() {
