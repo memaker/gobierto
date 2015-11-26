@@ -71,7 +71,7 @@ var VisLineasJ = Class.extend({
     this.svgLines = d3.select(this.container).append('svg')
         .attr('width', this.width + this.margin.left + this.margin.right)
         .attr('height', this.height + this.margin.top + this.margin.bottom)
-        .attr('class', 'svg_distribution')
+        .attr('class', 'svg_lines')
       .append('g')
         .attr('transform', 'translate(' + this.margin.left + ',' + this.margin.top + ')');
 
@@ -99,13 +99,15 @@ var VisLineasJ = Class.extend({
 
       this.data.budgets.per_person.forEach(function(d) { 
         d.values.forEach(function(v) {
-          v.date = this.parseDate(v.date) 
+          v.date = this.parseDate(v.date);
+          v.name = d.name;
         }.bind(this));
       }.bind(this));
 
       this.data.budgets.percentage.forEach(function(d) { 
         d.values.forEach(function(v) {
-          v.date = this.parseDate(v.date) 
+          v.date = this.parseDate(v.date);
+          v.name = d.name;
         }.bind(this));
       }.bind(this));
 
@@ -137,7 +139,7 @@ var VisLineasJ = Class.extend({
       this.yAxis
           .scale(this.yScale)
           .tickValues(this._tickValues(this.yScale))
-          .tickFormat(function(d) { return this.measure != 'percentage' ? d3.round(d, 2) : d + '%'; }.bind(this))
+          .tickFormat(function(d) { return this.measure != 'percentage' ? d3.round(d, 2) : d3.format('%'); }.bind(this))
           .orient("left");
 
       // Define the line
@@ -178,7 +180,8 @@ var VisLineasJ = Class.extend({
         .append('path')
           .attr('class', function(d) { return 'evolution_line ' + this._normalize(d.name); }.bind(this))
           .attr('d', function(d) { return this.line(d.values); }.bind(this))
-          .style('stroke', function(d) { return this.colorScale(d.name); }.bind(this));
+          .style('stroke', function(d) { return this.colorScale(d.name); }.bind(this))
+          .style('stroke-width', function(d, i) { return i == 0 ? 3 : 2; })
 
 
       // Add dot to lines
@@ -191,15 +194,14 @@ var VisLineasJ = Class.extend({
           .data(function(d) { return d.values; })
           .enter()
         .append('circle')
-          .attr('class', 'dot_line')
+          .attr('class', function(d) { return 'dot_line ' + d.name; }.bind(this))
           .attr('cx', function(d) { return this.xScale(d.date); }.bind(this))
           .attr('cy', function(d) { return this.yScale(d.value); }.bind(this))
           .attr('r', this.radius)
-          // .style('fill', function(d) { return this.colorScale(d.name); }.bind(this)); 
-          .style('fill', function(d) { console.log(d);return ; }.bind(this)); 
-
+          .style('fill', function(d) { return this.colorScale(d.name); }.bind(this))
+        .on('mouseover', this._mouseover.bind(this)); 
       
-      // --> ADD FOCUS
+      // // --> ADD FOCUS
       this.focus = this.svgLines.append('g');
 
       // append a line at the year
@@ -217,27 +219,45 @@ var VisLineasJ = Class.extend({
 
       // append the rectangle to capture mouse
       this.svgLines.append('rect')
+          .attr('class', 'focus_rect')
           .attr('width', this.width)
           .attr('height', this.height)
           .style('fill', 'none')
           .style('pointer-events', 'all')
-          .on("mousemove", this._mousemove.bind(this));
+          // .on("mousemove", this._mousemove.bind(this));
       
-      // --> DRAW THE Legend 
-      var svg = d3.select("svg");
 
-      svg.append("g")
+      // --> DRAW THE Legend 
+      var svgLegend = d3.select('.svg_lines');
+      
+      var series = this.colorScale.domain();
+      
+      var labels = [];
+      for (var i = 0; i < series.length; i++) {
+        if (this.niceCategory[series[i]] != undefined) {
+          labels.push(this.niceCategory[series[i]])
+        } else {
+          labels.push(series[i])
+        }
+      }
+    
+      svgLegend.append("g")
         .attr("class", "legend_evolution")
-        .attr("transform", "translate(" + (this.width - (this.margin.right * 3)) + ",20)");
+        .attr("transform", "translate(" + (this.width - (this.margin.right * 6)) + ",20)");
 
       this.legendEvolution
         .shape('path', d3.svg.symbol().type('circle').size(80)())
         .shapeWidth(14)
-        .shapePadding(this.radius)
-        .scale(this.colorScale);
+        .shapePadding(10)
+        .scale(this.colorScale)
+        .labels(labels);
 
       d3.select(".legend_evolution")
         .call(this.legendEvolution);
+
+      svgLegend.selectAll('.label')
+        .attr('fill', this.darkColor)
+        .attr('font-size', '14px')
 
 
     }.bind(this)); // end load data
@@ -269,7 +289,7 @@ var VisLineasJ = Class.extend({
     this.yAxis
         .scale(this.yScale)
         .tickValues(this._tickValues(this.yScale))
-        .tickFormat(function(d) { return this.measure != 'percentage' ? d3.round(d, 2) : d + '%'; }.bind(this));
+        .tickFormat(function(d) { return this.measure != 'percentage' ? d3.round(d, 2) : d3.round(d * 100, 2) + '%'; }.bind(this));
 
     this.svgLines.select(".x.axis")
       .transition()
@@ -297,7 +317,7 @@ var VisLineasJ = Class.extend({
       .data(this.dataChart)
       .transition()
       .duration(this.duration)
-      .attr('d', function(d) { return this.line(d.values); }.bind(this))
+      .attr('d', function(d) { console.log(d);return this.line(d.values); }.bind(this))
       .style('stroke', function(d) { return this.colorScale(d.name); }.bind(this));
 
     // Update the points
@@ -308,7 +328,8 @@ var VisLineasJ = Class.extend({
         .transition()
         .duration(this.duration)
         .attr('cx', function(d) { return this.xScale(d.date); }.bind(this))
-        .attr('cy', function(d) { return this.yScale(d.value); }.bind(this));
+        .attr('cy', function(d) { return this.yScale(d.value); }.bind(this))
+        // .style('fill', function(v) { return this.colorScale(d3.select('.dot_line.x'+v.value).node().parentNode.__data__.name); }.bind(this)); 
 
     // Update legends
     this.legendEvolution
@@ -440,8 +461,9 @@ var VisLineasJ = Class.extend({
   _mousemove: function() {
     var selected = d3.event.target;
 
-    var x0 = this.xScale.invert(d3.mouse(selected)[0]),              
-            i = this.bisectDate(this.dataChart[0].values, x0, 1),                   
+    var x0 = this.xScale.invert(d3.mouse(selected)[0]),
+              i = 5,
+            // i = this.bisectDate(this.dataChart[0].values, x0, 1),                   
             d0 = this.dataChart[0].values[i - 1],                              
             d1 = this.dataChart[0].values[i],                                  
             d = x0 - d0.date > d1.date - x0 ? d1 : d0;     
