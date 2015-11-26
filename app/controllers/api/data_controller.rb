@@ -86,6 +86,16 @@ class Api::DataController < ApplicationController
     end
   end
 
+  def lines
+    filter = BudgetFilter.new(params.merge!({ perPage: 10000, offset: 0}))
+
+    respond_to do |format|
+      format.json do
+        render json: lines_items(filter).to_json
+      end
+    end
+  end
+
   private
   def per_person(budget_lines, structure = :items)
     per_inhabitant = budget_lines.sort_by{|bl| bl.budget_per_inhabitant.to_f }
@@ -168,6 +178,51 @@ class Api::DataController < ApplicationController
         "cut": item.cut
       }
     end
+  end
+
+  def lines_items(filter)
+    data_lines = Data::Lines.new(filter)
+    return {
+      "kind": filter.kind,
+      "year": filter.year,
+      "title": filter.category_filter? ? filter.category.name : "Total",
+      "budgets":{
+        "per_person":[
+          {
+            "name": data_lines.name,
+            "values": data_lines.data_per_person
+          },
+          {
+            "name":"mean_national",
+            "values": data_lines.data_mean_national_per_person
+          },
+          {
+            "name":"mean_autonomy",
+            "values": data_lines.data_mean_autonomy_per_person
+          },
+          {"name":"mean_province",
+           "values": data_lines.data_mean_province_per_person
+          }
+        ],
+        "percentage":[
+          {
+            "name": data_lines.name,
+            "values": data_lines.data_percentage
+          },
+          {
+            "name":"mean_national",
+            "values": data_lines.data_mean_national_percentage
+          },
+          {
+            "name":"mean_autonomy",
+            "values": data_lines.data_mean_autonomy_percentage
+          },
+          {"name":"mean_province",
+           "values": data_lines.data_mean_province_percentage
+          }
+        ]
+      }
+    }
   end
 
 end
