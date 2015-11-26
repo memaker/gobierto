@@ -33,7 +33,7 @@ LIMIT 5
 SQL
 
     ActiveRecord::Base.connection.execute(sql).map do |row|
-      BudgetLine.new row
+      ::BudgetLine.new row
     end
   end
 
@@ -50,7 +50,7 @@ LIMIT 5
 SQL
 
     ActiveRecord::Base.connection.execute(sql).map do |row|
-      BudgetLine.new row
+      ::BudgetLine.new row
     end
   end
 
@@ -68,7 +68,7 @@ LIMIT 5
 SQL
 
     ActiveRecord::Base.connection.execute(sql).map do |row|
-      BudgetLine.new row
+      ::BudgetLine.new row
     end
   end
 
@@ -85,7 +85,7 @@ LIMIT 5
 SQL
 
     ActiveRecord::Base.connection.execute(sql).map do |row|
-      BudgetLine.new row
+      ::BudgetLine.new row
     end
   end
 
