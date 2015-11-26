@@ -16,7 +16,7 @@ var VisLineasJ = Class.extend({
     // Scales
     this.xScale = d3.time.scale();
     this.yScale = d3.scale.linear();
-    this.colorScale = d3.scale.ordinal().range(['#F69C95', '#172532', '#00909E', '#EFF8F9']);
+    this.colorScale = d3.scale.ordinal().range(['#F69C95', '#00646E', '#00909E', '#99BFBE']);
 
     // Axis
     this.xAxis = d3.svg.axis();
@@ -52,6 +52,8 @@ var VisLineasJ = Class.extend({
     this.mainColor = '#F69C95';
     this.darkColor = '#B87570';
     this.niceCategory = null;
+    this.heavyLine = 5;
+    this.lightLine = 2;
   },
 
   render: function(urlData) {
@@ -181,7 +183,7 @@ var VisLineasJ = Class.extend({
           .attr('class', function(d) { return 'evolution_line ' + this._normalize(d.name); }.bind(this))
           .attr('d', function(d) { return this.line(d.values); }.bind(this))
           .style('stroke', function(d) { return this.colorScale(d.name); }.bind(this))
-          .style('stroke-width', function(d, i) { return i == 0 ? 3 : 2; })
+          .style('stroke-width', function(d, i) { return i == 0 ? this.heavyLine : this.lightLine; }.bind(this))
 
 
       // Add dot to lines
