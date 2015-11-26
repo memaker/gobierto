@@ -713,11 +713,11 @@
 
       if (recordsShown < recordsQueryCount && settings.features.paginate) {
         var bounds = obj.records.pageBounds();
-        text += "<span class='dynatable-record-bounds'>" + (bounds[0] + 1) + " to " + bounds[1] + "</span> of ";
+        text += "<span class='dynatable-record-bounds'>" + (bounds[0] + 1) + " a " + bounds[1] + "</span> de ";
       } else if (recordsShown === recordsQueryCount && settings.features.paginate) {
-        text += recordsShown + " of ";
+        text += recordsShown + " de ";
       }
-      text += recordsQueryCount + " " + collection_name;
+      text += recordsQueryCount + " resultados";
       if (recordsQueryCount < recordsTotal) {
         text += " (filtered from " + recordsTotal + " total records)";
       }
@@ -1339,7 +1339,7 @@
             (pages + 1) - settings.inputs.paginationGap[3]
           ];
 
-      pageLinks += '<li><span>Pages: </span></li>';
+      pageLinks += '<li><span>Páginas: </span></li>';
 
       for (var i = 1; i <= pages; i++) {
         if ( (i > breaks[0] && i < breaks[1]) || (i > breaks[2] && i < breaks[3])) {
