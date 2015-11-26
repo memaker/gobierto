@@ -196,7 +196,7 @@ var VisLineasJ = Class.extend({
           .data(function(d) { return d.values; })
           .enter()
         .append('circle')
-          .attr('class', function(d) { return 'dot_line ' + d.name + ' x' + d.date.getFullYear(); }.bind(this))
+          .attr('class', function(d) { return 'dot_line ' + this._normalize(d.name) + ' x' + d.date.getFullYear(); }.bind(this))
           .attr('cx', function(d) { return this.xScale(d.date); }.bind(this))
           .attr('cy', function(d) { return this.yScale(d.value); }.bind(this))
           .attr('r', this.radius)
@@ -346,6 +346,8 @@ var VisLineasJ = Class.extend({
         }
       }); 
     });
+    console.log(selectedClass)
+    console.log(tooltipData);
     
     var text = tooltipData.municipio + ':<strong> ' + d3.round(tooltipData.municipio_value) +
               '</strong>€/hab<br>Media Nacional: <strong>' + d3.round(tooltipData.mean_national)+ 
