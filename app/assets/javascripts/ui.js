@@ -155,8 +155,8 @@ $(function(){
     barsVisEcon.render($(selector).data('url'));
   }
 
-  d3.selectAll('.context.button')
-  .on('click', function(d) {
+  $('.context .button').on('click', function(e){
+    e.preventDefault();
     d3.selectAll(".context.button.buttonSelected").classed("buttonSelected", false);
     d3.select(this).classed("buttonSelected", true);
     barsVisFun.mean = this.id;

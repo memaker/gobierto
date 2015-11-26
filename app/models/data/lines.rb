@@ -5,9 +5,17 @@ class Data::Lines
 
   def name
     if @filter.category_filter?
-      @filter.category.name
+      if @filter.expending?
+        "Gasto en #{@filter.category.name}"
+      else
+        "Ingreso en #{@filter.category.name}"
+      end
     else
-      @filter.location.name
+      if @filter.expending?
+        "Gasto total #{@filter.location.name}"
+      else
+        "Ingreso total #{@filter.location.name}"
+      end
     end
   end
 

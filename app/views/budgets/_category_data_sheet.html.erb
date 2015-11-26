@@ -69,7 +69,7 @@
 
     </div>
 
-    <% if not @filter.location? %>
+    <% if false && !@filter.location? %>
     <div class="widget">
       <div class="widget_cont">
         <h2>Distribución</h2>
@@ -87,45 +87,48 @@
       </div>
     </div>
 
-    <div class="widget ">
-      <div class="widget_cont">
+    <% if false %>
+      <div class="widget ">
+        <div class="widget_cont">
 
-        <% if @filter.expending? %>
-          <h2>Municipios con mayor gasto / habitante</h2>
-        <% else %>
-          <h2>Municipios con mayor ingreso / habitante</h2>
-        <% end %>
-
-        <table>
-          <% category.bigger_budgets_per_inhabitant(@filter.year).each do |budget_line|  %>
-            <tr>
-              <td><%= link_to(truncate(budget_line.place.name, length: 72), place_path(budget_line.place, params), title: budget_line.place.name) %></td>
-              <td class="right"><%= format_currency(budget_line.amount) %></td>
-            </tr>
+          <% if @filter.expending? %>
+            <h2>Municipios con mayor gasto / habitante</h2>
+          <% else %>
+            <h2>Municipios con mayor ingreso / habitante</h2>
           <% end %>
-        </table>
 
+          <table>
+            <% category.bigger_budgets_per_inhabitant(@filter.year).each do |budget_line|  %>
+              <tr>
+                <td><%= link_to(truncate(budget_line.place.name, length: 72), place_path(budget_line.place, params), title: budget_line.place.name) %></td>
+                <td class="right"><%= format_currency(budget_line.amount) %></td>
+              </tr>
+            <% end %>
+          </table>
+
+        </div>
       </div>
-    </div>
 
-    <div class="widget ">
-      <div class="widget_cont">
+      <div class="widget ">
+        <div class="widget_cont">
 
-        <% if @filter.expending? %>
-          <h2>Municipios con menor gasto / habitante</h2>
-        <% else %>
-          <h2>Municipios con menor ingreso / habitante</h2>
-        <% end %>
-
-        <table>
-          <% category.smaller_budgets_per_inhabitant(@filter.year).each do |budget_line|  %>
-            <tr>
-              <td><%= link_to(truncate(budget_line.place.name, length: 72), place_path(budget_line.place, params), title: budget_line.place.name) %></td>
-              <td class="right"><%= format_currency(budget_line.amount) %></td>
-            </tr>
+          <% if @filter.expending? %>
+            <h2>Municipios con menor gasto / habitante</h2>
+          <% else %>
+            <h2>Municipios con menor ingreso / habitante</h2>
           <% end %>
-        </table>
+
+          <table>
+            <% category.smaller_budgets_per_inhabitant(@filter.year).each do |budget_line|  %>
+              <tr>
+                <td><%= link_to(truncate(budget_line.place.name, length: 72), place_path(budget_line.place, params), title: budget_line.place.name) %></td>
+                <td class="right"><%= format_currency(budget_line.amount) %></td>
+              </tr>
+            <% end %>
+          </table>
+        </div>
       </div>
-    </div>
+    <% end %>
+
   </div>
 </div>
