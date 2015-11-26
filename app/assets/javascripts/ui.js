@@ -210,4 +210,26 @@ $(function(){
       // });
   }
 
+  if($('#vis_lineas_j').size()>0){
+    var visLineasJ = new VisLineasJ('#vis_lineas_j', 'per_person');
+    visLineasJ.render('/api/data/lines.json' + location.search);
+
+    d3.selectAll('.measure.button')
+      .on('click', function(d) {
+        d3.selectAll(".measure.button.buttonSelected").classed("buttonSelected", false);
+        d3.select(this).classed("buttonSelected", true);
+        visLineasJ.measure = this.id;
+        visLineasJ.updateRender();
+      });
+
+    d3.selectAll('.context.button')
+      .on('click', function(d) {
+        d3.selectAll(".context.button.buttonSelected").classed("buttonSelected", false);
+        d3.select(this).classed("buttonSelected", true);
+        visLineasJ.mean = this.id;
+
+        visLineasJ.updateRender();
+      });
+  }
+
 });

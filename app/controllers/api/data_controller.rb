@@ -184,7 +184,7 @@ class Api::DataController < ApplicationController
     data_lines = Data::Lines.new(filter)
     return {
       "kind": filter.kind,
-      "year": filter.year,
+      "year": filter.year.to_s,
       "title": filter.category_filter? ? filter.category.name : "Total",
       "budgets":{
         "per_person":[
