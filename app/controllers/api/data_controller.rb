@@ -207,7 +207,7 @@ class Api::DataController < ApplicationController
         ],
         "percentage":[
           {
-            "name": "Porcentaje #{data_lines.name} sobre el total",
+            "name": data_lines.name,
             "values": data_lines.data_percentage
           },
           {
