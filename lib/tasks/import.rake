@@ -77,7 +77,7 @@ SQL
         })
 
         id = [place.id,year,row['code'],1].join("/")
-        index_request_body << {index: {_id: id}, data: data}
+        index_request_body << {index: {_id: id, data: data}}
       end
       next if index_request_body.empty?
 
@@ -118,7 +118,7 @@ SQL
         })
 
         id = [place.id,year,row['code'],1].join("/")
-        index_request_body << {index: {_id: id}, data: data}
+        index_request_body << {index: {_id: id, data: data}}
       end
       next if index_request_body.empty?
 
@@ -164,7 +164,7 @@ SQL
     raise "Invalid type #{args[:type]}" if type.blank?
 
     if m = args[:year].match(/\A\d{4}\z/)
-      year = m[0]
+      year = m[0].to_i
     end
     raise "Invalid year #{args[:year]}" if year.blank?
 
