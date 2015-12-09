@@ -139,7 +139,18 @@ footer {
     display: none;
   }
 }
-
+.sidebar {
+  width: 25%;
+  float: left;
+}
+.sidebar.right {
+  width: 25%;
+  float: right;
+}
+.main_col {
+  width: 70%;
+  float: right;
+}
 
 /*
  * Header
@@ -215,7 +226,48 @@ header.global {
     display: inline-block;
   }
 }
+.places_search {
+  padding: 3%;
+  width: 94%;
+  border: 1px solid $separator;
+  margin: 0 0 2em 0
+}
+.places_menu {
+  margin: 0; 
+  padding: 0;
+  ul {
+    margin: 0; 
+    padding: 0; 
+    list-style-type: none;
+    li {
+      margin: 0; 
+      padding: 0;
+      position: relative;
+      a {
+        font-size: 13px;
+        display: block;
+        text-transform: uppercase;
+        text-decoration: none;
+        padding: .25em .5em;
+        line-height: 16px;
+      }
+      a:hover {
+        background: $color_1;
+        color: $background;
+      }
+      ul {
+        display: none;
+        position: absolute;
+        background: $color_1_soft;
+        padding: 1em; 
+        left: 100%;
+        top: 0;
+        width: 100%;
+      }
 
+    }
+  }
+}
 
 /*
  * Tables
@@ -281,6 +333,13 @@ table {
 }
 
 
+/*
+ * Place
+ *
+ */
+h1 {
+  font-weight: 600;
+}
 
 /*
  * XXXX

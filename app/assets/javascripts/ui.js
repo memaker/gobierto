@@ -232,4 +232,9 @@ $(function(){
       });
   }
 
+  $(".places_menu ul li").hover(function(e){
+    // e.preventDefault();
+    $(this).find('ul').toggle();
+  });
+
 });

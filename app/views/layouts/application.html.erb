@@ -23,9 +23,20 @@
       </div>
     </div>
 
+    <menu class="tabs">
+      <ul>
+        <li><%= link_to 'Municipios' %></li>
+        <li><%= link_to 'Partidas' %></li>
+        <li><%= link_to 'Áreas' %></li>
+        <li class="right"><%= link_to '2015' %></li>
+      </ul>
+    </menu>
+
   </header>
 
-  <%= yield %>
+  <div class="clearfix">
+    <%= yield %>
+  </div>
 
 </div>
 
