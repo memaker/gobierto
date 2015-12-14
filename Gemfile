@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '4.2.4'
+gem 'rails', '4.2.5'
 gem 'pg'
 gem 'sass-rails', '~> 5.0.0'
 gem 'uglifier', '>= 1.3.0'
@@ -11,6 +11,7 @@ gem 'meta-tags'
 gem 'ine-places', require: 'ine/places/places'
 gem 'jbuilder'
 gem 'actionpack-page_caching'
+gem 'progressbar'
 
 # Frontend
 gem 'jquery-rails'
@@ -19,6 +20,12 @@ gem 'bourbon'
 gem 'turbolinks'
 gem 'therubyracer'
 gem 'cookies_eu'
+
+# Elastic search
+gem 'elasticsearch'
+gem 'elasticsearch-extensions'
+gem 'oj'
+gem 'hashie'
 
 group :development, :test do
   gem 'spring'
