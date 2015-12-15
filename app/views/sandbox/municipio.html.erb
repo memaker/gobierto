@@ -5,11 +5,20 @@
     <%= link_to 'Almería' %>
   </div>
   <h1>El Ejido</h1>
+  <menu>
+    <ul>
+      <li><%= link_to 'Presupuesto' %></li>
+      <li><%= link_to 'Ejecución' %></li>
+      <li><%= link_to 'Indicadores' %></li>
+      <li><%= link_to 'Rankings' %></li>
+      <li><%= link_to 'Contexto' %></li>
+    </ul>
+  </menu>
 </header>
 
-<div class="main_metrics">
+<div class="main_metrics clearfix">
 
-  <div class="metric">
+  <div class="metric" data-graph-show="1">
     <div class="label">Gasto total</div>
     <div class="main">128,4M€</div>
     <div class="secondary">
@@ -18,7 +27,7 @@
     </div>
   </div>
 
-  <div class="metric">
+  <div class="metric selected" data-graph-show="2">
     <div class="label">Habitantes</div>
     <div class="main">1.234</div>
     <div class="secondary">
@@ -27,7 +36,25 @@
     </div>
   </div>
 
-  <div class="metric selected">
+  <div class="metric" data-graph-show="3">
+    <div class="label">Wadus</div>
+    <div class="main">1.234</div>
+    <div class="secondary">
+      <div class="percentage_change down">1,23%</div>
+      <div class="ranking"><strong>#12</strong>/8.234</div>
+    </div>
+  </div>
+
+  <div class="metric" data-graph-show="4">
+    <div class="label">Wadus</div>
+    <div class="main">1.234</div>
+    <div class="secondary">
+      <div class="percentage_change down">1,23%</div>
+      <div class="ranking"><strong>#12</strong>/8.234</div>
+    </div>
+  </div>
+
+  <div class="metric" data-graph-show="5">
     <div class="label">Gasto por habitante</div>
     <div class="main">1.234€</div>
     <div class="secondary">
@@ -38,150 +65,198 @@
 
 </div>
 
-<div class="graph">
+<div class="metric_graphs">
 
-  graph
+  <div class="graph" data-graph-cont="1">
 
+    graph gasto total
+
+  </div>
+
+  <div class="graph" data-graph-cont="2">
+
+    graph habitantes 
+
+  </div>
+
+  <div class="graph" data-graph-cont="3">
+
+    graph wadus
+
+  </div>
+
+  <div class="graph" data-graph-cont="5">
+
+    graph gasto por habitante
+
+  </div>
+
+</div>
+
+<div class="section_separator">
+  <div class="sep"></div>
+  Explora ingresos y gastos de El Ejido
+  <div class="sep"></div>
 </div>
 
 <div class="ie_intro">
 
-  <div class="col-1-2">
+  <div class="col-1-2 income">
     
     <header class="cat">
       <h2>Ingresos</h2>
-      4.678.987.123 €
+      <div class="qty">4.678.987.123 €</div>
     </header>
 
-    <div>TREEMAP</div>
+    <div class="graph">TREEMAP</div>
 
     <div class="items">
       <table>
       <tr>
         <td>Impuestos directos</td>
-        <td>2.034.123.456 €</td>
-        <td>43,23%</td>
+        <td class="right">2.034.123.456 €</td>
+        <td class="right"><strong>43,23%</strong></td>
         <td><div class="bar percent-43"></div></td>
       </tr>
       <tr>
         <td>Impuestos indirectos</td>
-        <td>110.123.456 €</td>
-        <td>3,23%</td>
+        <td class="right">110.123.456 €</td>
+        <td class="right"><strong>3,23%</strong></td>
         <td><div class="bar percent-2"></div></td>
       </tr>
       <tr>
         <td>Tasas y otros ingresos</td>
-        <td>110.123.456 €</td>
-        <td>3,23%</td>
+        <td class="right">110.123.456 €</td>
+        <td class="right"><strong>3,23%</strong></td>
         <td><div class="bar percent-2"></div></td>
       </tr>
       <tr>
         <td>Transferencias y otros ingresos</td>
-        <td>110.123.456 €</td>
-        <td>3,23%</td>
+        <td class="right">110.123.456 €</td>
+        <td class="right"><strong>3,23%</strong></td>
         <td><div class="bar percent-2"></div></td>
       </tr>
       <tr>
         <td>Ingresos patrimoniales</td>
-        <td>110.123.456 €</td>
-        <td>3,23%</td>
+        <td class="right">110.123.456 €</td>
+        <td class="right"><strong>3,23%</strong></td>
         <td><div class="bar percent-2"></div></td>
       </tr>
       <tr>
         <td>Enajenación de inversiones reales</td>
-        <td>110.123.456 €</td>
-        <td>3,23%</td>
+        <td class="right">110.123.456 €</td>
+        <td class="right"><strong>3,23%</strong></td>
         <td><div class="bar percent-2"></div></td>
       </tr>
       <tr>
         <td>Transferencias de capital</td>
-        <td>110.123.456 €</td>
-        <td>3,23%</td>
+        <td class="right">110.123.456 €</td>
+        <td class="right"><strong>3,23%</strong></td>
         <td><div class="bar percent-2"></div></td>
       </tr>
       <tr>
         <td>Activos financieros</td>
-        <td>110.123.456 €</td>
-        <td>3,23%</td>
+        <td class="right">110.123.456 €</td>
+        <td class="right"><strong>3,23%</strong></td>
         <td><div class="bar percent-2"></div></td>
       </tr>
       <tr>
         <td>Pasivos financieros</td>
-        <td>110.123.456 €</td>
-        <td>3,23%</td>
+        <td class="right">110.123.456 €</td>
+        <td class="right"><strong>3,23%</strong></td>
         <td><div class="bar percent-2"></div></td>
       </tr>
       </table>
+  
+      <div class="show_all">
+        <a href="municipio_cat" class="list_view_more">Ver desglose de ingresos</a>
+      </div>
+      
     </div>
+
+
 
   </div>
 
   <div class="col-2-2">
 
-    <header class="cat">
+    <header class="cat expenses">
       <h2>Gastos</h2>
-      4.678.987.123 €
+
+      <div class="form_filters">
+        <ul>
+          <li><%= link_to 'Funcional', '', class: 'buttonSelected' %></li>
+          <li><%= link_to 'Económica' %></li>
+        </ul>
+      </div>
+
+      <div class="qty">4.678.987.123 €</div>
     </header>
 
-    <div>TREEMAP</div>
+    <div class="graph">TREEMAP</div>
 
     <div class="items">
       <table>
       <tr>
         <td>Impuestos directos</td>
-        <td>2.034.123.456 €</td>
-        <td>43,23%</td>
+        <td class="right">2.034.123.456 €</td>
+        <td class="right"><strong>43,23%</strong></td>
         <td><div class="bar percent-43"></div></td>
       </tr>
       <tr>
         <td>Impuestos indirectos</td>
-        <td>110.123.456 €</td>
-        <td>3,23%</td>
+        <td class="right">110.123.456 €</td>
+        <td class="right"><strong>3,23%</strong></td>
         <td><div class="bar percent-2"></div></td>
       </tr>
       <tr>
         <td>Tasas y otros ingresos</td>
-        <td>110.123.456 €</td>
-        <td>3,23%</td>
+        <td class="right">110.123.456 €</td>
+        <td class="right"><strong>3,23%</strong></td>
         <td><div class="bar percent-2"></div></td>
       </tr>
       <tr>
         <td>Transferencias y otros ingresos</td>
-        <td>110.123.456 €</td>
-        <td>3,23%</td>
+        <td class="right">110.123.456 €</td>
+        <td class="right"><strong>3,23%</strong></td>
         <td><div class="bar percent-2"></div></td>
       </tr>
       <tr>
         <td>Ingresos patrimoniales</td>
-        <td>110.123.456 €</td>
-        <td>3,23%</td>
+        <td class="right">110.123.456 €</td>
+        <td class="right"><strong>3,23%</strong></td>
         <td><div class="bar percent-2"></div></td>
       </tr>
       <tr>
         <td>Enajenación de inversiones reales</td>
-        <td>110.123.456 €</td>
-        <td>3,23%</td>
+        <td class="right">110.123.456 €</td>
+        <td class="right"><strong>3,23%</strong></td>
         <td><div class="bar percent-2"></div></td>
       </tr>
       <tr>
         <td>Transferencias de capital</td>
-        <td>110.123.456 €</td>
-        <td>3,23%</td>
+        <td class="right">110.123.456 €</td>
+        <td class="right"><strong>3,23%</strong></td>
         <td><div class="bar percent-2"></div></td>
       </tr>
       <tr>
         <td>Activos financieros</td>
-        <td>110.123.456 €</td>
-        <td>3,23%</td>
+        <td class="right">110.123.456 €</td>
+        <td class="right"><strong>3,23%</strong></td>
         <td><div class="bar percent-2"></div></td>
       </tr>
       <tr>
         <td>Pasivos financieros</td>
-        <td>110.123.456 €</td>
-        <td>3,23%</td>
+        <td class="right">110.123.456 €</td>
+        <td class="right"><strong>3,23%</strong></td>
         <td><div class="bar percent-2"></div></td>
       </tr>
       </table>
+
+      <div class="show_all">
+        <a href="municipio_cat" class="list_view_more">Ver desglose de gastos</a>
+      </div>
+
     </div>
 
   </div>

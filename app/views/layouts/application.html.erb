@@ -23,18 +23,40 @@
       </div>
     </div>
 
-    <menu class="tabs">
+    <menu>
       <ul>
-        <li><%= link_to 'Municipios' %></li>
+        <li><%= link_to 'Municipios', 'municipio', class: 'selected' %></li>
         <li><%= link_to 'Partidas' %></li>
-        <li><%= link_to 'Áreas' %></li>
-        <li class="right"><%= link_to '2015' %></li>
+        <li><%= link_to 'Compara' %></li>
+        <li><%= link_to 'Indicadores' %></li>
+        <li><%= link_to 'Ránkings' %></li>
+        <li><%= link_to '<span>Pro</span> Crea tu libro'.html_safe %></li>
       </ul>
     </menu>
 
+    <div class="links_list">
+      <h3>Tus favoritos</h3>
+      <ul>
+        <li><%= link_to 'El Ejido' %></li>
+        <li><%= link_to 'Majadahonda' %></li>
+        <li><%= link_to 'Mijas' %></li>
+        <li><%= link_to 'Talaván' %></li>
+      </ul>
+    </div>
+
+    <div class="links_list">
+      <h3>Reciente</h3>
+      <ul>
+        <li><%= link_to 'Madrid' %></li>
+        <li><%= link_to 'Barcelona' %></li>
+        <li><%= link_to 'Valencia' %></li>
+        <li><%= link_to 'Pontevedra' %></li>
+      </ul>
+    </div>
+
   </header>
 
-  <div class="clearfix">
+  <div class="main_content clearfix">
     <%= yield %>
   </div>
 
