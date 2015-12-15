@@ -107,7 +107,7 @@
       <div class="qty"><%= number_to_currency @income_lines['aggregations']['total_budget']['value'], precision: 0 %></div>
     </header>
 
-    <div class="graph" id="income-treemap" data-url="<%= api_data_treemap_path(@place.id, 'economic', 2015, 0, 1, format: :json) %>"></div>
+    <div class="graph" id="income-treemap" data-url="<%= api_data_treemap_path(@place.id, 'economic', 2015, BudgetLine::INCOME, 1, format: :json) %>"></div>
 
     <div class="items">
       <table>
@@ -147,7 +147,7 @@
       <div class="qty"><%= number_to_currency @expense_lines['aggregations']['total_budget']['value'], precision: 0 %></div>
     </header>
 
-    <div class="graph" id="expense-treemap" data-url="<%= api_data_treemap_path(@place.id, 'functional', 2015, 1, 1, format: :json) %>"></div>
+    <div class="graph" id="expense-treemap" data-url="<%= api_data_treemap_path(@place.id, @area_name, 2015, BudgetLine::EXPENSE, 1, format: :json) %>"></div>
 
     <div class="items">
       <table>
