@@ -13,13 +13,7 @@
 //= require vendor/d3.v3.min
 //= require vendor/d3-legend.min
 //= require vendor/klass
-//= require vis_bars
-//= require vis_distribution
-//= require vis_dispersion
-//= require vis_evolution
-//= require vis_lineas_j
-// require vis
-
+//= require vis_treemap
 //= require ui
 
 SPARKLINES_DEFAULTS = {

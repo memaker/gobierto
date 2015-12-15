@@ -14,12 +14,14 @@
 @import "cookies_eu";
 @import "vendor/sparkline";
 @import "vendor/jquery.bonsai";
-@import "vis_bars";
-@import "vis_distribution";
-@import "vis_dispersion";
-@import "vis_evolution";
-@import "vis_lineas_j";
+// Old visualizations
+// @import "vis_bars";
+// @import "vis_distribution";
+// @import "vis_dispersion";
+// @import "vis_evolution";
+// @import "vis_lineas_j";
 
+@import "treemap";
 
 
 
