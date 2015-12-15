@@ -110,14 +110,15 @@ SQL
 
       index_request_body = []
       db.execute(sql).each do |row|
+        kind = row['kind'] == 'I' ? 0 : 1
         data = base_data.merge({
           amount: row['amount'].to_f.round(2), code: row['code'],
-          level: row['code'].length, kind: row['kind'] == 'I' ? 0 : 1,
+          level: row['code'].length, kind: kind,
           amount_per_inhabitant: (row['amount'].to_f / pop).round(2),
           parent_code: row['code'][0..-2]
         })
 
-        id = [place.id,year,row['code'],1].join("/")
+        id = [place.id,year,row['code'],kind].join("/")
         index_request_body << {index: {_id: id, data: data}}
       end
       next if index_request_body.empty?
