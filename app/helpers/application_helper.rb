@@ -59,6 +59,11 @@ module ApplicationHelper
     number_with_precision((value.to_f / total.to_f) * 100, precision: 2)
   end
 
+  def budget_line_denomination(area, code, kind)
+    area = (area == 'economic' ? EconomicArea : FunctionalArea)
+    area.all_items[kind][code]
+  end
+
   def filter_location_name
     name = ""
     if @filter.location?

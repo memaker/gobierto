@@ -585,6 +585,9 @@ a.list_view_more {
     tr:nth-child(2) td {
       padding-top: 20px;
     }
+    td.amount {
+      white-space: nowrap;
+    }
     td.item_name {
       width: 50%;
     }
