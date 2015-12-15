@@ -1,7 +1,7 @@
 
 <header class="place">
   <div class="breadcrumb">
-    <%= link_to 'Andalucía' %> >
+    <%= link_to 'Andalucía' %> <span class="sep">»</span>
     <%= link_to 'Almería' %>
   </div>
   <h1>El Ejido</h1>
@@ -18,7 +18,7 @@
 
 <div class="main_metrics clearfix">
 
-  <div class="metric" data-graph-show="1">
+  <div class="metric selected" data-graph-show="1">
     <div class="label">Gasto total</div>
     <div class="main">128,4M€</div>
     <div class="secondary">
@@ -27,7 +27,7 @@
     </div>
   </div>
 
-  <div class="metric selected" data-graph-show="2">
+  <div class="metric " data-graph-show="2">
     <div class="label">Habitantes</div>
     <div class="main">1.234</div>
     <div class="secondary">
@@ -37,24 +37,6 @@
   </div>
 
   <div class="metric" data-graph-show="3">
-    <div class="label">Wadus</div>
-    <div class="main">1.234</div>
-    <div class="secondary">
-      <div class="percentage_change down">1,23%</div>
-      <div class="ranking"><strong>#12</strong>/8.234</div>
-    </div>
-  </div>
-
-  <div class="metric" data-graph-show="4">
-    <div class="label">Wadus</div>
-    <div class="main">1.234</div>
-    <div class="secondary">
-      <div class="percentage_change down">1,23%</div>
-      <div class="ranking"><strong>#12</strong>/8.234</div>
-    </div>
-  </div>
-
-  <div class="metric" data-graph-show="5">
     <div class="label">Gasto por habitante</div>
     <div class="main">1.234€</div>
     <div class="secondary">
@@ -63,29 +45,101 @@
     </div>
   </div>
 
+  <div class="metric" data-graph-show="4">
+    <div class="label">Presupuesto vs. Ejecución</div>
+    <div class="main">-3,45%</div>
+    <div class="secondary">
+      <div class="ranking"><strong>#12</strong>/8.234</div>
+    </div>
+  </div>
+
+  <div class="metric" data-graph-show="5">
+    <div class="label">Diferencia con la media</div>
+    <div class="main">-13,45%</div>
+    <div class="secondary">
+      
+    </div>
+  </div>
+
+  
+
 </div>
 
 <div class="metric_graphs">
 
-  <div class="graph" data-graph-cont="1">
+  <div class="widget_graph show clearfix" data-graph-cont="1">
 
-    graph gasto total
+    <div class="col-1-2">
+
+      <h2>Gasto total</h2>
+
+      <table>
+      <tr>
+        <th title="Municipio"></th>
+        <th title="Gasto Total"></th>
+        <th class="right per_change">Cambio sobre año anterior</th> 
+      </tr>
+      <tr>
+        <td>
+          <i class="le le-place"></i>
+          El Ejido
+        </td>
+        <td class="right">1.234,45 €</td>
+        <td class="right">+3,54%</td>
+      </tr>
+      <tr>
+        <td>
+          <i class="le le-province"></i>
+          Media provincia
+        </td>
+        <td class="right">1.234,45 €</td>
+        <td class="right">+3,54%</td>
+      </tr>
+      <tr>
+        <td>
+          <i class="le le-com"></i>
+          Media CCAA
+        </td>
+        <td class="right">1.234,45 €</td>
+        <td class="right">+3,54%</td>
+      </tr>
+      <tr>
+        <td>
+          <i class="le le-country"></i>
+          Media España
+        </td>
+        <td class="right">1.234,45 €</td>
+        <td class="right">+3,54%</td>
+      </tr>
+      </table>
+
+    </div>
+
+    <div class="col-2-2">
+
+      <div class="graph_cont">
+        
+        <img src="https://dl.dropboxusercontent.com/u/600648/varios/test-graph.png" width="100%" > 
+
+      </div>
+
+    </div>
 
   </div>
 
-  <div class="graph" data-graph-cont="2">
+  <div class="widget_graph" data-graph-cont="2">
 
     graph habitantes 
 
   </div>
 
-  <div class="graph" data-graph-cont="3">
+  <div class="widget_graph" data-graph-cont="3">
 
     graph wadus
 
   </div>
 
-  <div class="graph" data-graph-cont="5">
+  <div class="widget_graph" data-graph-cont="5">
 
     graph gasto por habitante
 
@@ -108,7 +162,7 @@
       <div class="qty">4.678.987.123 €</div>
     </header>
 
-    <div class="graph">TREEMAP</div>
+    <div class="graph_placeholder">TREEMAP</div>
 
     <div class="items">
       <table>
@@ -193,7 +247,7 @@
       <div class="qty">4.678.987.123 €</div>
     </header>
 
-    <div class="graph">TREEMAP</div>
+    <div class="graph_placeholder">TREEMAP</div>
 
     <div class="items">
       <table>

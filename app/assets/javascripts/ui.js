@@ -242,6 +242,8 @@ $(function(){
     var el = $(this).data("graph-show");
     $('[data-graph-cont]').hide();
     $('[data-graph-cont='+el+']').show();
+    $('.metric').removeClass('selected');
+    $(this).addClass('selected');
   });
 
   // adjust height of sidebar
