@@ -104,19 +104,19 @@
     
     <header class="cat">
       <h2>Ingresos</h2>
-      <div class="qty"><%= number_to_currency @budget_lines['aggregations']['total_budget']['value'], precision: 0 %></div>
+      <div class="qty"><%= number_to_currency @income_lines['aggregations']['total_budget']['value'], precision: 0 %></div>
     </header>
 
     <div class="graph">TREEMAP</div>
 
     <div class="items">
       <table>
-        <% @budget_lines['hits'].each do |budget_line| %>
+        <% @income_lines['hits'].each do |budget_line| %>
           <tr>
-            <td><%= FunctionalArea.all_items['G'][budget_line['code']] %></td>
+            <td><%= EconomicArea.all_items['I'][budget_line['code']] %></td>
             <td class="right"><%= number_to_currency budget_line['amount'], precision: 0 %></td>
-            <td class="right"><strong><%= percentage_of_total(budget_line['amount'], @budget_lines['aggregations']['total_budget']['value']) %>%</strong></td>
-            <td><div class="bar percent-<%= percentage_of_total(budget_line['amount'], @budget_lines['aggregations']['total_budget']['value']).to_i %>"></div></td>
+            <td class="right"><strong><%= percentage_of_total(budget_line['amount'], @income_lines['aggregations']['total_budget']['value']) %>%</strong></td>
+            <td><div class="bar percent-<%= percentage_of_total(budget_line['amount'], @income_lines['aggregations']['total_budget']['value']).to_i %>"></div></td>
           </tr>
         <% end %>
       </table>
@@ -143,67 +143,21 @@
         </ul>
       </div>
 
-      <div class="qty">4.678.987.123 €</div>
+      <div class="qty"><%= number_to_currency @expense_lines['aggregations']['total_budget']['value'], precision: 0 %></div>
     </header>
 
     <div class="graph">TREEMAP</div>
 
     <div class="items">
       <table>
-      <tr>
-        <td>Impuestos directos</td>
-        <td class="right">2.034.123.456 €</td>
-        <td class="right"><strong>43,23%</strong></td>
-        <td><div class="bar percent-43"></div></td>
-      </tr>
-      <tr>
-        <td>Impuestos indirectos</td>
-        <td class="right">110.123.456 €</td>
-        <td class="right"><strong>3,23%</strong></td>
-        <td><div class="bar percent-2"></div></td>
-      </tr>
-      <tr>
-        <td>Tasas y otros ingresos</td>
-        <td class="right">110.123.456 €</td>
-        <td class="right"><strong>3,23%</strong></td>
-        <td><div class="bar percent-2"></div></td>
-      </tr>
-      <tr>
-        <td>Transferencias y otros ingresos</td>
-        <td class="right">110.123.456 €</td>
-        <td class="right"><strong>3,23%</strong></td>
-        <td><div class="bar percent-2"></div></td>
-      </tr>
-      <tr>
-        <td>Ingresos patrimoniales</td>
-        <td class="right">110.123.456 €</td>
-        <td class="right"><strong>3,23%</strong></td>
-        <td><div class="bar percent-2"></div></td>
-      </tr>
-      <tr>
-        <td>Enajenación de inversiones reales</td>
-        <td class="right">110.123.456 €</td>
-        <td class="right"><strong>3,23%</strong></td>
-        <td><div class="bar percent-2"></div></td>
-      </tr>
-      <tr>
-        <td>Transferencias de capital</td>
-        <td class="right">110.123.456 €</td>
-        <td class="right"><strong>3,23%</strong></td>
-        <td><div class="bar percent-2"></div></td>
-      </tr>
-      <tr>
-        <td>Activos financieros</td>
-        <td class="right">110.123.456 €</td>
-        <td class="right"><strong>3,23%</strong></td>
-        <td><div class="bar percent-2"></div></td>
-      </tr>
-      <tr>
-        <td>Pasivos financieros</td>
-        <td class="right">110.123.456 €</td>
-        <td class="right"><strong>3,23%</strong></td>
-        <td><div class="bar percent-2"></div></td>
-      </tr>
+        <% @expense_lines['hits'].each do |budget_line| %>
+          <tr>
+            <td><%= EconomicArea.all_items['G'][budget_line['code']] %></td>
+            <td class="right"><%= number_to_currency budget_line['amount'], precision: 0 %></td>
+            <td class="right"><strong><%= percentage_of_total(budget_line['amount'], @expense_lines['aggregations']['total_budget']['value']) %>%</strong></td>
+            <td><div class="bar percent-<%= percentage_of_total(budget_line['amount'], @expense_lines['aggregations']['total_budget']['value']).to_i %>"></div></td>
+          </tr>
+        <% end %>
       </table>
 
       <div class="show_all">

@@ -1,6 +1,5 @@
 class BudgetLine
   INDEX = 'budgets-forecast'
-  TYPE = 'functional'
 
   INCOME = 0
   EXPENSE = 1
@@ -34,7 +33,7 @@ class BudgetLine
       size: 10_000
     }
 
-    response = SearchEngine.client.search index: INDEX, type: TYPE, body: query
+    response = SearchEngine.client.search index: INDEX, type: options[:type], body: query
 
     return {
       'hits' => response['hits']['hits'].map{ |h| h['_source'] },
