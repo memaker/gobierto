@@ -13,17 +13,13 @@ Rails.application.routes.draw do
 
   get 'categories/economic/:kind' => 'categories#economic'
 
-  namespace :api do
-    get '/data/:place_id/:year/:kind/economic' => 'data#economic'
-    get '/data/:place_id/:year/functional' => 'data#functional'
-    get '/data/distribution' => 'data#distribution'
-    get '/data/dispersion' => 'data#dispersion'
-    get '/data/lines' => 'data#lines'
-  end
-
 
   ## New code
 
   resources :places
+
+  namespace :api do
+    get '/data/treemap/:ine_code/:type/:year/:kind/:level' => 'data#treemap', as: :data_treemap
+  end
 
 end

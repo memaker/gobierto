@@ -107,7 +107,7 @@
       <div class="qty"><%= number_to_currency @budget_lines['aggregations']['total_budget']['value'], precision: 0 %></div>
     </header>
 
-    <div class="graph">TREEMAP</div>
+    <div class="graph" id="income-treemap" data-url="<%= api_data_treemap_path(@place.id, 'economic', 2015, 0, 1, format: :json) %>"></div>
 
     <div class="items">
       <table>
@@ -146,7 +146,7 @@
       <div class="qty">4.678.987.123 €</div>
     </header>
 
-    <div class="graph">TREEMAP</div>
+    <div class="graph" id="expense-treemap" data-url="<%= api_data_treemap_path(@place.id, 'functional', 2015, 1, 1, format: :json) %>"></div>
 
     <div class="items">
       <table>
@@ -215,3 +215,14 @@
   </div>
 
 </div>
+
+
+<script>
+$(function(){
+  var incomeTreemap = new TreemapVis('#income-treemap');
+  incomeTreemap.render($('#income-treemap').data('url'));
+
+  var expenseTreemap = new TreemapVis('#expense-treemap');
+  expenseTreemap.render($('#expense-treemap').data('url'));
+});
+</script>
