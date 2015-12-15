@@ -135,10 +135,10 @@
 
       <div class="form_filters">
         <ul>
-          <li><%= link_to 'Económica', place_path(@place.id, {area: 'economic'}) + '#switch', 
+          <li><%= link_to 'Económica', place_path(@place.slug, {area: 'economic'}) + '#switch', 
                   class: ("buttonSelected" if @area_name == 'economic'), name: 'switch' %>
           </li>
-          <li><%= link_to 'Funcional', place_path(@place.id, {area: 'functional'}) + '#switch',
+          <li><%= link_to 'Funcional', place_path(@place.slug, {area: 'functional'}) + '#switch',
                   class: ("buttonSelected" if @area_name == 'functional') %>   
           </li>
         </ul>
