@@ -584,8 +584,14 @@ header.place {
       vertical-align: top;
     }
   }
-
+  .items {
+    font-size: .9em;
+  }
+  .items table td.bar_cont {
+    width: 40px;
+  }
 }
+
 
 .section_separator {
   margin: 4em 0;
@@ -661,7 +667,7 @@ a.list_view_more {
     td.percentage {
       width: 80px;
     }
-    td.bars {
+    td.bar_cont {
       width: 90px;
       padding: 0;
     }
@@ -676,7 +682,7 @@ a.list_view_more {
           @include border-radius(6px);
           margin: 0 0 0 20px;
           padding: 10px 20px;
-          td.bars {
+          td.bar_cont {
             width: 80px;
             padding: 0;
           }
@@ -688,7 +694,7 @@ a.list_view_more {
               @include border-radius(6px);
               margin: 0 0 0 20px;
               padding: 10px 20px;
-              td.bars {
+              td.bar_cont {
                 width: 60px;
                 padding: 0;
               }
@@ -736,6 +742,14 @@ a.list_view_more {
   text-align: center;
   padding: 5em 0;
 }
+.bar_cont {
+  width: 60px;
+}
+.bar {
+  background: $color_vis_place;
+  height: 12px;
+}
+
 
 
 /*
