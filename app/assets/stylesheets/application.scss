@@ -177,14 +177,6 @@ header.global {
  * Header
  *
  */
-.top-claim {
-  background: $color_1;
-  color: $background;
-  padding: .45em;
-  text-align: center;
-  margin: 0;
-  font-size: .85em;
-}
 .logo {
   margin: 1em 0 2em 0;
   img {
@@ -250,8 +242,59 @@ header.global {
     }
   }
 }
-
-
+// if top-claim present...
+body {
+  padding: 2em 0 0 0;
+}
+.top-claim {
+  position: absolute;
+  z-index: 5;
+  background: $color_1;
+  color: $background;
+  text-align: center;
+  margin: 0;
+  height: 2em;
+  width: 100%;
+  top: 0;
+  left: 0;
+  p {
+    padding: .45em;
+    line-height: 1.4em;
+    margin: 0;
+    font-size: .85em;  
+  }
+}
+.year_switcher {
+  position: absolute;
+  width: 120px;
+  z-index: 4;
+  top: 1.8em; 
+  right: 1em;
+  border: 1px solid darken($separator, 10%);
+  @include border-radius(6px);
+  background: #FFF;
+  ul {
+    display: none;
+    @include box-shadow();
+  }
+  ul, li {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+  a {
+    padding: .8em 1.5em .6em 1.5em;
+    text-decoration: none;
+    display: block;
+    .fa {
+      padding: 0 0 0 1em;
+      opacity: .5;
+    }
+  }
+  a:hover {
+    background: $separator;
+  }
+}
 
 /*
  * Main-nav
