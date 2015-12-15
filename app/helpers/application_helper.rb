@@ -51,8 +51,12 @@ module ApplicationHelper
     end
   end
 
-  def percentage(current_year_value, old_value)
+  def delta_percentage(current_year_value, old_value)
     number_with_precision(((current_year_value.to_f - old_value.to_f)/old_value.to_f) * 100, precision: 2).to_s + " %"
+  end
+
+  def percentage_of_total(value, total)
+    number_with_precision((value.to_f / total.to_f) * 100, precision: 2)
   end
 
   def filter_location_name

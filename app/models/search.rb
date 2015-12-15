@@ -1,27 +1,11 @@
 class Search
-  def initialize(options)
-    @variations  = options[:variations]
-    @date_ranges = options[:date_ranges]
-    @geo         = options[:geo]
-    @datasets    = Hash[Dataset.where(code: @variations).map do |dataset|
-      [dataset.code, dataset]
-    end]
+  def initialize(options = {})
   end
 
-  def search
-    response = SearchEngine.client.search index: 'es', type: @variations, body: search_query
+  def search(query)
+    response = SearchEngine.client.search index: 'es', type: @variations, body: query
 
-    values = response['hits']['hits'].map do |h|
-      h['_source'].merge({
-        formatted_date: @datasets[h['_source']['code']].format_date(h['_source']['date']),
-        formatted_value: @datasets[h['_source']['code']].format_value(h['_source']['value']),
-      })
-    end
-
-    return {
-      datasets: @datasets.values,
-      values: values
-    }
+    return response['hits']['hits']
   end
 
   private
@@ -30,32 +14,27 @@ class Search
     query = {
       query: {
         filtered: {
-          query: {}
-        }
-      },
-      sort: {
-        date: "desc"
-      },
-      size: 100_000
-    }
-
-    if @geo.present?
-      query[:query][:filtered][:query] = query[:query][:filtered][:query].deep_merge(wildcard: { location: @geo })
-    else
-      query[:query][:filtered][:query] = query[:query][:filtered][:query] = { match_all: {} }
-    end
-
-    if @date_ranges.any?
-      ranges = @date_ranges.map do |range|
-        {
-          range: {
-            date: { gte: range.first, lte: "#{range.last}-12-31"}
+          query: {
+            match_all: {}
+          },
+          filter: {
+            bool: {
+              must: [
+                {term: { ine_code: 28079 }},
+                {term: { level: 1 }},
+                {term: { kind: 1 }},
+                {term: { year: 2015 }}
+              ]
+            }
           }
         }
-      end
-
-      query[:query][:filtered] = query[:query][:filtered].deep_merge({filter: { or: ranges }})
-    end
+      },
+      aggs: {
+        total_budget: { sum: { field: 'amount' } },
+        total_budget_per_inhabitant: { sum: { field: 'amount_per_inhabitant' } },
+      },
+      size: 10_000
+    }
 
     query
   end

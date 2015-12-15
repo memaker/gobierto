@@ -22,7 +22,7 @@ namespace :budgets do
           code:                  { type: 'string',  index: 'not_analyzed' },
           parent_code:           { type: 'string',  index: 'not_analyzed' },
           level:                 { type: 'integer', index: 'not_analyzed' },
-          kind:                  { type: 'integer', index: 'not_analyzed' }, # income 0 / expending 1
+          kind:                  { type: 'integer', index: 'not_analyzed' }, # income 0 / expense 1
           province_id:           { type: 'integer', index: 'not_analyzed' },
           autonomy_id:           { type: 'integer', index: 'not_analyzed' },
           population:            { type: 'integer', index: 'not_analyzed' },

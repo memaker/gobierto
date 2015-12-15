@@ -21,4 +21,9 @@ Rails.application.routes.draw do
     get '/data/lines' => 'data#lines'
   end
 
+
+  ## New code
+
+  resources :places
+
 end
