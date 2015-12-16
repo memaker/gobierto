@@ -454,7 +454,7 @@ table {
  *
  */
 header.place {
-  margin: 0 0 2em 0;
+  margin: 0 0 1em 0;
   .breadcrumb {
     font-size: .8em;
     a {
@@ -498,7 +498,15 @@ header.place {
     }
   }
 }
+header.sub {
+  margin: 1em 0;
+  font-weight: 600;
+  a, .sep {
+    font-weight: 200;
+  }
+}
 .main_metrics {
+  margin: 1em 0;
   .metric {
     position: relative;
     box-sizing: border-box;
@@ -707,6 +715,31 @@ a.list_view_more {
   }
 }
 
+
+
+/*
+ * Inline switcher
+ *
+ */
+.inline_switcher {
+  display: inline-block;
+  
+  a { 
+    display: block;
+    background: lighten($separator, 2%);
+    padding: .3em .75em .2em;
+    margin: 0 .2em 0 0;
+    @include border-radius(5px);
+    text-decoration: none;
+  }
+  a:hover {
+    background: darken($separator, 2%);
+  }
+  .fa {
+    color: darken($separator, 20%);
+  }
+}
+
 /*
  * Graphs
  *
@@ -750,6 +783,7 @@ a.list_view_more {
   background: #EFEFEF;
   text-align: center;
   padding: 5em 0;
+  box-sizing: border-box;
 }
 .bar_cont {
   width: 60px;
@@ -759,7 +793,10 @@ a.list_view_more {
   height: 12px;
 }
 
-
+.graph_treemap {
+  margin: 1em 0;
+  height: 250px;
+}
 
 /*
  * Legends
