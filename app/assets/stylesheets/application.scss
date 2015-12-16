@@ -649,9 +649,9 @@ a.list_view_more {
       padding-top: 8px;
       padding-bottom: 7px;
     }
-    tr:nth-child(2) td {
-      padding-top: 20px;
-    }
+    // tr:nth-child(2) td {
+    //   padding-top: 20px;
+    // }
     td.amount {
       white-space: nowrap;
     }
@@ -668,8 +668,8 @@ a.list_view_more {
       width: 80px;
     }
     td.bar_cont {
-      width: 90px;
-      padding: 0;
+      width: 98px;
+      padding: 0 0 0 10px;
     }
     tr:hover td tr td {
       background: initial;
@@ -684,7 +684,7 @@ a.list_view_more {
           padding: 10px 20px;
           td.bar_cont {
             width: 80px;
-            padding: 0;
+            
           }
         }
         tr.child_group {
@@ -696,7 +696,7 @@ a.list_view_more {
               padding: 10px 20px;
               td.bar_cont {
                 width: 60px;
-                padding: 0;
+            
               }
             }
           }
