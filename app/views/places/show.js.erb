@@ -1,4 +1,5 @@
 $('.toggle').toggleClass('buttonSelected');
+$('#total_expense_budget').text('<%= number_to_currency @expense_lines['aggregations']['total_budget']['value'], precision: 0 %>')
 $('#expense_lines').html('<%= j render(partial: 'places/place_budget_lines', 
                                         collection: @expense_lines['hits'],
                                         as: 'budget_line',
