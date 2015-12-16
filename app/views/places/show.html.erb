@@ -110,14 +110,12 @@
 
     <div class="items">
       <table>
-        <% @income_lines['hits'].each do |budget_line| %>
-          <tr>
-            <td><%= EconomicArea.all_items['I'][budget_line['code']] %></td>
-            <td class="right amount"><%= number_to_currency budget_line['amount'], precision: 0 %></td>
-            <td class="right"><strong><%= percentage_of_total(budget_line['amount'], @income_lines['aggregations']['total_budget']['value']) %>%</strong></td>
-            <td class="bar_cont"><div class="bar" style="width: <%= percentage_of_total(budget_line['amount'], @income_lines['aggregations']['total_budget']['value']).to_i %>%"></div></td>
-          </tr>
-        <% end %>
+        <%= render  partial: 'places/place_budget_lines', 
+                    collection: @income_lines['hits'], 
+                    as: 'budget_line',
+                    locals: { area: 'economic',
+                              kind: 'I', 
+                              total_budget: @income_lines['aggregations']['total_budget']['value']} %>
       </table>
   
       <div class="show_all">
@@ -134,12 +132,8 @@
 
       <div class="form_filters">
         <ul>
-          <li><%= link_to 'Económica', place_path(@place.slug, {area: 'economic'}) + '#switch', 
-                  class: ("buttonSelected" if @area_name == 'economic'), name: 'switch' %>
-          </li>
-          <li><%= link_to 'Funcional', place_path(@place.slug, {area: 'functional'}) + '#switch',
-                  class: ("buttonSelected" if @area_name == 'functional') %>   
-          </li>
+          <li><%= link_to 'Económica', place_path(@place.slug, {area: 'economic'}), remote: true, class: 'toggle buttonSelected' %></li>
+          <li><%= link_to 'Funcional', place_path(@place.slug, {area: 'functional'}), remote: true, class: 'toggle' %></li>
         </ul>
       </div>
 
@@ -149,15 +143,13 @@
     <div class="graph" id="expense-treemap" data-url="<%= api_data_treemap_path(ine_code: @place.id, type: @area_name, year: 2015, kind: BudgetLine::EXPENSE, level: 1, format: :json) %>"></div>
 
     <div class="items">
-      <table>
-        <% @expense_lines['hits'].each do |budget_line| %>
-          <tr>
-            <td><%= budget_line_denomination @area_name, budget_line['code'],'G' %></td>
-            <td class="right amount"><%= number_to_currency budget_line['amount'], precision: 0 %></td>
-            <td class="right"><strong><%= percentage_of_total(budget_line['amount'], @expense_lines['aggregations']['total_budget']['value']) %>%</strong></td>
-            <td class="bar_cont"><div class="bar" style="<%= percentage_of_total(budget_line['amount'], @expense_lines['aggregations']['total_budget']['value']).to_i %>%"></div></td>
-          </tr>
-        <% end %>
+      <table id="expense_lines">
+        <%= render  partial: 'places/place_budget_lines', 
+                    collection: @expense_lines['hits'], 
+                    as: 'budget_line',
+                    locals: { area: @area_name, 
+                              kind: 'G',
+                              total_budget: @expense_lines['aggregations']['total_budget']['value']} %>
       </table>
 
       <div class="show_all">

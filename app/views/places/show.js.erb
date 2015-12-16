@@ -1,0 +1,7 @@
+$('.toggle').toggleClass('buttonSelected');
+$('#expense_lines').html('<%= j render(partial: 'places/place_budget_lines', 
+                                        collection: @expense_lines['hits'],
+                                        as: 'budget_line',
+                                        locals: { area: @area_name, 
+                                                  kind: 'G',
+                                                  total_budget: @expense_lines['aggregations']['total_budget']['value'] }) %>');
