@@ -16,8 +16,9 @@ Rails.application.routes.draw do
 
   ## New code
 
-  resources :places
-
+  # resources :places
+  get '/places/:slug/:year' => 'places#show', as: :place
+  
   namespace :api do
     get '/data/treemap/:ine_code/:type/:year/:kind/:level' => 'data#treemap', as: :data_treemap
   end
