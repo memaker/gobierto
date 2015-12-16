@@ -18,6 +18,7 @@ $(function(){
       $('.tipsit-w').tipsy({fade: true, gravity: 'w'});
       $('.tipsit-e').tipsy({fade: true, gravity: 'e'});
     }
+    rebindAll();
   }
 
   // init
