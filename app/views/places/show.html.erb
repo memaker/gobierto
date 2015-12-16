@@ -115,7 +115,7 @@
             <td><%= EconomicArea.all_items['I'][budget_line['code']] %></td>
             <td class="right amount"><%= number_to_currency budget_line['amount'], precision: 0 %></td>
             <td class="right"><strong><%= percentage_of_total(budget_line['amount'], @income_lines['aggregations']['total_budget']['value']) %>%</strong></td>
-            <td><div class="bar percent-<%= percentage_of_total(budget_line['amount'], @income_lines['aggregations']['total_budget']['value']).to_i %>"></div></td>
+            <td class="bar_cont"><div class="bar" style="width: <%= percentage_of_total(budget_line['amount'], @income_lines['aggregations']['total_budget']['value']).to_i %>%"></div></td>
           </tr>
         <% end %>
       </table>
@@ -155,7 +155,7 @@
             <td><%= budget_line_denomination @area_name, budget_line['code'],'G' %></td>
             <td class="right amount"><%= number_to_currency budget_line['amount'], precision: 0 %></td>
             <td class="right"><strong><%= percentage_of_total(budget_line['amount'], @expense_lines['aggregations']['total_budget']['value']) %>%</strong></td>
-            <td><div class="bar percent-<%= percentage_of_total(budget_line['amount'], @expense_lines['aggregations']['total_budget']['value']).to_i %>"></div></td>
+            <td class="bar_cont"><div class="bar" style="<%= percentage_of_total(budget_line['amount'], @expense_lines['aggregations']['total_budget']['value']).to_i %>%"></div></td>
           </tr>
         <% end %>
       </table>
