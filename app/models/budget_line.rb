@@ -1,8 +1,8 @@
 class BudgetLine
   INDEX = 'budgets-forecast'
 
-  INCOME = 0
-  EXPENSE = 1
+  INCOME = 'I'
+  EXPENSE = 'G'
 
   def self.search(options)
     query = {
