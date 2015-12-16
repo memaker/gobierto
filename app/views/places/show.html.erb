@@ -34,6 +34,15 @@
     </div>
   </div>
 
+  <div class="metric" data-graph-show="5">
+    <div class="label">Gasto por habitante</div>
+    <div class="main"><%= format_currency(@expense_lines['aggregations']['total_budget_per_inhabitant']['value']) %></div>
+    <div class="secondary">
+      <div class="percentage_change down">1,23%</div>
+      <div class="ranking"><strong>#12</strong>/8.234</div>
+    </div>
+  </div>
+
   <div class="metric" data-graph-show="3">
     <div class="label">Wadus</div>
     <div class="main">1.234</div>
@@ -52,14 +61,6 @@
     </div>
   </div>
 
-  <div class="metric" data-graph-show="5">
-    <div class="label">Gasto por habitante</div>
-    <div class="main"><%= format_currency(@expense_lines['aggregations']['total_budget_per_inhabitant']['value']) %></div>
-    <div class="secondary">
-      <div class="percentage_change down">1,23%</div>
-      <div class="ranking"><strong>#12</strong>/8.234</div>
-    </div>
-  </div>
 
 </div>
 
