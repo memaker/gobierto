@@ -1,5 +1,6 @@
 class SandboxController < ApplicationController
-
+  before_action :set_working_variables 
+  
   def index
     @templates = Dir.glob(Rails.root.join('app/views/sandbox/*.html.erb').to_s).map do |filename|
       filename = File.basename(filename, File.extname(filename))
@@ -24,4 +25,10 @@ class SandboxController < ApplicationController
     end
   end
   
+  private
+  def set_working_variables
+    Struct.new('Place', :slug, :name)
+    @place = Struct::Place.new('madrid', 'Madrid')
+    @year = 2015
+  end
 end
