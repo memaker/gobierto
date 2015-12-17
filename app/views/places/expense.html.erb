@@ -1,0 +1,20 @@
+<header class="place">
+  <%= render partial: 'place_header' %>
+  
+  <div class="tools">
+    <%= link_to '123 <i class="fa fa-star-o"></i>'.html_safe %>
+    <%= link_to 'Compara <i class="fa fa-compass"></i>'.html_safe %>
+    <%= link_to 'Comparte <i class="fa fa-share"></i>'.html_safe %>
+  </div>
+
+</header>
+
+<header class="cat">
+  <div class="form_filters">
+    <ul>
+      <li><%= link_to 'Funcional', '', class: 'buttonSelected' %></li>
+      <li><%= link_to 'Económica' %></li>
+    </ul>
+  </div>
+  <div class="qty">Total gastos: 4.678.987.123 €</div>
+</header>
