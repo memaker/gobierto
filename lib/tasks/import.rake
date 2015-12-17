@@ -16,17 +16,17 @@ namespace :budgets do
     SearchEngine.client.indices.put_mapping index: index, type: type, body: {
       type.to_sym => {
         properties: {
-          ine_code:              { type: 'integer', index: 'not_analyzed' },
-          year:                  { type: 'integer', index: 'not_analyzed' },
-          amount:                { type: 'float',   index: 'not_analyzed' },
-          code:                  { type: 'string',  index: 'not_analyzed' },
-          parent_code:           { type: 'string',  index: 'not_analyzed' },
-          level:                 { type: 'integer', index: 'not_analyzed' },
-          kind:                  { type: 'string',  index: 'not_analyzed' }, # income I / expense G
-          province_id:           { type: 'integer', index: 'not_analyzed' },
-          autonomy_id:           { type: 'integer', index: 'not_analyzed' },
-          population:            { type: 'integer', index: 'not_analyzed' },
-          amount_per_inhabitant: { type: 'float',   index: 'not_analyzed' }
+          ine_code:              { type: 'integer' },
+          year:                  { type: 'integer' },
+          amount:                { type: 'float'   },
+          code:                  { type: 'string', index: 'not_analyzed' },
+          parent_code:           { type: 'string', index: 'not_analyzed' },
+          level:                 { type: 'integer' },
+          kind:                  { type: 'string', index: 'not_analyzed' }, # income I / expense G
+          province_id:           { type: 'integer' },
+          autonomy_id:           { type: 'integer' },
+          population:            { type: 'integer' },
+          amount_per_inhabitant: { type: 'float'   }
         }
       }
     }
