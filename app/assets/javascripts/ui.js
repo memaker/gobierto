@@ -22,6 +22,18 @@ $(function(){
   }
 
   // init
+  window.widgets = [];
+  $('[data-widget-type]').each(function(){
+    window.widgets.push(new WidgetRenderer({
+      id: $(this).data('widget-type'), url: $(this).data('widget-data-url'), template: $(this).data('widget-template')
+    }));
+  });
+
+  window.widgets.forEach(function(widget){
+    widget.render();
+  });
+
+
   $('.dynatable').dynatable({
     inputs: {
       paginationPrev: 'Anterior',

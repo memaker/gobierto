@@ -2,6 +2,7 @@
 //= require jquery.turbolinks
 //= require jquery_ujs
 //= require turbolinks
+
 //= require vendor/velocity.min
 //= require vendor/jquery.dynatable
 //= require vendor/jquery.sticky
@@ -10,10 +11,13 @@
 //= require vendor/jquery.bonsai
 //= require vendor/accounting.min
 //= require vendor/jquery.autocomplete
+
+//= require vendor/mustache.min
 //= require vendor/d3.v3.min
 //= require vendor/d3-legend.min
 //= require vendor/klass
 //= require vis_treemap
+//= require widget_renderer
 //= require ui
 
 SPARKLINES_DEFAULTS = {

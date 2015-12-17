@@ -16,6 +16,10 @@ class ApplicationController < ActionController::Base
      :total_similar_budget_min, :total_similar_budget_max, :code, :format]
   end
 
+  def helpers
+    ActionController::Base.helpers
+  end
+
   protected
 
   def authenticate
