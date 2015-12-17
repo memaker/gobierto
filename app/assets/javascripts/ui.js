@@ -270,5 +270,19 @@ $(function(){
     $(this).find('ul').hide();
     $(this).find('.current').show();
   });
+
+  $('.modal_widget').hover(function(e) {
+    e.preventDefault();
+    $(this).find('.inner').velocity("fadeIn", { duration: 50 });
+  }, function(e) {
+    $(this).find('.inner').velocity("fadeOut", { duration: 50 });
+  });
+
+  $('.modal_widget li').hover(function(e) {
+    e.preventDefault();
+    $(this).find('.del_item').velocity("fadeIn", { duration: 0 });
+  }, function(e) {
+    $(this).find('.del_item').velocity("fadeOut", { duration: 0 });
+  });
   
 });
