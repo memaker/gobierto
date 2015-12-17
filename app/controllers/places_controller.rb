@@ -12,13 +12,18 @@ class PlacesController < ApplicationController
 
   end
 
-  def expense
-    @budget_lines = BudgetLine.search(ine_code: @place.id, level: 1, year: @year, kind: BudgetLine::EXPENSE, type: @area_name)
+  def budget
+    @kind = (params[:kind] == 'income' ? BudgetLine::INCOME : BudgetLine::EXPENSE)
+    @budget_lines = BudgetLine.search(ine_code: @place.id, level: 1, year: @year, kind: @kind, type: @area_name)
   end
 
-  def income
-    @budget_lines = BudgetLine.search(ine_code: @place.id, level: 1, year: @year, kind: BudgetLine::INCOME, type: 'economic')
-  end
+  # def expense
+  #   @budget_lines = BudgetLine.search(ine_code: @place.id, level: 1, year: @year, kind: BudgetLine::EXPENSE, type: @area_name)
+  # end
+
+  # def income
+  #   @budget_lines = BudgetLine.search(ine_code: @place.id, level: 1, year: @year, kind: BudgetLine::INCOME, type: 'economic')
+  # end
 
   private
   def get_params

@@ -1,6 +1,6 @@
 <header class="place">
   <%= render partial: 'place_header' %>
-
+  
   <div class="tools">
     <%= link_to '123 <i class="fa fa-star-o"></i>'.html_safe %>
     <%= link_to 'Compara <i class="fa fa-compass"></i>'.html_safe %>
@@ -10,7 +10,15 @@
 </header>
 
 <header class="cat">
-  <div class="qty">Total ingresos: <%= number_to_currency @budget_lines['aggregations']['total_budget']['value'], precision: 0 %></div>
+  <div class="form_filters">
+    <% if @kind == 'G' %>
+      <ul>
+        <li><%= link_to 'Funcional', '', class: 'buttonSelected' %></li>
+        <li><%= link_to 'Económica' %></li>
+      </ul>
+    <% end %>
+  </div>
+  <div class="qty">Total <%= kind_literal @kind %>: <%= number_to_currency @budget_lines['aggregations']['total_budget']['value'], precision: 0 %></div>
 </header>
 
 <div class="graph_treemap graph_placeholder">TREEMAP</div>
@@ -29,8 +37,6 @@
   <%= render partial: 'places/budget_lines', 
               collection: @budget_lines['hits'], 
               as: 'budget_line',
-              locals: { area: 'economic',
-                        kind: 'I', 
-                        total_budget: @budget_lines['aggregations']['total_budget']['value']} %>
+              locals: { total_budget: @budget_lines['aggregations']['total_budget']['value']} %>
   </table>
 </div>
