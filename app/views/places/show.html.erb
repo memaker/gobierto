@@ -91,7 +91,7 @@
       </table>
   
       <div class="show_all">
-        <a href="municipio_cat" class="list_view_more">Ver desglose de ingresos</a>
+        <%= link_to 'Ver desglose de ingresos', place_income_path(@place.slug, @year), class: 'list_view_more' %>
       </div>
       
     </div>
@@ -125,7 +125,7 @@
       </table>
 
       <div class="show_all">
-        <a href="municipio_cat" class="list_view_more">Ver desglose de gastos</a>
+        <%= link_to 'Ver desglose de gastos', place_expense_path(@place.slug, @year), class: 'list_view_more' %>
       </div>
 
     </div>

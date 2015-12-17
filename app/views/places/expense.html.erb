@@ -16,5 +16,27 @@
       <li><%= link_to 'Económica' %></li>
     </ul>
   </div>
-  <div class="qty">Total gastos: 4.678.987.123 €</div>
+  <div class="qty">Total gastos: <%= number_to_currency @budget_lines['aggregations']['total_budget']['value'], precision: 0 %></div>
 </header>
+
+<div class="graph_treemap graph_placeholder">TREEMAP</div>
+
+<div class="items">
+  <table>
+  <tr>
+    <th>
+      <input type="text" placeholder="Busca partidas" class="search_items">
+    </th>
+    <th class="right ">Gasto total</th>
+    <th class="right ">Gasto por hab.</th>
+    <th class="right ">% s/ total</th>
+    <th></th>
+  </tr>
+  <%= render partial: 'places/budget_lines', 
+              collection: @budget_lines['hits'], 
+              as: 'budget_line',
+              locals: { area: @area_name,
+                        kind: 'G', 
+                        total_budget: @budget_lines['aggregations']['total_budget']['value']} %>
+  </table>
+</div>

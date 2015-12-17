@@ -13,11 +13,11 @@ class PlacesController < ApplicationController
   end
 
   def expense
-
+    @budget_lines = BudgetLine.search(ine_code: @place.id, level: 1, year: @year, kind: BudgetLine::EXPENSE, type: @area_name)
   end
 
   def income
-
+    @budget_lines = BudgetLine.search(ine_code: @place.id, level: 1, year: @year, kind: BudgetLine::INCOME, type: 'economic')
   end
 
   private
