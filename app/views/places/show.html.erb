@@ -1,18 +1,5 @@
 <header class="place">
-  <div class="breadcrumb">
-    <%= link_to @place.province.autonomous_region.name %> >
-    <%= link_to @place.province.name %>
-  </div>
-  <h1><%= @place.name %></h1>
-  <menu>
-    <ul>
-      <li><%= link_to 'Presupuesto' %></li>
-      <li><%= link_to 'Ejecución' %></li>
-      <li><%= link_to 'Indicadores' %></li>
-      <li><%= link_to 'Rankings' %></li>
-      <li><%= link_to 'Contexto' %></li>
-    </ul>
-  </menu>
+  <%= render partial: 'place_header' %>
 </header>
 
 <div class="main_metrics clearfix">
