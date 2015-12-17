@@ -91,7 +91,7 @@
       </table>
   
       <div class="show_all">
-        <%= link_to 'Ver desglose de ingresos', place_income_path(@place.slug, @year), class: 'list_view_more' %>
+        <%= link_to 'Ver desglose de ingresos', place_budget_path(@place.slug, @year, 'income'), class: 'list_view_more' %>
       </div>
       
     </div>
@@ -125,7 +125,7 @@
       </table>
 
       <div class="show_all">
-        <%= link_to 'Ver desglose de gastos', place_expense_path(@place.slug, @year), class: 'list_view_more' %>
+        <%= link_to 'Ver desglose de gastos', place_budget_path(@place.slug, @year, 'expense'), class: 'list_view_more' %>
       </div>
 
     </div>

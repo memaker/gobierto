@@ -33,6 +33,8 @@ class BudgetLine
       size: 10_000
     }
 
+    query[:query][:filtered][:filter][:bool][:must] << {term: { parent_code: options[:parent_code] }} if options[:parent_code].present?
+
     response = SearchEngine.client.search index: INDEX, type: options[:type], body: query
 
     return {
