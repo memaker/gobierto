@@ -16,11 +16,10 @@ class PlacesController < ApplicationController
     @kind = (params[:kind] == 'income' ? BudgetLine::INCOME : BudgetLine::EXPENSE)
     @level = (params[:parent_code].present? ? params[:parent_code].length + 1 : 1)
 
-    @budget_lines = if (params[:parent_code].present?)
-      BudgetLine.search(ine_code: @place.id, level: @level, year: @year, kind: @kind, type: @area_name, parent_code: params[:parent_code]) 
-    else
-      BudgetLine.search(ine_code: @place.id, level: @level, year: @year, kind: @kind, type: @area_name) 
-    end
+    options = { ine_code: @place.id, level: @level, year: @year, kind: @kind, type: @area_name }
+    options[:parent_code] = params[:parent_code] if params[:parent_code].present?
+    
+    @budget_lines = BudgetLine.search(options) 
      
     respond_to do |format|
       format.html

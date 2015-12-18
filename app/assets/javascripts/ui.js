@@ -272,5 +272,19 @@ $(function(){
   }, function(e) {
     $(this).find('.del_item').velocity("fadeOut", { duration: 0 });
   });
+
+  /* Tree navigation */
+  $('.items').on('ajax:success', 'a[data-remote=true]', function(event, data, status, xhr) {
+    $(this).addClass('extended');
+    $(this).find('.fa').toggleClass('fa-plus-square-o fa-minus-square-o');
+  });
+
+  /* Prevents resending the form when extended */
+  $('.items').on('ajax:beforeSend', 'a.extended', function(event, xhr, settings) {
+    xhr.abort();
+    $(this).removeClass('extended');
+    $(this).find('.fa').toggleClass('fa-plus-square-o fa-minus-square-o');
+    $(this).parents('tr').next('.child_group').remove();
+  });
   
 });
