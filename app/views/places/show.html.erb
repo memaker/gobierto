@@ -1,37 +1,17 @@
 <header class="place">
-  <div class="breadcrumb">
-    <%= link_to @place.province.autonomous_region.name %> >
-    <%= link_to @place.province.name %>
-  </div>
-  <h1><%= @place.name %></h1>
-  <menu>
-    <ul>
-      <li><%= link_to 'Presupuesto' %></li>
-      <li><%= link_to 'Ejecución' %></li>
-      <li><%= link_to 'Indicadores' %></li>
-      <li><%= link_to 'Rankings' %></li>
-      <li><%= link_to 'Contexto' %></li>
-    </ul>
-  </menu>
+  <%= render partial: 'place_header' %>
 </header>
 
 <div class="main_metrics clearfix">
 
-  <div class="metric" data-graph-show="1">
-    <div class="label">Gasto total</div>
-    <div class="main"><%= format_currency(@expense_lines['aggregations']['total_budget']['value']) %></div>
-    <div class="secondary">
-      <div class="percentage_change up">3,23%</div>
-      <div class="ranking"><strong>#12</strong>/8.234</div>
-    </div>
+  <div class="metric" data-graph-show="1" data-widget-template="#widget-template" data-widget-type="total_budget" data-widget-data-url="<%= api_data_total_budget_path(ine_code: @place.id, type: @area_name, year: @year, kind: BudgetLine::EXPENSE, format: :json) %>">
   </div>
 
-  <div class="metric selected" data-graph-show="2">
-    <div class="label">Habitantes</div>
-    <div class="main">1.234</div>
-    <div class="secondary">
-      <div class="ranking"><strong>#12</strong>/8.234</div>
-    </div>
+
+  <div class="metric selected" data-graph-show="2" data-widget-template="#widget-template" data-widget-type="population" data-widget-data-url="<%= api_data_population_path(ine_code: @place.id, type: @area_name, year: @year, kind: BudgetLine::EXPENSE, format: :json) %>">
+  </div>
+
+  <div class="metric" data-graph-show="5" data-widget-template="#widget-template" data-widget-type="budget_per_inhabitant" data-widget-data-url="<%= api_data_budget_per_inhabitant_path(ine_code: @place.id, type: @area_name, year: @year, kind: BudgetLine::EXPENSE, format: :json) %>">
   </div>
 
   <div class="metric" data-graph-show="3">
@@ -52,14 +32,6 @@
     </div>
   </div>
 
-  <div class="metric" data-graph-show="5">
-    <div class="label">Gasto por habitante</div>
-    <div class="main"><%= format_currency(@expense_lines['aggregations']['total_budget_per_inhabitant']['value']) %></div>
-    <div class="secondary">
-      <div class="percentage_change down">1,23%</div>
-      <div class="ranking"><strong>#12</strong>/8.234</div>
-    </div>
-  </div>
 
 </div>
 
@@ -106,7 +78,7 @@
       <div class="qty"><%= number_to_currency @income_lines['aggregations']['total_budget']['value'], precision: 0 %></div>
     </header>
 
-    <div class="graph" id="income-treemap" data-url="<%= api_data_treemap_path(ine_code: @place.id, type: 'economic', year: 2015, kind: BudgetLine::INCOME, level: 1, format: :json) %>"></div>
+    <div class="graph" id="income-treemap" data-url="<%= api_data_treemap_path(ine_code: @place.id, type: 'economic', year: @year, kind: BudgetLine::INCOME, level: 1, format: :json) %>"></div>
 
     <div class="items">
       <table>
@@ -119,7 +91,7 @@
       </table>
   
       <div class="show_all">
-        <a href="municipio_cat" class="list_view_more">Ver desglose de ingresos</a>
+        <%= link_to 'Ver desglose de ingresos', place_budget_path(@place.slug, @year, 'income'), class: 'list_view_more' %>
       </div>
       
     </div>
@@ -140,7 +112,7 @@
       <div id="total_expense_budget" class="qty"><%= number_to_currency @expense_lines['aggregations']['total_budget']['value'], precision: 0 %></div>
     </header>
 
-    <div class="graph" id="expense-treemap" data-url="<%= api_data_treemap_path(ine_code: @place.id, type: @area_name, year: 2015, kind: BudgetLine::EXPENSE, level: 1, format: :json) %>"></div>
+    <div class="graph" id="expense-treemap" data-url="<%= api_data_treemap_path(ine_code: @place.id, type: @area_name, year: @year, kind: BudgetLine::EXPENSE, level: 1, format: :json) %>"></div>
 
     <div class="items">
       <table id="expense_lines">
@@ -153,7 +125,7 @@
       </table>
 
       <div class="show_all">
-        <a href="municipio_cat" class="list_view_more">Ver desglose de gastos</a>
+        <%= link_to 'Ver desglose de gastos', place_budget_path(@place.slug, @year, 'expense'), class: 'list_view_more' %>
       </div>
 
     </div>
@@ -162,6 +134,14 @@
 
 </div>
 
+<script type="text/html" id="widget-template">
+  <div class="label">{{title}}</div>
+  <div class="main">{{value}}</div>
+  <div class="secondary">
+    <div class="percentage_change up">{{delta_percentage}}%</div>
+    <div class="ranking"><strong>#{{ranking_position}}</strong>/{{ranking_total_elements}}</div>
+  </div>
+</script>
 
 <script>
 $(function(){

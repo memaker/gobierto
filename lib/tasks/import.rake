@@ -18,15 +18,15 @@ namespace :budgets do
         properties: {
           ine_code:              { type: 'integer', index: 'not_analyzed' },
           year:                  { type: 'integer', index: 'not_analyzed' },
-          amount:                { type: 'float',   index: 'not_analyzed' },
-          code:                  { type: 'string',  index: 'not_analyzed' },
-          parent_code:           { type: 'string',  index: 'not_analyzed' },
+          amount:                { type: 'double', index: 'not_analyzed'  },
+          code:                  { type: 'string', index: 'not_analyzed'  },
+          parent_code:           { type: 'string', index: 'not_analyzed'  },
           level:                 { type: 'integer', index: 'not_analyzed' },
-          kind:                  { type: 'string',  index: 'not_analyzed' }, # income I / expense G
+          kind:                  { type: 'string', index: 'not_analyzed'  }, # income I / expense G
           province_id:           { type: 'integer', index: 'not_analyzed' },
           autonomy_id:           { type: 'integer', index: 'not_analyzed' },
           population:            { type: 'integer', index: 'not_analyzed' },
-          amount_per_inhabitant: { type: 'float',   index: 'not_analyzed' }
+          amount_per_inhabitant: { type: 'double', index: 'not_analyzed'  }
         }
       }
     }
@@ -34,7 +34,7 @@ namespace :budgets do
 
   def db
     @db ||= begin
-              ActiveRecord::Base.establish_connection ActiveRecord::Base.configurations[Rails.env].merge('database' => "gobify-data_#{Rails.env}")
+              ActiveRecord::Base.establish_connection ActiveRecord::Base.configurations[Rails.env].merge('database' => "gobify-data_#{Rails.env}") if !Rails.env.production?
               ActiveRecord::Base.connection
             end
   end

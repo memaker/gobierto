@@ -64,6 +64,11 @@ module ApplicationHelper
     area.all_items[kind][code]
   end
 
+  def kind_literal(kind)
+    return 'ingresos' if kind == 'I'
+    'gastos'
+  end
+
   def filter_location_name
     name = ""
     if @filter.location?

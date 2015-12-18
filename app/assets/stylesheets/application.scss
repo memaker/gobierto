@@ -267,9 +267,9 @@ body {
 }
 .year_switcher {
   position: absolute;
-  width: 120px;
+  width: 110px;
   z-index: 4;
-  top: 1.8em; 
+  top: 1.7em; 
   right: 1em;
   border: 1px solid darken($separator, 10%);
   @include border-radius(6px);
@@ -284,7 +284,7 @@ body {
     padding: 0;
   }
   a {
-    padding: .8em 1.5em .6em 1.5em;
+    padding: .6em 1.25em .4em 1.25em;
     text-decoration: none;
     display: block;
     .fa {
@@ -455,6 +455,7 @@ table {
  *
  */
 header.place {
+  position: relative;
   margin: 0 0 1em 0;
   .breadcrumb {
     font-size: .8em;
@@ -506,6 +507,134 @@ header.sub {
     font-weight: 200;
   }
 }
+
+/*
+ * Place Tools
+ *
+ */
+.tools {
+  position: absolute;
+  right: 0;
+  top: 1.9em;
+  .modal_widget {
+    display: inline-block;
+    margin: 0 0 0 1em;
+    
+    .inner {
+      font-size: 13px;
+      display: none;
+      position: absolute;
+      top: 2.1em;
+      @include box-shadow(0, 5px, 20px);
+      @include border-radius(4px);
+      background: #FFF;
+      padding: 2em;
+      p {
+        margin: 0 0 1em 0;
+      }
+    }
+    .inner::before {
+      content: ' ';
+      height: 0;
+      position: absolute;
+      width: 0;
+      border: 15px solid transparent;
+      border-bottom-color: #fff; 
+      position: absolute;
+      top: -22px;
+      left: 46%;
+      z-index: 2;
+    }
+    .widget_compare {
+      width: 225px;
+      // display: block;
+      right: 18%;
+      .button {
+        width: 100%;
+      }
+      ul, li {
+        margin: 0; 
+        padding: 0; 
+        list-style-type: none;
+      }
+      ul {
+        margin: 0 0 2em 0;
+      }
+      li {
+        padding: 0 3px;
+        position: relative;
+        @include border-radius(3px);
+      }
+      li:hover {
+        background: $color_1_soft;
+      }
+      p {
+        margin: 2em 0 .5em 0;
+      }
+      .del_item {
+        display: inline-block;
+        display: none;
+        position: absolute;
+        right: 0;
+        a {
+          font-weight: 600;
+          text-decoration: none;
+          background: darken($color_1_soft, 10%);
+          padding: 2px 6px;
+          @include border-radius(3px);
+        }
+        a:hover {
+          background: darken($color_1_soft, 15%); 
+        }
+      }
+    }
+    .widget_share {
+      width: 400px;
+      right: 0;
+      textarea {
+        width: 100%;
+        height: 50px;
+      }
+      .sep {
+        margin: 3em 0 1em 0;
+      }
+    }
+    .widget_share.inner::before {
+      left: 80%;
+    } 
+  }
+
+  a.tool_button {
+    font-size: .7em;
+    // font-weight: 600;
+    line-height: 1em;
+    text-transform: uppercase;
+    background: $separator;
+    text-decoration: none;
+    @include border-radius(5px);
+    display: inline-block;
+    color: #999;
+    span {
+      display: inline-block;
+      padding: 0 9px 0 13px;
+    }
+    .fa {
+      @include border-radius(5px);
+      padding: 6px 9px;
+      background: #FFF;
+      border: 1px solid #E0DFDF;
+      font-size: 1.2em;
+    }
+  }
+  a.tool_button:hover {
+    background: darken($separator, 5%);
+    .fa {
+      color: $color_1;
+    }
+  }
+
+}
+
 .main_metrics {
   margin: 1em 0;
   .metric {
@@ -715,6 +844,49 @@ a.list_view_more {
     }
   }
 }
+
+
+/*
+ * Forms
+ *
+ */
+.small_input {
+  padding: .5em .5em .4em .4em;
+  border: 1px solid #DFDFDF;
+}
+textarea {
+  border: 1px solid #DFDFDF;
+}
+
+/*
+ * Claims
+ *
+ */
+.cta_claim {
+  padding: 1.5em 1.5em;
+  background: #FBEFCC;
+  @include border-radius(6px);
+  line-height: 1.3em;
+  h3 {
+    margin: 0 0 1em 0;
+    text-transform: uppercase;
+    color: #E9AD00;
+  }
+  .button {
+    @include border-radius(3px);
+    background: #E9AD00;
+    font-size: .9em;
+    font-weight: normal;
+    text-transform: uppercase;
+    padding: .2em .75em .1em;
+  }
+}
+
+
+/*
+ * Modal Widgets
+ *
+ */
 
 
 
@@ -1048,43 +1220,54 @@ a.list_view_more {
 
 
 /*
- * Compare widget
+ * Buttons
  *
  */
-.compare_cont {
-  position: relative;
-  a {
-    
+input[type=submit], .button {
+  box-sizing: border-box;
+  background: $color_1;
+  @include border-radius(5px);
+  padding: .75em;
+  color: #FFF;
+  display: inline-block;
+  text-decoration: none;
+  font-size: 13px;
+  line-height: 17px;
+  text-align: center; 
+  font-weight: 200;
+  strong {
+    font-weight: 400;
   }
 }
-.compare {
-  z-index: 10;
-  position: absolute;
-  top: 0;
-  width: 340px;
-  display: none;
-  background: #FFF;
-  right: 0;
-  border: 3px solid $color_1;
-  @include border-radius(6px);
-  // box-shadow($x: 2px, $y: 2px, $blur: 5px, $color: rgba(0,0,0,.4), $inset: "") {
-  @include box-shadow();
-  padding: 6px 0;
-  line-height: 22px;
-
-  p {
-    padding: 3px 14px;
-    margin: 0 0 .5em 0;
-  }
-  a {
-    padding: 3px 8px 3px 18px;
-    display: block;
-  }
-  a:hover {
-    background: $color_1_soft;
-  }
+input[type=submit]:hover, .button:hover {
+  background: darken($color_1, 5%);
+  text-decoration: none;
+}
+.small_button {
+  background: $color_1;
+  @include border-radius(3px);
+  padding: .1em .75em 0;
+  color: #FFF;
+  display: inline-block;
+  text-decoration: none;
+}
+.small_button:hover {
+  background: darken($color_1, 5%);
+  text-decoration: none;
 }
 
+
+
+
+/*
+ * Various
+ *
+ */
+.sep {
+  border-top: 1px solid $separator;
+  margin: 1em 0;
+  height: 1px;
+}
 
 /*
  * Footer
@@ -1105,3 +1288,17 @@ footer {
 .spinnner {
   display: none;
 }
+
+
+
+/*
+ * Pre Home
+ *
+ */
+.pre_home {
+  padding: 5em;
+  .places_search {
+    font-size: 2em;
+  }
+}
+

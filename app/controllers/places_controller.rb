@@ -1,8 +1,7 @@
 class PlacesController < ApplicationController
+  before_action :get_params
+  
   def show
-    @place = INE::Places::Place.find_by_slug params[:slug]
-    @area_name = params[:area] || 'economic'
-    @year = params[:year]
     @income_lines = BudgetLine.search(ine_code: @place.id, level: 1, year: @year, kind: BudgetLine::INCOME, type: 'economic')
     @expense_lines = BudgetLine.search(ine_code: @place.id, level: 1, year: @year, kind: BudgetLine::EXPENSE, type: @area_name)
 
@@ -11,5 +10,37 @@ class PlacesController < ApplicationController
       format.js
     end
 
+  end
+
+  def budget
+    @kind = (params[:kind] == 'income' ? BudgetLine::INCOME : BudgetLine::EXPENSE)
+    @level = (params[:parent_code].present? ? params[:parent_code].length + 1 : 1)
+
+    @budget_lines = if (params[:parent_code].present?)
+      BudgetLine.search(ine_code: @place.id, level: @level, year: @year, kind: @kind, type: @area_name, parent_code: params[:parent_code]) 
+    else
+      BudgetLine.search(ine_code: @place.id, level: @level, year: @year, kind: @kind, type: @area_name) 
+    end
+     
+    respond_to do |format|
+      format.html
+      format.js
+    end
+
+  end
+
+  # def expense
+  #   @budget_lines = BudgetLine.search(ine_code: @place.id, level: 1, year: @year, kind: BudgetLine::EXPENSE, type: @area_name)
+  # end
+
+  # def income
+  #   @budget_lines = BudgetLine.search(ine_code: @place.id, level: 1, year: @year, kind: BudgetLine::INCOME, type: 'economic')
+  # end
+
+  private
+  def get_params
+    @place = INE::Places::Place.find_by_slug params[:slug]
+    @area_name = params[:area] || 'economic'
+    @year = params[:year]
   end
 end
