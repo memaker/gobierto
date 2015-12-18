@@ -273,7 +273,18 @@ $(function(){
     $(this).find('.del_item').velocity("fadeOut", { duration: 0 });
   });
 
-  /* Tree navigation */
+  window.widgets = [];    
+  $('[data-widget-type]').each(function(){   
+    window.widgets.push(new WidgetRenderer({   
+      id: $(this).data('widget-type'), url: $(this).data('widget-data-url'), template: $(this).data('widget-template')   
+    }));   
+  });    
+   
+  window.widgets.forEach(function(widget){   
+    widget.render();   
+  });
+
+    /* Tree navigation */
   $('.items').on('ajax:success', 'a[data-remote=true]', function(event, data, status, xhr) {
     $(this).addClass('extended');
     $(this).find('.fa').toggleClass('fa-plus-square-o fa-minus-square-o');

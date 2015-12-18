@@ -19,6 +19,7 @@
 //= require vis_treemap
 //= require widget_renderer
 //= require ui
+//= require vis_lineas_tabla
 
 SPARKLINES_DEFAULTS = {
   width: 60,
