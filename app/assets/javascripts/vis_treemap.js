@@ -47,7 +47,7 @@ var TreemapVis = Class.extend({
         .attr("class", "treemap_node")
         .call(this._position)
         .style("background", function(d) { return this.colorScale(d.name); }.bind(this))
-        .text(function(d) { return d.children ? null : d.name + "\n" + d.budget_per_inhabitant + "€/habitante"; });
+        .html(function(d) { return d.children ? null : "<p>" + d.name + "</p><p>" + d.budget_per_inhabitant + "€/habitante</p>"; });
     }.bind(this));
   },
 

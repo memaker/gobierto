@@ -4,5 +4,10 @@
   overflow: hidden;
   position: absolute;
   color: white;
-  padding: 3px;
+  padding: 0px;
 }
+
+.treemap_node p {
+  margin: 0;
+  padding: 3px 0 0 3px;
+} 
