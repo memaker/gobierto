@@ -3,6 +3,7 @@
 var TreemapVis = Class.extend({
   init: function(divId){
     this.containerId = divId;
+    window.treemaps[this.containerId] = this;
 
     // Chart dimensions
     this.containerWidth = null;
@@ -19,6 +20,7 @@ var TreemapVis = Class.extend({
 
   render: function(urlData) {
     $(this.containerId).html('');
+
     // Chart dimensions
     this.containerWidth = parseInt(d3.select(this.containerId).style('width'), 10);
     this.width = this.containerWidth - this.margin.left - this.margin.right;
@@ -36,6 +38,7 @@ var TreemapVis = Class.extend({
       .sticky(true)
       .value(function(d) { return d.budget; });
 
+
     d3.json(urlData, function(error, root){
       if (error) throw error;
 
@@ -46,6 +49,7 @@ var TreemapVis = Class.extend({
         .data(this.treemap.nodes)
         .enter().append("div")
         .attr("class", "treemap_node")
+        .attr("data-url", function(d){ console.log(d); return d.children ? null : urlData.split('?')[0] + "?code=" + d.code; })
         .call(this._position)
         .style("background", function(d) { return this.colorScale(d.name); }.bind(this))
         .html(function(d) { return d.children ? null : "<p><strong>" + d.name + "</strong></p><p>" + d.budget_per_inhabitant + "€/habitante</p>"; });

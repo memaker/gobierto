@@ -9,6 +9,7 @@ function submitForm(){
 }
 
 $(function(){
+  window.treemaps = {};
   $('.spinner').hide();
 
   if($(window).width() > 740) {
@@ -240,5 +241,14 @@ $(function(){
     $(this).find('.fa').toggleClass('fa-plus-square-o fa-minus-square-o');
     $(this).parents('tr').next('.child_group').remove();
   });
-  
+
+
+  $(document).on('click', '.treemap_node', function(e){
+    e.preventDefault();
+    var url = $(this).data('url');
+    var treemapId = $(this).parents('.graph').attr('id');
+    window.treemaps['#' + treemapId].render(url);
+  });
+
+
 });

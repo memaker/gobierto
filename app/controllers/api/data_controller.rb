@@ -1,6 +1,18 @@
 class Api::DataController < ApplicationController
 
   def treemap
+    options = [
+      {term: { ine_code: params[:ine_code] }},
+      {term: { kind: params[:kind] }},
+      {term: { year: params[:year] }}
+    ]
+
+    if params[:code].nil?
+      options.push({term: { level: params[:level] }})
+    else
+      options.push({term: { parent_code: params[:code] }})
+    end
+
     query = {
       sort: [
         { amount: { order: 'desc' } }
@@ -12,12 +24,7 @@ class Api::DataController < ApplicationController
           },
           filter: {
             bool: {
-              must: [
-                {term: { ine_code: params[:ine_code] }},
-                {term: { level: params[:level] }},
-                {term: { kind: params[:kind] }},
-                {term: { year: params[:year] }}
-              ]
+              must: options
             }
           }
         }
@@ -31,6 +38,7 @@ class Api::DataController < ApplicationController
     children_json = response['hits']['hits'].map do |h|
       {
         name: areas.all_items[params[:kind]][h['_source']['code']],
+        code: h['_source']['code'],
         budget: h['_source']['amount'],
         budget_per_inhabitant: h['_source']['amount_per_inhabitant']
       }
