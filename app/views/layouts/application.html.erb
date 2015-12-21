@@ -6,7 +6,7 @@
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
 </head>
-<body>
+<body <%= 'data-no-track' if @place.nil? %>>
 
 <div class="top-claim">
   <p>¿Interesado en herramientas de análisis presupuestario para Municipios? </p>
@@ -46,11 +46,7 @@
 
     <div class="links_list">
       <h3>Reciente</h3>
-      <ul>
-        <li><%= link_to 'Madrid' %></li>
-        <li><%= link_to 'Barcelona' %></li>
-        <li><%= link_to 'Valencia' %></li>
-        <li><%= link_to 'Pontevedra' %></li>
+      <ul id="history">
       </ul>
     </div>
 
