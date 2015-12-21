@@ -20,7 +20,7 @@ class PlacesController < ApplicationController
     options[:parent_code] = params[:parent_code] if params[:parent_code].present?
     
     @budget_lines = BudgetLine.search(options) 
-     
+    
     respond_to do |format|
       format.html
       format.js

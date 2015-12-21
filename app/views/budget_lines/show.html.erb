@@ -1,0 +1,39 @@
+<header class="place">
+  <%= render partial: 'places/place_header' %>
+</header>
+
+
+<header class="sub">
+
+  <!-- <div class="inline_switcher"><%= link_to 'Gastos <i class="fa fa-angle-down"></i>'.html_safe %></div> -->
+
+  <span class="sep"><%= kind_literal(@kind).capitalize %> »</span>
+  <%= render partial: 'breadcrumb', 
+            collection: budget_line_crumbs(@parent_line),
+            as: 'budget_line', 
+            spacer_template: 'breadcrumb_spacer' %> 
+
+</header>
+
+<div class="items">
+  <table>
+  <tr>
+    <th>
+      <input type="text" placeholder="Busca partidas" class="search_items">
+    </th>
+    <th class="right ">Gasto total</th>
+    <th class="right ">Gasto por hab.</th>
+    <th class="right ">% s/ total</th>
+    <th></th>
+  </tr>
+
+  <tr>
+    <td class="item_name" colspan="4">
+      <%= link_to '« Inicio' %> 
+    </td>
+  </tr>
+  
+  <%= render partial: 'places/nested_budget_lines' %>
+  
+  </table>
+</div>
