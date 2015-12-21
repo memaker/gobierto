@@ -13,7 +13,7 @@ class PlacesController < ApplicationController
   end
 
   def budget
-    @kind = (params[:kind] == 'income' ? BudgetLine::INCOME : BudgetLine::EXPENSE)
+    @kind = ( %w{income i}.include?(params[:kind].downcase) ? BudgetLine::INCOME : BudgetLine::EXPENSE )
     @level = (params[:parent_code].present? ? params[:parent_code].length + 1 : 1)
 
     options = { ine_code: @place.id, level: @level, year: @year, kind: @kind, type: @area_name }

@@ -12,6 +12,7 @@ gem 'ine-places', require: 'ine/places/places'
 gem 'jbuilder'
 gem 'actionpack-page_caching'
 gem 'progressbar'
+gem 'ruby-px', require: 'pc-axis/dataset'
 
 # Frontend
 gem 'jquery-rails'

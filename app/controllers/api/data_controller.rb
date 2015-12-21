@@ -65,14 +65,17 @@ class Api::DataController < ApplicationController
   end
 
   def population
+    year = params[:year].to_i
+    population_data = population_data(year)
+
     respond_to do |format|
       format.json do
         render json: {
           title: 'Habitantes',
-          value: 4500000,
-          delta_percentage: 1.23,
-          ranking_position: 2,
-          ranking_total_elements: 8119
+          value: helpers.number_with_delimiter(population_data[:value], precision: 0, strip_insignificant_zeros: true),
+          delta_percentage: helpers.number_with_precision(delta_percentage(population_data[:value], population_data[:value]), precision: 2),
+          ranking_position: population_data[:position],
+          ranking_total_elements: helpers.number_with_precision(population_data[:total_elements], precision: 0)
         }.to_json
       end
     end
@@ -140,6 +143,45 @@ class Api::DataController < ApplicationController
 
     if row = buckets.detect{|v| v.first == params[:ine_code].to_i }
       value = row.last
+    end
+
+    position = buckets.index(row) + 1 rescue nil
+
+    return {
+      value: value,
+      position: position,
+      total_elements: buckets.length
+    }
+  end
+
+  def population_data(year)
+    query = {
+      sort: [
+        { value: { order: 'desc' } }
+      ],
+      query: {
+        filtered: {
+          query: {
+            match_all: {}
+          },
+          filter: {
+            bool: {
+              must: [
+                {term: { year: year }}
+              ]
+            }
+          }
+        }
+      },
+      size: 10_000
+    }
+
+    response = SearchEngine.client.search index: 'data', type: 'population', body: query
+    Rails.logger.info "#{response['took']} ms"
+    buckets = response['hits']['hits'].map{ |h| h['_source'] }
+
+    if row = buckets.detect{|v| v['ine_code'] == params[:ine_code].to_i }
+      value = row['value']
     end
 
     position = buckets.index(row) + 1 rescue nil
