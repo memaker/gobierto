@@ -49,7 +49,7 @@ var TreemapVis = Class.extend({
         .data(this.treemap.nodes)
         .enter().append("div")
         .attr("class", "treemap_node")
-        .attr("data-url", function(d){ console.log(d); return d.children ? null : urlData.split('?')[0] + "?code=" + d.code; })
+        .attr("data-url", function(d){ return d.children ? null : urlData.split('?')[0] + "?code=" + d.code; })
         .call(this._position)
         .style("background", function(d) { return this.colorScale(d.name); }.bind(this))
         .html(function(d) { return d.children ? null : "<p><strong>" + d.name + "</strong></p><p>" + d.budget_per_inhabitant + "€/habitante</p>"; });

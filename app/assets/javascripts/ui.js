@@ -242,7 +242,7 @@ $(function(){
     $(this).parents('tr').next('.child_group').remove();
   });
 
-
+  // Move to income/expenses page
   $(document).on('click', '.treemap_node', function(e){
     e.preventDefault();
     var url = $(this).data('url');
