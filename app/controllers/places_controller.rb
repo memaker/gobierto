@@ -23,6 +23,10 @@ class PlacesController < ApplicationController
     
     respond_to do |format|
       format.html
+      format.json do
+        data_line = Data::Treemap.new place: @place, year: @year, kind: @kind, type: @area_name, parent_code: params[:parent_code]
+        render json: data_line.generate_json
+      end
       format.js
     end
 

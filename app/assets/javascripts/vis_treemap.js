@@ -41,7 +41,9 @@ var TreemapVis = Class.extend({
       .value(function(d) { return d.budget; });
 
 
-    d3.json(urlData, function(error, root){
+    d3.json(urlData)
+      .mimeType('application/json')
+      .get(function(error, root){
       if (error) throw error;
 
       this.colorScale
