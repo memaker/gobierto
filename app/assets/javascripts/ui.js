@@ -180,59 +180,6 @@ $(function(){
     }
   });
 
-  if($('#vis_distribution').size() > 0) {
-
-    var visDistribution = new VisDistribution('#vis_distribution', 'per_person');//, 'percentage', 'mean_province');
-    visDistribution.render('api/data/distribution.json' + location.search);
-    //visDistribution.render('/distribution_sample_with_buckets.json');
-
-    d3.selectAll('.measure.button')
-      .on('click', function(d) {
-        d3.selectAll(".measure.button.buttonSelected").classed("buttonSelected", false);
-        d3.select(this).classed("buttonSelected", true);
-        visDistribution.measure = this.id;
-
-        visDistribution.updateRender();
-      });
-  }
-
-  if($('#vis_dispersion').size() > 0) {
-    var visDispersion = new VisDispersion('#vis_dispersion', 'per_person'); // percentage
-    visDispersion.render('/api/data/dispersion.json' + location.search);
-
-
-    // d3.selectAll('.measure.button')
-    //   .on('click', function(d) {
-    //     d3.selectAll(".measure.button.buttonSelected").classed("buttonSelected", false);
-    //     d3.select(this).classed("buttonSelected", true);
-    //     visDispersion.measure = this.id;
-
-        // visDispersion.updateRender();
-      // });
-  }
-
-  if($('#vis_lineas_j').size()>0){
-    var visLineasJ = new VisLineasJ('#vis_lineas_j', 'per_person');
-    visLineasJ.render('/api/data/lines.json' + location.search);
-
-    d3.selectAll('.measure.button')
-      .on('click', function(d) {
-        d3.selectAll(".measure.button.buttonSelected").classed("buttonSelected", false);
-        d3.select(this).classed("buttonSelected", true);
-        visLineasJ.measure = this.id;
-        visLineasJ.updateRender();
-      });
-
-    d3.selectAll('.context.button')
-      .on('click', function(d) {
-        d3.selectAll(".context.button.buttonSelected").classed("buttonSelected", false);
-        d3.select(this).classed("buttonSelected", true);
-        visLineasJ.mean = this.id;
-
-        visLineasJ.updateRender();
-      });
-  }
-
   $(".places_menu ul li").hover(function(e){
     // e.preventDefault();
     $(this).find('ul').toggle();

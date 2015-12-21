@@ -20,23 +20,9 @@
                       data-widget-data-url="<%= api_data_budget_per_inhabitant_path(ine_code: @place.id, year: @year, format: :json) %>">
   </div>
 
-  <div class="metric">
-    <div class="label">Wadus</div>
-    <div class="main">1.234</div>
-    <div class="secondary">
-      <div class="percentage_change down">1,23%</div>
-      <div class="ranking"><strong>#12</strong>/8.234</div>
-    </div>
-  </div>
+  <div class="metric"></div>
+  <div class="metric"></div>
 
-  <div class="metric">
-    <div class="label">Wadus</div>
-    <div class="main">1.234</div>
-    <div class="secondary">
-      <div class="percentage_change down">1,23%</div>
-      <div class="ranking"><strong>#12</strong>/8.234</div>
-    </div>
-  </div>
 </div>
 
 <div class="metric_graphs">
@@ -61,7 +47,8 @@
       <div class="qty"><%= number_to_currency @income_lines['aggregations']['total_budget']['value'], precision: 0 %></div>
     </header>
 
-    <div class="graph" id="income-treemap" data-url="<%= api_data_treemap_path(ine_code: @place.id, type: 'economic', year: @year, kind: BudgetLine::INCOME, level: 1, format: :json) %>"></div>
+    <div class="graph" id="income-treemap" data-economic-url="<%= api_data_treemap_path(ine_code: @place.id, type: 'economic', year: @year, kind: BudgetLine::INCOME, level: 1, format: :json) %>">
+    </div>
 
     <div class="items">
       <table>
@@ -95,7 +82,11 @@
       <div id="total_expense_budget" class="qty"><%= number_to_currency @expense_lines['aggregations']['total_budget']['value'], precision: 0 %></div>
     </header>
 
-    <div class="graph" id="expense-treemap" data-url="<%= api_data_treemap_path(ine_code: @place.id, type: @area_name, year: @year, kind: BudgetLine::EXPENSE, level: 1, format: :json) %>"></div>
+    <div class="graph" id="expense-treemap"
+                       data-functional-url="<%= api_data_treemap_path(ine_code: @place.id, type: 'functional', year: @year, kind: BudgetLine::EXPENSE, level: 1, format: :json) %>"
+                       data-economic-url="<%= api_data_treemap_path(ine_code: @place.id, type: 'economic', year: @year, kind: BudgetLine::EXPENSE, level: 1, format: :json) %>">
+    </div>
+
 
     <div class="items">
       <table id="expense_lines">
@@ -128,11 +119,11 @@
 
 <script>
 $(function(){
-  var incomeTreemap = new TreemapVis('#income-treemap');
-  incomeTreemap.render($('#income-treemap').data('url'));
+  window.incomeTreemap = new TreemapVis('#income-treemap');
+  window.incomeTreemap.render($('#income-treemap').data('economic-url'));
 
-  var expenseTreemap = new TreemapVis('#expense-treemap');
-  expenseTreemap.render($('#expense-treemap').data('url'));
+  window.expenseTreemap = new TreemapVis('#expense-treemap');
+  window.expenseTreemap.render($('#expense-treemap').data('economic-url'));
 
   var visLineasJ = new VisLineasJ('#lines_chart', '#lines_tooltip', 'total_budget');
   visLineasJ.render($('[data-line-widget-url].selected').data('line-widget-url'));

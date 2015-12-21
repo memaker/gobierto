@@ -6,3 +6,5 @@ $('#expense_lines').html('<%= j render(partial: 'places/place_budget_lines',
                                         locals: { area: @area_name, 
                                                   kind: 'G',
                                                   total_budget: @expense_lines['aggregations']['total_budget']['value'] }) %>');
+
+window.expenseTreemap.render($('#expense-treemap').data("<%= @area_name %>-url"));
