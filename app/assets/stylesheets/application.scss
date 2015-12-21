@@ -729,6 +729,7 @@ header.sub {
   }
   .items {
     font-size: .9em;
+    margin: 1em 0;
   }
   .items table td.bar_cont {
     width: 40px;
@@ -777,6 +778,9 @@ a.list_view_more {
   table {
     td {
       font-size: .95em;  
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     th {
       font-size: .75em;
