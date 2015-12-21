@@ -13,8 +13,8 @@
   <div class="form_filters">
     <% if @kind == 'G' %>
       <ul>
-        <li><%= link_to 'Funcional', '', class: 'buttonSelected' %></li>
-        <li><%= link_to 'Económica' %></li>
+        <li><%= link_to_place_budget_toggler(@place.slug, 'economic', @area_name, @year) %></li>
+        <li><%= link_to_place_budget_toggler(@place.slug, 'functional', @area_name, @year) %></li>
       </ul>
     <% end %>
   </div>

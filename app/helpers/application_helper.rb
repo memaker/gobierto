@@ -76,6 +76,11 @@ module ApplicationHelper
     'gastos'
   end
 
+  def area_literal(area)
+    return 'Funcional' if area == 'functional'
+    'Económica'
+  end
+
   def budget_line_crumbs(budget_line)
     
     crumbs = [budget_line]
@@ -89,6 +94,11 @@ module ApplicationHelper
     end
 
     return crumbs
+  end
+
+  def link_to_place_budget_toggler(slug, area, selectedArea, year)
+    buttonSelected = " buttonSelected" if area == selectedArea
+    link_to area_literal(area), place_budget_path(slug, year, 'expense', {area: area}), class: "toggle #{buttonSelected}"
   end
 
   def filter_location_name

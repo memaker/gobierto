@@ -99,7 +99,7 @@
       </table>
 
       <div class="show_all">
-        <%= link_to 'Ver desglose de gastos', place_budget_path(@place.slug, @year, 'expense'), class: 'list_view_more' %>
+        <%= link_to 'Ver desglose de gastos', place_budget_path(@place.slug, @year, 'expense', {area: @area_name} ), class: 'list_view_more', id: 'show_expenses_link' %>
       </div>
 
     </div>
