@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
 
-  root to: redirect('/places/madrid/2015')
+  root 'pages#home'
 
   if Rails.env.development?
     # root 'pages#index'
