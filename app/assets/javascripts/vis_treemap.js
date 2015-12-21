@@ -66,7 +66,16 @@ var TreemapVis = Class.extend({
         }.bind(this))
         .call(this._position)
         .style("background", function(d) { return this.colorScale(d.name); }.bind(this))
-        .html(function(d) { return d.children ? null : "<p><strong>" + d.name + "</strong></p><p>" + d.budget_per_inhabitant + "€/habitante</p>"; });
+        .html(function(d) {
+          if(d.children) {
+            return null;
+          } else {
+            // If the square is small, don't add the text
+            if(d.dx > 50 && d.dy > 50) {
+              return "<p><strong>" + d.name + "</strong></p><p>" + d.budget_per_inhabitant + "€/habitante</p>";
+            }
+          }
+        });
     }.bind(this));
   },
 
