@@ -1,4 +1,10 @@
-  
+<% content_for :javascript do %>
+  $(function() {
+      $("#search").focus();
+  });
+<% end %>
+
+
   <div class="pre_home">
       
     <h1><%= image_tag('LogoGobierto.png', width: '180') %> <span>Presupuestos Municipales</span></h1>

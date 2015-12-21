@@ -46,9 +46,9 @@
 
     <menu>
       <ul>
-        <li><%= link_to 'Municipios', '/sandbox/home', class: 'selected' %></li>
+        <li><%= link_to 'Municipios', root_path, class: 'selected' %></li>
         <li><%= link_to 'Partidas' %></li>
-        <li><%= link_to 'Compara' %></li>
+        <li><%= link_to 'Compara', '/sandbox/compare' %></li>
         <li><%= link_to '<span>Pro</span> Crea tu libro'.html_safe %></li>
       </ul>
     </menu>
@@ -109,6 +109,12 @@
 <div class="spinner">
   <%= image_tag 'spinner.gif' %>
 </div>
+
+<script type="text/javascript">
+  $(function () {
+    <%= yield :javascript %>
+  });
+</script>
 
 </body>
 </html>
