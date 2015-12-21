@@ -27,4 +27,7 @@ Rails.application.routes.draw do
     get '/data/widget/population/:ine_code/:year' => 'data#population', as: :data_population
   end
 
+  # legal
+  get 'about' => 'pages#about'
+
 end

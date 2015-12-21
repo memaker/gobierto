@@ -57,15 +57,17 @@
   </header>
 
   <div class="year_switcher">
-    <%= link_to "#{@year} <i class='fa fa-angle-down'></i>".html_safe, '', class: 'current' %>
-    <ul>
-      <li><%= link_to '2015', place_path(@place.slug,'2015') %></li>
-      <li><%= link_to '2014', place_path(@place.slug,'2014') %></li>
-      <li><%= link_to '2013', place_path(@place.slug,'2013') %></li>
-      <li><%= link_to '2012', place_path(@place.slug,'2012') %></li>
-      <li><%= link_to '2011', place_path(@place.slug,'2011') %></li>
-      <li><%= link_to '2010', place_path(@place.slug,'2010') %></li>
-    </ul>
+    <% if !params[:controller] == 'pages' %>
+      <%= link_to "#{@year} <i class='fa fa-angle-down'></i>".html_safe, '', class: 'current' %>
+      <ul>
+        <li><%= link_to '2015', place_path(@place.slug,'2015') %></li>
+        <li><%= link_to '2014', place_path(@place.slug,'2014') %></li>
+        <li><%= link_to '2013', place_path(@place.slug,'2013') %></li>
+        <li><%= link_to '2012', place_path(@place.slug,'2012') %></li>
+        <li><%= link_to '2011', place_path(@place.slug,'2011') %></li>
+        <li><%= link_to '2010', place_path(@place.slug,'2010') %></li>
+      </ul>
+    <% end %>
   </div>
 
   <div class="main_content clearfix">
@@ -78,6 +80,13 @@
   <div class="gobierto_ref">
     <%= link_to image_tag('GobiertoFooter@2x.png', size: '401x18'), 'http://gobierto.es', target: 'blank' %>
   </div>
+
+  <menu>
+    <ul>
+      <li><%= link_to 'Acerca de', about_path %></li>
+      <li><%= link_to 'Metodología', about_path(anchor: 'method') %></li>
+    </ul>
+  </menu>
 </footer>
 
 <div class="spinner">
