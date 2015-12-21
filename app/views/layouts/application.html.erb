@@ -34,15 +34,17 @@
       </ul>
     </menu>
 
-    <div class="links_list">
-      <h3>Tus favoritos</h3>
-      <ul>
-        <li><%= link_to 'El Ejido' %></li>
-        <li><%= link_to 'Majadahonda' %></li>
-        <li><%= link_to 'Mijas' %></li>
-        <li><%= link_to 'Talaván' %></li>
-      </ul>
-    </div>
+    <% pending do %>
+      <div class="links_list">
+        <h3>Tus favoritos</h3>
+        <ul>
+          <li><%= link_to 'El Ejido' %></li>
+          <li><%= link_to 'Majadahonda' %></li>
+          <li><%= link_to 'Mijas' %></li>
+          <li><%= link_to 'Talaván' %></li>
+        </ul>
+      </div>
+    <% end %>
 
     <div class="links_list">
       <h3>Reciente</h3>

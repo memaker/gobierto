@@ -1,4 +1,11 @@
 module ApplicationHelper
+
+  def pending(&block)
+    if controller_name == 'sandbox'
+      yield
+    end
+  end
+
   def render_children(item, area)
     children = item.children.all.to_a
 
