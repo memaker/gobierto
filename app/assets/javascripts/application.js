@@ -17,9 +17,9 @@
 //= require vendor/d3-legend.min
 //= require vendor/klass
 //= require vis_treemap
+//= require vis_lineas_tabla
 //= require widget_renderer
 //= require ui
-//= require vis_lineas_tabla
 
 SPARKLINES_DEFAULTS = {
   width: 60,

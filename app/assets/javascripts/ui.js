@@ -238,11 +238,8 @@ $(function(){
     $(this).find('ul').toggle();
   });
 
-  $('[data-graph-show]').on('click', function(e){
+  $('[data-line-widget-url]').on('click', function(e){
     e.preventDefault();
-    var el = $(this).data("graph-show");
-    $('[data-graph-cont]').hide();
-    $('[data-graph-cont='+el+']').show();
     $('.metric').removeClass('selected');
     $(this).addClass('selected');
   });
