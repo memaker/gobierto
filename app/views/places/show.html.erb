@@ -119,11 +119,11 @@
 
 <script>
 $(function(){
-  window.incomeTreemap = new TreemapVis('#income-treemap');
-  window.incomeTreemap.render($('#income-treemap').data('economic-url'));
+  var incomeTreemap = new TreemapVis('#income-treemap', 'small');
+  incomeTreemap.render($('#income-treemap').data('economic-url'));
 
-  window.expenseTreemap = new TreemapVis('#expense-treemap');
-  window.expenseTreemap.render($('#expense-treemap').data('economic-url'));
+  var expenseTreemap = new TreemapVis('#expense-treemap', 'small');
+  expenseTreemap.render($('#expense-treemap').data('economic-url'));
 
   var visLineasJ = new VisLineasJ('#lines_chart', '#lines_tooltip', 'total_budget');
   visLineasJ.render($('[data-line-widget-url].selected').data('line-widget-url'));

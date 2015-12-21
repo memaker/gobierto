@@ -21,7 +21,8 @@
   <div class="qty">Total <%= kind_literal @kind %>: <%= number_to_currency @budget_lines['aggregations']['total_budget']['value'], precision: 0 %></div>
 </header>
 
-<div class="graph_treemap graph_placeholder">TREEMAP</div>
+<div id="treemap" data-url="<%= api_data_treemap_path(ine_code: @place.id, type: @area_name, year: @year, kind: @kind, level: 1, format: :json) %>" class="graph_treemap graph_placeholder">
+</div>
 
 <div class="items">
   <table>
@@ -40,3 +41,10 @@
               locals: { total_budget: @budget_lines['aggregations']['total_budget']['value']} %>
   </table>
 </div>
+
+<script>
+$(function(){
+  window.treemap = new TreemapVis('#treemap', 'big');
+  window.treemap.render($('#treemap').data('url'));
+});
+</script>

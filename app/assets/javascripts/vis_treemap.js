@@ -1,7 +1,7 @@
 'use strict';
 
 var TreemapVis = Class.extend({
-  init: function(divId){
+  init: function(divId, size){
     this.containerId = divId;
     window.treemaps[this.containerId] = this;
 
@@ -10,6 +10,8 @@ var TreemapVis = Class.extend({
     this.margin = {top: 0, right: 0, bottom: 0, left: 0};
     this.width = null;
     this.height = null;
+
+    this.sizeFactor = size == 'big' ? 5.5 : 2.5;
 
     this.treemap = null;
     this.container = null;
@@ -24,7 +26,7 @@ var TreemapVis = Class.extend({
     // Chart dimensions
     this.containerWidth = parseInt(d3.select(this.containerId).style('width'), 10);
     this.width = this.containerWidth - this.margin.left - this.margin.right;
-    this.height = (this.containerWidth / 2.5) - this.margin.top - this.margin.bottom;
+    this.height = (this.containerWidth / this.sizeFactor) - this.margin.top - this.margin.bottom;
 
     this.container = d3.select(this.containerId)
       .style("position", "relative")
