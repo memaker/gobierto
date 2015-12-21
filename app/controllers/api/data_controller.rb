@@ -1,4 +1,5 @@
 class Api::DataController < ApplicationController
+  include ApplicationHelper
 
   def treemap
     options = [
@@ -63,7 +64,7 @@ class Api::DataController < ApplicationController
       format.json do
         render json: {
           title: 'Gasto total',
-          value: helpers.number_to_currency(total_budget_data[:value], precision: 0, strip_insignificant_zeros: true),
+          value: format_currency(total_budget_data[:value]),
           delta_percentage: helpers.number_with_precision(delta_percentage(total_budget_data[:value], total_budget_data_previous_year[:value]), precision: 2),
           ranking_position: total_budget_data[:position],
           ranking_total_elements: helpers.number_with_precision(total_budget_data[:total_elements], precision: 0)
