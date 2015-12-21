@@ -109,10 +109,9 @@ $(function(){
   var searchOptions = {
     serviceUrl: '/search',
     onSelect: function (suggestion) {
-      $('#location_id').val(suggestion.data.id);
-      $('#location_type').val(suggestion.data.type);
-      $('#search').val(suggestion.value);
-      submitForm();
+      if(suggestion.data.type == 'Place') {
+        window.location.href = '/places/' + suggestion.data.slug + '/2015';
+      }
     },
     groupBy: 'category',
   };
