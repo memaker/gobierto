@@ -23,7 +23,7 @@ Rails.application.routes.draw do
     get '/data/treemap/:ine_code/:type/:year/:kind/:level' => 'data#treemap', as: :data_treemap
     get '/data/widget/total_budget/:ine_code/:type/:year/:kind' => 'data#total_budget', as: :data_total_budget
     get '/data/widget/budget_per_inhabitant/:ine_code/:type/:year/:kind' => 'data#budget_per_inhabitant', as: :data_budget_per_inhabitant
-    get '/data/widget/population/:ine_code/:type/:year/:kind' => 'data#population', as: :data_population
+    get '/data/widget/population/:ine_code/:year' => 'data#population', as: :data_population
   end
 
 end
