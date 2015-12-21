@@ -1,6 +1,6 @@
 <div class="breadcrumb">
-    <%= link_to @place.province.autonomous_region.name %> >
-    <%= link_to @place.province.name %>
+    <%= @place.province.autonomous_region.name %> >
+    <%= @place.province.name %>
 </div>
 <h1><%= link_to_unless_current @place.name, place_path(@place.slug, @year) %></h1>
 <menu>
