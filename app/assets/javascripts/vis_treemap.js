@@ -1,7 +1,7 @@
 'use strict';
 
 var TreemapVis = Class.extend({
-  init: function(divId, size){
+  init: function(divId, size, clickable){
     this.containerId = divId;
     window.treemaps[this.containerId] = this;
 
@@ -12,6 +12,7 @@ var TreemapVis = Class.extend({
     this.height = null;
 
     this.sizeFactor = size == 'big' ? 5.5 : 2.5;
+    this.clickable = clickable;
 
     this.treemap = null;
     this.container = null;
@@ -40,7 +41,6 @@ var TreemapVis = Class.extend({
       .sticky(true)
       .value(function(d) { return d.budget; });
 
-
     d3.json(urlData)
       .mimeType('application/json')
       .get(function(error, root){
@@ -52,8 +52,18 @@ var TreemapVis = Class.extend({
       var node = this.container.datum(root).selectAll(".treemap_node")
         .data(this.treemap.nodes)
         .enter().append("div")
-        .attr("class", "treemap_node")
-        .attr("data-url", function(d){ return d.children ? null : urlData.split('?')[0] + "?code=" + d.code; })
+        .attr("class", function(d){
+          if(this.clickable){
+            return "treemap_node clickable";
+          } else {
+            return "treemap_node";
+          }
+        }.bind(this))
+        .attr("data-url", function(d){ 
+          if(this.clickable){
+            return d.children ? null : urlData.split('?')[0] + "?code=" + d.code;
+          }
+        }.bind(this))
         .call(this._position)
         .style("background", function(d) { return this.colorScale(d.name); }.bind(this))
         .html(function(d) { return d.children ? null : "<p><strong>" + d.name + "</strong></p><p>" + d.budget_per_inhabitant + "€/habitante</p>"; });

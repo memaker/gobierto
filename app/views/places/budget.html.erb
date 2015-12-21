@@ -44,7 +44,16 @@
 
 <script>
 $(function(){
-  window.treemap = new TreemapVis('#treemap', 'big');
+  window.treemap = new TreemapVis('#treemap', 'big', true);
   window.treemap.render($('#treemap').data('url'));
+
+  // Move to income/expenses page
+  $(document).on('click', '.treemap_node', function(e){
+    e.preventDefault();
+    var url = $(this).data('url');
+    var treemapId = $(this).parents('.graph').attr('id');
+    window.treemap.render(url);
+  });
+
 });
 </script>

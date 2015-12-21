@@ -119,10 +119,10 @@
 
 <script>
 $(function(){
-  var incomeTreemap = new TreemapVis('#income-treemap', 'small');
+  var incomeTreemap = new TreemapVis('#income-treemap', 'small', false);
   incomeTreemap.render($('#income-treemap').data('economic-url'));
 
-  var expenseTreemap = new TreemapVis('#expense-treemap', 'small');
+  var expenseTreemap = new TreemapVis('#expense-treemap', 'small', false);
   expenseTreemap.render($('#expense-treemap').data('economic-url'));
 
   var visLineasJ = new VisLineasJ('#lines_chart', '#lines_tooltip', 'total_budget');
