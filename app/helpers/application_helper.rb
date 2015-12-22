@@ -6,50 +6,6 @@ module ApplicationHelper
     end
   end
 
-  def render_children(item, area)
-    children = item.children.all.to_a
-
-    return "" if children.empty?
-
-    "<ul>
-      #{item.children.map do |c|
-        %Q{<li>
-        #{link_to(c.name, '#', data: { 'menu-area' => c.code, 'rel' => area })}
-        #{render_children(c, area)}</li>}
-      end.join("\n")}
-    </ul>".html_safe
-  end
-
-  def similar_population_parameters(population)
-    r = BudgetFilter.populations.map do |filter|
-      array = filter.first.split(' - ').map{|s| s.tr('.','').to_i }
-      array[1] = 100_000_000 if array[1] == 0
-      Range.new *array
-    end.detect{|r| r.include?(population) }
-
-    {format: nil, population: "#{r.first} - #{r.last}"}
-  end
-
-  def similar_budget_parameters(budget_line)
-    budget = budget_line.amount
-    p = 0.3
-    budget_min = budget - budget*p
-    budget_max = budget + budget*p
-
-    params = {format: nil, similar_budget_min: budget_min.to_i, similar_budget_max: budget_max.to_i}
-    params.merge!({functional_area: budget_line.code}) if @filter.functional?
-    params.merge!({economic_area: budget_line.code}) if @filter.economic?
-    params
-  end
-
-  def total_similar_budget_parameters(budget)
-    p = 0.2
-    budget_min = budget - budget*p
-    budget_max = budget + budget*p
-
-    {format: nil, total_similar_budget_min: budget_min.to_i, total_similar_budget_max: budget_max.to_i}
-  end
-
   def format_currency(n)
     if n > 1_000_000
       "#{helpers.number_with_precision(n.to_f / 1_000_000.to_f, precision: 0, strip_insignificant_zeros: true)} M€"
@@ -81,14 +37,12 @@ module ApplicationHelper
     'Económica'
   end
 
-  def budget_line_crumbs(budget_line)
-    
+  def budget_line_crumbs(budget_line, type)
     crumbs = [budget_line]
     parent_code = budget_line['parent_code']
-    
+
     while parent_code.present? do
-      p = BudgetLine.find(ine_code: budget_line['ine_code'], code: parent_code, 
-                          year: budget_line['year'], kind: budget_line['kind'])
+      p = BudgetLine.find(ine_code: budget_line['ine_code'], code: parent_code, year: budget_line['year'], kind: budget_line['kind'], type: type)
       crumbs.unshift(p)
       parent_code = p['parent_code']
     end

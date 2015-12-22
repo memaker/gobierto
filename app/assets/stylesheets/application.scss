@@ -452,8 +452,50 @@ table {
     line-height: 40px;
     background: none;
     text-align: center;
+    text-transform: none;
+    font-size: 13px; 
+    font-weight: 600;
   }
+  th.location {
+    position: relative;
+    .remove {
+      position: absolute;
+      top: 14px; 
+      margin: 0 0 0 6px;
+      text-decoration: none; 
+      color: $text_soft;
+      background: lighten($text_soft, 20%);
+      @include border-radius(3px);
+      padding: 0 6px;
+      line-height: 21px;
+      display: inline-block;
+      display: none;
+    }
+    .add {
+      text-decoration: none; 
+      color: #FFF;
+      background: $color_1;
+      @include border-radius(3px);
+      padding: 0 6px;
+      line-height: 21px;
+      display: inline-block;
+    }
+    .add_location {
+      position: absolute;
+      @include box-shadow(0, 3px, 20px);
+      @include border-radius(3px);
+      width: 200px;
+      padding: 1em;
+      right: 0;
+      background: #FFF;
+      line-height: 24px;
+      display: none;
+      input {
+        width: 150px;
+      }
+    }
 
+  }
   th:last-child {
     width: 25px;
     text-align: center;
@@ -464,7 +506,7 @@ table {
     padding-bottom: 14px;
   }
 
-  th:not(:last-child),
+  // th:not(:last-child), 
   td:not(.budget_line):not(:last-child) {
     border-right:solid 1px #979797;
   }
@@ -837,9 +879,6 @@ a.list_view_more {
   table {
     td {
       font-size: .95em;  
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
     }
     th {
       font-size: .75em;

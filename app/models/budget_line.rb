@@ -47,4 +47,34 @@ class BudgetLine
   def self.find(options)
     return self.search(options)['hits'][0]
   end
+
+  def self.compare(options)
+    query = {
+      sort: [
+        { code: { order: 'asc' } },
+        { ine_code: { order: 'asc' }}
+      ],
+      query: {
+        filtered: {
+          query: {
+            match_all: {}
+          },
+          filter: {
+            bool: {
+              must: [
+                {terms: { ine_code: options[:ine_codes] }},
+                {term: { level: options[:level] }},
+                {term: { kind: options[:kind] }},
+                {term: { year: options[:year] }}
+              ]
+            }
+          }
+        }
+      },
+      size: 10_000
+    }
+
+    response = SearchEngine.client.search index: INDEX, type: options[:type] , body: query
+    response['hits']['hits'].map{ |h| h['_source'] }
+  end
 end

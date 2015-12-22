@@ -21,91 +21,6 @@ $(function(){
     rebindAll();
   }
 
-  // init
-  $('.dynatable').dynatable({
-    inputs: {
-      paginationPrev: 'Anterior',
-      paginationNext: 'Siguiente',
-      paginationGap: [1,2,2,1],
-      perPageText: 'Mostrar: ',
-      recordCountText: 'Mostrando ',
-      processingText: 'Procesando...', 
-      searchText: 'Buscar:'
-    },
-    dataset: {
-      perPageDefault: 50,
-      perPageOptions: [25,50,100],
-      //sorts: { 'budget': -1 },
-      ajax: true,
-      ajaxUrl: window.location.pathname + '.json/' + window.location.search,
-      ajaxOnLoad: true,
-      records: []
-    },
-    readers: {
-      'population': function(el, record) { return Number(el.textContent); },
-      'budget_per_inhabitant': function(el, record) { return Number(el.textContent); },
-      'budget': function(el, record) { return Number(el.textContent); },
-      'percentage_from_total': function(el, record) { return Number(el.textContent); },
-    },
-    writers: {
-      'population': function(record) { return "<span class='soft'>" + accounting.formatNumber(record.population, 0) +"</span>"; },
-      'budget_per_inhabitant': function(record) { return accounting.formatMoney(record.budget_per_inhabitant); },
-      'budget': function(record) { return accounting.formatMoney(record.budget, '€', 0); },
-      'percentage_from_total': function(record) { return accounting.formatNumber(record.percentage_from_total, 2) + " %"; },
-    },
-    table: {
-      copyHeaderClass: true,
-    }
-  }).bind('dynatable:afterUpdate', function(){
-    sparkRender();
-    updateHeaders();
-  });
-
-  function sparkRender(){
-    $('.sparkline').sparkline('html',SPARKLINES_DEFAULTS);
-  }
-  sparkRender();
-
-  function updateHeaders(){
-    $('.dynatable th a').each(function(){
-      $(this).text(window.headerName[$(this).text().replace(' ▼', '').replace(' ▲', '')]);
-    });
-  }
-
-  $('.bonsai').bonsai();
-
-  $('.select_from_tree').hover(function(e) {
-    e.preventDefault();
-    $(this).find('.tree').show();
-  }, function(e) {
-    $(this).find('.tree').hide();
-  });
-
-  $(document).on('click', '[data-menu-area]', function(e){
-    e.preventDefault();
-    $('#' + $(this).data('rel')).val($(this).data('menu-area'));
-
-    var text = $(this).text();
-    $('.js-' + $(this).data('rel') + ' a').text(text);
-    $(this).parents('.tree').hide();
-
-    submitForm();
-  });
-
-  var $option = $('#functional_area');
-  var value = $option.val();
-  if(value !== undefined && value !== ""){
-    var text = $('.js-functional [data-menu-area=' + value + ']').text();
-    $('.js-functional_area a').text(text);
-  }
-
-  var $option = $('#economic_area');
-  var value = $option.val();
-  if(value !== undefined && value !== ""){
-    var text = $('.js-economic [data-menu-area=' + value + ']').text();
-    $('.js-economic_area a').text(text);
-  }
-
   var searchOptions = {
     serviceUrl: '/search',
     onSelect: function (suggestion) {
@@ -128,55 +43,12 @@ $(function(){
     $(this).find('.compare').velocity("fadeOut", { duration: 250 });
   });
 
-  // TODO
-  //window.filters = new Filters($('form'));
-
   $('#kind').on('change', function(e){
     $.ajax('/categories/economic/' + $(this).val());
   });
 
   $('#year,#population').on('change', function(e){
     submitForm();
-  });
-
-  $(document).on('click', '.js-disabled', function(e){
-    e.preventDefault();
-  });
-
-  var selector = '#bars_vis_fun';
-  if($(selector).length > 0){
-    var barsVisFun = new BarsVis(selector, 'mean_national', '#bars_legend_fun');
-    barsVisFun.render($(selector).data('url'));
-  }
-
-  var selector = '#bars_vis_econ';
-  if($(selector).length > 0){
-    var barsVisEcon = new BarsVis(selector, 'mean_national', '#bars_legend_econ');
-    barsVisEcon.render($(selector).data('url'));
-  }
-
-  $('.context .button').on('click', function(e){
-    e.preventDefault();
-    d3.selectAll(".context.button.buttonSelected").classed("buttonSelected", false);
-    d3.select(this).classed("buttonSelected", true);
-    barsVisFun.mean = this.id;
-    barsVisFun.updateRender();
-    barsVisEcon.mean = this.id;
-    barsVisEcon.updateRender();
-  });
-
-  $('[data-reset]').on('click', function(e){
-    e.preventDefault();
-    var selector = $(this).data('reset');
-    if(selector == 'location'){
-      $('#location_id').val('');
-      $('#location_type').val('');
-      $('#search').val('');
-      submitForm();
-    } else {
-      $('#' + selector).val('');
-      $('.js-' + selector + ' a').html('&nbsp; <i class="fa fa-sort-down"></i>');
-    }
   });
 
   $(".places_menu ul li").hover(function(e){
@@ -214,6 +86,25 @@ $(function(){
     $(this).find('.del_item').velocity("fadeIn", { duration: 0 });
   }, function(e) {
     $(this).find('.del_item').velocity("fadeOut", { duration: 0 });
+  });
+
+  $('th.location').hover(function(e) {
+    e.preventDefault();
+    $(this).find('.remove').velocity("fadeIn", { duration: 100 });
+  }, function(e) {
+    $(this).find('.remove').velocity("fadeOut", { duration: 100 });
+  });
+
+  $('th.add_location_cont').click(function(e) {
+    e.preventDefault();
+    $('.add_location input').focus();
+  });
+
+  $('th.add_location_cont').hover(function(e) {
+    $('.add_location input').focus();
+    $(this).find('.add_location').velocity("fadeIn", { duration: 100 });
+  }, function(e) {
+    $(this).find('.add_location ').velocity("fadeOut", { duration: 100 });
   });
 
   window.widgets = [];    
@@ -258,5 +149,43 @@ $(function(){
     sibs.siblings('.child_group').remove();
   });
 
+  if($('#income-treemap').length > 0){
+    window.incomeTreemap = new TreemapVis('#income-treemap', 'small', false);
+    window.incomeTreemap.render($('#income-treemap').data('economic-url'));
+  }
 
+  if($('#expense-treemap').length > 0){
+    window.expenseTreemap = new TreemapVis('#expense-treemap', 'small', false);
+    window.expenseTreemap.render($('#expense-treemap').data('economic-url'));
+  }
+
+  if($('#lines_chart').length > 0){
+    var visLineasJ = new VisLineasJ('#lines_chart', '#lines_tooltip', 'total_budget');
+    visLineasJ.render($('[data-line-widget-url].selected').data('line-widget-url'));
+
+    $('[data-line-widget-url]').on('click', function(e){
+      e.preventDefault();
+      visLineasJ.measure = $(this).data('line-widget-type');
+      visLineasJ.render($(this).data('line-widget-url'));
+    });
+  }
+
+  if($('#treemap').length > 0){
+    window.treemap = new TreemapVis('#treemap', 'big', true);
+    window.treemap.render($('#treemap').data('url'));
+
+    // When the treemap is clicked, we extract the URL of the node
+    // and detect which is the link that expands the tree nodes with the
+    // children. That node is clicked, and it triggers the treemap re-rendering
+    $(document).on('click', '.treemap_node', function(e){
+      e.preventDefault();
+      var url = $(this).data('url');
+      var parser = document.createElement('a');
+      parser.href = url;
+      url = parser.pathname + parser.search;
+      var parts = url.split('?');
+      url = parts[0].split('.')[0] + '?' + parts[1];
+      $('a[href="'+ url + '"]').click();
+    });
+  }
 });

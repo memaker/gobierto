@@ -13,7 +13,6 @@ class PlacesController < ApplicationController
   end
 
   def budget
-    @kind = ( %w{income i}.include?(params[:kind].downcase) ? BudgetLine::INCOME : BudgetLine::EXPENSE )
     @level = (params[:parent_code].present? ? params[:parent_code].length + 1 : 1)
 
     options = { ine_code: @place.id, level: @level, year: @year, kind: @kind, type: @area_name }
@@ -29,21 +28,24 @@ class PlacesController < ApplicationController
       end
       format.js
     end
-
   end
 
-  # def expense
-  #   @budget_lines = BudgetLine.search(ine_code: @place.id, level: 1, year: @year, kind: BudgetLine::EXPENSE, type: @area_name)
-  # end
-
-  # def income
-  #   @budget_lines = BudgetLine.search(ine_code: @place.id, level: 1, year: @year, kind: BudgetLine::INCOME, type: 'economic')
-  # end
+  # /places/compare/:slug_list/:year/:kind/:area
+  def compare
+    @places = get_places(params[:slug_list])
+    options = { ine_codes: @places.map(&:id), level: 1, year: @year, kind: @kind, type: @area_name }
+    @budgets_compared = BudgetLine.compare(options)
+  end
 
   private
   def get_params
-    @place = INE::Places::Place.find_by_slug params[:slug]
+    @place = INE::Places::Place.find_by_slug params[:slug] unless params[:action] == 'compare'
+    @kind = ( %w{income i}.include?(params[:kind].downcase) ? BudgetLine::INCOME : BudgetLine::EXPENSE ) unless params[:action] == 'show'
     @area_name = params[:area] || 'economic'
     @year = params[:year]
+  end
+
+  def get_places(slug_list)
+    slug_list.split(':').map {|slug| INE::Places::Place.find_by_slug slug}
   end
 end

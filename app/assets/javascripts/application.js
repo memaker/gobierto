@@ -4,15 +4,11 @@
 //= require turbolinks
 
 //= require vendor/velocity.min
-//= require vendor/jquery.dynatable
 //= require vendor/jquery.sticky
 //= require vendor/tipsy
-//= require vendor/jquery.sparkline
-//= require vendor/jquery.bonsai
 //= require vendor/accounting.min
 //= require vendor/jquery.autocomplete
 //= require vendor/js.cookie
-
 //= require vendor/mustache.min
 //= require vendor/d3.v3.min
 //= require vendor/d3-legend.min

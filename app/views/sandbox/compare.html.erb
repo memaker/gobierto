@@ -7,11 +7,29 @@
 <table class="comparison_table" cellspacing="0" cellpadding="0">
 <thead>
   <th colspan="2"></th>
-  <th class="location">Madrigal de la Vera</th>
-  <th class="location">Jarandilla de la Vera</th>
-  <th class="location">Villanueva de la Vera</th>
-  <th class="location">Candeleda</th>
-  <th><a href="#" title="Añadir Municipio">+</th>
+  <th class="location">
+    <%= link_to 'Madrigal de la Vera' %>
+    <%= link_to 'X', '', class: 'remove tipsit', title: 'Eliminar de la comparación' %>
+  </th>
+  <th class="location">
+    <%= link_to 'Jarandilla de la Vera' %>
+    <%= link_to 'X', '', class: 'remove tipsit', title: 'Eliminar de la comparación' %>
+  </th>
+  <th class="location">
+    <%= link_to 'Villanueva de la Vera' %>
+    <%= link_to 'X', '', class: 'remove tipsit', title: 'Eliminar de la comparación' %>
+  </th> 
+  <th class="location">
+    <%= link_to 'Candeleda' %>
+    <%= link_to 'X', '', class: 'remove tipsit', title: 'Eliminar de la comparación' %>
+  </th>
+  <th class="location add_location_cont">
+    <%= link_to '+', '', class: 'add', title: 'Añadir otro municipio' %>
+    <div class="add_location">
+      Añade otro municipio: 
+      <input type="text">
+    </div>
+  </th>
 </thead>
 <tbody>
   <tr>
@@ -102,10 +120,34 @@
         <li>%/total</li>
       </ul>
     </td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
+    <td class="variable_values">
+      <ul>
+        <li>250.910 €</li>
+        <li>143,29 €</li>
+        <li>17,80 %</li>
+      </ul>
+    </td>
+    <td class="variable_values">
+      <ul>
+        <li>737.936 €</li>
+        <li>246,47 €</li>
+        <li>37,94 %</li>
+      </ul>
+    </td>
+    <td class="variable_values">
+      <ul>
+        <li>533.858 €</li>
+        <li>247,73 €</li>
+        <li>15,18 %</li>
+      </ul>
+    </td>
+    <td class="variable_values">
+      <ul>
+        <li>2.159.560 €</li>
+        <li>419,90 €</li>
+        <li>44,21 %</li>
+      </ul>
+    </td>
     <td></td>
   </tr>
   <tr>
@@ -117,10 +159,34 @@
         <li>%/total</li>
       </ul>
     </td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
+    <td class="variable_values">
+      <ul>
+        <li>250.910 €</li>
+        <li>143,29 €</li>
+        <li>17,80 %</li>
+      </ul>
+    </td>
+    <td class="variable_values">
+      <ul>
+        <li>737.936 €</li>
+        <li>246,47 €</li>
+        <li>37,94 %</li>
+      </ul>
+    </td>
+    <td class="variable_values">
+      <ul>
+        <li>533.858 €</li>
+        <li>247,73 €</li>
+        <li>15,18 %</li>
+      </ul>
+    </td>
+    <td class="variable_values">
+      <ul>
+        <li>2.159.560 €</li>
+        <li>419,90 €</li>
+        <li>44,21 %</li>
+      </ul>
+    </td>
     <td></td>
   </tr>
   <tr>
@@ -132,10 +198,34 @@
         <li>%/total</li>
       </ul>
     </td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
+    <td class="variable_values">
+      <ul>
+        <li>250.910 €</li>
+        <li>143,29 €</li>
+        <li>17,80 %</li>
+      </ul>
+    </td>
+    <td class="variable_values">
+      <ul>
+        <li>737.936 €</li>
+        <li>246,47 €</li>
+        <li>37,94 %</li>
+      </ul>
+    </td>
+    <td class="variable_values">
+      <ul>
+        <li>533.858 €</li>
+        <li>247,73 €</li>
+        <li>15,18 %</li>
+      </ul>
+    </td>
+    <td class="variable_values">
+      <ul>
+        <li>2.159.560 €</li>
+        <li>419,90 €</li>
+        <li>44,21 %</li>
+      </ul>
+    </td>
     <td></td>
   </tr>
   <tr>
@@ -147,10 +237,34 @@
         <li>%/total</li>
       </ul>
     </td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
+    <td class="variable_values">
+      <ul>
+        <li>250.910 €</li>
+        <li>143,29 €</li>
+        <li>17,80 %</li>
+      </ul>
+    </td>
+    <td class="variable_values">
+      <ul>
+        <li>737.936 €</li>
+        <li>246,47 €</li>
+        <li>37,94 %</li>
+      </ul>
+    </td>
+    <td class="variable_values">
+      <ul>
+        <li>533.858 €</li>
+        <li>247,73 €</li>
+        <li>15,18 %</li>
+      </ul>
+    </td>
+    <td class="variable_values">
+      <ul>
+        <li>2.159.560 €</li>
+        <li>419,90 €</li>
+        <li>44,21 %</li>
+      </ul>
+    </td>
     <td></td>
   </tr>
   <tr>
@@ -162,10 +276,34 @@
         <li>%/total</li>
       </ul>
     </td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
+    <td class="variable_values">
+      <ul>
+        <li>250.910 €</li>
+        <li>143,29 €</li>
+        <li>17,80 %</li>
+      </ul>
+    </td>
+    <td class="variable_values">
+      <ul>
+        <li>737.936 €</li>
+        <li>246,47 €</li>
+        <li>37,94 %</li>
+      </ul>
+    </td>
+    <td class="variable_values">
+      <ul>
+        <li>533.858 €</li>
+        <li>247,73 €</li>
+        <li>15,18 %</li>
+      </ul>
+    </td>
+    <td class="variable_values">
+      <ul>
+        <li>2.159.560 €</li>
+        <li>419,90 €</li>
+        <li>44,21 %</li>
+      </ul>
+    </td>
     <td></td>
   </tr>
 </tbody>
