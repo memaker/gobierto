@@ -85,7 +85,7 @@ var TreemapVis = Class.extend({
             return null;
           } else {
             // If the square is small, don't add the text
-            if(d.dx > 50 && d.dy > 50) {
+            if(d.dx > 70 && d.dy > 90) {
               return "<p><strong>" + d.name + "</strong></p><p>" + d.budget_per_inhabitant + "€/habitante</p>";
             }
           }
