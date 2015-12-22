@@ -152,8 +152,9 @@ var VisLineasJ = Class.extend({
         .range([this.height, this.margin.top]);
       
       this.colorScale
+        .range(['#F4D06F', '#F8B419', '#DA980A', '#2A8998'])
         .domain(this.dataChart.map(function(d) { return d.name; }));
-      
+       
       // Define the axis 
       this.xAxis
           .scale(this.xScale)
@@ -162,7 +163,6 @@ var VisLineasJ = Class.extend({
       this.yAxis
           .scale(this.yScale)
           .tickValues(this._tickValues(this.yScale))
-          // .tickFormat(this.formatPercent)
           .tickFormat(function(d) { return accounting.formatMoney(d); })
           .tickSize(-(this.width - (this.margin.right + this.margin.left - 20)))
           .orient("left");
@@ -298,16 +298,18 @@ var VisLineasJ = Class.extend({
 
             return columns.map(function(column) {
                 if (column == 'name') {
-                  var value = this.niceCategory[filterValues[0][column]] != undefined ? this.niceCategory[filterValues[0][column]] : filterValues[0][column]
+                  var value = this.niceCategory[filterValues[0][column]] != undefined ? this.niceCategory[filterValues[0][column]] : filterValues[0][column];
+                  var classed = this._normalize(filterValues[0].name)
 
                 } else if (column == 'value') {
                   var value = accounting.formatMoney(filterValues[0][column])
-                  var classed = 'right'
+                  var classed = 'right ' + this._normalize(filterValues[0].name)
                 } else if (column == 'dif') {
                   var value = filterValues[0][column] < 0 ? filterValues[0][column] + '%' : '+' +filterValues[0][column] + '%'
-                  var classed = 'right'
+                  var classed = 'right ' + this._normalize(filterValues[0].name)
                 } else {
                   var value = filterValues[0][column]
+                  var classed = this._normalize(filterValues[0].name)
                 }
                 return {column: column, 
                         value: value, 
