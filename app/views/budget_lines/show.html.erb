@@ -1,3 +1,5 @@
+<% set_meta_tags title: 'Presupuesto de ' + @place.name + ' » ' + kind_literal(@kind).capitalize + ' » #{' + budget_line_denomination(@area_name, @code, @kind) %>
+
 <%= render partial: 'places/place_header' %>
 
 <header class="sub">
