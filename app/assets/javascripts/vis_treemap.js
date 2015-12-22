@@ -3,7 +3,6 @@
 var TreemapVis = Class.extend({
   init: function(divId, size, clickable){
     this.containerId = divId;
-    window.treemaps[this.containerId] = this;
 
     // Chart dimensions
     this.containerWidth = null;
@@ -61,7 +60,7 @@ var TreemapVis = Class.extend({
         }.bind(this))
         .attr("data-url", function(d){ 
           if(this.clickable){
-            return d.children ? null : urlData.split('?')[0] + "?code=" + d.code;
+            return d.children ? null : urlData.split('?')[0] + "?parent_code=" + d.code;
           }
         }.bind(this))
         .call(this._position)

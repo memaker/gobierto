@@ -1,60 +1,6 @@
 class Api::DataController < ApplicationController
   include ApplicationHelper
 
-  def treemap
-    options = [
-      {term: { ine_code: params[:ine_code] }},
-      {term: { kind: params[:kind] }},
-      {term: { year: params[:year] }}
-    ]
-
-    if params[:code].nil?
-      options.push({term: { level: params[:level] }})
-    else
-      options.push({term: { parent_code: params[:code] }})
-    end
-
-    query = {
-      sort: [
-        { amount: { order: 'desc' } }
-      ],
-      query: {
-        filtered: {
-          query: {
-            match_all: {}
-          },
-          filter: {
-            bool: {
-              must: options
-            }
-          }
-        }
-      },
-      size: 10_000
-    }
-
-    areas = params[:type] == 'economic' ? EconomicArea : FunctionalArea
-
-    response = SearchEngine.client.search index: BudgetLine::INDEX, type: params[:type], body: query
-    children_json = response['hits']['hits'].map do |h|
-      {
-        name: areas.all_items[params[:kind]][h['_source']['code']],
-        code: h['_source']['code'],
-        budget: h['_source']['amount'],
-        budget_per_inhabitant: h['_source']['amount_per_inhabitant']
-      }
-    end
-
-    respond_to do |format|
-      format.json do
-        render json: {
-          name: params[:type],
-          children: children_json
-        }.to_json
-      end
-    end
-  end
-
   def total_budget
     year = params[:year].to_i
     total_budget_data = total_budget_data(year, 'total_budget')

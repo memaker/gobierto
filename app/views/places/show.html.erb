@@ -41,13 +41,13 @@
 <div class="ie_intro">
 
   <div class="col-1-2 income">
-    
+
     <header class="cat">
       <h2>Ingresos</h2>
       <div class="qty"><%= number_to_currency @income_lines['aggregations']['total_budget']['value'], precision: 0 %></div>
     </header>
 
-    <div class="graph" id="income-treemap" data-economic-url="<%= api_data_treemap_path(ine_code: @place.id, type: 'economic', year: @year, kind: BudgetLine::INCOME, level: 1, format: :json) %>">
+    <div class="graph" id="income-treemap" data-economic-url="<%= place_budget_path(@place.slug, @year, BudgetLine::INCOME, 'economic', format: :json) %>">
     </div>
 
     <div class="items">
@@ -59,11 +59,10 @@
                               kind: 'I', 
                               total_budget: @income_lines['aggregations']['total_budget']['value']} %>
       </table>
-  
+
       <div class="show_all">
-        <%= link_to 'Ver desglose de ingresos', place_budget_path(@place.slug, @year, 'income'), class: 'list_view_more' %>
+        <%= link_to 'Ver desglose de ingresos', place_budget_path(@place.slug, @year, 'income', 'economic'), class: 'list_view_more' %>
       </div>
-      
     </div>
   </div>
 
@@ -83,8 +82,8 @@
     </header>
 
     <div class="graph" id="expense-treemap"
-                       data-functional-url="<%= api_data_treemap_path(ine_code: @place.id, type: 'functional', year: @year, kind: BudgetLine::EXPENSE, level: 1, format: :json) %>"
-                       data-economic-url="<%= api_data_treemap_path(ine_code: @place.id, type: 'economic', year: @year, kind: BudgetLine::EXPENSE, level: 1, format: :json) %>">
+                       data-functional-url="<%= place_budget_path(@place.slug, @year, BudgetLine::EXPENSE, 'functional', format: :json) %>"
+                       data-economic-url="<%= place_budget_path(@place.slug, @year, BudgetLine::EXPENSE, 'economic', format: :json) %>">
     </div>
 
 
@@ -119,11 +118,11 @@
 
 <script>
 $(function(){
-  var incomeTreemap = new TreemapVis('#income-treemap', 'small', false);
-  incomeTreemap.render($('#income-treemap').data('economic-url'));
+  window.incomeTreemap = new TreemapVis('#income-treemap', 'small', false);
+  window.incomeTreemap.render($('#income-treemap').data('economic-url'));
 
-  var expenseTreemap = new TreemapVis('#expense-treemap', 'small', false);
-  expenseTreemap.render($('#expense-treemap').data('economic-url'));
+  window.expenseTreemap = new TreemapVis('#expense-treemap', 'small', false);
+  window.expenseTreemap.render($('#expense-treemap').data('economic-url'));
 
   var visLineasJ = new VisLineasJ('#lines_chart', '#lines_tooltip', 'total_budget');
   visLineasJ.render($('[data-line-widget-url].selected').data('line-widget-url'));

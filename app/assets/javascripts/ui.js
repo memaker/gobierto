@@ -9,7 +9,6 @@ function submitForm(){
 }
 
 $(function(){
-  window.treemaps = {};
   $('.spinner').hide();
 
   if($(window).width() > 740) {
