@@ -248,7 +248,8 @@ $(function(){
     $(this).find('.fa').toggleClass('fa-plus-square-o fa-minus-square-o');
     $(this).parents('tr').next('.child_group').remove();
     
-    window.treemap.render(parent_treemap_url($(this).attr('href')));
+    if (window.treemap != undefined)
+      window.treemap.render(parent_treemap_url($(this).attr('href')));
   });
 
   $('.items').on('ajax:beforeSend', 'a:not(.extended)', function(event, xhr, settings) {
