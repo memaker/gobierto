@@ -114,6 +114,82 @@ class Api::DataController < ApplicationController
     end
   end
 
+  def budget_percentage_over_total
+    @year = params[:year].to_i
+    @area = params[:area]
+    @kind = params[:kind]
+    @code = params[:code]
+
+    result = SearchEngine.client.get index: BudgetLine::INDEX, type: @area, id: [params[:ine_code],@year,@code,@kind].join('/')
+    amount = result['_source']['amount'].to_f
+
+    result = SearchEngine.client.get index: BudgetLine::INDEX, type: 'total-budget', id: [params[:ine_code], @year].join('/')
+    total_amount = result['_source']['total_budget'].to_f
+
+    percentage = (amount.to_f * 100)/total_amount
+
+    respond_to do |format|
+      format.json do
+        render json: {
+          title: "Porcentaje sobre el total",
+          value: "#{helpers.number_with_precision(percentage, precision: 2, strip_insignificant_zeros: true)}%"
+        }.to_json
+      end
+    end
+  end
+
+  def budget_percentage_over_province
+    @year = params[:year].to_i
+    @area = params[:area]
+    @kind = params[:kind]
+    @code = params[:code]
+    @place = INE::Places::Place.find(params[:ine_code])
+
+    result = SearchEngine.client.get index: BudgetLine::INDEX, type: @area, id: [params[:ine_code],@year,@code,@kind].join('/')
+    amount = result['_source']['amount'].to_f
+
+    query = {
+      query: {
+        filtered: {
+          query: {
+            match_all: {}
+          },
+          filter: {
+            bool: {
+              must: [ 
+                {term: { province_id: @place.province_id }},
+                {term: { code: @code }},
+                {term: { year: @year }},
+                {term: { kind: @kind }}
+              ]
+            }
+          }
+        }
+      },
+      size: 10_000,
+      "aggs": {
+        "budget_sum": {
+          "sum": {
+            "field": "amount"
+          }
+        }
+      }
+    }
+
+    response = SearchEngine.client.search index: BudgetLine::INDEX, type: @type, body: query
+    mean = response['aggregations']['budget_sum']['value'] / response['hits']['hits'].length
+
+    percentage = (amount.to_f * 100)/mean
+
+    respond_to do |format|
+      format.json do
+        render json: {
+          title: "Diferencia con la media provincial",
+          value: "#{helpers.number_with_precision(percentage, precision: 2, strip_insignificant_zeros: true)}%"
+        }.to_json
+      end
+    end
+  end
 
   private
 
