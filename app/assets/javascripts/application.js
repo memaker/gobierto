@@ -11,15 +11,17 @@
 //= require vendor/jquery.bonsai
 //= require vendor/accounting.min
 //= require vendor/jquery.autocomplete
+//= require vendor/js.cookie
 
 //= require vendor/mustache.min
 //= require vendor/d3.v3.min
 //= require vendor/d3-legend.min
 //= require vendor/klass
 //= require vis_treemap
-//= require widget_renderer
-//= require ui
 //= require vis_lineas_tabla
+//= require widget_renderer
+//= require history
+//= require ui
 
 SPARKLINES_DEFAULTS = {
   width: 60,

@@ -99,7 +99,6 @@ var VisDispersion = Class.extend({
         d.total = +d.total;
       });
 
-      
       var randomMean = 5320; // Get real mean from the data;
 
       // Sort by population, to get the right order of the cuts.  

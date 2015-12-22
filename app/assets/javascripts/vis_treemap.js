@@ -1,7 +1,7 @@
 'use strict';
 
 var TreemapVis = Class.extend({
-  init: function(divId){
+  init: function(divId, size, clickable){
     this.containerId = divId;
 
     // Chart dimensions
@@ -9,6 +9,9 @@ var TreemapVis = Class.extend({
     this.margin = {top: 0, right: 0, bottom: 0, left: 0};
     this.width = null;
     this.height = null;
+
+    this.sizeFactor = size == 'big' ? 5.5 : 2.5;
+    this.clickable = clickable;
 
     this.treemap = null;
     this.container = null;
@@ -18,10 +21,12 @@ var TreemapVis = Class.extend({
   },
 
   render: function(urlData) {
+    $(this.containerId).html('');
+
     // Chart dimensions
     this.containerWidth = parseInt(d3.select(this.containerId).style('width'), 10);
     this.width = this.containerWidth - this.margin.left - this.margin.right;
-    this.height = (this.containerWidth / 2.5) - this.margin.top - this.margin.bottom;
+    this.height = (this.containerWidth / this.sizeFactor) - this.margin.top - this.margin.bottom;
 
     this.container = d3.select(this.containerId)
       .style("position", "relative")
@@ -35,7 +40,9 @@ var TreemapVis = Class.extend({
       .sticky(true)
       .value(function(d) { return d.budget; });
 
-    d3.json(urlData, function(error, root){
+    d3.json(urlData)
+      .mimeType('application/json')
+      .get(function(error, root){
       if (error) throw error;
 
       this.colorScale
@@ -44,10 +51,30 @@ var TreemapVis = Class.extend({
       var node = this.container.datum(root).selectAll(".treemap_node")
         .data(this.treemap.nodes)
         .enter().append("div")
-        .attr("class", "treemap_node")
+        .attr("class", function(d){
+          if(this.clickable){
+            return "treemap_node clickable";
+          } else {
+            return "treemap_node";
+          }
+        }.bind(this))
+        .attr("data-url", function(d){ 
+          if(this.clickable){
+            return d.children ? null : urlData.split('?')[0] + "?parent_code=" + d.code;
+          }
+        }.bind(this))
         .call(this._position)
         .style("background", function(d) { return this.colorScale(d.name); }.bind(this))
-        .html(function(d) { return d.children ? null : "<p>" + d.name + "</p><p>" + d.budget_per_inhabitant + "€/habitante</p>"; });
+        .html(function(d) {
+          if(d.children) {
+            return null;
+          } else {
+            // If the square is small, don't add the text
+            if(d.dx > 50 && d.dy > 50) {
+              return "<p><strong>" + d.name + "</strong></p><p>" + d.budget_per_inhabitant + "€/habitante</p>";
+            }
+          }
+        });
     }.bind(this));
   },
 

@@ -1,4 +1,11 @@
 module ApplicationHelper
+
+  def pending(&block)
+    if controller_name == 'sandbox'
+      yield
+    end
+  end
+
   def render_children(item, area)
     children = item.children.all.to_a
 
@@ -45,9 +52,9 @@ module ApplicationHelper
 
   def format_currency(n)
     if n > 1_000_000
-      "#{number_with_precision(n.to_f / 1_000_000.to_f, precision: 0, strip_insignificant_zeros: true)} M€"
+      "#{helpers.number_with_precision(n.to_f / 1_000_000.to_f, precision: 0, strip_insignificant_zeros: true)} M€"
     else
-      number_to_currency(n, precision: 0, strip_insignificant_zeros: true)
+      helpers.number_to_currency(n, precision: 0, strip_insignificant_zeros: true)
     end
   end
 
@@ -67,6 +74,31 @@ module ApplicationHelper
   def kind_literal(kind)
     return 'ingresos' if kind == 'I'
     'gastos'
+  end
+
+  def area_literal(area)
+    return 'Funcional' if area == 'functional'
+    'Económica'
+  end
+
+  def budget_line_crumbs(budget_line)
+    
+    crumbs = [budget_line]
+    parent_code = budget_line['parent_code']
+    
+    while parent_code.present? do
+      p = BudgetLine.find(ine_code: budget_line['ine_code'], code: parent_code, 
+                          year: budget_line['year'], kind: budget_line['kind'])
+      crumbs.unshift(p)
+      parent_code = p['parent_code']
+    end
+
+    return crumbs
+  end
+
+  def link_to_place_budget_toggler(slug, area, selectedArea, year)
+    buttonSelected = " buttonSelected" if area == selectedArea
+    link_to area_literal(area), place_budget_path(slug, year, 'expense', {area: area}), class: "toggle #{buttonSelected}"
   end
 
   def filter_location_name

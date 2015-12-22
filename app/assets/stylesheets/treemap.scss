@@ -7,7 +7,11 @@
   padding: 0px;
 }
 
+.treemap_node.clickable {
+  cursor: pointer;
+}
+
 .treemap_node p {
   margin: 0;
-  padding: 3px 0 0 3px;
+  padding: 8px 8px 0 8px;
 } 

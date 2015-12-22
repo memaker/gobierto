@@ -1,263 +1,282 @@
 class Data::Lines
-  def initialize(filter)
-    @filter = filter
-  end
-
-  def title_name
-    if @filter.category_filter?
-      if @filter.expending?
-        "Gasto en #{@filter.category.name}"
-      else
-        "Ingreso en #{@filter.category.name}"
-      end
-    else
-      if @filter.expending?
-        "Gasto total #{@filter.location.name}"
-      else
-        "Ingreso total #{@filter.location.name}"
-      end
+  def initialize(options = {})
+    @what = options[:what]
+    @variable = @what == 'total_budget' ? 'total_budget' : 'total_budget_per_inhabitant'
+    @year = options[:year]
+    @place = options[:place]
+    @kind = options[:kind]
+    @code = options[:code]
+    @area = options[:area]
+    if @code
+      @variable = @what == 'total_budget' ? 'amount' : 'amount_per_inhabitant'
+      areas = @area == 'economic' ? EconomicArea : FunctionalArea
+      @category_name = areas.all_items[@kind][@code]
     end
   end
 
-  def name
-    if @filter.category_filter?
-      @filter.category.name
-    else
-      @filter.location.name
-    end
-  end
+  def generate_json
+    json = {
+      kind: @kind,
+      year: @year,
+      title: lines_title,
+      budgets: {
+        @what => [
+          {
+            "name":"mean_province",
+            "values": mean_province
+          },
+          {
+            "name":"mean_autonomy",
+            "values": mean_autonomy
+          },
+          {
+            "name":"mean_national",
+            "values": mean_national
+          },
+          {
+            name: @code ? @category_name : @place.name,
+            "values": place_values
+          }
+        ]
+      }
+    }
 
-  def data_per_person
-    population = Population.find @filter.location.id
-    if @filter.category_filter?
-      category_budget = if @filter.functional?
-        FunctionalYearlyTotal.where(ine_code: @filter.location.id, cdfgr: @filter.category.code).first
-      else
-        EconomicYearlyTotal.where(ine_code: @filter.location.id, cdcta: @filter.category.code, kind: @filter.kind).first
-      end
-      column_name = "total_%d"
-      BudgetFilter.years.map do |year|
-        {
-          date: year.to_s,
-          value: category_budget.send(column_name % year) / population.total
-        }
-      end
-    else
-      column_name = if @filter.functional?
-                      "total_functional_%d"
-                    elsif @filter.expending?
-                      "total_economic_%d_expending"
-                    else
-                      "total_economic_%d_incoming"
-                    end
-      BudgetFilter.years.map do |year|
-        {
-          date: year.to_s,
-          value: population.send(column_name % year) / population.total
-        }
-      end
-    end
-  end
-
-  def data_mean_national_per_person
-    if @filter.category_filter?
-      category_budget = if @filter.functional?
-        FunctionalYearlyTotal.where(cdfgr: @filter.category.code)
-      else
-        EconomicYearlyTotal.where(cdcta: @filter.category.code, kind: @filter.kind)
-      end
-      column_name = "total_%d"
-      BudgetFilter.years.map do |year|
-        {
-          date: year.to_s,
-          value: (category_budget.sum(column_name % year) / Population.sum('total')).to_f
-        }
-      end
-    else
-      column_name = if @filter.functional?
-                      "total_functional_%d"
-                    elsif @filter.expending?
-                      "total_economic_%d_expending"
-                    else
-                      "total_economic_%d_incoming"
-                    end
-      BudgetFilter.years.map do |year|
-        {
-          date: year.to_s,
-          value: Population.sum(column_name % year) / Population.sum('total')
-        }
-      end
-    end
-  end
-
-  def data_mean_autonomy_per_person
-    population_scoped = Population.where(autonomous_region_id: @filter.location.province.autonomous_region.id)
-    if @filter.category_filter?
-      category_budget = if @filter.functional?
-        FunctionalYearlyTotal.where(cdfgr: @filter.category.code)
-      else
-        EconomicYearlyTotal.where(cdcta: @filter.category.code, kind: @filter.kind)
-      end
-      category_budget = category_budget.joins("INNER JOIN poblacion_municipal_2014 ON poblacion_municipal_2014.codigo = #{category_budget.table_name}.ine_code AND poblacion_municipal_2014.autonomous_region_id = #{@filter.location.province.autonomous_region.id}")
-      column_name = "total_%d"
-      BudgetFilter.years.map do |year|
-        {
-          date: year.to_s,
-          value: (category_budget.sum(column_name % year) / population_scoped.sum('total')).to_f
-        }
-      end
-    else
-      column_name = if @filter.functional?
-                      "total_functional_%d"
-                    elsif @filter.expending?
-                      "total_economic_%d_expending"
-                    else
-                      "total_economic_%d_incoming"
-                    end
-      BudgetFilter.years.map do |year|
-        {
-          date: year.to_s,
-          value: population_scoped.sum(column_name % year) / population_scoped.sum('total')
-        }
-      end
-    end
-  end
-
-  def data_mean_province_per_person
-    population_scoped = Population.where(province_id: @filter.location.province.id)
-    if @filter.category_filter?
-      category_budget = if @filter.functional?
-        FunctionalYearlyTotal.where(cdfgr: @filter.category.code)
-      else
-        EconomicYearlyTotal.where(cdcta: @filter.category.code, kind: @filter.kind)
-      end
-      category_budget = category_budget.joins("INNER JOIN poblacion_municipal_2014 ON poblacion_municipal_2014.codigo = #{category_budget.table_name}.ine_code AND poblacion_municipal_2014.province_id = #{@filter.location.province.id}")
-      column_name = "total_%d"
-      BudgetFilter.years.map do |year|
-        {
-          date: year.to_s,
-          value: (category_budget.sum(column_name % year) / population_scoped.sum('total')).to_f
-        }
-      end
-    else
-      column_name = if @filter.functional?
-                      "total_functional_%d"
-                    elsif @filter.expending?
-                      "total_economic_%d_expending"
-                    else
-                      "total_economic_%d_incoming"
-                    end
-      BudgetFilter.years.map do |year|
-        {
-          date: year.to_s,
-          value: population_scoped.sum(column_name % year) / population_scoped.sum('total')
-        }
-      end
-    end
-  end
-
-
-
-  def data_percentage
-    population = Population.find @filter.location.id
-    if @filter.category_filter?
-      total_column_name = if @filter.functional?
-                      "total_functional_%d"
-                    elsif @filter.expending?
-                      "total_economic_%d_expending"
-                    else
-                      "total_economic_%d_incoming"
-                    end
-      category_budget = if @filter.functional?
-        FunctionalYearlyTotal.where(cdfgr: @filter.category.code, ine_code: @filter.location.id).first
-      else
-        EconomicYearlyTotal.where(cdcta: @filter.category.code, kind: @filter.kind, ine_code: @filter.location.id).first
-      end
-      column_name = "total_%d"
-      BudgetFilter.years.map do |year|
-        {
-          date: year.to_s,
-          value: percentage(category_budget.send(column_name % year), population.send(total_column_name % year))
-        }
-      end
-    else
-      return []
-    end
-  end
-
-  def data_mean_national_percentage
-    if @filter.category_filter?
-      category_budget = if @filter.functional?
-        FunctionalYearlyTotal.where(cdfgr: @filter.category.code)
-      else
-        EconomicYearlyTotal.where(cdcta: @filter.category.code, kind: @filter.kind)
-      end
-      column_name = "total_%d"
-      BudgetFilter.years.map do |year|
-        {
-          date: year.to_s,
-          value: percentage(category_budget.where(ine_code: @filter.location.id).first.send(column_name % year), category_budget.sum(column_name % year))
-        }
-      end
-    else
-      return []
-    end
-  end
-
-  def data_mean_autonomy_percentage
-    population = Population.find @filter.location.id
-    population_scoped = Population.where(autonomous_region_id: @filter.location.province.autonomous_region.id)
-
-    if @filter.category_filter?
-      category_budget = if @filter.functional?
-        FunctionalYearlyTotal.where(cdfgr: @filter.category.code)
-      else
-        EconomicYearlyTotal.where(cdcta: @filter.category.code, kind: @filter.kind)
-      end
-      category_budget_scoped = category_budget.joins("INNER JOIN poblacion_municipal_2014 ON poblacion_municipal_2014.codigo = #{category_budget.table_name}.ine_code AND poblacion_municipal_2014.autonomous_region_id = #{@filter.location.province.autonomous_region.id}")
-      column_name = "total_%d"
-      BudgetFilter.years.map do |year|
-        {
-          date: year.to_s,
-          value: percentage(category_budget.where(ine_code: @filter.location.id).first.send(column_name % year), category_budget_scoped.sum(column_name % year))
-        }
-      end
-    else
-      return []
-    end
-  end
-
-  def data_mean_province_percentage
-    population = Population.find @filter.location.id
-    population_scoped = Population.where(province_id: @filter.location.province.id)
-
-    if @filter.category_filter?
-      category_budget = if @filter.functional?
-        FunctionalYearlyTotal.where(cdfgr: @filter.category.code)
-      else
-        EconomicYearlyTotal.where(cdcta: @filter.category.code, kind: @filter.kind)
-      end
-      category_budget_scoped = category_budget.joins("INNER JOIN poblacion_municipal_2014 ON poblacion_municipal_2014.codigo = #{category_budget.table_name}.ine_code AND poblacion_municipal_2014.province_id = #{@filter.location.province.id}")
-      column_name = "total_%d"
-      BudgetFilter.years.map do |year|
-        {
-          date: year.to_s,
-          value: percentage(category_budget.where(ine_code: @filter.location.id).first.send(column_name % year), category_budget_scoped.sum(column_name % year))
-        }
-      end
-    else
-      return []
-    end
+    return json.to_json
   end
 
   private
 
-  def totals_klass
-    @filter.functional? ? FunctionalYearlyTotal : EconomicYearlyTotal
+  def mean_province
+    filters = [ {term: { province_id: @place.province_id }} ]
+
+    if @code
+      filters.push({term: { code: @code }})
+      filters.push({term: { kind: @kind }})
+    end
+
+    query = {
+      query: {
+        filtered: {
+          query: {
+            match_all: {}
+          },
+          filter: {
+            bool: {
+              must: filters
+            }
+          }
+        }
+      },
+      size: 10_000,
+      "aggs": {
+        "#{@variable}_per_year": {
+          "terms": {
+            "field": "year",
+            size: 10_000
+          }, 
+          "aggs": {
+            "budget_sum": {
+              "sum": {
+                "field": "#{@variable}"
+              }
+            }
+          }
+        }
+      }
+    }
+
+    response = SearchEngine.client.search index: index, type: type, body: query
+    data = {}
+    response['aggregations']["#{@variable}_per_year"]['buckets'].each do |r|
+      data[r['key']] = (r['budget_sum']['value'].to_f / r['doc_count'].to_f).round(2)
+    end
+
+    result = []
+    data.each do |year, v|
+      result.push({
+        date: year.to_s,
+        value: v,
+        dif: data[year-1] ? delta_percentage(v, data[year-1]) : 0
+      })
+    end
+
+    result.reverse
   end
 
-  def percentage(v1,v2)
-    return v1.to_f/v2.to_f
+  def mean_autonomy
+    filters = [ {term: { autonomy_id: @place.province.autonomous_region.id }} ]
+
+    if @code
+      filters.push({term: { code: @code }})
+      filters.push({term: { kind: @kind }})
+    end
+
+    query = {
+      query: {
+        filtered: {
+          query: {
+            match_all: {}
+          },
+          filter: {
+            bool: {
+              must: filters
+            }
+          }
+        }
+      },
+      size: 10_000,
+      "aggs": {
+        "#{@variable}_per_year": {
+          "terms": {
+            "field": "year",
+            size: 10_000
+          }, 
+          "aggs": {
+            "budget_sum": {
+              "sum": {
+                "field": "#{@variable}"
+              }
+            }
+          }
+        }
+      }
+    }
+
+    response = SearchEngine.client.search index: index, type: type, body: query
+    data = {}
+    response['aggregations']["#{@variable}_per_year"]['buckets'].each do |r|
+      data[r['key']] = (r['budget_sum']['value'].to_f / r['doc_count'].to_f).round(2)
+    end
+
+    result = []
+    data.each do |year, v|
+      result.push({
+        date: year.to_s,
+        value: v,
+        dif: data[year-1] ? delta_percentage(v, data[year-1]) : 0
+      })
+    end
+
+    result.reverse
   end
 
+  def mean_national
+    filters = []
+    if @code
+      filters.push({term: { code: @code }})
+      filters.push({term: { kind: @kind }})
+    end
+
+    query = {
+      query: {
+        filtered: {
+          query: {
+            match_all: {}
+          },
+          filter: {
+            bool: {
+              must: filters
+            }
+          }
+        }
+      },
+      size: 10_000,
+      "aggs": {
+        "#{@variable}_per_year": {
+          "terms": {
+            "field": "year",
+            size: 10_000
+          }, 
+          "aggs": {
+            "budget_sum": {
+              "sum": {
+                "field": "#{@variable}"
+              }
+            }
+          }
+        }
+      }
+    }
+
+    response = SearchEngine.client.search index: index, type: type, body: query
+    data = {}
+    response['aggregations']["#{@variable}_per_year"]['buckets'].each do |r|
+      data[r['key']] = (r['budget_sum']['value'].to_f / r['doc_count'].to_f).round(2)
+    end
+
+    result = []
+    data.each do |year, v|
+      result.push({
+        date: year.to_s,
+        value: v,
+        dif: data[year-1] ? delta_percentage(v, data[year-1]) : 0
+      })
+    end
+
+    result.reverse
+  end
+
+  def place_values
+    filters = [ {term: { ine_code: @place.id }} ]
+
+    if @code
+      filters.push({term: { code: @code }})
+      filters.push({term: { kind: @kind }})
+    end
+
+    query = {
+      sort: [
+        { year: { order: 'desc' } }
+      ],
+      query: {
+        filtered: {
+          query: {
+            match_all: {}
+          },
+          filter: {
+            bool: {
+              must: filters
+            }
+          }
+        }
+      },
+      size: 10_000,
+    }
+
+    result = []
+    response = SearchEngine.client.search index: index, type: type, body: query
+    values = Hash[response['hits']['hits'].map{|h| h['_source']}.map{|h| [h['year'],h[@variable]] }]
+    values.each do |k,v|
+      dif = 0
+      if old_value = values[k -1]
+        dif = delta_percentage(v, old_value)
+      end
+      result.push({date: k.to_s, value: v, dif: dif})
+    end
+    result
+  end
+
+  def lines_title
+    if @code.nil?
+      @what == 'total_budget' ? "Gasto total" : "Gasto por habitante"
+    else
+      @what == 'total_budget' ? "#{@category_name}" : "#{@category_name} por habitante"
+    end
+  end
+
+  def delta_percentage(current_year_value, old_value)
+    (((current_year_value.to_f - old_value.to_f)/old_value.to_f) * 100).round(2)
+  end
+
+  def index
+    'budgets-forecast'
+  end
+
+  def type
+    if @code.nil?
+      "total-budget"
+    else
+      @area
+    end
+  end
 end

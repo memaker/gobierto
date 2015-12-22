@@ -1,8 +1,14 @@
 $('.toggle').toggleClass('buttonSelected');
-$('#total_expense_budget').text('<%= number_to_currency @expense_lines['aggregations']['total_budget']['value'], precision: 0 %>')
-$('#expense_lines').html('<%= j render(partial: 'places/place_budget_lines', 
+$('#total_expense_budget').text("<%= number_to_currency @expense_lines['aggregations']['total_budget']['value'], precision: 0 %>")
+$('#expense_lines').html("<%= j render(partial: 'places/place_budget_lines', 
                                         collection: @expense_lines['hits'],
                                         as: 'budget_line',
                                         locals: { area: @area_name, 
                                                   kind: 'G',
-                                                  total_budget: @expense_lines['aggregations']['total_budget']['value'] }) %>');
+                                                  total_budget: @expense_lines['aggregations']['total_budget']['value'] }) %>");
+
+$('#show_expenses_link').replaceWith("<%= j link_to 'Ver desglose de gastos', 
+                                                  place_budget_path(@place.slug, @year, 'expense', {area: @area_name} ), 
+                                                  class: 'list_view_more', id: 'show_expenses_link' %>")
+
+window.expenseTreemap.render($('#expense-treemap').data("<%= @area_name %>-url"));

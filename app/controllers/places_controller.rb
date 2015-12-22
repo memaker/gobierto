@@ -18,11 +18,15 @@ class PlacesController < ApplicationController
 
     options = { ine_code: @place.id, level: @level, year: @year, kind: @kind, type: @area_name }
     options[:parent_code] = params[:parent_code] if params[:parent_code].present?
-    
+
     @budget_lines = BudgetLine.search(options) 
-     
+
     respond_to do |format|
       format.html
+      format.json do
+        data_line = Data::Treemap.new place: @place, year: @year, kind: @kind, type: @area_name, parent_code: params[:parent_code]
+        render json: data_line.generate_json
+      end
       format.js
     end
 

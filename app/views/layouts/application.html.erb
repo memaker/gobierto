@@ -5,8 +5,29 @@
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
+
+  <link rel="apple-touch-icon" sizes="57x57" href="<%= asset_path('favicons/apple-touch-icon-57x57.png') %>">
+  <link rel="apple-touch-icon" sizes="60x60" href="<%= asset_path('favicons/apple-touch-icon-60x60.png') %>">
+  <link rel="apple-touch-icon" sizes="72x72" href="<%= asset_path('favicons/apple-touch-icon-72x72.png') %>">
+  <link rel="apple-touch-icon" sizes="76x76" href="<%= asset_path('favicons/apple-touch-icon-76x76.png') %>">
+  <link rel="apple-touch-icon" sizes="114x114" href="<%= asset_path('favicons/apple-touch-icon-114x114.png') %>">
+  <link rel="apple-touch-icon" sizes="120x120" href="<%= asset_path('favicons/apple-touch-icon-120x120.png') %>">
+  <link rel="apple-touch-icon" sizes="144x144" href="<%= asset_path('favicons/apple-touch-icon-144x144.png') %>">
+  <link rel="apple-touch-icon" sizes="152x152" href="<%= asset_path('favicons/apple-touch-icon-152x152.png') %>">
+  <link rel="apple-touch-icon" sizes="180x180" href="<%= asset_path('favicons/apple-touch-icon-180x180.png') %>">
+  <link rel="icon" type="image/png" href="<%= asset_path('favicons/favicon-32x32.png') %>" sizes="32x32">
+  <link rel="icon" type="image/png" href="<%= asset_path('favicons/favicon-194x194.png') %>" sizes="194x194">
+  <link rel="icon" type="image/png" href="<%= asset_path('favicons/favicon-96x96.png') %>" sizes="96x96">
+  <link rel="icon" type="image/png" href="<%= asset_path('favicons/android-chrome-192x192.png') %>" sizes="192x192">
+  <link rel="icon" type="image/png" href="<%= asset_path('favicons/favicon-16x16.png') %>" sizes="16x16">
+  <link rel="manifest" href="<%= asset_path('favicons/manifest.json') %>">
+  <link rel="mask-icon" href="<%= asset_path('favicons/safari-pinned-tab.svg') %>" color="#5bbad5">
+  <meta name="msapplication-TileColor" content="#da532c">
+  <meta name="msapplication-TileImage" content="<%= asset_path('favicons/mstile-144x144.png') %>">
+  <meta name="theme-color" content="#ffffff">
+
 </head>
-<body>
+<body <%= %Q{data-track-url="#{place_path(@place, 2015)}"} if @place %>>
 
 <div class="top-claim">
   <p>¿Interesado en herramientas de análisis presupuestario para Municipios? </p>
@@ -28,44 +49,42 @@
         <li><%= link_to 'Municipios', '/sandbox/home', class: 'selected' %></li>
         <li><%= link_to 'Partidas' %></li>
         <li><%= link_to 'Compara' %></li>
-        <li><%= link_to 'Indicadores' %></li>
-        <li><%= link_to 'Ránkings' %></li>
         <li><%= link_to '<span>Pro</span> Crea tu libro'.html_safe %></li>
       </ul>
     </menu>
 
-    <div class="links_list">
-      <h3>Tus favoritos</h3>
-      <ul>
-        <li><%= link_to 'El Ejido' %></li>
-        <li><%= link_to 'Majadahonda' %></li>
-        <li><%= link_to 'Mijas' %></li>
-        <li><%= link_to 'Talaván' %></li>
-      </ul>
-    </div>
+    <% pending do %>
+      <div class="links_list">
+        <h3>Tus favoritos</h3>
+        <ul>
+          <li><%= link_to 'El Ejido' %></li>
+          <li><%= link_to 'Majadahonda' %></li>
+          <li><%= link_to 'Mijas' %></li>
+          <li><%= link_to 'Talaván' %></li>
+        </ul>
+      </div>
+    <% end %>
 
     <div class="links_list">
       <h3>Reciente</h3>
-      <ul>
-        <li><%= link_to 'Madrid' %></li>
-        <li><%= link_to 'Barcelona' %></li>
-        <li><%= link_to 'Valencia' %></li>
-        <li><%= link_to 'Pontevedra' %></li>
+      <ul id="history">
       </ul>
     </div>
 
   </header>
 
   <div class="year_switcher">
-    <%= link_to "#{@year} <i class='fa fa-angle-down'></i>".html_safe, '', class: 'current' %>
-    <ul>
-      <li><%= link_to '2015', place_path(@place.slug,'2015') %></li>
-      <li><%= link_to '2014', place_path(@place.slug,'2014') %></li>
-      <li><%= link_to '2013', place_path(@place.slug,'2013') %></li>
-      <li><%= link_to '2012', place_path(@place.slug,'2012') %></li>
-      <li><%= link_to '2011', place_path(@place.slug,'2011') %></li>
-      <li><%= link_to '2010', place_path(@place.slug,'2010') %></li>
-    </ul>
+    <% if @place %>
+      <%= link_to "#{@year} <i class='fa fa-angle-down'></i>".html_safe, '', class: 'current' %>
+      <ul>
+        <li><%= link_to '2015', place_path(@place.slug,'2015') %></li>
+        <li><%= link_to '2014', place_path(@place.slug,'2014') %></li>
+        <li><%= link_to '2013', place_path(@place.slug,'2013') %></li>
+        <li><%= link_to '2012', place_path(@place.slug,'2012') %></li>
+        <li><%= link_to '2011', place_path(@place.slug,'2011') %></li>
+        <li><%= link_to '2010', place_path(@place.slug,'2010') %></li>
+      </ul>
+    <% end %>
   </div>
 
   <div class="main_content clearfix">
@@ -78,6 +97,13 @@
   <div class="gobierto_ref">
     <%= link_to image_tag('GobiertoFooter@2x.png', size: '401x18'), 'http://gobierto.es', target: 'blank' %>
   </div>
+
+  <menu>
+    <ul>
+      <li><%= link_to 'Acerca de', about_path %></li>
+      <li><%= link_to 'Metodología', about_path(anchor: 'method') %></li>
+    </ul>
+  </menu>
 </footer>
 
 <div class="spinner">

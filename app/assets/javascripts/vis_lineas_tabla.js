@@ -1,18 +1,19 @@
 'use strict';
 
 var VisLineasJ = Class.extend({
-  init: function(divId, tableID ,measure) {
+  init: function(divId, tableID, measure) {
     this.container = divId;
     this.tableContainer = tableID;
     
     // Chart dimensions
     this.containerWidth = null;
     this.tableWidth = null;
-    this.margin = {top: 40, right: 20, bottom: 40, left: 40};
+    this.margin = {top: 40, right: 20, bottom: 40, left: 70};
     this.width = null;
     this.height = null;
     
-    // Variable 
+    // Variable: valid values are total_budget and total_budget_per_inhabitant
+    // TODO: check what to do with percentage
     this.measure = measure;
 
     // Scales
@@ -64,6 +65,8 @@ var VisLineasJ = Class.extend({
   },
 
   render: function(urlData) {
+    $(this.container).html('');
+    $(this.tableContainer).html('');
 
     // Chart dimensions
     this.containerWidth = parseInt(d3.select(this.container).style('width'), 10);
@@ -113,19 +116,20 @@ var VisLineasJ = Class.extend({
       
       this.data = jsonData;
 
-      this.data.budgets.per_person.forEach(function(d) { 
+      this.data.budgets[this.measure].forEach(function(d) { 
         d.values.forEach(function(v) {
           v.date = this.parseDate(v.date);
           v.name = d.name;
         }.bind(this));
       }.bind(this));
 
-      this.data.budgets.percentage.forEach(function(d) { 
-        d.values.forEach(function(v) {
-          v.date = this.parseDate(v.date);
-          v.name = d.name;
-        }.bind(this));
-      }.bind(this));
+      // TODO
+      //this.data.budgets.percentage.forEach(function(d) { 
+        //d.values.forEach(function(v) {
+          //v.date = this.parseDate(v.date);
+          //v.name = d.name;
+        //}.bind(this));
+      //}.bind(this));
 
       this.dataChart = this.data.budgets[this.measure];
       this.kind = this.data.kind;
@@ -299,7 +303,7 @@ var VisLineasJ = Class.extend({
                 var filterValues = d.values.filter(function(v) { 
                   return v.date.getFullYear() == this.dataYear.getFullYear();
                 }.bind(this));
-                return this.formatPercent(filterValues[0].value) + ' €/hab'; 
+                return this.formatPercent(filterValues[0].value) + this._units(); 
               }.bind(this));
 
        this.svgTable.selectAll('.legend_dif')
@@ -316,7 +320,7 @@ var VisLineasJ = Class.extend({
                 var filterValues = d.values.filter(function(v) { 
                   return v.date.getFullYear() == this.dataYear.getFullYear();
                 }.bind(this));
-                return filterValues[0].dif > 0 ? '+' + this.formatPercent(filterValues[0].dif) + ' €/hab' : this.formatPercent(filterValues[0].dif) + ' €/hab'; 
+                return filterValues[0].dif > 0 ? '+' + this.formatPercent(filterValues[0].dif) + this._units() : this.formatPercent(filterValues[0].dif) + this._units(); 
               }.bind(this));
 
 
@@ -399,7 +403,7 @@ var VisLineasJ = Class.extend({
           var filterValues = d.values.filter(function(v) { 
             return v.date.getFullYear() == this.dataYear.getFullYear();
           }.bind(this));
-          return this.formatPercent(filterValues[0].value) + ' €/hab'; 
+          return this.formatPercent(filterValues[0].value) + this._units(); 
         }.bind(this))
         .transition()
           .duration(this.duration/4)
@@ -417,7 +421,7 @@ var VisLineasJ = Class.extend({
           var filterValues = d.values.filter(function(v) { 
             return v.date.getFullYear() == this.dataYear.getFullYear();
           }.bind(this));
-          return filterValues[0].dif > 0 ? '+' + this.formatPercent(filterValues[0].dif) + ' €/hab' : this.formatPercent(filterValues[0].dif) + ' €/hab'; 
+          return filterValues[0].dif > 0 ? '+' + this.formatPercent(filterValues[0].dif) + this._units() : this.formatPercent(filterValues[0].dif) + this._units(); 
         }.bind(this))
         .transition()
           .duration(this.duration/4)
@@ -464,7 +468,7 @@ var VisLineasJ = Class.extend({
               var filterValues = d.values.filter(function(v) { 
                 return v.date.getFullYear() == selectedData.date.getFullYear();
               }.bind(this));
-              return this.formatPercent(filterValues[0].value) + ' €/hab'; 
+              return this.formatPercent(filterValues[0].value) + this._units(); 
             }.bind(this))
             .transition()
               .duration(this.duration/4)
@@ -480,7 +484,7 @@ var VisLineasJ = Class.extend({
               var filterValues = d.values.filter(function(v) { 
                 return v.date.getFullYear() == selectedData.date.getFullYear();
               }.bind(this));
-              return filterValues[0].dif > 0 ? '+' + this.formatPercent(filterValues[0].dif) + ' €/hab' : this.formatPercent(filterValues[0].dif) + ' €/hab'; 
+              return filterValues[0].dif > 0 ? '+' + this.formatPercent(filterValues[0].dif) + this._units() : this.formatPercent(filterValues[0].dif) + this._units(); 
             }.bind(this))
             .transition()
               .duration(this.duration/4)
@@ -555,6 +559,14 @@ var VisLineasJ = Class.extend({
       .transition()
       .duration(this.duration / 4)
       .style('opacity', 1);
+  },
+
+  _units: function(){
+    if(this.measure == 'total_budget'){
+      return ' €';
+    } else {
+      return ' €/hab';
+    }
   },
 
   _normalize: (function() {

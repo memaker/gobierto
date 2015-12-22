@@ -18,7 +18,6 @@ class BudgetLine
             bool: {
               must: [
                 {term: { ine_code: options[:ine_code] }},
-                {term: { level: options[:level] }},
                 {term: { kind: options[:kind] }},
                 {term: { year: options[:year] }}
               ]
@@ -34,12 +33,18 @@ class BudgetLine
     }
 
     query[:query][:filtered][:filter][:bool][:must] << {term: { parent_code: options[:parent_code] }} if options[:parent_code].present?
+    query[:query][:filtered][:filter][:bool][:must] << {term: { level: options[:level] }} if options[:level].present?
+    query[:query][:filtered][:filter][:bool][:must] << {term: { code: options[:code] }} if options[:code].present?
 
-    response = SearchEngine.client.search index: INDEX, type: options[:type], body: query
+    response = SearchEngine.client.search index: INDEX, type: (options[:type] || 'economic'), body: query
 
     return {
       'hits' => response['hits']['hits'].map{ |h| h['_source'] },
       'aggregations' => response['aggregations']
     }
+  end
+
+  def self.find(options)
+    return self.search(options)['hits'][0]
   end
 end

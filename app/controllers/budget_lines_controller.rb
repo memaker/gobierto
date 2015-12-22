@@ -1,0 +1,16 @@
+class BudgetLinesController < ApplicationController
+  def show
+    @place = INE::Places::Place.find_by_slug params[:slug]
+    @year = params[:year]
+    @code = params[:code]
+    @kind = ( %w{income i}.include?(params[:kind].downcase) ? BudgetLine::INCOME : BudgetLine::EXPENSE )
+    @area_name = params[:area] || 'economic'
+
+    options = { ine_code: @place.id, year: @year, kind: @kind, type: @area_name }
+
+    @parent_line = BudgetLine.find(options.merge(code: @code))
+    @budget_lines = BudgetLine.search(options.merge(parent_code: @code))
+
+    pp @parent_line
+  end
+end

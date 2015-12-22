@@ -76,6 +76,11 @@ $color_3_soft: #F5F4F4;
 $color_bg_error: #F5D6D2;
 $color_text_error: #9C0000;
 
+/* logo colors */
+$color_logo_yellow: #E9AD00;
+$color_logo_pink: #F39B95;
+$color_logo_blue: #388F9C;
+
 /* visualizations */
 $color_vis_place: #E9AD00;
 $color_vis_province: #A479F4;
@@ -724,6 +729,7 @@ header.sub {
   }
   .items {
     font-size: .9em;
+    margin: 1em 0;
   }
   .items table td.bar_cont {
     width: 40px;
@@ -772,6 +778,9 @@ a.list_view_more {
   table {
     td {
       font-size: .95em;  
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     th {
       font-size: .75em;
@@ -1224,6 +1233,7 @@ textarea {
  *
  */
 input[type=submit], .button {
+  font-family: $font_text;
   box-sizing: border-box;
   background: $color_1;
   @include border-radius(5px);
@@ -1274,10 +1284,24 @@ input[type=submit]:hover, .button:hover {
  *
  */
 footer {
-  border: 1px solid $separator;
-  margin: 8em 0;
-  padding: 8em 0;
-  text-align: center;
+  border-top: 1px solid $separator;
+  margin: 0em 0;
+  padding: 2em;
+  menu {
+    margin: 2em 0; 
+    padding: 0; 
+    font-size: 13px;
+    ul, li {
+      margin: 0; 
+      padding: 0; 
+      list-style-type: none; 
+    }
+    li {
+      display: inline-block;
+      margin: 0 2em 0 0;
+    }
+
+  }
 }
 
 
@@ -1296,9 +1320,98 @@ footer {
  *
  */
 .pre_home {
-  padding: 5em;
-  .places_search {
-    font-size: 2em;
+  padding: 4em;
+  text-align: center;
+  h1 {
+    font-size: 1.4em;
+    font-weight: 200;
+    color: lighten($text, 15%);
+    img {
+      vertical-align: middle;
+    }
+    span:before {
+      content: '|';
+      margin: 0 1em 0 .5em;
+      color: lighten($text, 40%);
+    }
   }
+  .places_search {
+    font-size: 1.6em;
+    margin: 3em 0 0 0;
+  }
+  h2 {
+    font-weight: 200;
+    font-size: 1em;
+    color: lighten($text, 15%);
+  }
+  p.example {
+    margin: 1em 0 10em 0;
+    font-size: .8em;
+    opacity: .5;
+  }
+  menu {
+    padding: 0; 
+    a {
+      margin: 0 1em;
+    }
+  }
+
+}
+.about_citizens {
+  h3, h2 {
+    color: $color_logo_yellow;  
+  }
+}
+.about_journos {
+  h3, h2 {
+    color: $color_logo_pink;
+  }
+}
+.about_municipalities {
+  h3, h2 {
+    color: $color_logo_blue;
+  }
+}
+.col-1-3, .col-2-3, .col-3-3 {
+  width: 30%;
+}
+.col-1-3, .col-2-3 {
+  margin-right: 5%;
+}
+.more_info {
+  
+  margin: 4em 0;
+  a {
+    font-size: 1.2em;
+    font-weight: 600;
+  }
+}
+.about_block {
+  font-size: .85em;
+  margin-bottom: 4em;
+
+  h3, h2 {
+    font-size: 1.35em;
+    border-top: 4px solid;
+    padding: 12px 0 0 0;
+    font-weight: 600;
+  }
+  text-align: left; 
+
+  ul, li {
+    margin: 0; 
+    padding: 0; 
+    list-style-type: none;
+  }
+  strong { 
+    display: block; 
+  }
+  li {
+    color: lighten($text, 15%);
+    font-size: 13px;
+    line-height: 19px;
+    margin: 0 0 1em 0;
+  }
+
 }
 

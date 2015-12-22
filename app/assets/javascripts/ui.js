@@ -109,10 +109,9 @@ $(function(){
   var searchOptions = {
     serviceUrl: '/search',
     onSelect: function (suggestion) {
-      $('#location_id').val(suggestion.data.id);
-      $('#location_type').val(suggestion.data.type);
-      $('#search').val(suggestion.value);
-      submitForm();
+      if(suggestion.data.type == 'Place') {
+        window.location.href = '/places/' + suggestion.data.slug + '/2015';
+      }
     },
     groupBy: 'category',
   };
@@ -180,69 +179,13 @@ $(function(){
     }
   });
 
-  if($('#vis_distribution').size() > 0) {
-
-    var visDistribution = new VisDistribution('#vis_distribution', 'per_person');//, 'percentage', 'mean_province');
-    visDistribution.render('api/data/distribution.json' + location.search);
-    //visDistribution.render('/distribution_sample_with_buckets.json');
-
-    d3.selectAll('.measure.button')
-      .on('click', function(d) {
-        d3.selectAll(".measure.button.buttonSelected").classed("buttonSelected", false);
-        d3.select(this).classed("buttonSelected", true);
-        visDistribution.measure = this.id;
-
-        visDistribution.updateRender();
-      });
-  }
-
-  if($('#vis_dispersion').size() > 0) {
-    var visDispersion = new VisDispersion('#vis_dispersion', 'per_person'); // percentage
-    visDispersion.render('/api/data/dispersion.json' + location.search);
-
-
-    // d3.selectAll('.measure.button')
-    //   .on('click', function(d) {
-    //     d3.selectAll(".measure.button.buttonSelected").classed("buttonSelected", false);
-    //     d3.select(this).classed("buttonSelected", true);
-    //     visDispersion.measure = this.id;
-
-        // visDispersion.updateRender();
-      // });
-  }
-
-  if($('#vis_lineas_j').size()>0){
-    var visLineasJ = new VisLineasJ('#vis_lineas_j', 'per_person');
-    visLineasJ.render('/api/data/lines.json' + location.search);
-
-    d3.selectAll('.measure.button')
-      .on('click', function(d) {
-        d3.selectAll(".measure.button.buttonSelected").classed("buttonSelected", false);
-        d3.select(this).classed("buttonSelected", true);
-        visLineasJ.measure = this.id;
-        visLineasJ.updateRender();
-      });
-
-    d3.selectAll('.context.button')
-      .on('click', function(d) {
-        d3.selectAll(".context.button.buttonSelected").classed("buttonSelected", false);
-        d3.select(this).classed("buttonSelected", true);
-        visLineasJ.mean = this.id;
-
-        visLineasJ.updateRender();
-      });
-  }
-
   $(".places_menu ul li").hover(function(e){
     // e.preventDefault();
     $(this).find('ul').toggle();
   });
 
-  $('[data-graph-show]').on('click', function(e){
+  $('[data-line-widget-url]').on('click', function(e){
     e.preventDefault();
-    var el = $(this).data("graph-show");
-    $('[data-graph-cont]').hide();
-    $('[data-graph-cont='+el+']').show();
     $('.metric').removeClass('selected');
     $(this).addClass('selected');
   });
@@ -284,18 +227,35 @@ $(function(){
     widget.render();   
   });
 
+  function parent_treemap_url(parent_url) {
+    var pattern = /parent_code=\d+/;
+    parent_url = parent_url.replace(pattern, function(match) {
+      return match.substring(0,match.length - 1)
+    });
+    return parent_url + '&amp;format=json';
+  }
+
     /* Tree navigation */
   $('.items').on('ajax:success', 'a[data-remote=true]', function(event, data, status, xhr) {
     $(this).addClass('extended');
     $(this).find('.fa').toggleClass('fa-plus-square-o fa-minus-square-o');
   });
 
-  /* Prevents resending the form when extended */
+  /* Collapses branch - Prevents resending the form when extended */
   $('.items').on('ajax:beforeSend', 'a.extended', function(event, xhr, settings) {
     xhr.abort();
     $(this).removeClass('extended');
     $(this).find('.fa').toggleClass('fa-plus-square-o fa-minus-square-o');
     $(this).parents('tr').next('.child_group').remove();
+    
+    window.treemap.render(parent_treemap_url($(this).attr('href')));
   });
-  
+
+  $('.items').on('ajax:beforeSend', 'a:not(.extended)', function(event, xhr, settings) {
+    var sibs = $(this).parents('tr:not(.child_group)').siblings();
+    sibs.find('a.extended').removeClass('extended').find('.fa').toggleClass('fa-plus-square-o fa-minus-square-o');
+    sibs.siblings('.child_group').remove();
+  });
+
+
 });
