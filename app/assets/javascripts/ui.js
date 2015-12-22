@@ -241,5 +241,11 @@ $(function(){
     $(this).parents('tr').next('.child_group').remove();
   });
 
+  $('.items').on('ajax:beforeSend', 'a:not(.extended)', function(event, xhr, settings) {
+    var sibs = $(this).parents('tr:not(.child_group)').siblings();
+    sibs.find('a.extended').removeClass('extended').find('.fa').toggleClass('fa-plus-square-o fa-minus-square-o');
+    sibs.siblings('.child_group').remove();
+  });
+
 
 });
