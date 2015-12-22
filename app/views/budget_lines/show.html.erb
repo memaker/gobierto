@@ -2,9 +2,7 @@
 
 <header class="sub">
 
-  <!-- <div class="inline_switcher"><%= link_to 'Gastos <i class="fa fa-angle-down"></i>'.html_safe %></div> -->
-
-  <span class="sep"><%= kind_literal(@kind).capitalize %> »</span>
+  <span class="sep"><%= link_to kind_literal(@kind).capitalize, place_budget_path(@place.slug, @year, @kind, @area_name) %> »</span>
   <%= render partial: 'breadcrumb', 
             collection: budget_line_crumbs(@parent_line),
             as: 'budget_line', 
@@ -26,7 +24,7 @@
 
   <tr>
     <td class="item_name" colspan="4">
-      <%= link_to '« Inicio' %> 
+      <%= link_to '« Inicio', place_budget_path(@place.slug, @year, @kind, @area_name) %>
     </td>
   </tr>
   
