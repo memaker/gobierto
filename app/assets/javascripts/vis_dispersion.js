@@ -96,18 +96,19 @@ var VisDispersion = Class.extend({
       this.data.forEach(function(d) { 
         d.per_person = +d.per_person;
         d.population = +d.population;
+        d.total = +d.total;
       });
 
-      console.log(this.data)
+      
       var randomMean = 5320; // Get real mean from the data;
 
-
       // Sort by population, to get the right order of the cuts.  
-      this.data.sort(function(a, b) { return a.population - b.population; }) 
+      // this.data.sort(function(a, b) { return a.population - b.population; }) 
 
       // Set the scales
       this.xScale
-        .domain(d3.extent(this.data, function(d) { return Math.log(d.population); }))
+        // .domain(d3.extent(this.data, function(d) { return Math.log(d.total); }))
+        .domain(d3.extent(this.data, function(d) { return d.total; }))
         .range([this.margin.left + this.radius, this.width]);
 
       this.yScale
@@ -150,7 +151,8 @@ var VisDispersion = Class.extend({
           .enter()
         .append('circle')
           .attr('class', function(d, i) { return 'dot x' + d.codigo; }.bind(this))
-          .attr('cx', function(d) { return this.xScale(Math.log(d.population)); }.bind(this))
+          // .attr('cx', function(d) { return this.xScale(Math.log(d.total)); }.bind(this))
+          .attr('cx', function(d) { return this.xScale(Math.log(d.total)); }.bind(this))
           .attr('cy', function(d) { return this.yScale(d.per_person); }.bind(this))
           .attr('r', this.radius)
           .attr('fill', function(d) { return this.colorScale(d.cut); }.bind(this))
@@ -184,7 +186,7 @@ var VisDispersion = Class.extend({
           .text('Media'); 
 
       // --> DRAW THE Legend 
-      var svg = d3.select(this.container + " svg");
+      var svg = d3.select(this.container + " svg").attr('height', 10);
 
       svg.append("g")
         .attr("class", "legend_dispersion")
@@ -295,7 +297,7 @@ var VisDispersion = Class.extend({
     
     var text = '<strong>' + selectedData.name + '</strong><br>' + 
               this.niceCategory[this.measure] + ': <strong>' + d3.round(selectedData.per_person, 2) + 
-              '</strong>€<br>' + 'Población: <strong>' + accounting.formatNumber(selectedData.population, 0);
+              '</strong>€<br>' + 'Gasto total: <strong>' + accounting.formatNumber(selectedData.total, 0);
 
     this.svgDispersion.selectAll('.dot.' + selectedClass[1])
       .transition()
