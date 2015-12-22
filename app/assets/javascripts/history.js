@@ -5,13 +5,15 @@ $(function () {
   Cookies.defaults.path = '/';
 
   function storeVisit(){
-    if($('[data-no-track]').length != 0) { return; }
+    var $trackUrl = $('[data-track-url]');
+    if($trackUrl.length == 0) { return; }
 
     var places = Cookies.get('places');
 
     if(places === undefined) { places = []; }
 
-    var placeInformation = $('h1').text() + '|' + window.location.pathname;
+    var placeInformation = $('h1').text() + '|' + $trackUrl.data('track-url');
+    console.log(placeInformation);
 
     if (places.indexOf(placeInformation) == -1){
       places.push(placeInformation);
@@ -38,19 +40,14 @@ $(function () {
         var placeInformation = places[i].split('|');
         var placeName = placeInformation[0];
         var placeURL = placeInformation[1];
-        $listElements.push('<li><a href="' + placeURL + '">' + placeName + '</a></li>');
-        $('.history_default').hide();
+        $listElements.push('<li><a href=' + placeURL + '>' + placeName + '</a></li>');
       }
       $listElements.reverse();
-      var $list = $('<ul/>', {
-        html: $listElements.join("\n")
-      });
 
-      $history.html($list);
+      $history.html($listElements.join("\n"));
     }
   }
 
   storeVisit();
   renderHistory();
-
 });

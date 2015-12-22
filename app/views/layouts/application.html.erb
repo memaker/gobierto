@@ -27,7 +27,7 @@
   <meta name="theme-color" content="#ffffff">
 
 </head>
-<body <%= 'data-no-track' if @place.nil? %>>
+<body <%= %Q{data-track-url="#{place_path(@place, 2015)}"} if @place %>>
 
 <div class="top-claim">
   <p>¿Interesado en herramientas de análisis presupuestario para Municipios? </p>
