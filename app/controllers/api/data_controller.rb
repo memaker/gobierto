@@ -120,13 +120,17 @@ class Api::DataController < ApplicationController
     @kind = params[:kind]
     @code = params[:code]
 
-    result = SearchEngine.client.get index: BudgetLine::INDEX, type: @area, id: [params[:ine_code],@year,@code,@kind].join('/')
-    amount = result['_source']['amount'].to_f
+    begin
+      result = SearchEngine.client.get index: BudgetLine::INDEX, type: @area, id: [params[:ine_code],@year,@code,@kind].join('/')
+      amount = result['_source']['amount'].to_f
 
-    result = SearchEngine.client.get index: BudgetLine::INDEX, type: 'total-budget', id: [params[:ine_code], @year].join('/')
-    total_amount = result['_source']['total_budget'].to_f
+      result = SearchEngine.client.get index: BudgetLine::INDEX, type: 'total-budget', id: [params[:ine_code], @year].join('/')
+      total_amount = result['_source']['total_budget'].to_f
 
-    percentage = (amount.to_f * 100)/total_amount
+      percentage = (amount.to_f * 100)/total_amount
+    rescue Elasticsearch::Transport::Transport::Errors::NotFound
+      percentage = 0
+    end
 
     respond_to do |format|
       format.json do
@@ -145,8 +149,12 @@ class Api::DataController < ApplicationController
     @code = params[:code]
     @place = INE::Places::Place.find(params[:ine_code])
 
-    result = SearchEngine.client.get index: BudgetLine::INDEX, type: @area, id: [params[:ine_code],@year,@code,@kind].join('/')
-    amount = result['_source']['amount'].to_f
+    begin
+      result = SearchEngine.client.get index: BudgetLine::INDEX, type: @area, id: [params[:ine_code],@year,@code,@kind].join('/')
+      amount = result['_source']['amount'].to_f
+    rescue Elasticsearch::Transport::Transport::Errors::NotFound
+      amount = 0
+    end
 
     query = {
       query: {
@@ -229,10 +237,15 @@ class Api::DataController < ApplicationController
       position = 0
     end
 
-    value = SearchEngine.client.get index: BudgetLine::INDEX, type: @area, id: id
+    begin
+      value = SearchEngine.client.get index: BudgetLine::INDEX, type: @area, id: id
+      value = value['_source'][field]
+    rescue Elasticsearch::Transport::Transport::Errors::NotFound
+      value = 0
+    end
 
     return {
-      value: value['_source'][field],
+      value: value,
       position: position,
       total_elements: buckets.length
     }
@@ -273,10 +286,15 @@ class Api::DataController < ApplicationController
       position = 0
     end
 
-    value = SearchEngine.client.get index: BudgetLine::INDEX, type: 'total-budget', id: id
+    begin
+      value = SearchEngine.client.get index: BudgetLine::INDEX, type: 'total-budget', id: id
+      value = value['_source'][field]
+    rescue Elasticsearch::Transport::Transport::Errors::NotFound
+      value = 0
+    end
 
     return {
-      value: value['_source'][field],
+      value: value,
       position: position,
       total_elements: buckets.length
     }
