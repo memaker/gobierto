@@ -80,7 +80,7 @@ class Api::DataController < ApplicationController
     respond_to do |format|
       format.json do
         render json: {
-          title: @category_name,
+          title: ActionController::Base.helpers.truncate(@category_name, length: 35),
           value: format_currency(budget_data[:value]),
           delta_percentage: helpers.number_with_precision(delta_percentage(budget_data[:value], budget_data_previous_year[:value]), precision: 2),
           ranking_position: budget_data[:position],
