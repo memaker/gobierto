@@ -149,4 +149,41 @@ $(function(){
     sibs.siblings('.child_group').remove();
   });
 
+  if($('#income-treemap').length > 0){
+    window.incomeTreemap = new TreemapVis('#income-treemap', 'small', false);
+    window.incomeTreemap.render($('#income-treemap').data('economic-url'));
+  }
+
+  if($('#expense-treemap').length > 0){
+    window.expenseTreemap = new TreemapVis('#expense-treemap', 'small', false);
+    window.expenseTreemap.render($('#expense-treemap').data('economic-url'));
+  }
+
+  if($('#lines_chart').length > 0){
+    var visLineasJ = new VisLineasJ('#lines_chart', '#lines_tooltip', 'total_budget');
+    visLineasJ.render($('[data-line-widget-url].selected').data('line-widget-url'));
+
+    $('[data-line-widget-url]').on('click', function(e){
+      e.preventDefault();
+      visLineasJ.measure = $(this).data('line-widget-type');
+      visLineasJ.render($(this).data('line-widget-url'));
+    });
+  }
+
+  if($('#treemap').length > 0){
+    window.treemap = new TreemapVis('#treemap', 'big', true);
+    window.treemap.render($('#treemap').data('url'));
+
+    // Move to income/expenses page
+    $(document).on('click', '.treemap_node', function(e){
+      e.preventDefault();
+      var url = $(this).data('url');
+      var treemapId = $(this).parents('.graph').attr('id');
+      window.treemap.render(url);
+      // TODO: url shouldn't have the format json
+      var parts = url.split('?');
+      url = parts[0].split('.')[0] + parts[1];
+      $.ajax({ url: url, dataType: 'script' });
+    });
+  }
 });
