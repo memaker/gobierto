@@ -216,6 +216,13 @@ $(function(){
     $(this).find('.del_item').velocity("fadeOut", { duration: 0 });
   });
 
+  $('th.location').hover(function(e) {
+    e.preventDefault();
+    $(this).find('.remove').velocity("fadeIn", { duration: 100 });
+  }, function(e) {
+    $(this).find('.remove').velocity("fadeOut", { duration: 100 });
+  });
+
   window.widgets = [];    
   $('[data-widget-type]').each(function(){   
     window.widgets.push(new WidgetRenderer({   
