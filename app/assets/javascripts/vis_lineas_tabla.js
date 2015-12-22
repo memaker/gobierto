@@ -82,17 +82,17 @@ var VisLineasJ = Class.extend({
       .append('g')
         .attr('transform', 'translate(' + this.margin.left + ',' + this.margin.top + ')');
 
-    this.svgTable = d3.select(this.tableContainer).append('svg')
-        .attr('width', this.tableWidth)
-        .attr('height', this.height + this.margin.top + this.margin.bottom)
-        .attr('class', 'svg_table')
-      .append('g')
-        .attr('transform', 'translate(' + this.margin.left + ',' + this.margin.top + ')');
+    // this.svgTable = d3.select(this.tableContainer).append('svg')
+    //     .attr('width', this.tableWidth)
+    //     .attr('height', this.height + this.margin.top + this.margin.bottom)
+    //     .attr('class', 'svg_table')
+    //   .append('g')
+    //     .attr('transform', 'translate(' + this.margin.left + ',' + this.margin.top + ')');
 
-     // Append tooltip
-    this.tooltip = this.svgTable.append('div')
-      .attr('class', 'vis_lineas_j_tooltip')
-      .style('opacity', 1);
+    //  // Append tooltip
+    // this.tooltip = this.svgTable.append('div')
+    //   .attr('class', 'vis_lineas_j_tooltip')
+    //   .style('opacity', 1);
 
     // Set nice category
     this.niceCategory = {
@@ -237,91 +237,192 @@ var VisLineasJ = Class.extend({
       
       // --> DRAW THE 'TABLE'
 
+      
       // Set columns and rows
-      var columns = {
-        "color": 0,
-        "name": 0.05,
-        "value": 0.6,
-        "dif": 0.8
-      }
+      var columns = ['color', 'name', 'value', 'dif']
 
       var rows = this.colorScale.domain();
       rows.push('header')
 
+      var colors = {
+        'mean_province': 'province',
+        'mean_autonomy': 'com',
+        'mean_national': 'country'
+
+      }
       // Set scales
 
       this.yScaleTable.domain(rows).rangeRoundBands([this.height, 0]);
       this.xScaleTable.domain([0,1]).range([0, this.tableWidth]);
 
-      // Draw elemnts
-      this.svgTable.selectAll('.legend_header')
-          .data(this.dataChart)
-          .enter().append("foreignObject")
-              .attr('class', function(d) { return 'legend_header ' + d.name; })
-              .attr('width',this.yScaleTable.rangeBand())
-              .attr('height', this.yScaleTable.rangeBand())
-              .attr('dx', 0)
-              .attr('dy', 0)
-              .attr('transform', 'translate(' + this.xScaleTable(.62) + ',' + 0 + ')')
-              .style('fill', this.darkGrey)
-              .style('text-align', 'right')
-              .style('color', this.darkGrey)
-              .html('CAMBIO SOBRE EL AÑO ANTERIOR');
+      var table = d3.select(this.tableContainer).append('table'),
+        thead = table.append('thead'),
+        tbody = table.append('tbody');
 
-      this.svgTable.selectAll('.legend_bullet')
+
+    // append the header row
+    thead.append("tr")
+        .selectAll("th")
+        .data(columns)
+        .enter()
+        .append("th")
+        .attr('title', function(column) { return column; })
+        .attr('class', function(column) { return column != 'dif' ? '' : 'right per_change'; })
+            .text(function(column) { return column != 'dif' ? '' : 'Cambio sobre año anterior'; });
+
+    // create a row for each object in the data
+    var rows = tbody.selectAll("tr")
         .data(this.dataChart)
-        .enter().append('circle')
-            .attr('class', function(d) { return 'legend_bullet ' + d.name; })
-            .attr('cx', this.xScaleTable(columns['color']))
-            .attr('cy', function(d) { return this.yScaleTable(d.name) - (this.radius / 2); }.bind(this))
-            .attr('r', this.radius)
-            .style('fill',function(d) { return this.colorScale(d.name); }.bind(this));
+        .enter()
+        .append("tr");
 
-      this.svgTable.selectAll('.legend_name')
-          .data(this.dataChart)
-          .enter().append('text')
-              .attr('class', function(d) { return 'legend_name ' + d.name; })
-              .attr('x', this.xScaleTable(columns['name']))
-              .attr('y', function(d) { return this.yScaleTable(d.name); }.bind(this))
-              .attr('dx', 0)
-              .attr('dy', 0)
-              .attr('text-anchor', 'start')
-              .style('fill', this.darkGrey)
-              .text(function(d) { return d.name.match(/^mean_/) != null ? this.niceCategory[d.name] : d.name; }.bind(this));
-
-      this.svgTable.selectAll('.legend_value')
-          .data(this.dataChart)
-          .enter().append('text')
-              .attr('class', function(d) { return 'legend_value ' + d.name; })
-              .attr('x', this.xScaleTable(columns['value']))
-              .attr('y', function(d) { return this.yScaleTable(d.name); }.bind(this))
-              .attr('dx', 0)
-              .attr('dy', 0)
-              .attr('text-anchor', 'end')
-              .style('fill', this.darkGrey)
-              .text(function(d) { 
-                var filterValues = d.values.filter(function(v) { 
+    // create a cell in each row for each column
+    var cells = rows.selectAll("td")
+        .data(function(row) {
+            
+          var a = row.values.filter(function(v) { 
                   return v.date.getFullYear() == this.dataYear.getFullYear();
-                }.bind(this));
-                return this.formatPercent(filterValues[0].value) + this._units(); 
-              }.bind(this));
+                }.bind(this))
+          a.map(function(d) { return colors[d.name] != undefined ? d['color']= 'le le-' + colors[d.name] : 'le le-place'; }) 
+          return columns.map(function(column) {
+              if (column == 'name') {
+                var value = this.niceCategory[a[0][column]] != undefined ? this.niceCategory[a[0][column]] : a[0][column]
+              } else if (column == 'value') {
+                var value = this.formatPercent(a[0][column])
+                var classed = 'right'
+              } else if (column == 'dif') {
+                var value = a[0][column]
+                var classed = 'right'
+              } else {
+                var value = a[0][column]
+              }
+              return {column: column, 
+                      value: value, 
+                      name: a[0].name,
+                      classed: classed
+                    };
+          }.bind(this));
+        }.bind(this))
+        .enter()
+        .append("td")
+        .attr('class', function(d) { return d.classed ; })
+        .html(function(d, i) {return i != 0 ? d.value : '<i class="' + d.value + '"></i>'; }.bind(this));
 
-       this.svgTable.selectAll('.legend_dif')
-          .data(this.dataChart)
-          .enter().append('text')
-              .attr('class', function(d) { return 'legend_dif ' + d.name; })
-              .attr('x', this.xScaleTable(columns['dif']))
-              .attr('y', function(d) { return this.yScaleTable(d.name); }.bind(this))
-              .attr('dx', 0)
-              .attr('dy', 0)
-              .attr('text-anchor', 'end')
-              .style('fill', this.darkGrey)
-              .text(function(d) { 
-                var filterValues = d.values.filter(function(v) { 
-                  return v.date.getFullYear() == this.dataYear.getFullYear();
-                }.bind(this));
-                return filterValues[0].dif > 0 ? '+' + this.formatPercent(filterValues[0].dif) + this._units() : this.formatPercent(filterValues[0].dif) + this._units(); 
-              }.bind(this));
+        d3.selectAll('.le')
+        .style('background', function(d) {console.log(d); return this.colorScale(d.name); }.bind(this));
+
+
+      // <table>
+      // <tr>
+      //   <th title="Municipio"></th>
+      //   <th title="Gasto Total"></th>
+      //   <th class="right per_change">Cambio sobre año anterior</th> 
+      // </tr>
+      // <tr>
+      //   <td>
+      //     <i class="le le-place"></i>
+      //     El Puerto de Santa María
+      //   </td>
+      //   <td class="right">1.234,45 €</td>
+      //   <td class="right">+3,54%</td>
+      // </tr>
+      // <tr>
+      //   <td>
+      //     <i class="le le-province"></i>
+      //     Media provincia
+      //   </td>
+      //   <td class="right">1.234,45 €</td>
+      //   <td class="right">+3,54%</td>
+      // </tr>
+      // <tr>
+      //   <td>
+      //     <i class="le le-com"></i>
+      //     Media CCAA
+      //   </td>
+      //   <td class="right">1.234,45 €</td>
+      //   <td class="right">+3,54%</td>
+      // </tr>
+      // <tr>
+      //   <td>
+      //     <i class="le le-country"></i>
+      //     Media España
+      //   </td>
+      //   <td class="right">1.234,45 €</td>
+      //   <td class="right">+3,54%</td>
+      // </tr>
+      // </table>
+
+
+      
+      // // Draw elemnts
+      // this.svgTable.selectAll('.legend_header')
+      //     .data(this.dataChart)
+      //     .enter().append("foreignObject")
+      //         .attr('class', function(d) { return 'legend_header ' + d.name; })
+      //         .attr('width',this.yScaleTable.rangeBand())
+      //         .attr('height', this.yScaleTable.rangeBand())
+      //         .attr('dx', 0)
+      //         .attr('dy', 0)
+      //         .attr('transform', 'translate(' + this.xScaleTable(.62) + ',' + 0 + ')')
+      //         .style('fill', this.darkGrey)
+      //         .style('text-align', 'right')
+      //         .style('color', this.darkGrey)
+      //         .html('CAMBIO SOBRE EL AÑO ANTERIOR');
+
+      // this.svgTable.selectAll('.legend_bullet')
+      //   .data(this.dataChart)
+      //   .enter().append('circle')
+      //       .attr('class', function(d) { return 'legend_bullet ' + d.name; })
+      //       .attr('cx', this.xScaleTable(columns['color']))
+      //       .attr('cy', function(d) { return this.yScaleTable(d.name) - (this.radius / 2); }.bind(this))
+      //       .attr('r', this.radius)
+      //       .style('fill',function(d) { return this.colorScale(d.name); }.bind(this));
+
+      // this.svgTable.selectAll('.legend_name')
+      //     .data(this.dataChart)
+      //     .enter().append('text')
+      //         .attr('class', function(d) { return 'legend_name ' + d.name; })
+      //         .attr('x', this.xScaleTable(columns['name']))
+      //         .attr('y', function(d) { return this.yScaleTable(d.name); }.bind(this))
+      //         .attr('dx', 0)
+      //         .attr('dy', 0)
+      //         .attr('text-anchor', 'start')
+      //         .style('fill', this.darkGrey)
+      //         .text(function(d) { return d.name.match(/^mean_/) != null ? this.niceCategory[d.name] : d.name; }.bind(this));
+
+      // this.svgTable.selectAll('.legend_value')
+      //     .data(this.dataChart)
+      //     .enter().append('text')
+      //         .attr('class', function(d) { return 'legend_value ' + d.name; })
+      //         .attr('x', this.xScaleTable(columns['value']))
+      //         .attr('y', function(d) { return this.yScaleTable(d.name); }.bind(this))
+      //         .attr('dx', 0)
+      //         .attr('dy', 0)
+      //         .attr('text-anchor', 'end')
+      //         .style('fill', this.darkGrey)
+      //         .text(function(d) { 
+      //           var filterValues = d.values.filter(function(v) { 
+      //             return v.date.getFullYear() == this.dataYear.getFullYear();
+      //           }.bind(this));
+      //           return this.formatPercent(filterValues[0].value) + this._units(); 
+      //         }.bind(this));
+
+      //  this.svgTable.selectAll('.legend_dif')
+      //     .data(this.dataChart)
+      //     .enter().append('text')
+      //         .attr('class', function(d) { return 'legend_dif ' + d.name; })
+      //         .attr('x', this.xScaleTable(columns['dif']))
+      //         .attr('y', function(d) { return this.yScaleTable(d.name); }.bind(this))
+      //         .attr('dx', 0)
+      //         .attr('dy', 0)
+      //         .attr('text-anchor', 'end')
+      //         .style('fill', this.darkGrey)
+      //         .text(function(d) { 
+      //           var filterValues = d.values.filter(function(v) { 
+      //             return v.date.getFullYear() == this.dataYear.getFullYear();
+      //           }.bind(this));
+      //           return filterValues[0].dif > 0 ? '+' + this.formatPercent(filterValues[0].dif) + this._units() : this.formatPercent(filterValues[0].dif) + this._units(); 
+      //         }.bind(this));
 
 
     }.bind(this)); // end load data
