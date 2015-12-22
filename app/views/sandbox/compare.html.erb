@@ -23,8 +23,12 @@
     <%= link_to 'Candeleda' %>
     <%= link_to 'X', '', class: 'remove tipsit', title: 'Eliminar de la comparación' %>
   </th>
-  <th class="location">
-    <%= link_to '+', '', class: 'add tipsit-e', title: 'Añadir otro municipio' %>
+  <th class="location add_location_cont">
+    <%= link_to '+', '', class: 'add', title: 'Añadir otro municipio' %>
+    <div class="add_location">
+      Añade otro municipio: 
+      <input type="text">
+    </div>
   </th>
 </thead>
 <tbody>

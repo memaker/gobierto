@@ -223,6 +223,18 @@ $(function(){
     $(this).find('.remove').velocity("fadeOut", { duration: 100 });
   });
 
+  $('th.add_location_cont').click(function(e) {
+    e.preventDefault();
+    $('.add_location input').focus();
+  });
+
+  $('th.add_location_cont').hover(function(e) {
+    $('.add_location input').focus();
+    $(this).find('.add_location').velocity("fadeIn", { duration: 100 });
+  }, function(e) {
+    $(this).find('.add_location ').velocity("fadeOut", { duration: 100 });
+  });
+
   window.widgets = [];    
   $('[data-widget-type]').each(function(){   
     window.widgets.push(new WidgetRenderer({   

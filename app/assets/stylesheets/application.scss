@@ -480,6 +480,20 @@ table {
       line-height: 21px;
       display: inline-block;
     }
+    .add_location {
+      position: absolute;
+      @include box-shadow(0, 3px, 20px);
+      @include border-radius(3px);
+      width: 200px;
+      padding: 1em;
+      right: 0;
+      background: #FFF;
+      line-height: 24px;
+      display: none;
+      input {
+        width: 150px;
+      }
+    }
 
   }
   th:last-child {
