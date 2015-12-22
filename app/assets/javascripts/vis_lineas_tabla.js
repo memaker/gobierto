@@ -84,18 +84,6 @@ var VisLineasJ = Class.extend({
       .append('g')
         .attr('transform', 'translate(' + this.margin.left + ',' + this.margin.top + ')');
 
-    // this.svgTable = d3.select(this.tableContainer).append('svg')
-    //     .attr('width', this.tableWidth)
-    //     .attr('height', this.height + this.margin.top + this.margin.bottom)
-    //     .attr('class', 'svg_table')
-    //   .append('g')
-    //     .attr('transform', 'translate(' + this.margin.left + ',' + this.margin.top + ')');
-
-    //  // Append tooltip
-    // this.tooltip = this.svgTable.append('div')
-    //   .attr('class', 'vis_lineas_j_tooltip')
-    //   .style('opacity', 1);
-
     // Set nice category
     this.niceCategory = {
       "Actuaciones de carácter general": "Actuaciones Generales",
@@ -303,10 +291,10 @@ var VisLineasJ = Class.extend({
 
                 } else if (column == 'value') {
                   var value = accounting.formatMoney(filterValues[0][column])
-                  var classed = 'right ' + this._normalize(filterValues[0].name)
+                  var classed = 'value right ' + this._normalize(filterValues[0].name)
                 } else if (column == 'dif') {
                   var value = filterValues[0][column] < 0 ? filterValues[0][column] + '%' : '+' +filterValues[0][column] + '%'
-                  var classed = 'right ' + this._normalize(filterValues[0].name)
+                  var classed = 'dif right ' + this._normalize(filterValues[0].name)
                 } else {
                   var value = filterValues[0][column]
                   var classed = this._normalize(filterValues[0].name)
@@ -333,161 +321,114 @@ var VisLineasJ = Class.extend({
             }); 
           });
 
-
-
-      
-
-
-      // <table>
-      // <tr>
-      //   <th title="Municipio"></th>
-      //   <th title="Gasto Total"></th>
-      //   <th class="right per_change">Cambio sobre año anterior</th> 
-      // </tr>
-      // <tr>
-      //   <td>
-      //     <i class="le le-place"></i>
-      //     El Puerto de Santa María
-      //   </td>
-      //   <td class="right">1.234,45 €</td>
-      //   <td class="right">+3,54%</td>
-      // </tr>
-      // <tr>
-      //   <td>
-      //     <i class="le le-province"></i>
-      //     Media provincia
-      //   </td>
-      //   <td class="right">1.234,45 €</td>
-      //   <td class="right">+3,54%</td>
-      // </tr>
-      // <tr>
-      //   <td>
-      //     <i class="le le-com"></i>
-      //     Media CCAA
-      //   </td>
-      //   <td class="right">1.234,45 €</td>
-      //   <td class="right">+3,54%</td>
-      // </tr>
-      // <tr>
-      //   <td>
-      //     <i class="le le-country"></i>
-      //     Media España
-      //   </td>
-      //   <td class="right">1.234,45 €</td>
-      //   <td class="right">+3,54%</td>
-      // </tr>
-      // </table>
-
-
-
     }.bind(this)); // end load data
   }, // end render
 
-  updateRender: function () {
-    // re-define format percent
-    this.formatPercent = this.measure == 'percentage' ? d3.format('%') : d3.format(".0f");
+  // updateRender: function () {
+  //   // re-define format percent
+  //   this.formatPercent = this.measure == 'percentage' ? d3.format('%') : d3.format(".0f");
 
-    // re-map the data
-    this.dataChart = this.data.budgets[this.measure];
-    this.kind = this.data.kind;
-    this.dataYear = this.parseDate(this.data.year);
+  //   // re-map the data
+  //   this.dataChart = this.data.budgets[this.measure];
+  //   this.kind = this.data.kind;
+  //   this.dataYear = this.parseDate(this.data.year);
 
-    this.dataDomain = [d3.min(this.dataChart.map(function(d) { return d3.min(d.values.map(function(v) { return v.value; })); })), 
-              d3.max(this.dataChart.map(function(d) { return d3.max(d.values.map(function(v) { return v.value; })); }))];
+  //   this.dataDomain = [d3.min(this.dataChart.map(function(d) { return d3.min(d.values.map(function(v) { return v.value; })); })), 
+  //             d3.max(this.dataChart.map(function(d) { return d3.max(d.values.map(function(v) { return v.value; })); }))];
 
-    // Update the scales
-    this.xScale
-      .domain(d3.extent(this.dataChart[0].values, function(d) { return d.date; }));
+  //   // Update the scales
+  //   this.xScale
+  //     .domain(d3.extent(this.dataChart[0].values, function(d) { return d.date; }));
 
-    this.yScale
-      .domain([this.dataDomain[0] * .3, this.dataDomain[1] * 1.2]);
+  //   this.yScale
+  //     .domain([this.dataDomain[0] * .3, this.dataDomain[1] * 1.2]);
 
-    this.colorScale
-      .domain(this.dataChart.map(function(d) { return d.name; }));
+  //   this.colorScale
+  //     .domain(this.dataChart.map(function(d) { return d.name; }));
 
-    // Update the axis
-    this.xAxis.scale(this.xScale);
+  //   // Update the axis
+  //   this.xAxis.scale(this.xScale);
  
-    this.yAxis
-        .scale(this.yScale)
-        .tickValues(this._tickValues(this.yScale))
-        .tickFormat(this.formatPercent)
+  //   this.yAxis
+  //       .scale(this.yScale)
+  //       .tickValues(this._tickValues(this.yScale))
+  //       .tickFormat(this.formatPercent)
 
-    this.svgLines.select(".x.axis")
-      .transition()
-      .duration(this.duration)
-      .delay(this.duration/2)
-      .ease("sin-in-out") 
-      .call(this.xAxis);
+  //   this.svgLines.select(".x.axis")
+  //     .transition()
+  //     .duration(this.duration)
+  //     .delay(this.duration/2)
+  //     .ease("sin-in-out") 
+  //     .call(this.xAxis);
 
-    this.svgLines.select(".y.axis")
-      .transition()
-      .duration(this.duration)
-      .delay(this.duration/2)
-      .ease("sin-in-out") 
-      .call(this.yAxis);
+  //   this.svgLines.select(".y.axis")
+  //     .transition()
+  //     .duration(this.duration)
+  //     .delay(this.duration/2)
+  //     .ease("sin-in-out") 
+  //     .call(this.yAxis);
 
-    // Change ticks color
-    d3.selectAll('.axis').selectAll('text')
-      .attr('fill', this.darkGrey);
+  //   // Change ticks color
+  //   d3.selectAll('.axis').selectAll('text')
+  //     .attr('fill', this.darkGrey);
 
-    d3.selectAll('.axis').selectAll('path')
-      .attr('stroke', this.darkGrey);
+  //   d3.selectAll('.axis').selectAll('path')
+  //     .attr('stroke', this.darkGrey);
 
-    // Update lines
-    this.svgLines.selectAll('.evolution_line')
-      .data(this.dataChart)
-      .transition()
-      .duration(this.duration)
-      .attr('d', function(d) { return this.line(d.values); }.bind(this))
-      .style('stroke', function(d) { return this.colorScale(d.name); }.bind(this));
+  //   // Update lines
+  //   this.svgLines.selectAll('.evolution_line')
+  //     .data(this.dataChart)
+  //     .transition()
+  //     .duration(this.duration)
+  //     .attr('d', function(d) { return this.line(d.values); }.bind(this))
+  //     .style('stroke', function(d) { return this.colorScale(d.name); }.bind(this));
 
-    // Update the points
-    this.svgLines.selectAll(".dots")
-        .data(this.dataChart)
-      .selectAll(".dot_line")
-        .data(function(d) { return d.values; })
-        .transition()
-        .duration(this.duration)
-        .attr('cx', function(d) { return this.xScale(d.date); }.bind(this))
-        .attr('cy', function(d) { return this.yScale(d.value); }.bind(this));
+  //   // Update the points
+  //   this.svgLines.selectAll(".dots")
+  //       .data(this.dataChart)
+  //     .selectAll(".dot_line")
+  //       .data(function(d) { return d.values; })
+  //       .transition()
+  //       .duration(this.duration)
+  //       .attr('cx', function(d) { return this.xScale(d.date); }.bind(this))
+  //       .attr('cy', function(d) { return this.yScale(d.value); }.bind(this));
     
-    // Update table figures
-    this.svgTable.selectAll('.legend_value')
-        .data(this.dataChart)
-        .text(function(d) { 
-          var filterValues = d.values.filter(function(v) { 
-            return v.date.getFullYear() == this.dataYear.getFullYear();
-          }.bind(this));
-          return this.formatPercent(filterValues[0].value) + this._units(); 
-        }.bind(this))
-        .transition()
-          .duration(this.duration/4)
-          .style('font-size', '12px')
-          .style('font-weight', '600')
-        .transition()
-          .duration(this.duration/4)
-          .style('font-size', '10px')
-          .style('font-weight', '300');
+  //   // Update table figures
+  //   this.svgTable.selectAll('.legend_value')
+  //       .data(this.dataChart)
+  //       .text(function(d) { 
+  //         var filterValues = d.values.filter(function(v) { 
+  //           return v.date.getFullYear() == this.dataYear.getFullYear();
+  //         }.bind(this));
+  //         return this.formatPercent(filterValues[0].value) + this._units(); 
+  //       }.bind(this))
+  //       .transition()
+  //         .duration(this.duration/4)
+  //         .style('font-size', '12px')
+  //         .style('font-weight', '600')
+  //       .transition()
+  //         .duration(this.duration/4)
+  //         .style('font-size', '10px')
+  //         .style('font-weight', '300');
 
 
-     this.svgTable.selectAll('.legend_dif')
-        .data(this.dataChart)
-        .text(function(d) { 
-          var filterValues = d.values.filter(function(v) { 
-            return v.date.getFullYear() == this.dataYear.getFullYear();
-          }.bind(this));
-          return filterValues[0].dif > 0 ? '+' + this.formatPercent(filterValues[0].dif) + this._units() : this.formatPercent(filterValues[0].dif) + this._units(); 
-        }.bind(this))
-        .transition()
-          .duration(this.duration/4)
-          .style('font-size', '12px')
-          .style('font-weight', '600')
-        .transition()
-          .duration(this.duration/4)
-          .style('font-size', '10px')
-          .style('font-weight', '300');
-  },
+  //    this.svgTable.selectAll('.legend_dif')
+  //       .data(this.dataChart)
+  //       .text(function(d) { 
+  //         var filterValues = d.values.filter(function(v) { 
+  //           return v.date.getFullYear() == this.dataYear.getFullYear();
+  //         }.bind(this));
+  //         return filterValues[0].dif > 0 ? '+' + this.formatPercent(filterValues[0].dif) + this._units() : this.formatPercent(filterValues[0].dif) + this._units(); 
+  //       }.bind(this))
+  //       .transition()
+  //         .duration(this.duration/4)
+  //         .style('font-size', '12px')
+  //         .style('font-weight', '600')
+  //       .transition()
+  //         .duration(this.duration/4)
+  //         .style('font-size', '10px')
+  //         .style('font-weight', '300');
+  // },
 
   //PRIVATE
   _tickValues:  function (scale) {
@@ -503,53 +444,27 @@ var VisLineasJ = Class.extend({
         selectedCx = d3.select(selected).attr('cx'),
         selectedCy = d3.select(selected).attr('cy');
 
-    var tooltipData = {};
-
-    this.dataChart.map(function(d, i) { 
-      d.values.map(function(v) { 
-        if ('x' + v.date.getFullYear() == selectedClass[2]) {
-          if (i != 3) {
-            tooltipData[v.name] = v.value
-          } else {
-            tooltipData['municipio'] = v.name;
-            tooltipData['municipio_value'] = v.value;
-          } 
-        }
-      }); 
+    var filterValues = this.dataChart.map(function(d, i) { 
+      return d.values.filter(function(v) { 
+        return v.date.getFullYear() == selectedData.date.getFullYear();
+      })[0];
     });
 
     // Update table figures
-    this.svgTable.selectAll('.legend_value')
-            .text(function(d) { 
-              var filterValues = d.values.filter(function(v) { 
-                return v.date.getFullYear() == selectedData.date.getFullYear();
-              }.bind(this));
-              return this.formatPercent(filterValues[0].value) + this._units(); 
-            }.bind(this))
-            .transition()
-              .duration(this.duration/4)
-              .style('font-size', '12px')
-              .style('font-weight', '600')
-            .transition()
-              .duration(this.duration/4)
-              .style('font-size', '10px')
-              .style('font-weight', '300');
 
-     this.svgTable.selectAll('.legend_dif')
-            .text(function(d) { 
-              var filterValues = d.values.filter(function(v) { 
-                return v.date.getFullYear() == selectedData.date.getFullYear();
-              }.bind(this));
-              return filterValues[0].dif > 0 ? '+' + this.formatPercent(filterValues[0].dif) + this._units() : this.formatPercent(filterValues[0].dif) + this._units(); 
-            }.bind(this))
-            .transition()
-              .duration(this.duration/4)
-              .style('font-size', '12px')
-              .style('font-weight', '600')
-            .transition()
-              .duration(this.duration/4)
-              .style('font-size', '10px')
-              .style('font-weight', '300');
+    d3.selectAll('.value')
+      .text(function(d) { 
+        var newValue = filterValues.filter(function(value) { return value.name == d.name; })
+        d.value = newValue[0].value
+        return accounting.formatMoney(d.value); 
+      });
+
+    d3.selectAll('.dif')
+      .text(function(d) { 
+        var newValue = filterValues.filter(function(dif) { return dif.name == d.name; })
+        d.dif = newValue[0].dif
+        return d.dif <= 0 ? d.dif + '%' : '+' + d.dif + '%'; 
+      });
 
 
     // Append vertical line
@@ -565,7 +480,7 @@ var VisLineasJ = Class.extend({
 
     this.svgLines.selectAll('.v_line')
         .transition()
-        .duration(this.duration)
+        .duration(this.duration/3)
         .attr('y1', function(d, i) { return i == 0 ? this.margin.top : selectedCy; }.bind(this))
         .attr('y2', function(d, i) { return i == 0 ? selectedCy : this.height; }.bind(this));
 
@@ -594,8 +509,6 @@ var VisLineasJ = Class.extend({
         selectedData = d3.select(selected).data()[0],
         selectedCx = d3.select(selected).attr('cx'),
         selectedCy = d3.select(selected).attr('cy');
-
-    var text = 'pepe fúe a la playa'
 
     this.svgLines.selectAll('.v_line')
         .transition()
