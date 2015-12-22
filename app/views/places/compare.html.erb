@@ -1,0 +1,49 @@
+
+<header class="place">
+  <h1>Compara</h1>
+  
+</header>
+
+<table class="comparison_table" cellspacing="0" cellpadding="0">
+<thead>
+  <th colspan="2"></th>
+  <% @places.each do |place| %>
+  <th class="location">
+    <%= link_to place.name, place_path(place.slug, @year) %>
+    <%= link_to 'X', '', class: 'remove tipsit', title: 'Eliminar de la comparación' %>
+  </th>
+  <% end %>
+  <th class="location add_location_cont">
+    <%= link_to '+', '', class: 'add', title: 'Añadir otro municipio' %>
+    <div class="add_location">
+      Añade otro municipio: 
+      <input type="text">
+    </div>
+  </th>
+</thead>
+<tbody>
+  <% @budgets_compared.group_by {|bl| bl['code'] }.each do |code, budget_lines| %>
+    <tr>
+      <td class="budget_line"><%= link_to budget_line_denomination(@area_name, code, @kind) %></td>
+      <td class="variable_names">
+        <ul>
+          <li>Total</li>
+          <li>Por Habitante</li>
+          <li>%/total</li>
+        </ul>
+      </td>
+      <% @places.each do |place| %>
+        <td class="variable_values">
+          <% if budget_line = budget_lines.select {|bl| bl['ine_code'] == place.id.to_i }.first %>
+            <ul>
+              <li><%= number_to_currency budget_line['amount'], precision: 0 %></li>
+              <li><%= number_to_currency budget_line['amount_per_inhabitant'], precision: 0 %></li>
+              <li>X %</li>
+            </ul>
+          <% end %>
+        </td>
+      <% end %>
+    </tr>
+  <% end %>
+</tbody>
+</table>
