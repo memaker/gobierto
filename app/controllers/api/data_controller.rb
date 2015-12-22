@@ -1,6 +1,9 @@
 class Api::DataController < ApplicationController
   include ApplicationHelper
 
+  caches_page :total_budget, :population, :total_budget_per_inhabitant, :lines, :budget,
+              :budget_per_inhabitant, :budget_percentage_over_total, :budget_percentage_over_province
+
   def total_budget
     year = params[:year].to_i
     total_budget_data = total_budget_data(year, 'total_budget')
