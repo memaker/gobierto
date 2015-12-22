@@ -98,7 +98,6 @@ var VisDispersion = Class.extend({
         d.population = +d.population;
       });
 
-      console.log(this.data)
       var randomMean = 5320; // Get real mean from the data;
 
 

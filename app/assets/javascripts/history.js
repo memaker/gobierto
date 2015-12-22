@@ -13,7 +13,6 @@ $(function () {
     if(places === undefined) { places = []; }
 
     var placeInformation = $('h1').text() + '|' + $trackUrl.data('track-url');
-    console.log(placeInformation);
 
     if (places.indexOf(placeInformation) == -1){
       places.push(placeInformation);
