@@ -174,16 +174,18 @@ $(function(){
     window.treemap = new TreemapVis('#treemap', 'big', true);
     window.treemap.render($('#treemap').data('url'));
 
-    // Move to income/expenses page
+    // When the treemap is clicked, we extract the URL of the node
+    // and detect which is the link that expands the tree nodes with the
+    // children. That node is clicked, and it triggers the treemap re-rendering
     $(document).on('click', '.treemap_node', function(e){
       e.preventDefault();
       var url = $(this).data('url');
-      var treemapId = $(this).parents('.graph').attr('id');
-      window.treemap.render(url);
-      // TODO: url shouldn't have the format json
+      var parser = document.createElement('a');
+      parser.href = url;
+      url = parser.pathname + parser.search;
       var parts = url.split('?');
-      url = parts[0].split('.')[0] + parts[1];
-      $.ajax({ url: url, dataType: 'script' });
+      url = parts[0].split('.')[0] + '?' + parts[1];
+      $('a[href="'+ url + '"]').click();
     });
   }
 });

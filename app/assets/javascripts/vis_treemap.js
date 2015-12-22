@@ -26,6 +26,7 @@ var TreemapVis = Class.extend({
 
   render: function(urlData) {
     $(this.containerId).html('');
+    $('.treemap_tooltip').remove();
 
     // Append tooltip
     this.tooltip = d3.select('body').append('div')
