@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-
   <% set_meta_tags twitter: { :site => '@gobierto'} %>
   <%= display_meta_tags site: 'Gobierto Presupuestos Municipales', reverse: true %>
 
@@ -28,8 +27,8 @@
   <meta name="msapplication-TileColor" content="#da532c">
   <meta name="msapplication-TileImage" content="<%= asset_path('favicons/mstile-144x144.png') %>">
   <meta name="theme-color" content="#ffffff">
-
 </head>
+
 <body <%= %Q{data-track-url="#{place_path(@place, 2015)}"} if @place %>>
 
 <div class="top-claim">
