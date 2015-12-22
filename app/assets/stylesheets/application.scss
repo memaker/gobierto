@@ -441,7 +441,65 @@ table {
 .soft {
   opacity: .5;
 }
+.comparison_table {
+  ul, li {
+    margin: 0;
+    padding: 0; 
+    list-style-type: none;
+  }
+  th {
+    border-bottom: solid 5px #eaeaea;
+    line-height: 40px;
+    background: none;
+    text-align: center;
+  }
 
+  th:last-child {
+    width: 25px;
+    text-align: center;
+  }
+
+  td {
+    border-bottom: solid 1px #eaeaea;
+    padding-bottom: 14px;
+  }
+
+  th:not(:last-child),
+  td:not(.budget_line):not(:last-child) {
+    border-right:solid 1px #979797;
+  }
+
+  td.budget_line {
+    padding-top:10px;
+    vertical-align: top;
+    width: 16%;   
+  }
+
+  td.variable_names,
+  td.variable_values {
+    padding-top: 10px;
+    padding-right: 10px;
+  }
+
+  td.variable_values {
+    padding-right: 14px;
+  }
+
+  td li {
+    text-align: right;
+    line-height: 18px;
+  }
+
+  td.variable_names li {
+    color:#A49E9F;
+    font-size: 12px;
+  }
+
+  td.variable_values li {
+    color:#767168;
+    font-size: 13px;
+  }
+}
 
 
 /*
@@ -521,6 +579,7 @@ header.sub {
   position: absolute;
   right: 0;
   top: 1.9em;
+  z-index: 10;
   .modal_widget {
     display: inline-block;
     margin: 0 0 0 1em;

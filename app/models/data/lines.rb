@@ -92,7 +92,7 @@ class Data::Lines
     end
 
     result = []
-    data.each do |year, v|
+    data.sort_by{|k,_| k }.each do |year, v|
       result.push({
         date: year.to_s,
         value: v,
@@ -149,7 +149,7 @@ class Data::Lines
     end
 
     result = []
-    data.each do |year, v|
+    data.sort_by{|k,_| k }.each do |year, v|
       result.push({
         date: year.to_s,
         value: v,
@@ -205,7 +205,7 @@ class Data::Lines
     end
 
     result = []
-    data.each do |year, v|
+    data.sort_by{|k,_| k }.each do |year, v|
       result.push({
         date: year.to_s,
         value: v,
