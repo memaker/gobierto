@@ -14,7 +14,7 @@ Rails.application.routes.draw do
 
   get 'search' => 'search#index'
 
-  get '/budget_lines/:slug/:year/:code/:kind' => 'budget_lines#show', as: :budget_line
+  get '/budget_lines/:slug/:year/:code/:kind/:area' => 'budget_lines#show', as: :budget_line
   get '/places/:slug/:year' => 'places#show', as: :place
   get '/places/:slug/:year/:kind/:area' => 'places#budget', as: :place_budget
 
