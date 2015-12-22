@@ -6,20 +6,6 @@ module ApplicationHelper
     end
   end
 
-  def render_children(item, area)
-    children = item.children.all.to_a
-
-    return "" if children.empty?
-
-    "<ul>
-      #{item.children.map do |c|
-        %Q{<li>
-        #{link_to(c.name, '#', data: { 'menu-area' => c.code, 'rel' => area })}
-        #{render_children(c, area)}</li>}
-      end.join("\n")}
-    </ul>".html_safe
-  end
-
   def similar_population_parameters(population)
     r = BudgetFilter.populations.map do |filter|
       array = filter.first.split(' - ').map{|s| s.tr('.','').to_i }
