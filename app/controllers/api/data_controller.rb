@@ -56,7 +56,7 @@ class Api::DataController < ApplicationController
 
   def lines
     @place = INE::Places::Place.find(params[:ine_code])
-    data_line = Data::Lines.new place: @place, year: params[:year], what: params[:what]
+    data_line = Data::Lines.new place: @place, year: params[:year], what: params[:what], kind: params[:kind], code: params[:code], area: params[:area]
 
     respond_to do |format|
       format.json do

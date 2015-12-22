@@ -4,7 +4,14 @@ class Data::Lines
     @variable = @what == 'total_budget' ? 'total_budget' : 'total_budget_per_inhabitant'
     @year = options[:year]
     @place = options[:place]
+    @kind = options[:kind]
     @code = options[:code]
+    @area = options[:area]
+    if @code
+      @variable = @what == 'total_budget' ? 'amount' : 'amount_per_inhabitant'
+      areas = @area == 'economic' ? EconomicArea : FunctionalArea
+      @category_name = areas.all_items[@kind][@code]
+    end
   end
 
   def generate_json
@@ -27,7 +34,7 @@ class Data::Lines
             "values": mean_national
           },
           {
-            name: @place.name,
+            name: @code ? @category_name : @place.name,
             "values": place_values
           }
         ]
@@ -40,6 +47,13 @@ class Data::Lines
   private
 
   def mean_province
+    filters = [ {term: { province_id: @place.province_id }} ]
+
+    if @code
+      filters.push({term: { code: @code }})
+      filters.push({term: { kind: @kind }})
+    end
+
     query = {
       query: {
         filtered: {
@@ -48,9 +62,7 @@ class Data::Lines
           },
           filter: {
             bool: {
-              must: [
-                {term: { province_id: @place.province_id }},
-              ]
+              must: filters
             }
           }
         }
@@ -92,6 +104,13 @@ class Data::Lines
   end
 
   def mean_autonomy
+    filters = [ {term: { autonomy_id: @place.province.autonomous_region.id }} ]
+
+    if @code
+      filters.push({term: { code: @code }})
+      filters.push({term: { kind: @kind }})
+    end
+
     query = {
       query: {
         filtered: {
@@ -100,9 +119,7 @@ class Data::Lines
           },
           filter: {
             bool: {
-              must: [
-                {term: { autonomy_id: @place.province.autonomous_region.id }},
-              ]
+              must: filters
             }
           }
         }
@@ -144,11 +161,22 @@ class Data::Lines
   end
 
   def mean_national
+    filters = []
+    if @code
+      filters.push({term: { code: @code }})
+      filters.push({term: { kind: @kind }})
+    end
+
     query = {
       query: {
         filtered: {
           query: {
             match_all: {}
+          },
+          filter: {
+            bool: {
+              must: filters
+            }
           }
         }
       },
@@ -189,6 +217,13 @@ class Data::Lines
   end
 
   def place_values
+    filters = [ {term: { ine_code: @place.id }} ]
+
+    if @code
+      filters.push({term: { code: @code }})
+      filters.push({term: { kind: @kind }})
+    end
+
     query = {
       sort: [
         { year: { order: 'desc' } }
@@ -200,9 +235,7 @@ class Data::Lines
           },
           filter: {
             bool: {
-              must: [
-                {term: { ine_code: @place.id }}
-              ]
+              must: filters
             }
           }
         }
@@ -226,6 +259,8 @@ class Data::Lines
   def lines_title
     if @code.nil?
       @what == 'total_budget' ? "Gasto total" : "Gasto por habitante"
+    else
+      @what == 'total_budget' ? "#{@category_name}" : "#{@category_name} por habitante"
     end
   end
 
@@ -241,6 +276,7 @@ class Data::Lines
     if @code.nil?
       "total-budget"
     else
+      @area
     end
   end
 end

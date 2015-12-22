@@ -54,85 +54,11 @@
   </div>
 </div>
 
-<div class="metric_graphs">
 
-  <div class="widget_graph show clearfix" data-graph-cont="1">
-
-    <div class="col-1-2">
-
-      <h2>Gasto total</h2>
-
-      <div class="graph_cont">
-        
-        <img src="https://dl.dropboxusercontent.com/u/600648/varios/gobierto-test-graph.png" width="100%" > 
-
-      </div>
-
-    </div>
-
-    <div class="col-2-2">
-
-      
-      <table>
-      <tr>
-        <th title="Municipio"></th>
-        <th title="Gasto Total"></th>
-        <th class="right per_change">Cambio sobre año anterior</th> 
-      </tr>
-      <tr>
-        <td>
-          <i class="le le-place"></i>
-          El Puerto de Santa María
-        </td>
-        <td class="right">1.234,45 €</td>
-        <td class="right">+3,54%</td>
-      </tr>
-      <tr>
-        <td>
-          <i class="le le-province"></i>
-          Media provincia
-        </td>
-        <td class="right">1.234,45 €</td>
-        <td class="right">+3,54%</td>
-      </tr>
-      <tr>
-        <td>
-          <i class="le le-com"></i>
-          Media CCAA
-        </td>
-        <td class="right">1.234,45 €</td>
-        <td class="right">+3,54%</td>
-      </tr>
-      <tr>
-        <td>
-          <i class="le le-country"></i>
-          Media España
-        </td>
-        <td class="right">1.234,45 €</td>
-        <td class="right">+3,54%</td>
-      </tr>
-      </table>
-
-    </div>
-
-  </div>
-
-  <div class="widget_graph" data-graph-cont="2">
-
-    graph habitantes 
-
-  </div>
-
-  <div class="widget_graph" data-graph-cont="3">
-
-    graph wadus
-
-  </div>
-
-  <div class="widget_graph" data-graph-cont="5">
-
-    graph gasto por habitante
-
+<div class="metric_graphs clearfix">
+  <div class="graph">
+    <div id="lines_chart"></div>
+    <div id="lines_tooltip"></div>
   </div>
 </div>
 
@@ -158,3 +84,44 @@
   
   </table>
 </div>
+
+<script type="text/html" id="widget-template">
+  <div class="label">{{title}}</div>
+  <div class="main">{{value}}</div>
+  <div class="secondary">
+    <div class="percentage_change up">{{delta_percentage}}%</div>
+    <div class="ranking"><strong>#{{ranking_position}}</strong>/{{ranking_total_elements}}</div>
+  </div>
+</script>
+
+<script>
+$(function(){
+  var visLineasJ = new VisLineasJ('#lines_chart', '#lines_tooltip', 'total_budget');
+  // visLineasJ.render($('[data-line-widget-url].selected').data('line-widget-url'));
+  visLineasJ.render('<%= api_data_lines_path(@place.id, @year, "total_budget", kind: @kind, code: @code, area: @area_name, format: :json ) %>');
+
+  $('[data-line-widget-url]').on('click', function(e){
+    e.preventDefault();
+    visLineasJ.measure = $(this).data('line-widget-type');
+    visLineasJ.render($(this).data('line-widget-url'));
+  });
+
+  d3.selectAll('.measure.button')
+    .on('click', function(d) {
+      d3.selectAll(".measure.button.buttonSelected").classed("buttonSelected", false);
+      d3.select(this).classed("buttonSelected", true);
+      visLineasJ.measure = this.id;
+
+      visLineasJ.updateRender();
+    });
+
+  d3.selectAll('.context.button')
+    .on('click', function(d) {
+      d3.selectAll(".context.button.buttonSelected").classed("buttonSelected", false);
+      d3.select(this).classed("buttonSelected", true);
+      visLineasJ.mean = this.id;
+
+      visLineasJ.updateRender();
+    });
+});
+</script>
