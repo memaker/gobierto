@@ -11,38 +11,26 @@
 </header>
 
 <div class="main_metrics clearfix">
-  <div class="metric selected tipsit" data-graph-show="1" title="Gasto total de esta partida en este año">
-    <div class="label">Gasto total</div>
-    <div class="main">128,4M€</div>
-    <div class="secondary">
-      <div class="percentage_change up">3,23%</div>
-      <div class="ranking"><strong>#12</strong>/8.234</div>
-    </div>
+  <div class="metric selected tipsit" data-widget-template="#widget-template"
+                                      title="Gasto total de esta partida en este año"
+                                      data-widget-type="budget"
+                                      data-line-widget-url="<%= api_data_lines_path(@place.id, @year, "total_budget", kind: @kind, code: @code, area: @area_name, format: :json ) %>"
+                                      data-line-widget-type="total_budget"
+                                      data-widget-data-url="<%= api_data_budget_path(ine_code: @place.id, year: @year, kind: @kind, code: @code, area: @area_name, format: :json) %>">
   </div>
 
-  <div class="metric tipsit " data-graph-show="2" title="Habitantes de acuerdo al censo ">
-    <div class="label">Habitantes</div>
-    <div class="main">1.234</div>
-    <div class="secondary">
-      <div class="percentage_change down">1,23%</div>
-      <div class="ranking"><strong>#12</strong>/8.234</div>
-    </div>
+  <div class="metric tipsit" data-widget-template="#widget-template"
+                             title="Gasto total de esta partida en este año por habitante"
+                             data-widget-type="budget_per_inhabitant"
+                             data-line-widget-url="<%= api_data_lines_path(@place.id, @year, "per_person", kind: @kind, code: @code, area: @area_name, format: :json ) %>"
+                             data-line-widget-type="per_person"
+                             data-widget-data-url="<%= api_data_budget_per_inhabitant_path(ine_code: @place.id, year: @year, kind: @kind, code: @code, area: @area_name, format: :json) %>">
   </div>
 
-  <div class="metric" data-graph-show="3">
-    <div class="label">Gasto por habitante</div>
-    <div class="main">1.234€</div>
+  <div class="metric">
+    <div class="label">Porcentaje sobre el total</div>
+    <div class="main">35%</div>
     <div class="secondary">
-      <div class="percentage_change down">1,23%</div>
-      <div class="ranking"><strong>#12</strong>/8.234</div>
-    </div>
-  </div>
-
-  <div class="metric tipsit" data-graph-show="4" title="Diferencia porcentual entre la cantidad presupuestada y la finalmente empleada">
-    <div class="label">Presupuesto vs. Ejecución</div>
-    <div class="main">-3,45%</div>
-    <div class="secondary">
-      <div class="ranking"><strong>#12</strong>/8.234</div>
     </div>
   </div>
 
@@ -52,8 +40,10 @@
     <div class="secondary">
     </div>
   </div>
-</div>
 
+  <div class="metric">
+  </div>
+</div>
 
 <div class="metric_graphs clearfix">
   <div class="graph">
@@ -97,8 +87,7 @@
 <script>
 $(function(){
   var visLineasJ = new VisLineasJ('#lines_chart', '#lines_tooltip', 'total_budget');
-  // visLineasJ.render($('[data-line-widget-url].selected').data('line-widget-url'));
-  visLineasJ.render('<%= api_data_lines_path(@place.id, @year, "total_budget", kind: @kind, code: @code, area: @area_name, format: :json ) %>');
+  visLineasJ.render($('[data-line-widget-url].selected').data('line-widget-url'));
 
   $('[data-line-widget-url]').on('click', function(e){
     e.preventDefault();

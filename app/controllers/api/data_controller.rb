@@ -36,7 +36,7 @@ class Api::DataController < ApplicationController
     end
   end
 
-  def budget_per_inhabitant
+  def total_budget_per_inhabitant
     year = params[:year].to_i
     total_budget_data = total_budget_data(year, 'total_budget_per_inhabitant')
     total_budget_data_previous_year = total_budget_data(year - 1, 'total_budget_per_inhabitant', false)
@@ -65,7 +65,103 @@ class Api::DataController < ApplicationController
     end
   end
 
+  def budget
+    @year = params[:year].to_i
+    @area = params[:area]
+    @kind = params[:kind]
+    @code = params[:code]
+
+    areas = @area == 'economic' ? EconomicArea : FunctionalArea
+    @category_name = areas.all_items[@kind][@code]
+
+    budget_data = budget_data(@year, 'amount')
+    budget_data_previous_year = budget_data(@year - 1, 'amount', false)
+
+    respond_to do |format|
+      format.json do
+        render json: {
+          title: @category_name,
+          value: format_currency(budget_data[:value]),
+          delta_percentage: helpers.number_with_precision(delta_percentage(budget_data[:value], budget_data_previous_year[:value]), precision: 2),
+          ranking_position: budget_data[:position],
+          ranking_total_elements: helpers.number_with_precision(budget_data[:total_elements], precision: 0)
+        }.to_json
+      end
+    end
+  end
+
+  def budget_per_inhabitant
+    @year = params[:year].to_i
+    @area = params[:area]
+    @kind = params[:kind]
+    @code = params[:code]
+
+    @category_name = @kind == 'G' ? 'Gasto' : 'Ingreso'
+
+    budget_data = budget_data(@year, 'amount_per_inhabitant')
+    budget_data_previous_year = budget_data(@year - 1, 'amount_per_inhabitant', false)
+
+    respond_to do |format|
+      format.json do
+        render json: {
+          title: "#{@category_name} por habitante",
+          value: format_currency(budget_data[:value]),
+          delta_percentage: helpers.number_with_precision(delta_percentage(budget_data[:value], budget_data_previous_year[:value]), precision: 2),
+          ranking_position: budget_data[:position],
+          ranking_total_elements: helpers.number_with_precision(budget_data[:total_elements], precision: 0)
+        }.to_json
+      end
+    end
+  end
+
+
   private
+
+  def budget_data(year, field, ranking = true)
+    query = {
+      sort: [
+        { field.to_sym => { order: 'desc' } }
+      ],
+      query: {
+        filtered: {
+          query: {
+            match_all: {}
+          },
+          filter: {
+            bool: {
+              must: [
+                {term: { year: year }},
+                {term: { code: @code }},
+                {term: { kind: @kind }}
+              ]
+            }
+          }
+        }
+      },
+      size: 10_000,
+    }
+
+    id = "#{params[:ine_code]}/#{year}/#{@code}/#{@kind}"
+
+    if ranking
+      response = SearchEngine.client.search index: BudgetLine::INDEX, type: @area, body: query
+      Rails.logger.info "#{response['took']} ms"
+      buckets = response['hits']['hits'].map{|h| h['_id']}
+      position = buckets.index(id) + 1
+    else
+      buckets = []
+      position = 0
+    end
+
+    value = SearchEngine.client.get index: BudgetLine::INDEX, type: @area, id: id
+
+    return {
+      value: value['_source'][field],
+      position: position,
+      total_elements: buckets.length
+    }
+  end
+
 
   def total_budget_data(year, field, ranking = true)
     query = {
