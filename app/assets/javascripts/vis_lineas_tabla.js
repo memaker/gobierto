@@ -8,7 +8,7 @@ var VisLineasJ = Class.extend({
     // Chart dimensions
     this.containerWidth = null;
     this.tableWidth = null;
-    this.margin = {top: 40, right: 20, bottom: 40, left: 70};
+    this.margin = {top: 20, right: 20, bottom: 40, left: 60};
     this.width = null;
     this.height = null;
     
@@ -51,16 +51,18 @@ var VisLineasJ = Class.extend({
     this.focus = null;
 
     // Constant values
-    this.radius = 6;
+    this.radius = 4;
+    this.heavyLine = 3;
+    this.lightLine = 1;
     this.opacity = .7;
     this.opacityLow = .4;
     this.duration = 1500;
     this.mainColor = '#F69C95';
     this.darkColor = '#B87570';
-    this.darkGrey = '#949494';
+    this.softGrey = '#d6d5d1';
+    this.darkGrey = '#554E41';
     this.blue = '#2A8998';
-    this.heavyLine = 5;
-    this.lightLine = 2;
+    
     this.niceCategory = null;
   },
 
@@ -160,8 +162,11 @@ var VisLineasJ = Class.extend({
       this.yAxis
           .scale(this.yScale)
           .tickValues(this._tickValues(this.yScale))
-          .tickFormat(this.formatPercent)
+          // .tickFormat(this.formatPercent)
+          .tickFormat(function(d) { return accounting.formatMoney(d); })
+          .tickSize(-(this.width - (this.margin.right + this.margin.left - 20)))
           .orient("left");
+
 
       // Define the line
       this.line
@@ -183,10 +188,14 @@ var VisLineasJ = Class.extend({
 
       // Change ticks color
       d3.selectAll('.axis').selectAll('text')
-        .attr('fill', this.darkGrey);
+        .attr('fill', this.darkGrey)
+        .style('font-size', '10px');
 
-      d3.selectAll('.axis').selectAll('path')
-        .attr('stroke', this.darkGrey);
+      d3.selectAll('.y.axis').selectAll('path')
+        .attr('stroke', 'none');
+
+       d3.selectAll('.axis').selectAll('line')
+        .attr('stroke', this.softGrey);
 
 
       // --> DRAW THE LINES  
@@ -229,11 +238,12 @@ var VisLineasJ = Class.extend({
           .attr('class', 'chart_title')
           .attr('x', this.margin.left)
           .attr('y', this.margin.top)
-          .attr('dx', 0)
-          .attr('dy', -20)
+          .attr('dx', -this.margin.left * 2)
+          .attr('dy', -this.margin.top * 1.3)
           .attr('text-anchor', 'start')
           .text(this.dataTitle)
-          .style('fill', d3.rgb(this.darkGrey).darker(2));
+          .style('fill', this.darkGrey)
+          .style('font-size', '1.2em');
       
       // --> DRAW THE 'TABLE'
 
@@ -260,56 +270,70 @@ var VisLineasJ = Class.extend({
         tbody = table.append('tbody');
 
 
-    // append the header row
-    thead.append("tr")
-        .selectAll("th")
-        .data(columns)
-        .enter()
-        .append("th")
-        .attr('title', function(column) { return column; })
-        .attr('class', function(column) { return column != 'dif' ? '' : 'right per_change'; })
-            .text(function(column) { return column != 'dif' ? '' : 'Cambio sobre año anterior'; });
+      // append the header row
+      thead.append("tr")
+          .selectAll("th")
+          .data(columns)
+          .enter()
+          .append("th")
+          .attr('title', function(column) { return column; })
+          .attr('class', function(column) { return column != 'dif' ? '' : 'right per_change'; })
+              .text(function(column) { return column != 'dif' ? '' : 'Cambio sobre año anterior'; });
 
-    // create a row for each object in the data
-    var rows = tbody.selectAll("tr")
-        .data(this.dataChart)
-        .enter()
-        .append("tr");
+      // create a row for each object in the data
+      var rows = tbody.selectAll("tr")
+          .data(this.dataChart.reverse())
+          .enter()
+          .append("tr");
 
-    // create a cell in each row for each column
-    var cells = rows.selectAll("td")
-        .data(function(row) {
+      // create a cell in each row for each column
+      var cells = rows.selectAll("td")
+          .data(function(row) {
+              
+            var filterValues = row.values.filter(function(v) { 
+                    return v.date.getFullYear() == this.dataYear.getFullYear();
+                  }.bind(this))
             
-          var a = row.values.filter(function(v) { 
-                  return v.date.getFullYear() == this.dataYear.getFullYear();
-                }.bind(this))
-          a.map(function(d) { return colors[d.name] != undefined ? d['color']= 'le le-' + colors[d.name] : 'le le-place'; }) 
-          return columns.map(function(column) {
-              if (column == 'name') {
-                var value = this.niceCategory[a[0][column]] != undefined ? this.niceCategory[a[0][column]] : a[0][column]
-              } else if (column == 'value') {
-                var value = this.formatPercent(a[0][column])
-                var classed = 'right'
-              } else if (column == 'dif') {
-                var value = a[0][column]
-                var classed = 'right'
-              } else {
-                var value = a[0][column]
-              }
-              return {column: column, 
-                      value: value, 
-                      name: a[0].name,
-                      classed: classed
-                    };
-          }.bind(this));
-        }.bind(this))
-        .enter()
-        .append("td")
-        .attr('class', function(d) { return d.classed ; })
-        .html(function(d, i) {return i != 0 ? d.value : '<i class="' + d.value + '"></i>'; }.bind(this));
+            filterValues.map(function(d) { return colors[d.name] != undefined ? d['color']= 'le le-' + colors[d.name] : d['color'] = 'le le-place'; });
 
-        d3.selectAll('.le')
-        .style('background', function(d) {console.log(d); return this.colorScale(d.name); }.bind(this));
+            return columns.map(function(column) {
+                if (column == 'name') {
+                  var value = this.niceCategory[filterValues[0][column]] != undefined ? this.niceCategory[filterValues[0][column]] : filterValues[0][column]
+
+                } else if (column == 'value') {
+                  var value = accounting.formatMoney(filterValues[0][column])
+                  var classed = 'right'
+                } else if (column == 'dif') {
+                  var value = filterValues[0][column] < 0 ? filterValues[0][column] + '%' : '+' +filterValues[0][column] + '%'
+                  var classed = 'right'
+                } else {
+                  var value = filterValues[0][column]
+                }
+                return {column: column, 
+                        value: value, 
+                        name: filterValues[0].name,
+                        classed: classed
+                      };
+            }.bind(this));
+          }.bind(this))
+          .enter()
+          .append("td")
+          .attr('class', function(d) { return d.classed ; })
+          .html(function(d, i) {return i != 0 ? d.value : '<i class="' + d.value + '"></i>'; }.bind(this));
+
+
+          // Replace bullets colors
+          var bulletsColors = this.colorScale.range().reverse();
+          d3.selectAll('.le').forEach(function(v) {
+            v.forEach(function(d,i) { 
+              d3.select(v[i])
+                .style('background', bulletsColors[i])
+            }); 
+          });
+
+
+
+      
 
 
       // <table>
@@ -352,77 +376,6 @@ var VisLineasJ = Class.extend({
       // </tr>
       // </table>
 
-
-      
-      // // Draw elemnts
-      // this.svgTable.selectAll('.legend_header')
-      //     .data(this.dataChart)
-      //     .enter().append("foreignObject")
-      //         .attr('class', function(d) { return 'legend_header ' + d.name; })
-      //         .attr('width',this.yScaleTable.rangeBand())
-      //         .attr('height', this.yScaleTable.rangeBand())
-      //         .attr('dx', 0)
-      //         .attr('dy', 0)
-      //         .attr('transform', 'translate(' + this.xScaleTable(.62) + ',' + 0 + ')')
-      //         .style('fill', this.darkGrey)
-      //         .style('text-align', 'right')
-      //         .style('color', this.darkGrey)
-      //         .html('CAMBIO SOBRE EL AÑO ANTERIOR');
-
-      // this.svgTable.selectAll('.legend_bullet')
-      //   .data(this.dataChart)
-      //   .enter().append('circle')
-      //       .attr('class', function(d) { return 'legend_bullet ' + d.name; })
-      //       .attr('cx', this.xScaleTable(columns['color']))
-      //       .attr('cy', function(d) { return this.yScaleTable(d.name) - (this.radius / 2); }.bind(this))
-      //       .attr('r', this.radius)
-      //       .style('fill',function(d) { return this.colorScale(d.name); }.bind(this));
-
-      // this.svgTable.selectAll('.legend_name')
-      //     .data(this.dataChart)
-      //     .enter().append('text')
-      //         .attr('class', function(d) { return 'legend_name ' + d.name; })
-      //         .attr('x', this.xScaleTable(columns['name']))
-      //         .attr('y', function(d) { return this.yScaleTable(d.name); }.bind(this))
-      //         .attr('dx', 0)
-      //         .attr('dy', 0)
-      //         .attr('text-anchor', 'start')
-      //         .style('fill', this.darkGrey)
-      //         .text(function(d) { return d.name.match(/^mean_/) != null ? this.niceCategory[d.name] : d.name; }.bind(this));
-
-      // this.svgTable.selectAll('.legend_value')
-      //     .data(this.dataChart)
-      //     .enter().append('text')
-      //         .attr('class', function(d) { return 'legend_value ' + d.name; })
-      //         .attr('x', this.xScaleTable(columns['value']))
-      //         .attr('y', function(d) { return this.yScaleTable(d.name); }.bind(this))
-      //         .attr('dx', 0)
-      //         .attr('dy', 0)
-      //         .attr('text-anchor', 'end')
-      //         .style('fill', this.darkGrey)
-      //         .text(function(d) { 
-      //           var filterValues = d.values.filter(function(v) { 
-      //             return v.date.getFullYear() == this.dataYear.getFullYear();
-      //           }.bind(this));
-      //           return this.formatPercent(filterValues[0].value) + this._units(); 
-      //         }.bind(this));
-
-      //  this.svgTable.selectAll('.legend_dif')
-      //     .data(this.dataChart)
-      //     .enter().append('text')
-      //         .attr('class', function(d) { return 'legend_dif ' + d.name; })
-      //         .attr('x', this.xScaleTable(columns['dif']))
-      //         .attr('y', function(d) { return this.yScaleTable(d.name); }.bind(this))
-      //         .attr('dx', 0)
-      //         .attr('dy', 0)
-      //         .attr('text-anchor', 'end')
-      //         .style('fill', this.darkGrey)
-      //         .text(function(d) { 
-      //           var filterValues = d.values.filter(function(v) { 
-      //             return v.date.getFullYear() == this.dataYear.getFullYear();
-      //           }.bind(this));
-      //           return filterValues[0].dif > 0 ? '+' + this.formatPercent(filterValues[0].dif) + this._units() : this.formatPercent(filterValues[0].dif) + this._units(); 
-      //         }.bind(this));
 
 
     }.bind(this)); // end load data
