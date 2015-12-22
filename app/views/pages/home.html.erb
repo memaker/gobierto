@@ -1,16 +1,9 @@
-<% content_for :javascript do %>
-  $(function() {
-      $("#search").focus();
-  });
-<% end %>
-
-
   <div class="pre_home">
       
     <h1><%= image_tag('LogoGobierto.png', width: '180') %> <span>Presupuestos Municipales</span></h1>
     <h2>Consulta, analiza y compara los presupuestos municipales de España</h2>
 
-    <input type="text" class="places_search" placeholder="Busca municipio..." id="search">
+    <input type="text" class="places_search" placeholder="Busca municipio..." id="search" autofocus="true">
 
     <p class="example">Por ejemplo: <%= link_to 'Santander', '/places/santander/2015' %>, <%= link_to 'Talaván', '/places/talavan/2015'  %>, <%= link_to 'Órgiva', '/places/orgiva/2015'  %>, <%= link_to 'Zaragoza', '/places/zaragoza/2015'  %>.</p>
 
