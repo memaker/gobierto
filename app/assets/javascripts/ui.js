@@ -227,18 +227,28 @@ $(function(){
     widget.render();   
   });
 
+  function parent_treemap_url(parent_url) {
+    var pattern = /parent_code=\d+/;
+    parent_url = parent_url.replace(pattern, function(match) {
+      return match.substring(0,match.length - 1)
+    });
+    return parent_url + '&amp;format=json';
+  }
+
     /* Tree navigation */
   $('.items').on('ajax:success', 'a[data-remote=true]', function(event, data, status, xhr) {
     $(this).addClass('extended');
     $(this).find('.fa').toggleClass('fa-plus-square-o fa-minus-square-o');
   });
 
-  /* Prevents resending the form when extended */
+  /* Collapses branch - Prevents resending the form when extended */
   $('.items').on('ajax:beforeSend', 'a.extended', function(event, xhr, settings) {
     xhr.abort();
     $(this).removeClass('extended');
     $(this).find('.fa').toggleClass('fa-plus-square-o fa-minus-square-o');
     $(this).parents('tr').next('.child_group').remove();
+    
+    window.treemap.render(parent_treemap_url($(this).attr('href')));
   });
 
   $('.items').on('ajax:beforeSend', 'a:not(.extended)', function(event, xhr, settings) {
