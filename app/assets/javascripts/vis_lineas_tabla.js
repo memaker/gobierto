@@ -8,7 +8,7 @@ var VisLineasJ = Class.extend({
     // Chart dimensions
     this.containerWidth = null;
     this.tableWidth = null;
-    this.margin = {top: 20, right: 20, bottom: 40, left: 60};
+    this.margin = {top: 30, right: 40, bottom: 20, left: 60};
     this.width = null;
     this.height = null;
     
@@ -74,7 +74,7 @@ var VisLineasJ = Class.extend({
     this.containerWidth = parseInt(d3.select(this.container).style('width'), 10);
     this.tableWidth = parseInt(d3.select(this.tableContainer).style('width'), 10)
     this.width = this.containerWidth - this.margin.left - this.margin.right;
-    this.height = (this.containerWidth / 1.9) - this.margin.top - this.margin.bottom;
+    this.height = (this.containerWidth / 2.6) - this.margin.top - this.margin.bottom;
 
     // Append svg
     this.svgLines = d3.select(this.container).append('svg')
