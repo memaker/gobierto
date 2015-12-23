@@ -59,9 +59,9 @@ var TreemapVis = Class.extend({
           .enter().append("div")
           .attr("class", function(d){
             if(this.clickable){
-              return "tipsit-auto treemap_node clickable";
+              return "tipsit-treemap treemap_node clickable";
             } else {
-              return "tipsit-auto treemap_node";
+              return "tipsit-treemap treemap_node";
             }
           }.bind(this))
         .attr("title", function(d){ 

@@ -5,7 +5,7 @@ function rebindAll() {
   $('.tipsit-n').tipsy({fade: true, gravity: 'n', html: true});
   $('.tipsit-w').tipsy({fade: true, gravity: 'w', html: true});
   $('.tipsit-e').tipsy({fade: true, gravity: 'e', html: true});
-  $('.tipsit-auto').tipsy({fade: true, gravity: $.fn.tipsy.autoNS, html: true});
+  $('.tipsit-treemap').tipsy({fade: true, gravity: $.fn.tipsy.autoNS, html: true});
 }
 
 $(function(){
@@ -173,6 +173,10 @@ $(function(){
     // children. That node is clicked, and it triggers the treemap re-rendering
     $(document).on('click', '.treemap_node', function(e){
       e.preventDefault();
+      // Remove all open tipsy
+      $('.tipsit-treemap').each(function(){
+        $(this).data('tipsy').hide();
+      });
       var url = $(this).data('url');
       var parser = document.createElement('a');
       parser.href = url;
