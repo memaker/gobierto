@@ -878,8 +878,9 @@ a.list_view_more {
     border: 1px solid $separator;
   }
   table {
-    td {
+    td:not(:last-child) {
       font-size: .95em;  
+      border-bottom: 1px solid #DFDFDF;
     }
     th {
       font-size: .75em;
