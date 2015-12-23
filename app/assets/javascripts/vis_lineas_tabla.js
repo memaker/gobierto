@@ -8,7 +8,7 @@ var VisLineasJ = Class.extend({
     // Chart dimensions
     this.containerWidth = null;
     this.tableWidth = null;
-    this.margin = {top: 30, right: 40, bottom: 20, left: 60};
+    this.margin = {top: 30, right: 70, bottom: 20, left: 20};
     this.width = null;
     this.height = null;
     
@@ -56,7 +56,7 @@ var VisLineasJ = Class.extend({
     this.lightLine = 1;
     this.opacity = .7;
     this.opacityLow = .4;
-    this.duration = 800;
+    this.duration = 1500;
     this.mainColor = '#F69C95';
     this.darkColor = '#B87570';
     this.softGrey = '#d6d5d1';
@@ -82,7 +82,7 @@ var VisLineasJ = Class.extend({
         .attr('height', this.height + this.margin.top + this.margin.bottom)
         .attr('class', 'svg_lines')
       .append('g')
-        .attr('transform', 'translate(' + this.margin.left + ',' + this.margin.top + ')');
+        .attr('transform', 'translate(' + 0 + ',' + this.margin.top + ')');
 
     // Set nice category
     this.niceCategory = {
@@ -154,7 +154,7 @@ var VisLineasJ = Class.extend({
           .tickValues(this._tickValues(this.yScale))
           .tickFormat(function(d) { return accounting.formatMoney(d, "€", 0, ".", ","); })
           .tickSize(-(this.width - (this.margin.right + this.margin.left - 20)))
-          .orient("left");
+          .orient("right");
 
 
       // Define the line
@@ -172,7 +172,7 @@ var VisLineasJ = Class.extend({
 
       this.svgLines.append("g")
           .attr("class", "y axis")
-          .attr("transform", "translate(" + (this.margin.left - 10) + ",0)")
+          .attr("transform", "translate(" + (this.width - this.margin.right + 10) + ",0)")
           .call(this.yAxis);
 
       // Change ticks color
@@ -227,7 +227,8 @@ var VisLineasJ = Class.extend({
           .attr('class', 'chart_title')
           .attr('x', this.margin.left)
           .attr('y', this.margin.top)
-          .attr('dx', -this.margin.left * 2)
+          .attr('dx', -this.margin.left)
+
           .attr('dy', -this.margin.top * 1.3)
           .attr('text-anchor', 'start')
           .text(this.dataTitle)
