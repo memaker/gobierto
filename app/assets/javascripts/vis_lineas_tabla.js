@@ -136,7 +136,8 @@ var VisLineasJ = Class.extend({
         .range([this.margin.left, this.width - (this.margin.right)]);
 
       this.yScale
-        .domain([this.dataDomain[0] * .3, this.dataDomain[1] * 1.2])
+        // .domain([this.dataDomain[0] * .3, this.dataDomain[1] * 1.2])
+        .domain([(Math.floor((this.dataDomain[0] * .1)/100.0) * 100), (Math.ceil((this.dataDomain[1] * 1.2)/100.0) * 100)])
         .range([this.height, this.margin.top]);
       
       this.colorScale
@@ -151,7 +152,7 @@ var VisLineasJ = Class.extend({
       this.yAxis
           .scale(this.yScale)
           .tickValues(this._tickValues(this.yScale))
-          .tickFormat(function(d) { return accounting.formatMoney(d); })
+          .tickFormat(function(d) { return accounting.formatMoney(d, "€", 0, ".", ","); })
           .tickSize(-(this.width - (this.margin.right + this.margin.left - 20)))
           .orient("left");
 
