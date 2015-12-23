@@ -19,19 +19,12 @@ var TreemapVis = Class.extend({
     var colors = ['#FFD100', '#FE7000', '#ED2F00', '#940099', '#487304', '#4A73B0', '#1B4145', '#444300', '#24190E'];
     this.colorScale = d3.scale.ordinal().range(colors);
 
-    this.tooltip = null;
     this.opacity = 1;
     this.duration = 1;
   },
 
   render: function(urlData) {
     $(this.containerId).html('');
-    $('.treemap_tooltip').remove();
-
-    // Append tooltip
-    this.tooltip = d3.select('body').append('div')
-      .attr('class', 'treemap_tooltip')
-      .style('opacity', 0);
 
     // Chart dimensions
     this.containerWidth = parseInt(d3.select(this.containerId).style('width'), 10);
@@ -56,22 +49,22 @@ var TreemapVis = Class.extend({
     d3.json(urlData)
       .mimeType('application/json')
       .get(function(error, root){
-      if (error) throw error;
+        if (error) throw error;
 
-      this.colorScale
-        .domain(root.children.map(function(d) { return d.name; }));
+        this.colorScale
+          .domain(root.children.map(function(d) { return d.name; }));
 
-      var node = this.container.datum(root).selectAll(".treemap_node")
-        .data(this.treemap.nodes)
-        .enter().append("div")
-        .attr("class", function(d){
-          if(this.clickable){
-            return "treemap_node clickable";
-          } else {
-            return "treemap_node";
-          }
-        }.bind(this))
-        .attr("data-tooltip", function(d){ 
+        var node = this.container.datum(root).selectAll(".treemap_node")
+          .data(this.treemap.nodes)
+          .enter().append("div")
+          .attr("class", function(d){
+            if(this.clickable){
+              return "tipsit-auto treemap_node clickable";
+            } else {
+              return "tipsit-auto treemap_node";
+            }
+          }.bind(this))
+        .attr("title", function(d){ 
           return "<strong>" + d.name + "</strong><br>" + accounting.formatMoney(d.budget) + "<br>" + d.budget_per_inhabitant + "€/habitante";
         }.bind(this))
         .attr("data-url", function(d){ 
@@ -91,9 +84,8 @@ var TreemapVis = Class.extend({
             }
           }
         })
-        .on('mouseover', this._mouseover.bind(this))
-        .on('mouseout', this._mouseout.bind(this));
-    }.bind(this));
+        .call(rebindAll)
+      }.bind(this));
   },
 
   _position: function() {
@@ -102,31 +94,4 @@ var TreemapVis = Class.extend({
       .style("width", function(d) { return Math.max(0, d.dx - 1) + "px"; })
       .style("height", function(d) { return Math.max(0, d.dy - 1) + "px"; });
   },
-
-  _mouseover: function(){
-    var selected = d3.event.target;
-    if (selected.tagName != 'DIV'){
-      while (selected.tagName != 'DIV') {
-        selected = selected.parentNode;
-      }
-    }
-    var html = selected.dataset.tooltip;
- 
-    this.tooltip
-        .transition()
-        .duration(this.duration / 4)
-        .style('opacity', this.opacity);
-
-    this.tooltip
-        .html(html)
-        .style('left', (d3.event.pageX - 75) + 'px')
-        .style('top', (d3.event.pageY - 25) + 'px');
-  },
-
-  _mouseout: function(){
-    this.tooltip.transition()
-        .duration(this.duration / 4)
-        .style("opacity", 0);
-  },
-
 });

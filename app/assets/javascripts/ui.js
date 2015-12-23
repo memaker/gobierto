@@ -1,23 +1,17 @@
 'use strict';
 
-function submitForm(){
-  if($('#location_type').val() === '' && $('#functional_area').val() === '' && $('#economic_area').val() === ''){
-    return false;
-  } 
-  $('.spinner').show();
-  document.forms[0].submit();
+function rebindAll() {
+  $('.tipsit').tipsy({fade: true, gravity: 's', html: true});
+  $('.tipsit-n').tipsy({fade: true, gravity: 'n', html: true});
+  $('.tipsit-w').tipsy({fade: true, gravity: 'w', html: true});
+  $('.tipsit-e').tipsy({fade: true, gravity: 'e', html: true});
+  $('.tipsit-auto').tipsy({fade: true, gravity: $.fn.tipsy.autoNS, html: true});
 }
 
 $(function(){
   $('.spinner').hide();
 
   if($(window).width() > 740) {
-    function rebindAll() {
-      $('.tipsit').tipsy({fade: true, gravity: 's'});
-      $('.tipsit-n').tipsy({fade: true, gravity: 'n'});
-      $('.tipsit-w').tipsy({fade: true, gravity: 'w'});
-      $('.tipsit-e').tipsy({fade: true, gravity: 'e'});
-    }
     rebindAll();
   }
 
