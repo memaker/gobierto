@@ -17,6 +17,7 @@
 //= require vis_lineas_tabla
 //= require widget_renderer
 //= require history
+//= require compare
 //= require ui
 
 SPARKLINES_DEFAULTS = {

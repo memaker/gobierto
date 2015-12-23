@@ -23,23 +23,18 @@
       <%= link_to '<span>Compara</span> <i class="fa fa-compass"></i>'.html_safe, '', class: 'tool_button' %>
       <div class="inner widget_compare">
 
-        <%= link_to 'Añade <strong>El Puerto de Santa María</strong> a tu lista y compara'.html_safe, '', class: 'button' %>
+        <%= link_to "Añade <strong>#{@place.name}</strong> a tu lista y compara".html_safe, '', id: 'add_compare', class: 'button' %>
 
         <div class="sep"></div>
 
         <p>Tu lista de comparación</p>
-        <ul>
-          <li><%= link_to 'Talaván' %> <span class="del_item"><%= link_to 'X' %></span></li>
-          <li><%= link_to 'El Puerto de Santa María' %> <span class="del_item"><%= link_to 'X' %></span></li>
-          <li><%= link_to 'Madrid' %> <span class="del_item"><%= link_to 'X' %></span></li>
-          <li><%= link_to 'La Puebla de Don Pimpón' %> <span class="del_item"><%= link_to 'X' %></span></li>
-          <li><%= link_to 'Galapagar' %> <span class="del_item"><%= link_to 'X' %></span></li>
-          <li><%= link_to 'Talaván' %> <span class="del_item"><%= link_to 'X' %></span></li>
+        <ul id='compare_list'>
+          
         </ul>
 
         <div class="center">
           <%= link_to 'Ver comparación'.html_safe, '', class: 'button' %>
-          <span class="soft">(sin El Puerto de Santa María)</span>
+          <span class="soft">(sin <%= @place.name %>)</span>
         </div>
 
       </div>

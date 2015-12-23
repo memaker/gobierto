@@ -68,4 +68,17 @@ module ApplicationHelper
 
     name
   end
+
+  def data_attributes
+    attrs = []
+    if @place
+      attrs << %Q{data-track-url=#{place_path(@place.slug, @year || 2015)}}
+      attrs << %Q{data-place-slug=#{@place.slug}}
+      attrs << %Q{data-place-name=#{@place.name}}
+    end
+    attrs << %Q{data-year=#{@year || 2015}}
+    attrs << %Q{data-kind=#{@kind || 'expense'}}
+    attrs << %Q{data-area=#{@area_name || 'economic'}}
+    attrs.join(' ')
+  end
 end
