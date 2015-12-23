@@ -33,8 +33,8 @@
         </ul>
 
         <div class="center">
-          <%= link_to 'Ver comparación'.html_safe, '', class: 'button' %>
-          <span class="soft">(sin <%= @place.name %>)</span>
+          <%= link_to 'Ver comparación'.html_safe, '', id: 'view_compare', class: 'button' %>
+          <span class="soft" id="without_current_note">(sin <%= @place.name %>)</span>
         </div>
 
       </div>

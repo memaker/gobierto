@@ -5,7 +5,6 @@ $(function () {
   Cookies.defaults.path = '/';
 
   function compareUrl(list) {
-    //"http://localhost:3000/places/compare/madrid:valencia/2015/expense/economic";
     var slugs = $.map(list, function(place, i) {
       return place.split('|')[2];
     });
@@ -33,8 +32,20 @@ $(function () {
     }
 
     Cookies.set('comparison', comparison);
-    window.location.href = compareUrl(comparison);
     
+    compare();
+  }
+
+  function compare() {
+    var comparison = Cookies.get('comparison');
+    window.location.href = compareUrl(comparison);
+  }
+
+  function currentPlaceIsOnList() {
+    var current_place = Cookies.get('places')[0];
+    var comparison = Cookies.get('comparison');
+
+    return comparison.indexOf(current_place) > -1;
   }
 
   function renderCompareList(list) {
@@ -49,6 +60,12 @@ $(function () {
     }
 
     $compare_list.html($list_elements.join("\n"));
+
+    if (currentPlaceIsOnList()) {
+      $('#add_compare,#without_current_note').css('display',"none");
+      $('.widget_compare .sep').css('display',"none");
+    } 
+
   }
 
   function gatherCompareList(){
@@ -59,11 +76,12 @@ $(function () {
       
       var recent_places = Cookies.get('places');
       if (recent_places.length > 1) {
-        // if the compare list is empty, we take the site that was previously visited
+        // if the compare list is empty, we take the site that was previously visited so that he can compare
+        // the current one and the previous one
         renderCompareList([recent_places[1]]);
       }
       else {
-        //es primera vez navega en el site
+        // first time on site
       }
     }
     else {
@@ -76,6 +94,11 @@ $(function () {
   $('#add_compare').on('click', function(e) {
     e.preventDefault();
     updateListAndCompare();
+  });
+
+  $('#view_compare').on('click', function(e) {
+    e.preventDefault();
+    compare();
   })
 
   gatherCompareList();
