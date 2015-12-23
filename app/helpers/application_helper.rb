@@ -69,9 +69,16 @@ module ApplicationHelper
     name
   end
 
-  def category_breadcrumb(category)
-    (category.parents.map do |category|
-      link_to(category.name, category_path(category, params))
-    end + ['<h1>'+category.name+'</h1>']).join(' > ').html_safe
+  def data_attributes
+    attrs = []
+    if @place
+      attrs << %Q{data-track-url=#{place_path(@place.slug, @year || 2015)}}
+      attrs << %Q{data-place-slug=#{@place.slug}}
+      attrs << %Q{data-place-name=#{@place.name}}
+    end
+    attrs << %Q{data-year=#{@year || 2015}}
+    attrs << %Q{data-kind=#{@kind || 'expense'}}
+    attrs << %Q{data-area=#{@area_name || 'economic'}}
+    attrs.join(' ')
   end
 end

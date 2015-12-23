@@ -75,7 +75,8 @@ class Api::DataController < ApplicationController
     @code = params[:code]
 
     areas = @area == 'economic' ? EconomicArea : FunctionalArea
-    @category_name = areas.all_items[@kind][@code]
+    # @category_name = areas.all_items[@kind][@code]
+    @category_name = @kind == 'G' ? 'Gasto' : 'Ingreso'
 
     budget_data = budget_data(@year, 'amount')
     budget_data_previous_year = budget_data(@year - 1, 'amount', false)
@@ -83,7 +84,8 @@ class Api::DataController < ApplicationController
     respond_to do |format|
       format.json do
         render json: {
-          title: ActionController::Base.helpers.truncate(@category_name, length: 35),
+          # title: ActionController::Base.helpers.truncate(@category_name, length: 35),
+          title: @category_name,
           value: format_currency(budget_data[:value]),
           delta_percentage: helpers.number_with_precision(delta_percentage(budget_data[:value], budget_data_previous_year[:value]), precision: 2),
           ranking_position: budget_data[:position],
@@ -195,7 +197,7 @@ class Api::DataController < ApplicationController
     respond_to do |format|
       format.json do
         render json: {
-          title: "Diferencia con la media provincial",
+          title: "Dif. con media provincial",
           value: "#{helpers.number_with_precision(percentage, precision: 2, strip_insignificant_zeros: true)}%"
         }.to_json
       end

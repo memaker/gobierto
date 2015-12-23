@@ -11,7 +11,7 @@
       <%= link_to 'Periodistas', about_path(anchor: 'journos') %>
       <%= link_to 'Municipios', about_path(anchor: 'municipalities') %>
       <%= link_to 'Funcionalidades', about_path(anchor: 'features') %>
-      <%= link_to 'Metodología', about_path(anchor: 'method') %>
+      <%= link_to 'Metodología y Fuentes', about_path(anchor: 'method') %>
       <%= link_to 'Quiénes somos', about_path(anchor: 'who') %>
       <%= link_to 'Contacto', about_path(anchor: 'contact') %>
       <div class="sep"></div>
@@ -79,13 +79,23 @@
     </div>
 
     <div class="about_block" id="method">
-      <h2>Metodología</h2>
-      <p>Hablar de: Origen de los datos; Tratamiento; Frecuencia de Actualización; 
+      <h2>Metodología y Fuentes</h2>
+
+      <p><strong>Datos presupuestarios:</strong> Los datos económicos de los presupuestos de los municipios están extraídos de la base de datos que publica el Ministerio de Economía y Hacienda a través de la Secretaría General de Coordinación Autónomica y Local. La publicación de esta base de datos se realiza en esta URL: <a href="http://serviciosweb.meh.es/apps/EntidadesLocales/">serviciosweb.meh.es/apps/EntidadesLocales</a>. Se publican de forma anual datos sobre los presupuestos y la ejecución presupuestaria.</p>
+
+      <p>Los datos se publican en formato Microsoft Access. Populate ha transformado esta base de datos para la carga en su sistema. La Secretaría publica una <a href="http://www.minhap.gob.es/Documentacion/Publico/DGCFEL/InstruccionesAplicaciones/NOTA%20METODOL%C3%93GICA.Presupuestos%20y%20Liquidaciones.pdf">Nota Metodológica</a> sobre los datos de los presupuestos. La última actualización de los datos de los presupuestos corresponde a la actualización del 30/11/2015 por parte del Ministerio.</p>
+
+
+
+      <p><strong>Datos de población:</strong> La información sobre la población de los municipios proviene del INE, extraída y transformada usando la librería <a href="https://github.com/PopulateTools/ruby-px">Ruby-PX</a> desarrollada por Populate.</p>
+
+      <p>Temporalmente, los datos de población (población total y gasto por habitante) de 2015 están calculados sobre 2014, y los del 2010 en los de 2011. En cuando podamos cargaremos los datos de población de 2010 y 2015.</p>
+
     </div>
 
     <div class="about_block" id="who">
       <h2>Quiénes somos</h2>
-      <p>Gobierto Presupuestos Municipales está creado por Populate.</p>
+      <p>Gobierto Presupuestos Municipales se encuadra dentro de Gobierto, una linea de trabajo de Populate para fomentar la mejora de las administraciones públicas mediante mecanismos de transparencia, participación y gobierno abierto usando como base el diseño centrado en el usuario y la tecnología. Populate es un estudio dedicado a la creación de productos en torno al <i>civic engagement</i>. Puedes consultar nuestros proyectos en <a href="http://populate.tools">populate.tools</a>.</p>
     </div>
 
     <div class="about_block" id="contact">

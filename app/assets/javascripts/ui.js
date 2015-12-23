@@ -1,23 +1,17 @@
 'use strict';
 
-function submitForm(){
-  if($('#location_type').val() === '' && $('#functional_area').val() === '' && $('#economic_area').val() === ''){
-    return false;
-  } 
-  $('.spinner').show();
-  document.forms[0].submit();
+function rebindAll() {
+  $('.tipsit').tipsy({fade: true, gravity: 's', html: true});
+  $('.tipsit-n').tipsy({fade: true, gravity: 'n', html: true});
+  $('.tipsit-w').tipsy({fade: true, gravity: 'w', html: true});
+  $('.tipsit-e').tipsy({fade: true, gravity: 'e', html: true});
+  $('.tipsit-treemap').tipsy({fade: true, gravity: $.fn.tipsy.autoNS, html: true});
 }
 
 $(function(){
   $('.spinner').hide();
 
   if($(window).width() > 740) {
-    function rebindAll() {
-      $('.tipsit').tipsy({fade: true, gravity: 's'});
-      $('.tipsit-n').tipsy({fade: true, gravity: 'n'});
-      $('.tipsit-w').tipsy({fade: true, gravity: 'w'});
-      $('.tipsit-e').tipsy({fade: true, gravity: 'e'});
-    }
     rebindAll();
   }
 
@@ -179,6 +173,10 @@ $(function(){
     // children. That node is clicked, and it triggers the treemap re-rendering
     $(document).on('click', '.treemap_node', function(e){
       e.preventDefault();
+      // Remove all open tipsy
+      $('.tipsit-treemap').each(function(){
+        $(this).data('tipsy').hide();
+      });
       var url = $(this).data('url');
       var parser = document.createElement('a');
       parser.href = url;

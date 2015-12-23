@@ -12,3 +12,4 @@ $('#show_expenses_link').replaceWith("<%= j link_to 'Ver desglose de gastos',
                                                   class: 'list_view_more', id: 'show_expenses_link' %>")
 
 window.expenseTreemap.render($('#expense-treemap').data("<%= @area_name %>-url"));
+rebindAll();
