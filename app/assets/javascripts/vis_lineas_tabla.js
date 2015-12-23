@@ -129,6 +129,17 @@ var VisLineasJ = Class.extend({
       this.dataDomain = [d3.min(this.dataChart.map(function(d) { return d3.min(d.values.map(function(v) { return v.value; })); })), 
               d3.max(this.dataChart.map(function(d) { return d3.max(d.values.map(function(v) { return v.value; })); }))];
 
+      if (this.dataDomain[0] > 100000) {
+        var min = Math.floor((this.dataDomain[0] * .1)/10000.0) * 10000
+      } else {
+        var min = Math.floor((this.dataDomain[0] * .1)/100.0) * 100
+      }
+
+      if (this.dataDomain[1] > 100000) {
+        var max = Math.floor((this.dataDomain[1] * 1.2)/10000.0) * 10000
+      } else {
+        var max = Math.floor((this.dataDomain[1] * 1.2)/100.0) * 100
+      }
 
       // Set the scales
       this.xScale
@@ -137,7 +148,7 @@ var VisLineasJ = Class.extend({
 
       this.yScale
         // .domain([this.dataDomain[0] * .3, this.dataDomain[1] * 1.2])
-        .domain([(Math.floor((this.dataDomain[0] * .1)/100.0) * 100), (Math.ceil((this.dataDomain[1] * 1.2)/100.0) * 100)])
+        .domain([min, max])
         .range([this.height, this.margin.top]);
       
       this.colorScale
