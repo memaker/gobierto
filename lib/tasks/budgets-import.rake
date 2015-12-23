@@ -62,7 +62,7 @@ namespace :budgets do
       sql = <<-SQL
 SELECT tb_funcional_#{year}.cdfgr as code, sum(tb_funcional_#{year}.importe) as amount
 FROM tb_funcional_#{year}
-INNER JOIN "tb_inventario_#{year}" ON tb_inventario_#{year}.id = tb_funcional_#{year}.id AND tb_inventario_#{year}.codente = '#{place.id}AA000'
+INNER JOIN "tb_inventario_#{year}" ON tb_inventario_#{year}.id = tb_funcional_#{year}.id AND tb_inventario_#{year}.codente = '#{format("%.5i", place.id)}AA000'
 GROUP BY tb_funcional_#{year}.cdfgr
 SQL
 
@@ -103,7 +103,7 @@ SQL
       sql = <<-SQL
 SELECT tb_economica_#{year}.cdcta as code, tb_economica_#{year}.tipreig AS kind, sum(tb_economica_#{year}.importe) as amount
 FROM tb_economica_#{year}
-INNER JOIN "tb_inventario_#{year}" ON tb_inventario_#{year}.id = tb_economica_#{year}.id AND tb_inventario_#{year}.codente = '#{place.id}AA000'
+INNER JOIN "tb_inventario_#{year}" ON tb_inventario_#{year}.id = tb_economica_#{year}.id AND tb_inventario_#{year}.codente = '#{format("%.5i", place.id)}AA000'
 GROUP BY tb_economica_#{year}.cdcta, tb_economica_#{year}.tipreig
 SQL
 
