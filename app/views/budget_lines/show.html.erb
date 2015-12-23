@@ -2,7 +2,7 @@
 
 <%= render partial: 'places/place_header' %>
 
-<header class="sub">
+<header class="sub ">
 
   <span class="sep"><%= link_to kind_literal(@kind).capitalize, place_budget_path(@place.slug, @year, @kind, @area_name) %> »</span>
   <%= render partial: 'breadcrumb', 

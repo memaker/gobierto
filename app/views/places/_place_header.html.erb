@@ -12,61 +12,80 @@
       <li><%= link_to 'Contexto' %></li>
     </ul>
   </menu>
-  <div class="tools">
-    <div class="modal_widget">
-      <%= link_to '<span>123</span> <i class="fa fa-star-o"></i>'.html_safe, '', class: 'tool_button' %>
-      <div class="inner">
-        wadus follow
-      </div>
-    </div>
-    <div class="modal_widget">
-      <%= link_to '<span>Compara</span> <i class="fa fa-compass"></i>'.html_safe, '', class: 'tool_button' %>
-      <div class="inner widget_compare">
 
-        <%= link_to "Añade <strong>#{@place.name}</strong> a tu lista y compara".html_safe, '', id: 'add_compare', class: 'button' %>
-
-        <div class="sep"></div>
-
-        <p>Tu lista de comparación</p>
-        <ul id='compare_list'>
-          
-        </ul>
-
-        <div class="center">
-          <%= link_to 'Ver comparación'.html_safe, '', id: 'view_compare', class: 'button' %>
-          <span class="soft" id="without_current_note">(sin <%= @place.name %>)</span>
+  <div class="tools_cont">
+    <div class="tools sticky">
+      <div class="modal_widget">
+        <%= link_to '<span>123</span> <i class="fa fa-star-o"></i>'.html_safe, '', class: 'tool_button' %>
+        <div class="inner">
+          wadus follow
         </div>
-
       </div>
-    </div>
-    <div class="modal_widget">
-      <%= link_to '<span>Comparte</span> <i class="fa fa-share"></i>'.html_safe, '', class: 'tool_button' %>
-      <div class="inner widget_share" >
+      <div class="modal_widget">
+        <%= link_to '<span>Compara</span> <i class="fa fa-compass"></i>'.html_safe, '', class: 'tool_button' %>
+        <div class="inner widget_compare">
 
-        <p><strong>Comparte esta URL</strong></p>
+          <%= link_to "Añade <strong>#{@place.name}</strong> a tu lista y compara".html_safe, '', id: 'add_compare', class: 'button' %>
 
-        <p>
-          <%= link_to 'Twitter', '', class: 'small_button' %>
-          <%= link_to 'Facebook', '', class: 'small_button' %>
-          <input type="text" class="small_input">
-        </p>
+          <div class="sep"></div>
 
-        <div class="sep"></div>
+          <p>Tu lista de comparación</p>
+          <ul id='compare_list'>
+            
+          </ul>
 
-        <p><strong>Incluye un widget en otra web</strong></p>
+          <div class="center">
+            <%= link_to 'Ver comparación'.html_safe, '', id: 'view_compare', class: 'button' %>
+            <span class="soft" id="without_current_note">(sin <%= @place.name %>)</span>
+          </div>
 
-        <textarea></textarea>
-        <p>Copia y pega este código en la web de destino</p>
-
-        <div class="sep"></div>
-
-        <div class="cta_claim">
-          <h3>¿Eres responsable de este municipio?</h3>
-          <p>Gobierto te permite hacer una integración personalizada de estas visualizaciones en tu web.</p>
-          <%= link_to 'Solicita información', '', class: 'button' %>
         </div>
+      </div>
+      <div class="modal_widget">
+        <%= link_to '<span>Comparte</span> <i class="fa fa-share"></i>'.html_safe, '', class: 'tool_button' %>
+        <div class="inner widget_share" >
 
+          <p><strong>Comparte esta URL</strong></p>
+
+          <p>
+            <%= link_to 'Twitter', '', class: 'small_button' %>
+            <%= link_to 'Facebook', '', class: 'small_button' %>
+            <input type="text" class="small_input">
+          </p>
+
+          <div class="sep"></div>
+
+          <p><strong>Incluye un widget en otra web</strong></p>
+
+          <textarea></textarea>
+          <p>Copia y pega este código en la web de destino</p>
+
+          <div class="sep"></div>
+
+          <div class="cta_claim">
+            <h3>¿Eres responsable de este municipio?</h3>
+            <p>Gobierto te permite hacer una integración personalizada de estas visualizaciones en tu web.</p>
+            <%= link_to 'Solicita información', '', class: 'button' %>
+          </div>
+
+        </div>
       </div>
     </div>
   </div>
 </header>
+
+<header class="sticky_top">
+  <%= link_to image_tag('Gobierto-Avatar@2x.png', size: '30x30'), root_path %>
+  <input type="text" class="places_search" value="<%= @place.name %>" placeholder="Busca municipio..." id="search">
+
+  <% if params['controller'] == 'budget_lines' %>
+  <div class="breadcrumb">
+    <span class="sep"><%= link_to kind_literal(@kind).capitalize, place_budget_path(@place.slug, @year, @kind, @area_name) %> »</span>
+    <%= render partial: 'breadcrumb', 
+              collection: budget_line_crumbs(@parent_line, @area_name),
+              as: 'budget_line', 
+              spacer_template: 'breadcrumb_spacer' %> 
+    </div>
+  <% end %>
+</header>
+
