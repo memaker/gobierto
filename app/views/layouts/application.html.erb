@@ -103,7 +103,7 @@
   <menu>
     <ul>
       <li><%= link_to 'Acerca de', about_path %></li>
-      <li><%= link_to 'Metodología', about_path(anchor: 'method') %></li>
+      <li><%= link_to 'Metodología y Fuentes', about_path(anchor: 'method') %></li>
     </ul>
   </menu>
 </footer>
@@ -117,6 +117,17 @@
     <%= yield :javascript %>
   });
 </script>
+
+<script type="text/javascript">
+    window.doorbellOptions = {
+        appKey: 'rGPnmmXF344uoSViwFnGnFkXsNc0CvmAHKpRLzdYGafW0CFbLXin0USDNWILVHkA'
+    };
+    (function(d, t) {
+        var g = d.createElement(t);g.id = 'doorbellScript';g.type = 'text/javascript';g.async = true;g.src = 'https://embed.doorbell.io/button/2821?t='+(new Date().getTime());(d.getElementsByTagName('head')[0]||d.getElementsByTagName('body')[0]).appendChild(g);
+    }(document, 'script'));
+</script>
+
+
 
 </body>
 </html>
