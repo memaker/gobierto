@@ -5,6 +5,15 @@ class BudgetLine
   EXPENSE = 'G'
 
   def self.search(options)
+
+    terms = [{term: { ine_code: options[:ine_code] }},
+            {term: { kind: options[:kind] }},
+            {term: { year: options[:year] }}]
+
+    terms << {term: { parent_code: options[:parent_code] }} if options[:parent_code].present?
+    terms << {term: { level: options[:level] }} if options[:level].present?
+    terms << {term: { code: options[:code] }} if options[:code].present?
+
     query = {
       sort: [
         { code: { order: 'asc' } }
@@ -16,11 +25,7 @@ class BudgetLine
           },
           filter: {
             bool: {
-              must: [
-                {term: { ine_code: options[:ine_code] }},
-                {term: { kind: options[:kind] }},
-                {term: { year: options[:year] }}
-              ]
+              must: terms
             }
           }
         }
@@ -31,10 +36,6 @@ class BudgetLine
       },
       size: 10_000
     }
-
-    query[:query][:filtered][:filter][:bool][:must] << {term: { parent_code: options[:parent_code] }} if options[:parent_code].present?
-    query[:query][:filtered][:filter][:bool][:must] << {term: { level: options[:level] }} if options[:level].present?
-    query[:query][:filtered][:filter][:bool][:must] << {term: { code: options[:code] }} if options[:code].present?
 
     response = SearchEngine.client.search index: INDEX, type: (options[:type] || 'economic'), body: query
 
