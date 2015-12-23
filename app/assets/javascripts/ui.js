@@ -26,6 +26,7 @@ $(function(){
   };
 
   $('#search').autocomplete($.extend({}, AUTOCOMPLETE_DEFAULTS, searchOptions));
+  $('.sticky').sticky({topSpacing:0});
 
   $(document).on('mouseenter', '.compare_cont', function(e){
     e.preventDefault();
@@ -69,6 +70,7 @@ $(function(){
   });
 
   $('.modal_widget').hover(function(e) {
+    console.log('yess');
     e.preventDefault();
     $(this).find('.inner').velocity("fadeIn", { duration: 50 });
   }, function(e) {
@@ -186,4 +188,17 @@ $(function(){
       $('a[href="'+ url + '"]').click();
     });
   }
+
+  $('header.place').bind('inview', function(event, isInView) {
+    if (isInView) {
+      $('.tools').css('z-index', 10);
+      $('header.sticky_top').velocity("fadeOut", { duration: 50 });
+    } else {
+      $('.tools').css('z-index', 200);
+      $('header.sticky_top').velocity("fadeIn", { duration: 50 });
+    }
+  });
+
+  
+
 });
