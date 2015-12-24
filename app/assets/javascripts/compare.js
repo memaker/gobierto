@@ -43,8 +43,10 @@ $(function () {
       return el.indexOf(place_name) == 0
     })
 
-    comparison.splice(i,1);
-    Cookies.set('comparison',comparison);
+    if (i > -1) {
+      comparison.splice(i,1);
+      Cookies.set('comparison',comparison);
+    }
   }
 
   function compare() {
@@ -115,9 +117,18 @@ $(function () {
   $('#compare_list').on('click', 'a.del_link', function(e) {
     e.preventDefault();
     var $list_item = $(this).parents('li');
-    var place = $list_item.children('a').text();
+    var place = $list_item.children('a').text().trim();
     removeFromList(place);
     $list_item.remove();
+  });
+
+  $('.comparison_table').on('click','a.remove', function(e) {
+    e.preventDefault();
+    var $th = $(this).parents('th');
+    var place = $th.children('a:not(.remove)').text().trim();
+    
+    removeFromList(place);
+    compare();
   });
 
   gatherCompareList();
