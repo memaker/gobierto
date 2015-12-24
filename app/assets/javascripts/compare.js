@@ -36,6 +36,17 @@ $(function () {
     compare();
   }
 
+  function removeFromList(place_name) {
+    var comparison = Cookies.get('comparison');
+
+    var i = comparison.findIndex(function(el) {
+      return el.indexOf(place_name) == 0
+    })
+
+    comparison.splice(i,1);
+    Cookies.set('comparison',comparison);
+  }
+
   function compare() {
     var comparison = Cookies.get('comparison');
     window.location.href = compareUrl(comparison);
@@ -56,7 +67,7 @@ $(function () {
       var placeInformation = list[i].split('|');
       var placeName = placeInformation[0];
       var placeURL = placeInformation[1];
-      $list_elements.push('<li><a href="' + placeURL + '">' + placeName + ' <span class="del_item"><a href="#">X</a></span></li>');
+      $list_elements.push('<li><a href="' + placeURL + '">' + placeName + '</a> <span class="del_item"><a href="#" class="del_link">X</a></span></li>');
     }
 
     $compare_list.html($list_elements.join("\n"));
@@ -99,7 +110,15 @@ $(function () {
   $('#view_compare').on('click', function(e) {
     e.preventDefault();
     compare();
-  })
+  });
+
+  $('#compare_list').on('click', 'a.del_link', function(e) {
+    e.preventDefault();
+    var $list_item = $(this).parents('li');
+    var place = $list_item.children('a').text();
+    removeFromList(place);
+    $list_item.remove();
+  });
 
   gatherCompareList();
 });
