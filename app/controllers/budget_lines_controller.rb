@@ -10,7 +10,5 @@ class BudgetLinesController < ApplicationController
 
     @parent_line = BudgetLine.find(options.merge(code: @code))
     @budget_lines = BudgetLine.search(options.merge(parent_code: @code))
-
-    pp @parent_line
   end
 end
