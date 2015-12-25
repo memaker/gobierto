@@ -81,7 +81,7 @@ $(function () {
 
   }
 
-  function gatherCompareList(){
+  function gatherCompareList() {
     var comparison = Cookies.get('comparison');
 
     if (comparison === undefined || comparison.length == 0) { 
@@ -102,6 +102,15 @@ $(function () {
     }
 
     Cookies.set('comparison', comparison);
+  }
+
+  function overwriteComparisonListWithComparedPlaces() {
+    var comparison = $('.compared_place').map(function(i,place) { 
+      return $(place).text().trim() + "|" + $(place).attr('href') + "|" + $(place).data('slug');
+    }).get();
+
+    if (comparison.length > 0) 
+      Cookies.set('comparison',comparison);
   }
 
   $('#add_compare').on('click', function(e) {
@@ -132,4 +141,7 @@ $(function () {
   });
 
   gatherCompareList();
+  if (window.location.pathname.indexOf('compare') > -1)
+    overwriteComparisonListWithComparedPlaces();
+  
 });

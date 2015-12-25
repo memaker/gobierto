@@ -9,7 +9,7 @@
   <th colspan="2"></th>
   <% @places.each do |place| %>
   <th class="location">
-    <%= link_to place.name, place_path(place.slug, @year) %>
+    <%= link_to place.name, place_path(place.slug, @year), class: 'compared_place', data: {slug: place.slug} %>
     <%= link_to 'X', '', class: 'remove tipsit', title: 'Eliminar de la comparación' %>
   </th>
   <% end %>
