@@ -65,19 +65,24 @@ $(function () {
     var $compare_list = $('#compare_list');
     var $list_elements = [];
 
-    for(var i = 0; i < list.length; i++){
-      var placeInformation = list[i].split('|');
-      var placeName = placeInformation[0];
-      var placeURL = placeInformation[1];
-      $list_elements.push('<li><a href="' + placeURL + '">' + placeName + '</a> <span class="del_item"><a href="#" class="del_link">X</a></span></li>');
+    if (list.length > 0) {
+      for(var i = 0; i < list.length; i++){
+        var placeInformation = list[i].split('|');
+        var placeName = placeInformation[0];
+        var placeURL = placeInformation[1];
+        $list_elements.push('<li><a href="' + placeURL + '">' + placeName + '</a> <span class="del_item"><a href="#" class="del_link">X</a></span></li>');
+      }
+
+      $compare_list.html($list_elements.join("\n"));
+
+      if (currentPlaceIsOnList()) {
+        $('#add_compare,#without_current_note').css('display',"none");
+        $('.widget_compare .sep').css('display',"none");
+      } 
+
+    } else {
+      $('#view_comp_container').hide();
     }
-
-    $compare_list.html($list_elements.join("\n"));
-
-    if (currentPlaceIsOnList()) {
-      $('#add_compare,#without_current_note').css('display',"none");
-      $('.widget_compare .sep').css('display',"none");
-    } 
 
   }
 
@@ -94,7 +99,7 @@ $(function () {
         renderCompareList([recent_places[1]]);
       }
       else {
-        // first time on site
+        renderCompareList([]);
       }
     }
     else {
