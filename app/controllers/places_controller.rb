@@ -33,13 +33,26 @@ class PlacesController < ApplicationController
   # /places/compare/:slug_list/:year/:kind/:area
   def compare
     @places = get_places(params[:slug_list])
-    options = { ine_codes: @places.map(&:id), level: 1, year: @year, kind: @kind, type: @area_name }
-    @budgets_compared = BudgetLine.compare(options)
+    compared_level = (params[:parent_code].present? ? params[:parent_code].length + 1 : 1)
+    
+    options = { ine_codes: @places.map(&:id), year: @year, kind: @kind, level: compared_level, type: @area_name }
+    
+    @budgets_compared = if params[:parent_code].present?
+      children_options = options.merge(parent_code: params[:parent_code])
+      BudgetLine.compare(children_options)
+    else
+      BudgetLine.compare(options)
+    end
+    
+    if params[:parent_code].present?  
+      parent_options = options.merge(code: params[:parent_code], level: compared_level - 1)
+      @parent_compared = BudgetLine.compare(parent_options)
+    end    
   end
 
   private
   def get_params
-    @place = INE::Places::Place.find_by_slug params[:slug] unless params[:action] == 'compare'
+    @place = INE::Places::Place.find_by_slug params[:slug] if params[:slug].present?
     @kind = ( %w{income i}.include?(params[:kind].downcase) ? BudgetLine::INCOME : BudgetLine::EXPENSE ) unless params[:action] == 'show'
     @area_name = params[:area] || 'economic'
     @year = params[:year]

@@ -470,7 +470,11 @@ table {
 .soft {
   opacity: .5;
 }
+
 .comparison_table {
+  .parent tr {
+    background-color: #efefef;
+  }
   ul, li {
     margin: 0;
     padding: 0; 
@@ -484,6 +488,13 @@ table {
     text-transform: none;
     font-size: 13px; 
     font-weight: 600;
+  }
+  th.back_link {
+    text-align: left;
+    vertical-align: bottom;
+    a {
+      font-weight: normal;
+    }
   }
   th.location {
     position: relative;
@@ -542,6 +553,7 @@ table {
 
   td.budget_line {
     padding-top:10px;
+    padding-left:5px;
     vertical-align: top;
     width: 16%;   
   }

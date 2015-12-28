@@ -50,6 +50,14 @@ class BudgetLine
   end
 
   def self.compare(options)
+    terms = [{terms: { ine_code: options[:ine_codes] }},
+             {term: { level: options[:level] }},
+             {term: { kind: options[:kind] }},
+             {term: { year: options[:year] }}]
+
+    terms << {term: { parent_code: options[:parent_code] }} if options[:parent_code].present?
+    terms << {term: { code: options[:code] }} if options[:code].present?
+
     query = {
       sort: [
         { code: { order: 'asc' } },
@@ -62,12 +70,7 @@ class BudgetLine
           },
           filter: {
             bool: {
-              must: [
-                {terms: { ine_code: options[:ine_codes] }},
-                {term: { level: options[:level] }},
-                {term: { kind: options[:kind] }},
-                {term: { year: options[:year] }}
-              ]
+              must: terms
             }
           }
         }
