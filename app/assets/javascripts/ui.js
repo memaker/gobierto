@@ -70,7 +70,6 @@ $(function(){
   });
 
   $('.modal_widget').hover(function(e) {
-    console.log('yess');
     e.preventDefault();
     $(this).find('.inner').velocity("fadeIn", { duration: 50 });
   }, function(e) {
