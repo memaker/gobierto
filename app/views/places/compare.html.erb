@@ -10,7 +10,9 @@
   <% @places.each do |place| %>
   <th class="location">
     <%= link_to place.name, place_path(place.slug, @year), class: 'compared_place', data: {slug: place.slug} %>
-    <%= link_to 'X', '', class: 'remove tipsit', title: 'Eliminar de la comparación' %>
+    <% if @places.size > 1 %>
+      <%= link_to 'X', '', class: 'remove tipsit', title: 'Eliminar de la comparación' %>
+    <% end %>
   </th>
   <% end %>
   <th class="location add_location_cont">
