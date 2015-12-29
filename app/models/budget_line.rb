@@ -81,4 +81,13 @@ class BudgetLine
     response = SearchEngine.client.search index: INDEX, type: options[:type] , body: query
     response['hits']['hits'].map{ |h| h['_source'] }
   end
+
+  def self.has_children?(budget_line, area)
+    options = { parent_code: budget_line['code'],
+                level: budget_line['level'].to_i + 1,
+                area: area }
+    options.merge! budget_line.slice('ine_code','kind','year').symbolize_keys
+    
+    return search(options)['hits'].length > 0
+  end
 end
