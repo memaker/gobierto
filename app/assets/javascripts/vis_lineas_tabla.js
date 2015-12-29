@@ -79,7 +79,7 @@ var VisLineasJ = Class.extend({
     // Append svg
     this.svgLines = d3.select(this.container).append('svg')
         .attr('width', this.width + this.margin.left + this.margin.right)
-        .attr('height', this.height + this.margin.top + this.margin.bottom)
+        .attr('height', this.height + this.margin.top + this.margin.bottom + 10)
         .attr('class', 'svg_lines')
       .append('g')
         .attr('transform', 'translate(' + 0 + ',' + this.margin.top + ')');
@@ -183,13 +183,19 @@ var VisLineasJ = Class.extend({
 
       this.svgLines.append("g")
           .attr("class", "y axis")
-          .attr("transform", "translate(" + (this.width - this.margin.right + 10) + ",0)")
+          .attr("transform", "translate(" + (this.width - this.margin.right) + ",0)")
           .call(this.yAxis);
 
       // Change ticks color
       d3.selectAll('.axis').selectAll('text')
         .attr('fill', this.darkGrey)
-        .style('font-size', '10px');
+        .style('font-size', '12px');
+
+      d3.selectAll('.y.axis').selectAll('text')
+        .attr("transform", "translate(10,0)");
+
+      d3.selectAll('.x.axis').selectAll('text')
+        .attr("transform", "translate(0,10)");
 
       d3.selectAll('.y.axis').selectAll('path')
         .attr('stroke', 'none');
@@ -246,9 +252,10 @@ var VisLineasJ = Class.extend({
           .style('fill', this.darkGrey)
           .style('font-size', '1.2em');
       
+
+
       // --> DRAW THE 'TABLE'
 
-      
       // Set columns and rows
       var columns = ['color', 'name', 'value', 'dif']
 

@@ -306,7 +306,7 @@ header.sticky_top {
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 40;
+  z-index: 9;
   width: 99%;
   height: 30px;
   @include box-shadow(0, 0, 20px);
@@ -662,7 +662,7 @@ header.sub {
   position: absolute;
   right: 0;
   top: 1.5em;
-  z-index: 45;
+  z-index: 10;
   .is-sticky {
     width: 368px;
     z-index: 500;
@@ -678,6 +678,7 @@ header.sub {
     margin: 0 0 0 1em;
     
     .inner {
+      text-align: left;
       font-size: 13px;
       display: none;
       position: absolute;
