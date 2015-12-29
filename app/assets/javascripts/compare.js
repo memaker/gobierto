@@ -4,6 +4,21 @@ $(function () {
   Cookies.json = true;
   Cookies.defaults.path = '/';
 
+  var addPlaceOptions = {
+    serviceUrl: '/search',
+    onSelect: function (suggestion) {
+      if(suggestion.data.type == 'Place') {
+        var places_list = Cookies.get('comparison');
+        var new_place = suggestion.data.slug + '|' + suggestion.data.id + '|' + suggestion.data.slug
+        places_list.push(new_place);
+        window.location.href = compareUrl(places_list);
+      }
+    },
+    groupBy: 'category'
+  }
+
+  $('#add_place').autocomplete($.extend({}, AUTOCOMPLETE_DEFAULTS, addPlaceOptions));
+  
   function compareUrl(list) {
     var slugs = $.map(list, function(place, i) {
       return place.split('|')[2];

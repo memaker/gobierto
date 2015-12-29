@@ -22,7 +22,7 @@ $(function(){
         window.location.href = '/places/' + suggestion.data.slug + '/2015';
       }
     },
-    groupBy: 'category',
+    groupBy: 'category'
   };
 
   $('#search').autocomplete($.extend({}, AUTOCOMPLETE_DEFAULTS, searchOptions));
