@@ -155,8 +155,9 @@ $(function(){
   }
 
   if($('#lines_chart').length > 0){
-    var visLineasJ = new VisLineasJ('#lines_chart', '#lines_tooltip', 'budget_per_inhabitant');
-    visLineasJ.render($('[data-line-widget-url].selected').data('line-widget-url'));
+    var $widget = $('[data-line-widget-url].selected');
+    var visLineasJ = new VisLineasJ('#lines_chart', '#lines_tooltip', $widget.data('widget-type'));
+    visLineasJ.render($widget.data('line-widget-url'));
 
     $('[data-line-widget-url]').on('click', function(e){
       e.preventDefault();

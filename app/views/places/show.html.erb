@@ -6,7 +6,7 @@
 
   <div class="metric selected" 
     data-widget-template="#widget-template"
-    data-widget-type="budget_per_inhabitant"
+    data-widget-type="per_person"
     data-line-widget-url="<%= api_data_lines_path(ine_code: @place.id, year: @year, what: 'per_person', format: :json) %>"
     data-line-widget-type="per_person"
     data-widget-data-url="<%= api_data_total_budget_per_inhabitant_path(ine_code: @place.id, year: @year, format: :json) %>">
@@ -25,7 +25,6 @@
   
   <div class="metric"></div>
   <div class="metric"></div>
-
 </div>
 
 <div class="metric_graphs clearfix">
