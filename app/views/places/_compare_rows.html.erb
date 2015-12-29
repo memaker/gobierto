@@ -15,7 +15,7 @@
           <ul>
             <li><%= number_to_currency budget_line['amount'], precision: 0 %></li>
             <li><%= number_to_currency budget_line['amount_per_inhabitant'], precision: 0 %></li>
-            <li>X %</li>
+            <li><%= percentage_of_total budget_line['amount'], @totals.detect {|t| t['ine_code'] == place.id.to_i }['total_budget'] %> %</li>
           </ul>
         <% end %>
       </td>
