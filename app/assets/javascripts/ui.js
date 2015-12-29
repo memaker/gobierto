@@ -198,7 +198,7 @@ $(function(){
     }
   });
 
-  $('.items table').click(function(e) {
+  $('.ie_intro .items table').click(function(e) {
     window.location.href = $(this).data("url");
   });
 
