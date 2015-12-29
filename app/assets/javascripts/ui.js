@@ -102,7 +102,7 @@ $(function(){
     $(this).find('.add_location ').velocity("fadeOut", { duration: 100 });
   });
 
-  window.widgets = [];    
+  window.widgets = [];
   $('[data-widget-type]').each(function(){   
     window.widgets.push(new WidgetRenderer({   
       id: $(this).data('widget-type'), url: $(this).data('widget-data-url'), template: $(this).data('widget-template')   
@@ -155,7 +155,7 @@ $(function(){
   }
 
   if($('#lines_chart').length > 0){
-    var visLineasJ = new VisLineasJ('#lines_chart', '#lines_tooltip', 'total_budget');
+    var visLineasJ = new VisLineasJ('#lines_chart', '#lines_tooltip', 'budget_per_inhabitant');
     visLineasJ.render($('[data-line-widget-url].selected').data('line-widget-url'));
 
     $('[data-line-widget-url]').on('click', function(e){
@@ -198,6 +198,9 @@ $(function(){
     }
   });
 
-  
+  $('.items table').click(function(e) {
+    window.location.href = $(this).data("url");
+  });
 
+  
 });
