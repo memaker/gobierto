@@ -79,12 +79,12 @@
     <% if @place %>
       <%= link_to "#{@year} <i class='fa fa-angle-down'></i>".html_safe, '', class: 'current' %>
       <ul>
-        <li><%= link_to '2015', place_path(@place.slug,'2015') %></li>
-        <li><%= link_to '2014', place_path(@place.slug,'2014') %></li>
-        <li><%= link_to '2013', place_path(@place.slug,'2013') %></li>
-        <li><%= link_to '2012', place_path(@place.slug,'2012') %></li>
-        <li><%= link_to '2011', place_path(@place.slug,'2011') %></li>
-        <li><%= link_to '2010', place_path(@place.slug,'2010') %></li>
+        <li><%= link_to '2015', request.path.sub(/\d{4}/,'2015') %></li>
+        <li><%= link_to '2014', request.path.sub(/\d{4}/,'2014') %></li>
+        <li><%= link_to '2013', request.path.sub(/\d{4}/,'2013') %></li>
+        <li><%= link_to '2012', request.path.sub(/\d{4}/,'2012') %></li>
+        <li><%= link_to '2011', request.path.sub(/\d{4}/,'2011') %></li>
+        <li><%= link_to '2010', request.path.sub(/\d{4}/,'2010') %></li>
       </ul>
     <% end %>
   </div>
