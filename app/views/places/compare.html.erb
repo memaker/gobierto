@@ -4,8 +4,8 @@
   <div class="switcher kind_switcher">
     <%= link_to "#{kind_literal(@kind).capitalize} <i class='fa fa-angle-down'></i>".html_safe, '', class: 'current' %>
     <ul>
-      <li><%= link_to kind_literal(@kind).capitalize, places_compare_path(@places.map(&:slug).join(':'),@year,@kind,@area_name) %></li>
-      <li><%= link_to kind_literal(other_kind(@kind)).capitalize, places_compare_path(@places.map(&:slug).join(':'),@year,other_kind(@kind),@area_name) %></li>
+      <li><%= link_to kind_literal(@kind).capitalize, places_compare_path(@places.map(&:slug).join(':'),@year,@kind,'economic') %></li>
+      <li><%= link_to kind_literal(other_kind(@kind)).capitalize, places_compare_path(@places.map(&:slug).join(':'),@year,other_kind(@kind),'economic') %></li>
     </ul>
   </div>
 </header>
