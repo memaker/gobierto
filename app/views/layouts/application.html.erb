@@ -76,7 +76,7 @@
   </header>
 
   <div class="year_switcher">
-    <% if @place %>
+    <% if @place || @places %>
       <%= link_to "#{@year} <i class='fa fa-angle-down'></i>".html_safe, '', class: 'current' %>
       <ul>
         <li><%= link_to '2015', request.path.sub(/\d{4}/,'2015') %></li>
