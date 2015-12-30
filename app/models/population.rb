@@ -11,6 +11,26 @@ class Population
     population_query(ine_codes: ine_codes, year: year)
   end
 
+  def self.for_year(year)
+    population_query(year:year)
+  end
+
+  def self.ranking_hash_for(ine_code, year)
+    buckets = for_year year
+
+    if row = buckets.detect{|v| v['ine_code'] == ine_code }
+      value = row['value']
+    end
+
+    position = buckets.index(row) + 1 rescue nil
+
+    return {
+      value: value,
+      position: position,
+      total_elements: buckets.length
+    }
+  end
+
   private
   def self.population_query(options)
     terms = []

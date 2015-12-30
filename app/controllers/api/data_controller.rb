@@ -24,7 +24,7 @@ class Api::DataController < ApplicationController
 
   def population
     year = params[:year].to_i
-    population_data = population_data(year)
+    population_data = Population.ranking_hash_for(params[:ine_code].to_i,year)
 
     respond_to do |format|
       format.json do
@@ -297,45 +297,6 @@ class Api::DataController < ApplicationController
     rescue Elasticsearch::Transport::Transport::Errors::NotFound
       value = 0
     end
-
-    return {
-      value: value,
-      position: position,
-      total_elements: buckets.length
-    }
-  end
-
-  def population_data(year)
-    query = {
-      sort: [
-        { value: { order: 'desc' } }
-      ],
-      query: {
-        filtered: {
-          query: {
-            match_all: {}
-          },
-          filter: {
-            bool: {
-              must: [
-                {term: { year: year }}
-              ]
-            }
-          }
-        }
-      },
-      size: 10_000
-    }
-
-    response = SearchEngine.client.search index: 'data', type: 'population', body: query
-    Rails.logger.info "#{response['took']} ms"
-    buckets = response['hits']['hits'].map{ |h| h['_source'] }
-
-    if row = buckets.detect{|v| v['ine_code'] == params[:ine_code].to_i }
-      value = row['value']
-    end
-
-    position = buckets.index(row) + 1 rescue nil
 
     return {
       value: value,
