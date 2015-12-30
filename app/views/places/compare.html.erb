@@ -16,6 +16,14 @@
     <% if params[:parent_code].present? %>
       <%= link_to '« inicio', places_compare_path(@places.map(&:slug).join(':'),@year,@kind,@area_name) %>
     <% end %>
+    <% if @kind == 'G' %>
+      <div class="form_filters">
+        <ul>
+          <li><%= link_to 'Económica', places_compare_path(@places.map(&:slug).join(':'),@year,@kind,'economic'), class: "#{'buttonSelected' if @area_name == 'economic'}" %></li>
+          <li><%= link_to 'Funcional', places_compare_path(@places.map(&:slug).join(':'),@year,@kind,'functional'), class: "#{'buttonSelected' if @area_name == 'functional'}" %></li>
+        </ul>
+      </div>
+    <% end %>
   </th>
   <% @places.each do |place| %>
   <th class="location">

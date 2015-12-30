@@ -492,6 +492,10 @@ table {
 .comparison_table {
   .parent tr {
     background-color: #efefef;
+    td:first-child {
+      font-weight:bold;
+      font-size:16px;
+    }
   }
   ul, li {
     margin: 0;
@@ -506,12 +510,24 @@ table {
     text-transform: none;
     font-size: 13px; 
     font-weight: 600;
+    
   }
   th.back_link {
     text-align: left;
     vertical-align: bottom;
-    a {
-      font-weight: normal;
+    min-width: 232px;
+    font-weight: normal;
+    > a {
+      float: right;
+      line-height: 26px;
+    }
+    .form_filters {
+      line-height: 26px;
+      float: left;
+      position: relative;
+      top:-3px;
+      ul { height: 28px;}
+      li { line-height: 26px; height: 28px;}
     }
   }
   th.location {
