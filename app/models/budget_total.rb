@@ -5,7 +5,7 @@ class BudgetTotal
   def self.for(ine_code, year)
     return for_places(ine_code, year) if ine_code.is_a?(Array)
 
-    result = SearchEngine.client.get index: BudgetTotal::INDEX, type: 'total-budget', id: [ine_code, year].join('/')
+    result = SearchEngine.client.get index: BudgetTotal::INDEX, type: BudgetTotal::TYPE, id: [ine_code, year].join('/')
     result['_source']['total_budget'].to_f
   end
 

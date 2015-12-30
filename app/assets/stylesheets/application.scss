@@ -490,7 +490,7 @@ table {
 }
 
 .comparison_table {
-  .parent tr {
+  .parent tr, .totals tr {
     background-color: #efefef;
     td:first-child {
       font-weight:bold;

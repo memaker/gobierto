@@ -45,6 +45,30 @@
   <tbody class="parent">
     <%= render partial: 'compare_rows', locals: { records: @parent_compared } %>  
   </tbody>
+<% else %>
+  <tbody class="totals">
+    <tr>
+    <td class="budget_line">Totales</td>
+    <td class="variable_names">
+      <ul>
+        <li>Total</li>
+        <li>Por Habitante</li>
+        <li>Población</li>
+      </ul>
+    </td>
+    <% @places.each do |place| %>
+      <td class="variable_values">
+        <% total_line = @totals.select {|tl| tl['ine_code'] == place.id.to_i }.first %>
+        <% population = @population.select {|tl| tl['ine_code'] == place.id.to_i }.first %>
+        <ul>
+          <li><%= number_to_currency total_line['total_budget'], precision: 0 %></li>
+          <li><%= number_to_currency total_line['total_budget_per_inhabitant'], precision: 0 %></li>
+          <li><%= number_with_precision population['value'], precision: 0, delimiter: '.' %></li>
+        </ul>
+      </td>
+    <% end %>
+  </tr>
+  </tbody>
 <% end %>
 <tbody>
   <%= render partial: 'compare_rows', locals: { records: @budgets_compared } %>

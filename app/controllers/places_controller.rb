@@ -32,8 +32,9 @@ class PlacesController < ApplicationController
 
   # /places/compare/:slug_list/:year/:kind/:area
   def compare
-    @places = get_places(params[:slug_list])
-    @totals = BudgetTotal.for(@places.map(&:id), @year)
+    @places = get_places params[:slug_list]
+    @totals = BudgetTotal.for @places.map(&:id), @year
+    @population = Population.for @places.map(&:id), @year
     
     compared_level = (params[:parent_code].present? ? params[:parent_code].length + 1 : 1)
     options = { ine_codes: @places.map(&:id), year: @year, kind: @kind, level: compared_level, type: @area_name }
