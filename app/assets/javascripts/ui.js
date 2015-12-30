@@ -60,7 +60,7 @@ $(function(){
   // adjust height of sidebar
   $('header.global').css('height', $(document).height());
   
-  $('.year_switcher').hover(function(e) {
+  $('.switcher').hover(function(e) {
     e.preventDefault();
     $(this).find('ul').show();
     $(this).find('.current').hide();

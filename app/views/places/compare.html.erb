@@ -1,6 +1,13 @@
 
 <header class="place">
-  <h1>Compara</h1>
+  <h1>Compara <span class=""><i class='fa fa-angle-right'></i></span></h1>
+  <div class="switcher kind_switcher">
+    <%= link_to "#{kind_literal(@kind).capitalize} <i class='fa fa-angle-down'></i>".html_safe, '', class: 'current' %>
+    <ul>
+      <li><%= link_to 'Gastos', places_compare_path(@places.map(&:slug).join(':'),@year,'G',@area_name) %></li>
+      <li><%= link_to 'Ingresos', places_compare_path(@places.map(&:slug).join(':'),@year,'I',@area_name) %></li>
+    </ul>
+  </div>
 </header>
 
 <table class="comparison_table" cellspacing="0" cellpadding="0">

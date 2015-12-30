@@ -270,7 +270,8 @@ body {
     font-size: .85em;  
   }
 }
-.year_switcher {
+
+.switcher {
   position: absolute;
   width: 110px;
   z-index: 4;
@@ -302,6 +303,23 @@ body {
     background: $separator;
   }
 }
+
+.kind_switcher {
+  width: 150px;
+  top: -11px;
+  left: 140px;
+  border: 1px solid transparent;
+  a {
+    padding: .6em .5em .4em;
+    color: $text;
+    font-size: 1.3em;
+    .fa {
+      padding: 0 0 0 .5em;
+      opacity: .5;
+    }
+  }
+}
+
 header.sticky_top {
   position: fixed;
   top: 0;
