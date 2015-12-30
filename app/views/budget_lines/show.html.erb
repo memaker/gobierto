@@ -50,6 +50,7 @@
   </div>
 </div>
 
+
 <div class="items">
   <table>
   <tr>
@@ -88,3 +89,53 @@
   <div class="secondary">
   </div>
 </script>
+
+<div class="item_description">
+  <h3>Acerca de esta partida</h3>
+
+  <div class="tabs"> 
+    <ul>
+      <li><%= link_to 'Descripción', '', class: 'active', data: { "tab-target": 'description' } %></li>
+      <li><%= link_to 'Comentario del Ayuntamiento', '', data: { "tab-target": 'comment' } %></li>
+      <li><%= link_to 'Contratos asociados a esta partida', '', data: { "tab-target": 'contracts' } %></li>
+      <li><%= link_to 'Preguntas y respuestas', '', data: { "tab-target": 'q&a' } %></li>
+    </ul>
+  </div>
+
+  <div class="tab_content" data-tab="description">
+    <p class="placeholder_no_info">Todavía no hay información.</p>
+  </div>
+
+  <div class="tab_content" data-tab="comment" style="display: none;">
+    <p class="placeholder_no_info">Pide a tu municipio que incluya esta información.</p>
+  </div>
+
+  <div class="tab_content" data-tab="contracts" style="display: none;">
+    <p class="placeholder_no_info">Pide a tu municipio que incluya esta información.</p>
+  </div>
+
+  <div class="tab_content" data-tab="q&a" style="display: none;">
+    <p class="placeholder_no_info">Proximamente.</p>
+  </div>
+
+</div>
+
+<div class="cta_majors clearfix">
+
+  <div class="col-1-2">
+    <div class="pro_user ">
+      <h3>¿Eres responsable de este municipio?</h3>
+      <p>Añade una introducción a tus presupuestos y anotaciones públicas sobre cada partida para dar más información y contextualizar las cifras con los proyectos que lleváis a cabo.</p>
+      <%= link_to 'Solicita información', contact_pro_path, class: 'small_button' %>
+    </div>
+  </div>
+
+  <div class="col-2-2">
+    <div class="end_user ">
+      <h3>¿Eres vecino de este municipio?</h3>
+      <p>Solicita a tu Alcalde que incluya más información para tener una visión más completa sobre el uso de tus impuestos o envía preguntas específicas.</p>
+      <%= link_to 'Pide a tu ayuntamiento', contact_citizen_path, class: 'small_button' %>
+    </div>
+  </div>
+
+</div>

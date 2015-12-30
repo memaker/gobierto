@@ -5,6 +5,8 @@ Rails.application.routes.draw do
   # statics
   get 'about' => 'pages#about'
   get 'request_access' => 'pages#request_access'
+  get 'contact_pro' => 'pages#contact_pro'
+  get 'contact_citizen' => 'pages#contact_citizen'
 
   if Rails.env.development?
     # root 'pages#index'

@@ -203,5 +203,15 @@ $(function(){
     window.location.href = $(this).data("url");
   });
 
+  $('.tabs li a').click(function(e) {
+    e.preventDefault();
+    $(this).parent().parent().find('li a').removeClass('active');
+    $(this).addClass('active');
+    var tab = $(this).data("tab-target");
+    $('.tab_content').hide();
+    $('.tab_content[data-tab="'+tab+'"]').show();
+  });
+
+
   
 });

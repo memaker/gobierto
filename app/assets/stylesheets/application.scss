@@ -927,6 +927,59 @@ header.sub {
   }
 }
 
+.item_description {
+  font-size: .8em;
+  margin: 2em 0;
+
+  h3 {
+    font-weight: 600;
+    font-size: 1.15em;
+    border-top: 9px solid $separator;
+    padding: 8px 0 0 0;
+    margin: 0;
+  }
+
+  @include tabs();
+  .tabs {
+    ul {
+      border: none;
+      margin: 0 0 1em 0;
+      padding: 0;
+    }
+    li {
+      a {
+        border: none;
+        text-transform: none;
+        margin-left: 0;
+        padding: 6px 10px 0 0;
+        color: $text;
+        position: relative;
+      }
+      a:hover {
+        background: none;
+      }
+      a.active::before, a:hover::before {
+        content: ' ';
+        height: 0;
+        position: absolute;
+        width: 0;
+        border: 15px solid transparent;
+        border-bottom-color: $separator; 
+        position: absolute;
+        top: 17px;
+        left: 28%;
+        z-index: 2;
+      }
+    }
+  }
+  .tab_content {
+    background: $separator;
+    @include border-radius(6px);
+    padding: 1em 2em;
+  }
+}
+
+
 
 .section_separator {
   margin: 4em 0;
@@ -968,6 +1021,7 @@ a.list_view_more {
     display: none;
   }
   table {
+    margin: 0 0 2em 0;
     td:not(:last-child) {
       font-size: .95em;  
       border-bottom: 1px solid #DFDFDF;
@@ -1081,6 +1135,46 @@ textarea {
   }
 }
 
+.cta_majors {
+  margin: 2em 0;
+  @include border-radius(6px);
+  background: lighten($color_vis_place, 40%);
+  font-size: .8em;
+  line-height: 1.2em;
+
+  h3 {
+    font-weight: 600;
+    text-transform: uppercase;
+    margin: 0 0 .5em 0;
+  }
+  .small_button {
+    text-transform: uppercase;
+    padding: .3em .7em; 
+  }
+  .pro_user {
+    padding: 2em 2em;
+    h3 {
+      color: $color_vis_place;
+    }
+    .small_button {
+      background: $color_vis_place;
+    }
+  }
+  .end_user {
+    color: #FFF;
+    @include border-radius(6px);
+    padding: 2em 2em;
+    background: $color_vis_place;
+    .small_button {
+      background: #FFF;
+      color: $color_vis_place;
+    }
+  }
+
+
+  
+  
+}
 
 /*
  * Modal Widgets
@@ -1468,6 +1562,14 @@ input[type=submit]:hover, .button:hover {
   border-top: 1px solid $separator;
   margin: 1em 0;
   height: 1px;
+}
+.placeholder_no_info {
+  font-style: italic;
+  opacity: .6;
+}
+.slim_col {
+  width: 400px;
+  margin: auto;
 }
 
 /*
