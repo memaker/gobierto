@@ -37,6 +37,11 @@ module ApplicationHelper
     'Económica'
   end
 
+  def other_kind(kind)
+    return 'G' if kind == 'I'
+    'I'
+  end
+
   def budget_line_crumbs(budget_line, type)
     crumbs = [budget_line]
     parent_code = budget_line['parent_code']
