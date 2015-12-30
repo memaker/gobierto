@@ -6,10 +6,10 @@ class BudgetLine
 
   def self.search(options)
 
-    terms = [{term: { ine_code: options[:ine_code] }},
-            {term: { kind: options[:kind] }},
+    terms = [{term: { kind: options[:kind] }},
             {term: { year: options[:year] }}]
 
+    terms << {term: { ine_code: options[:ine_code] }} if options[:ine_code].present?
     terms << {term: { parent_code: options[:parent_code] }} if options[:parent_code].present?
     terms << {term: { level: options[:level] }} if options[:level].present?
     terms << {term: { code: options[:code] }} if options[:code].present?
