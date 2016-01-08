@@ -108,7 +108,8 @@ $(function () {
       comparison = [];
       
       var recent_places = Cookies.get('places');
-      if (recent_places.length > 1) {
+      
+      if (recent_places == 'undefined') {
         // if the compare list is empty, we take the site that was previously visited so that he can compare
         // the current one and the previous one
         renderCompareList([recent_places[1]]);
