@@ -8,6 +8,7 @@ class PagesController < ApplicationController
   end
 
   def request_access
+    render layout: false
   end
 
 end
