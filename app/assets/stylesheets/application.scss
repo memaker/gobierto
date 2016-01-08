@@ -273,10 +273,9 @@ body {
 
 .switcher {
   position: absolute;
-  width: 110px;
   z-index: 4;
   top: 1.7em; 
-  right: 1em;
+  right: 1.75em;
   border: 1px solid darken($separator, 10%);
   @include border-radius(6px);
   background: #FFF;
@@ -284,10 +283,18 @@ body {
   ul {
     display: none;
     @include box-shadow();
+    border: 1px solid darken($separator, 10%);
+    @include border-radius(6px);
+    position: absolute;
+    top: 0;
+    width: 100%;
+    background: #FFF;
+    
   }
   ul, li {
     list-style-type: none;
     margin: 0;
+    z-index: 50;
     padding: 0;
   }
   a {
@@ -303,7 +310,6 @@ body {
     background: $separator;
   }
 }
-
 .kind_switcher {
   display: inline-block;
   position: relative;
@@ -311,22 +317,26 @@ body {
   left: 0;
   padding: 0;  
   border: none;
-  width: 140px;
-  min-height: 43px;
+  // width: 140px;
+  // min-height: 43px;
   
   ul {
-    position: absolute;
-    top: 0;
-    
+    @include border-radius(5px);
+    border-radius: 5px;
+    font-size: .7em;
+    padding: .5em;
+    line-height: 1.2em;
   }
   a {
-    padding: .5em;
+    padding: 0;
     color: $text;
     font-size: 1em;
     margin: 0 0 .25em 0;
     .fa {
       padding: 0 0 0 .5em;
       opacity: .5;
+      font-size: .75em;
+      vertical-align: middle;
     }
   }
 }
@@ -500,6 +510,18 @@ table {
   opacity: .5;
 }
 
+.compare {
+  header {
+    h1 {
+      display: inline-block;
+    }
+    .form_filters {
+      ul {
+        margin: 1em 0 0 0;
+      }
+    }
+  }
+}
 .comparison_table {
   .parent tr, .totals tr {
     background-color: #efefef;
@@ -525,13 +547,8 @@ table {
   }
   th.back_link {
     text-align: left;
-    vertical-align: bottom;
     min-width: 232px;
     font-weight: normal;
-    > a {
-      float: right;
-      line-height: 26px;
-    }
     .form_filters {
       line-height: 26px;
       float: left;
@@ -543,6 +560,7 @@ table {
   }
   th.location {
     position: relative;
+    width: 15%;
     .remove {
       position: absolute;
       top: 14px; 
@@ -597,10 +615,10 @@ table {
   }
 
   td.budget_line {
-    padding-top:10px;
-    padding-left:5px;
+    padding-top: 10px;
+    padding-left: 16px;
     vertical-align: top;
-    width: 16%;   
+    width: 16%; 
   }
 
   td.variable_names,
@@ -691,6 +709,9 @@ header.place {
       color: #AFAFAF;
     }
   }
+}
+header.place.ranking {
+  font-size: .85em;
 }
 header.sub {
   margin: 1em 0;
@@ -926,6 +947,7 @@ header.sub {
       float: none;
       vertical-align: top;
     }
+
   }
   .items {
     font-size: .9em;
@@ -1523,7 +1545,9 @@ textarea {
     background: #D1EAED;
   }
 }
-
+.cat .form_filters ul {
+  margin: 0;
+}
 
 /*
  * Buttons

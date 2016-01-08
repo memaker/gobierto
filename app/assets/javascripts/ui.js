@@ -59,14 +59,14 @@ $(function(){
 
   // adjust height of sidebar
   $('header.global').css('height', $(document).height());
-  
+
   $('.switcher').hover(function(e) {
     e.preventDefault();
     $(this).find('ul').show();
-    $(this).find('.current').hide();
+    // $(this).find('.current').hide();
   }, function(e) {
     $(this).find('ul').hide();
-    $(this).find('.current').show();
+    // $(this).find('.current').show();
   });
 
   $('.modal_widget').hover(function(e) {

@@ -1,24 +1,38 @@
+<% 
+title = ''
 
-<header class="place">
-  <div class="breadcrumb">
-    <h1>Compara <span class="sep"> » </span>
-      <div class="switcher kind_switcher">
-        <%= link_to "#{kind_literal(@kind).capitalize} <i class='fa fa-angle-down'></i>".html_safe, '', class: 'current' %>
-        <ul>
-          <li><%= link_to kind_literal(@kind).capitalize, places_compare_path(@places.map(&:slug).join(':'),@year,@kind,'economic') %></li>
-          <li><%= link_to kind_literal(other_kind(@kind)).capitalize, places_compare_path(@places.map(&:slug).join(':'),@year,other_kind(@kind),'economic') %></li>
-        </ul>
-      </div>
+# if @parent_compared.present? 
+#   title = budget_line_denomination(@area_name, code, @kind)  
+# end
+
+@places.each do |place|
+  title << ' '+ place.name
+end
+
+set_meta_tags title: 'Compara ' + title # @place.name + ' » ' + kind_literal(@kind).capitalize  
+
+%>
+
+<div class="compare">
+
+  <header class="place">
+
+    <div class="breadcrumb">
+      Herramientas
+    </div>
+    <h1>
+      Compara <span class="sep"> » </span>
+      <span>
+        <div class="switcher kind_switcher">
+          <%= link_to "#{kind_literal(@kind).capitalize} <i class='fa fa-angle-down'></i>".html_safe, '', class: 'current' %>
+          <ul>
+            <li><%= link_to kind_literal(@kind).capitalize, places_compare_path(@places.map(&:slug).join(':'),@year,@kind,'economic') %></li>
+            <li><%= link_to kind_literal(other_kind(@kind)).capitalize, places_compare_path(@places.map(&:slug).join(':'),@year,other_kind(@kind),'economic') %></li>
+          </ul>
+        </div>
+      </span>
     </h1>
-  </div>
-</header>
 
-<table class="comparison_table" cellspacing="0" cellpadding="0">
-<thead>
-  <th colspan="2" class="back_link">
-    <% if params[:parent_code].present? %>
-      <%= link_to '« inicio', places_compare_path(@places.map(&:slug).join(':'),@year,@kind,@area_name) %>
-    <% end %>
     <% if @kind == 'G' %>
       <div class="form_filters">
         <ul>
@@ -27,53 +41,65 @@
         </ul>
       </div>
     <% end %>
-  </th>
-  <% @places.each do |place| %>
-  <th class="location">
-    <%= link_to place.name, place_path(place.slug, @year), class: 'compared_place', data: {slug: place.slug} %>
-    <% if @places.size > 1 %>
-      <%= link_to 'X', '', class: 'remove tipsit', title: 'Eliminar de la comparación' %>
-    <% end %>
-  </th>
-  <% end %>
-  <th class="location add_location_cont">
-    <%= link_to '+', '', class: 'add', title: 'Añadir otro municipio' %>
-    <div class="add_location">
-      Añade otro municipio: 
-      <input type="text" id="add_place">
-    </div>
-  </th>
-</thead>
-<% if @parent_compared.present? %>
-  <tbody class="parent">
-    <%= render partial: 'compare_rows', locals: { records: @parent_compared } %>  
-  </tbody>
-<% else %>
-  <tbody class="totals">
-    <tr>
-    <td class="budget_line">Totales</td>
-    <td class="variable_names">
-      <ul>
-        <li>Total</li>
-        <li>Por Habitante</li>
-        <li>Población</li>
-      </ul>
-    </td>
+
+  </header>
+
+  <table class="comparison_table" cellspacing="0" cellpadding="0">
+  <thead>
+    <th colspan="2" class="back_link">
+      <% if params[:parent_code].present? %>
+        <%= link_to '« inicio', places_compare_path(@places.map(&:slug).join(':'),@year,@kind,@area_name) %>
+      <% end %>
+      
+    </th>
     <% @places.each do |place| %>
-      <td class="variable_values">
-        <% total_line = @totals.select {|tl| tl['ine_code'] == place.id.to_i }.first %>
-        <% population = @population.select {|tl| tl['ine_code'] == place.id.to_i }.first %>
+    <th class="location">
+      <%= link_to place.name, place_path(place.slug, @year), class: 'compared_place', data: {slug: place.slug} %>
+      <% if @places.size > 1 %>
+        <%= link_to 'X', '', class: 'remove tipsit', title: 'Eliminar de la comparación' %>
+      <% end %>
+    </th>
+    <% end %>
+    <th class="location add_location_cont">
+      <%= link_to '+', '', class: 'add', title: 'Añadir otro municipio' %>
+      <div class="add_location">
+        Añade otro municipio: 
+        <input type="text" id="add_place">
+      </div>
+    </th>
+  </thead>
+  <% if @parent_compared.present? %>
+    <tbody class="parent">
+      <%= render partial: 'compare_rows', locals: { records: @parent_compared } %>  
+    </tbody>
+  <% else %>
+    <tbody class="totals">
+      <tr>
+      <td class="budget_line">Totales</td>
+      <td class="variable_names">
         <ul>
-          <li><%= number_to_currency total_line['total_budget'], precision: 0 %></li>
-          <li><%= number_to_currency total_line['total_budget_per_inhabitant'], precision: 0 %></li>
-          <li><%= number_with_precision population['value'], precision: 0, delimiter: '.' %></li>
+          <li>Total</li>
+          <li>Por Habitante</li>
+          <li>Población</li>
         </ul>
       </td>
-    <% end %>
-  </tr>
+      <% @places.each do |place| %>
+        <td class="variable_values">
+          <% total_line = @totals.select {|tl| tl['ine_code'] == place.id.to_i }.first %>
+          <% population = @population.select {|tl| tl['ine_code'] == place.id.to_i }.first %>
+          <ul>
+            <li><%= number_to_currency total_line['total_budget'], precision: 0 %></li>
+            <li><%= number_to_currency total_line['total_budget_per_inhabitant'], precision: 0 %></li>
+            <li><%= number_with_precision population['value'], precision: 0, delimiter: '.' %></li>
+          </ul>
+        </td>
+      <% end %>
+    </tr>
+    </tbody>
+  <% end %>
+  <tbody>
+    <%= render partial: 'compare_rows', locals: { records: @budgets_compared } %>
   </tbody>
-<% end %>
-<tbody>
-  <%= render partial: 'compare_rows', locals: { records: @budgets_compared } %>
-</tbody>
-</table>
+  </table>
+
+</div>
