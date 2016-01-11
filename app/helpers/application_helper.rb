@@ -60,6 +60,12 @@ module ApplicationHelper
     link_to area_literal(area), place_budget_path(slug, year, 'expense', {area: area}), class: "toggle #{buttonSelected}"
   end
 
+  def link_to_parent_comparison(places, year, kind, area_name, parent_code)
+    options = {}
+    options[:parent_code] = parent_code[0..-2] if parent_code.length > 1
+    link_to('« anterior', places_compare_path(places.map(&:slug).join(':'),year,kind,area_name, options))
+  end
+
   def filter_location_name
     name = ""
     if @filter.location?

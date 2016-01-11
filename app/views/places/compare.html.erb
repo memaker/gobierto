@@ -48,7 +48,7 @@ set_meta_tags title: 'Compara ' + title # @place.name + ' » ' + kind_literal(@k
   <thead>
     <th colspan="2" class="back_link">
       <% if params[:parent_code].present? %>
-        <%= link_to '« inicio', places_compare_path(@places.map(&:slug).join(':'),@year,@kind,@area_name) %>
+        <%= link_to_parent_comparison(@places, @year, @kind, @area_name, params[:parent_code]) %>
       <% end %>
       
     </th>
