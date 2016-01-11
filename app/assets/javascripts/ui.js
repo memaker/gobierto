@@ -25,7 +25,7 @@ $(function(){
     groupBy: 'category'
   };
 
-  $('#search').autocomplete($.extend({}, AUTOCOMPLETE_DEFAULTS, searchOptions));
+  $('.search_auto').autocomplete($.extend({}, AUTOCOMPLETE_DEFAULTS, searchOptions));
   $('.sticky').sticky({topSpacing:0});
 
   $(document).on('mouseenter', '.compare_cont', function(e){

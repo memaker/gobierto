@@ -86,7 +86,7 @@
 
 <header class="sticky_top">
   <%= link_to image_tag('Gobierto-Avatar@2x.png', size: '30x30'), root_path %>
-  <input type="text" class="places_search" value="<%= @place.name %>" placeholder="Busca municipio..." id="search">
+  <input type="text" class="places_search search_auto" value="<%= @place.name %>" placeholder="Busca municipio..." >
 
   <% if params['controller'] == 'budget_lines' %>
   <div class="breadcrumb">

@@ -6,7 +6,7 @@ title = ''
 # end
 
 @places.each do |place|
-  title << ' '+ place.name
+  title << place.name + ' - '
 end
 
 set_meta_tags title: 'Compara ' + title # @place.name + ' » ' + kind_literal(@kind).capitalize  

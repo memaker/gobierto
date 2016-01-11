@@ -690,9 +690,10 @@ header.place {
     font-size: 1.65em;
     span {
       font-weight: 200;
-      .sep {
-        color: #DFDFDF;
-      }
+    }
+    .sep {
+      color: #DFDFDF;
+      border-top: none;
     }
     a {
       text-decoration: none;
@@ -1178,6 +1179,7 @@ textarea {
 }
 
 .cta_majors {
+  display: none;
   margin: 2em 0;
   @include border-radius(6px);
   background: lighten($color_vis_place, 40%);
