@@ -607,6 +607,7 @@ table {
   td {
     border-bottom: solid 1px #eaeaea;
     padding-bottom: 14px;
+    white-space: nowrap;
   }
 
   // th:not(:last-child), 
@@ -618,7 +619,8 @@ table {
     padding-top: 10px;
     padding-left: 16px;
     vertical-align: top;
-    width: 16%; 
+    min-width: 16%; 
+    white-space: normal;
   }
 
   td.variable_names,
