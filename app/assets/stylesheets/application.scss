@@ -184,7 +184,8 @@ header.global {
  *
  */
 .logo {
-  margin: 1em 0 2em 0;
+  margin: 1em 0 2em 1em;
+  font-size: .7em;
   img {
     display: inline-block;
     vertical-align: middle;
@@ -224,6 +225,10 @@ header.global {
         }
       }
     }  
+  }
+  .places_search {
+    width: 93%;
+    padding: 3% 1% 3% 5%;
   }
   .links_list {
     padding: 1em;
@@ -543,7 +548,7 @@ table {
     text-transform: none;
     font-size: 13px; 
     font-weight: 600;
-    
+    line-height: 1.2em;
   }
   th.back_link {
     text-align: left;
@@ -561,9 +566,10 @@ table {
   th.location {
     position: relative;
     width: 15%;
+    padding-bottom: 10px;
     .remove {
       position: absolute;
-      top: 14px; 
+      top: 7px; 
       margin: 0 0 0 6px;
       text-decoration: none; 
       color: $text_soft;

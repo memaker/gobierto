@@ -19,6 +19,9 @@ Rails.application.routes.draw do
   get '/budget_lines/:slug/:year/:code/:kind/:area' => 'budget_lines#show', as: :budget_line
   get '/places/:slug/:year' => 'places#show', as: :place
   get '/places/:slug/:year/:kind/:area' => 'places#budget', as: :place_budget
+
+  # compare
+  get 'compare' => 'pages#compare'
   get '/compare/:slug_list/:year/:kind/:area' => 'places#compare', as: :places_compare
 
   namespace :api do

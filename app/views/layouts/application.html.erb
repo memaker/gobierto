@@ -40,17 +40,18 @@
   <header class="global">
 
     <div class="logo">
-      <%= link_to_unless_current image_tag('LogoGobierto.png', width: '180'), root_path %>
-      <div class="sub-brand">
-        Presupuestos Municipales
-      </div>
+      <%= link_to_unless_current image_tag('LogoGobiertoPresupuestos.png', width: '158'), root_path %>
     </div>
+
+    <input type="text" class="places_search" value="" placeholder="Busca municipio..." id="search">
 
     <menu>
       <ul>
         <li><%= link_to 'Municipios', root_path, class: 'selected' %></li>
-        <li><%= link_to 'Compara', '/sandbox/compare' %></li>
-        <li><%= link_to 'Rankings', '/sandbox/ranking' %></li>
+        <li><%= link_to 'Compara', compare_path %></li>
+        <% pending do %>
+          <li><%= link_to 'Rankings', '/sandbox/ranking' %></li>
+        <% end %>
         <li><%= link_to '<span>Pro</span> Servicios'.html_safe %></li>
       </ul>
     </menu>

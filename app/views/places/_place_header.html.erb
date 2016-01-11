@@ -3,6 +3,7 @@
     <%= @place.province.autonomous_region.name %> » <%= @place.province.name %>
   </div>
   <h1><%= link_to_unless_current @place.name, place_path(@place.slug, @year) %></h1>
+  <% pending do %>
   <menu>
     <ul>
       <li><%= link_to 'Presupuesto' %></li>
@@ -12,6 +13,7 @@
       <li><%= link_to 'Contexto' %></li>
     </ul>
   </menu>
+  <% end %>
 
   <div class="tools_cont">
     <div class="tools sticky">
