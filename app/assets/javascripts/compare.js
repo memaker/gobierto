@@ -27,7 +27,7 @@ $(function () {
     var area = $('body').data('area');
     var kind = $('body').data('kind');
     
-    var url = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/places/compare/";
+    var url = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/compare/";
     url += slugs.join(':');
     url += "/" + year + "/" + kind + "/" + area;
     return url;

@@ -47,6 +47,8 @@
         <%= link_to '<span>Comparte</span> <i class="fa fa-share"></i>'.html_safe, '', class: 'tool_button' %>
         <div class="inner widget_share" >
 
+          <% pending do %>
+
           <p><strong>Comparte esta URL</strong></p>
 
           <p>
@@ -64,10 +66,14 @@
 
           <div class="sep"></div>
 
+          <% end %>
+
+          <p><i>Coming soon...</i></p>
+
           <div class="cta_claim">
             <h3>¿Eres responsable de este municipio?</h3>
             <p>Gobierto te permite hacer una integración personalizada de estas visualizaciones en tu web.</p>
-            <%= link_to 'Solicita información', '', class: 'button' %>
+            <%= link_to 'Solicita información', contact_pro_path, class: 'button' %>
           </div>
 
         </div>
