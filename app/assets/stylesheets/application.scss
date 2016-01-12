@@ -1179,7 +1179,7 @@ textarea {
 }
 
 .cta_majors {
-  display: none;
+  
   margin: 2em 0;
   @include border-radius(6px);
   background: lighten($color_vis_place, 40%);
