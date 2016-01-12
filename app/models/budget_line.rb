@@ -82,6 +82,43 @@ class BudgetLine
     response['hits']['hits'].map{ |h| h['_source'] }
   end
 
+  def self.compare_with_ancestors(options)
+    terms = [{terms: { ine_code: options[:ine_codes] }},
+              {term: { kind: options[:kind] }},
+              {term: { year: options[:year] }},
+              {range: { level: { lte: options[:level].to_i } }},
+              {bool: {
+                should: [
+                  {wildcard: { code: "#{options[:parent_code][0]}*" }},
+                  {term: { parent_code: '' }}
+                  ]
+                }
+              }]
+    
+    query = {
+      sort: [
+        { code: { order: 'asc' } },
+        { ine_code: { order: 'asc' }}
+      ],
+      query: {
+        filtered: {
+          query: {
+            match_all: {}
+          },
+          filter: {
+            bool: {
+              must: terms
+            }
+          }
+        }
+      },
+      size: 10_000
+    }
+
+    response = SearchEngine.client.search index: INDEX, type: options[:type] , body: query
+    response['hits']['hits'].map{ |h| h['_source'] }
+  end
+
   def self.has_children?(budget_line, area)
     options = { parent_code: budget_line['code'],
                 level: budget_line['level'].to_i + 1,

@@ -36,20 +36,16 @@ class PlacesController < ApplicationController
     @totals = BudgetTotal.for @places.map(&:id), @year
     @population = Population.for @places.map(&:id), @year
     
-    compared_level = (params[:parent_code].present? ? params[:parent_code].length + 1 : 1)
-    options = { ine_codes: @places.map(&:id), year: @year, kind: @kind, level: compared_level, type: @area_name }
+    @compared_level = (params[:parent_code].present? ? params[:parent_code].length + 1 : 1)
+    options = { ine_codes: @places.map(&:id), year: @year, kind: @kind, level: @compared_level, type: @area_name }
     
-    @budgets_compared = if params[:parent_code].present?
-      children_options = options.merge(parent_code: params[:parent_code])
-      BudgetLine.compare(children_options)
+    if @compared_level > 1
+      @budgets_and_ancestors = BudgetLine.compare_with_ancestors(options.merge(parent_code: params[:parent_code]))
+      @budgets_compared = @budgets_and_ancestors.select {|bl| bl['parent_code'] == params[:parent_code]}
+      @parent_compared = @budgets_and_ancestors.select {|bl| bl['code'] == params[:parent_code] }
     else
-      BudgetLine.compare(options)
+      @budgets_compared = @budgets_and_ancestors = BudgetLine.compare(options)
     end
-    
-    if params[:parent_code].present?  
-      parent_options = options.merge(code: params[:parent_code], level: compared_level - 1)
-      @parent_compared = BudgetLine.compare(parent_options)
-    end    
   end
 
   private
