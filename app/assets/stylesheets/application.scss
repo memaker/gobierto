@@ -223,6 +223,14 @@ header.global {
         a:hover, a.selected {
           background: darken($color_1_soft, 20%);
         }
+        span {
+          background: #FFF;
+          font-size: .8em;
+          padding: .2em .3em .2em;
+          display: inline-block;
+          vertical-align: text-bottom;
+          @include border-radius(3px);
+        }
       }
     }  
   }
