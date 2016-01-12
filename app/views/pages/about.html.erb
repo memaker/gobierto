@@ -38,7 +38,7 @@
 
         <ul>
           <li><strong>Descubre historias</strong> Bucea con facilidad en los gastos y su evolución para destapar historias </li>
-          <li><strong>Complementa tu información local</strong> Genera visualizaciones para tus piezas aportando mayor contexto a tus piezas</li>
+          <li><strong>Complementa tu información local</strong> Genera visualizaciones para tus piezas aportando mayor contexto</li>
           <li><strong>Haz seguimiento</strong> Realiza un seguimiento de los gastos por municipio, región o tipo de gasto</li>
           <li><strong>Aporta contexto</strong> Contribuye con tu información a contextualizar los presupuestos</li>
         </ul>
@@ -60,22 +60,35 @@
 
     </div>
 
-    <div class="about_block" id="features">
+    <div class="about_block clearfix" id="features">
       <h2>Funcionalidades</h2>
 
-      <ul>
-        <li>Consulta el desglose de ingresos y gastos de cada municipio</li>
-        <li>Acceso a la clasificación económica y funcional de las partidas</li>
-        <li>Histórico anual </li>
-        <li>Presupuestos, Ejecución e Indicadores económicos</li>
-        <li>Visualización y mapas</li>
-        <li>Visualización de las variaciones anuales en las partidas</li>
-        <li>Contextualización de las cifras</li>
-        <li>Compara</li>
-        <li>Guarda favoritos</li>
-        <li>Genera informes</li>
-        <li>... </li>
-      </ul>
+      <div class="col-1-3">
+        <ul>
+          <li>Consulta el desglose de ingresos y gastos</li>
+          <li>Acceso a la clasificación económica y funcional</li>
+          <li>Histórico anual </li>
+          <li>Presupuestos, Ejecución e Indicadores económicos</li>
+        </ul>
+      </div>
+
+      <div class="col-2-3">
+        <ul>
+          <li>Visualización y mapas</li>
+          <li>Visualización de las variaciones anuales en las partidas</li>
+          <li>Contextualización de las cifras</li>
+          <li><%= link_to 'Compara entre municipios', compare_path %></li>
+        </ul>
+      </div>
+
+      <div class="col-3-3">
+        <ul>
+          <li>Guarda favoritos</li>
+          <li>Genera informes</li>
+        </ul>
+      </div>
+
+      
     </div>
 
     <div class="about_block" id="method">
