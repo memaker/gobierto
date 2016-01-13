@@ -532,17 +532,13 @@ table {
     h1 {
       display: inline-block;
     }
-    .form_filters {
-      ul {
-        margin: 1em 0 0 0;
-      }
-    }
   }
 }
 .data_table {
   td {
-    border-bottom: solid 1px #eaeaea;
+    // border-bottom: solid 1px #eaeaea;
     white-space: nowrap;
+    
 
   }
   td.r_pos, th.r_pos {
@@ -568,7 +564,7 @@ table {
     border-left: 1px solid #eaeaea;
   }
   .expense_per {
-    width: 8%;
+    width: 12%;
     text-align: right;
     padding-right: 1%;
   }
@@ -582,6 +578,7 @@ table {
     width: 10%;
     text-align: right;
     padding-right: 1%;
+    white-space: nowrap;
   }
   .compare {
     padding-left: 20px;
@@ -594,7 +591,7 @@ table {
     width: 45px;
     border-top: 1px solid #E1E1E1;
     display: inline-block;
-    margin: 0 0 0 10px;
+    margin: 0 10px;
     vertical-align: middle;
     position: relative;
     span {
@@ -606,6 +603,9 @@ table {
       position: absolute;
       top: -4px;
     }
+  }
+  .relative_pos {
+
   }
 }
 .comparison_table {
@@ -709,21 +709,20 @@ table {
     padding-top: 10px;
     padding-right: 10px;
   }
-
+  td {
+    border-bottom: solid 1px #eaeaea;
+  }
   td.variable_values {
     padding-right: 14px;
   }
-
   td li {
     text-align: right;
     line-height: 18px;
   }
-
   td.variable_names li {
     color:#A49E9F;
     font-size: 12px;
   }
-
   td.variable_values li {
     color:#767168;
     font-size: 13px;
@@ -749,16 +748,6 @@ table {
 header.place {
   position: relative;
   margin: 0 0 1em 0;
-  .breadcrumb {
-    font-size: .8em;
-    a {
-      text-decoration: none;
-    }
-    .sep {
-      border: none;
-      color: #DFDFDF;
-    }
-  }
   h1 {
     margin: .35em 0;
     font-weight: 600;
@@ -792,6 +781,26 @@ header.place {
       margin: 0 .75em 0 0;
       color: #AFAFAF;
     }
+  }
+}
+.breadcrumb {
+  font-size: .8em;
+  a {
+    text-decoration: none;
+  }
+  .sep {
+    border: none;
+    color: #DFDFDF;
+  }
+}
+header.table {
+  margin: 0 0 1em 0;
+  h1 {
+    margin: 0 0 .35em 0;
+    font-weight: 600;
+    font-size: 1.1em;
+    display: inline-block;
+    font-weight: 200;
   }
 }
 header.place.ranking {
@@ -1613,7 +1622,7 @@ textarea {
     @include border-radius(2em);
     background: #EFF8F9;
     padding: 0 10px;
-    margin: 0 1em 0 0;
+    margin: 0;
   }
   li a {
     display: inline-block;

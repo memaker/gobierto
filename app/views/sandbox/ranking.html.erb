@@ -1,66 +1,76 @@
 
-<header class="place ranking">
+<header class="table">
   <div class="breadcrumb">
-    <h1>
-      Ranking <span class="sep"> » </span>
-      <span>
-        <div class="switcher kind_switcher">
-          <%= link_to "Gastos <i class='fa fa-angle-down'></i>".html_safe, '', class: 'current' %>
-          <ul>
-            <li><%= link_to 'Gastos' %></li>
-            <li><%= link_to 'Ingresos' %></li>
-          </ul>
-        </div>
-        <span class="sep"> » </span>
-      </span>
-      <span>
-        <div class="switcher kind_switcher">
-          <%= link_to "Gastos corrientes <i class='fa fa-angle-down'></i>".html_safe, '', class: 'current' %>
-          <ul>
-            <li><%= link_to 'Gastos de personal' %></li>
-            <li class="active"><%= link_to 'Gastos corrientes' %></li>
-            <li><%= link_to 'Gastos financieros' %></li>
-            <li><%= link_to 'Transferencias corrientes' %></li>
-            <li><%= link_to 'Fondo de contingencia y otros imprevistos' %></li>
-            <li><%= link_to 'Inversiones reales' %></li>
-            <li><%= link_to 'Transferencias de capital' %></li>
-            <li><%= link_to 'Activos financieros' %></li>
-            <li><%= link_to 'Pasivos financieros' %></li>
-          </ul>
-        </div>
-        <span class="sep"> » </span>
-      </span>
-      <span>
-        <div class="switcher kind_switcher">
-          <%= link_to "Material, suministros y otros <i class='fa fa-angle-down'></i>".html_safe, '', class: 'current' %>
-          <ul>
-            <li><%= link_to 'Arrendamientos y cánones' %></li>
-            <li><%= link_to 'Reparaciones, mantenimiento y conservación' %></li>
-            <li class="active"><%= link_to 'Material, suministros y otros' %></li>
-            <li><%= link_to 'Indeminizaciones por razón de servicio' %></li>
-          </ul>
-        </div>
-        <span class="sep"> » </span>
-      </span>
-      <span>
-        <div class="switcher kind_switcher">
-          <%= link_to "Material de oficina <i class='fa fa-angle-down'></i>".html_safe, '', class: 'current' %>
-          <ul>
-            <li class="active"><%= link_to 'Material de oficina' %></li>
-            <li><%= link_to 'Suministros' %></li>
-            <li><%= link_to 'Comunicaciones' %></li>
-            <li><%= link_to 'Transportes' %></li>
-            <li><%= link_to 'Primas de seguros' %></li>
-            <li><%= link_to 'Tributos' %></li>
-            <li><%= link_to 'Gastos diversos' %></li>
-            <li><%= link_to 'Trabajos realizados por otras empresas y profesionales' %></li>
-          </ul>
-        </div>
-        <span class="sep"> » </span>
-      </span>
-      <span>Total</span>
-    </h1>
+    <%= link_to 'Ranking' %>
   </div>
+  <h1>
+    <span>
+      <div class="switcher kind_switcher">
+        <%= link_to "Gastos <i class='fa fa-angle-down'></i>".html_safe, '', class: 'current' %>
+        <ul>
+          <li><%= link_to 'Gastos' %></li>
+          <li><%= link_to 'Ingresos' %></li>
+        </ul>
+      </div>
+      <span class="sep"> » </span>
+    </span>
+    <span>
+      <div class="switcher kind_switcher">
+        <%= link_to "Gastos corrientes <i class='fa fa-angle-down'></i>".html_safe, '', class: 'current' %>
+        <ul>
+          <li><%= link_to 'Gastos de personal' %></li>
+          <li class="active"><%= link_to 'Gastos corrientes' %></li>
+          <li><%= link_to 'Gastos financieros' %></li>
+          <li><%= link_to 'Transferencias corrientes' %></li>
+          <li><%= link_to 'Fondo de contingencia y otros imprevistos' %></li>
+          <li><%= link_to 'Inversiones reales' %></li>
+          <li><%= link_to 'Transferencias de capital' %></li>
+          <li><%= link_to 'Activos financieros' %></li>
+          <li><%= link_to 'Pasivos financieros' %></li>
+        </ul>
+      </div>
+      <span class="sep"> » </span>
+    </span>
+    <span>
+      <div class="switcher kind_switcher">
+        <%= link_to "Material, suministros y otros <i class='fa fa-angle-down'></i>".html_safe, '', class: 'current' %>
+        <ul>
+          <li><%= link_to 'Arrendamientos y cánones' %></li>
+          <li><%= link_to 'Reparaciones, mantenimiento y conservación' %></li>
+          <li class="active"><%= link_to 'Material, suministros y otros' %></li>
+          <li><%= link_to 'Indeminizaciones por razón de servicio' %></li>
+        </ul>
+      </div>
+      <span class="sep"> » </span>
+    </span>
+    <span>
+      <div class="switcher kind_switcher">
+        <%= link_to "Material de oficina <i class='fa fa-angle-down'></i>".html_safe, '', class: 'current' %>
+        <ul>
+          <li class="active"><%= link_to 'Material de oficina' %></li>
+          <li><%= link_to 'Suministros' %></li>
+          <li><%= link_to 'Comunicaciones' %></li>
+          <li><%= link_to 'Transportes' %></li>
+          <li><%= link_to 'Primas de seguros' %></li>
+          <li><%= link_to 'Tributos' %></li>
+          <li><%= link_to 'Gastos diversos' %></li>
+          <li><%= link_to 'Trabajos realizados por otras empresas y profesionales' %></li>
+        </ul>
+      </div>
+      <span class="sep"> » </span>
+    </span>
+    <span>Total</span>
+  </h1>
+  
+  <div class="form_filters">
+    <ul>
+      <li><%= link_to 'Económica', '' %></li>
+      <li><%= link_to 'Funcional' %></li>
+    </ul>
+  </div>
+
+  
+
 </header>
 
 <div class="">

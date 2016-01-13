@@ -15,13 +15,12 @@ set_meta_tags title: 'Compara ' + title # @place.name + ' » ' + kind_literal(@k
 
 <div class="compare">
 
-  <header class="place">
+  <header class="table">
 
     <div class="breadcrumb">
-      Herramientas
+      <%= link_to 'Compara', compare_path %>
     </div>
     <h1>
-      Compara <span class="sep"> » </span>
       <span>
         <div class="switcher kind_switcher">
           <%= link_to "#{kind_literal(@kind).capitalize} <i class='fa fa-angle-down'></i>".html_safe, '', class: 'current' %>
