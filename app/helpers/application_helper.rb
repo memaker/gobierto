@@ -29,9 +29,12 @@ module ApplicationHelper
     res
   end
 
-  def kind_literal(kind)
-    return 'ingresos' if kind == 'I'
-    'gastos'
+  def kind_literal(kind, plural = true)
+    if kind == 'I'
+      plural ? 'ingresos' : 'ingreso'
+    else
+      plural ? 'gastos' : 'gasto'
+    end
   end
 
   def area_literal(area)
