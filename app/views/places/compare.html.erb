@@ -43,7 +43,7 @@ set_meta_tags title: 'Compara ' + title # @place.name + ' » ' + kind_literal(@k
                     previous_branch_code = selected_branch_code[0..-2]
                     current_link_literal = budget_line_denomination(@area_name, selected_branch_code, @kind, 20)
                   end 
-                  items = items_in_level(@budgets_and_ancestors, level, previous_branch_code, @places.first.id)
+                  items = items_in_level(@budgets_and_ancestors, level, previous_branch_code)
                   %>
               <%= link_to "#{current_link_literal} <i class='fa fa-angle-down'></i>".html_safe, places_compare_path(@places.map(&:slug).join(':'),@year,@kind,@area_name, {parent_code: selected_branch_code }), class: 'current' %>
               <% if items.any? %>

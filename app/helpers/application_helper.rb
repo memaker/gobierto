@@ -68,8 +68,8 @@ module ApplicationHelper
     link_to('« anterior', places_compare_path(places.map(&:slug).join(':'),year,kind,area_name, options))
   end
 
-  def items_in_level(budget_lines, level, parent_code, place_id)
-    budget_lines.select {|bl| bl['level'] == level && bl['parent_code'] == parent_code && bl['ine_code'] == place_id.to_i }
+  def items_in_level(budget_lines, level, parent_code)
+    budget_lines.select {|bl| bl['level'] == level && bl['parent_code'] == parent_code }.uniq{|bl| bl['code'] }
   end
 
   def filter_location_name
