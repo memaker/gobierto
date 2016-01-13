@@ -75,6 +75,11 @@ module ApplicationHelper
     budget_lines.select {|bl| bl['level'] == level && bl['parent_code'] == parent_code }.uniq{|bl| bl['code'] }
   end
 
+  def categories_in_level(area, kind, level, parent_code)
+    area = (area == 'economic' ? EconomicArea : FunctionalArea)
+    area.all_items[kind].select{|k,v| k.length == level && k.starts_with?(parent_code)}.sort_by{|k,v| k}
+  end
+
   def filter_location_name
     name = ""
     if @filter.location?

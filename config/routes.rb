@@ -9,7 +9,6 @@ Rails.application.routes.draw do
   get 'contact_citizen' => 'pages#contact_citizen'
 
   if Rails.env.development?
-    # root 'pages#index'
     get '/sandbox' => 'sandbox#index'
     get '/sandbox/*template' => 'sandbox#show'
   end
@@ -23,6 +22,9 @@ Rails.application.routes.draw do
   # compare
   get 'compare' => 'pages#compare'
   get '/compare/:slug_list/:year/:kind/:area' => 'places#compare', as: :places_compare
+
+  get 'ranking' => 'pages#ranking'
+  get '/ranking/:year/:code/:kind/:area' => 'places#ranking', as: :places_ranking
 
   namespace :api do
     get '/data/lines/:ine_code/:year/:what' => 'data#lines', as: :data_lines
