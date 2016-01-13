@@ -212,6 +212,9 @@ $(function(){
     $('.tab_content[data-tab="'+tab+'"]').show();
   });
 
-
+  $('[data-link]').click(function(e){
+    e.preventDefault();
+    window.location.href = $(this).data('link');
+  });
   
 });
