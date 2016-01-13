@@ -122,7 +122,7 @@ class BudgetLine
   def self.has_children?(budget_line, area)
     options = { parent_code: budget_line['code'],
                 level: budget_line['level'].to_i + 1,
-                area: area }
+                type: area }
     options.merge! budget_line.slice('ine_code','kind','year').symbolize_keys
     
     return search(options)['hits'].length > 0
