@@ -490,7 +490,7 @@ table {
   }
   td {
     font-size: 13px;
-    line-height: 17px;
+    line-height: 20px;
   }
   th:first-child, td:first-child {
     padding-left: 0;
@@ -536,6 +536,75 @@ table {
       ul {
         margin: 1em 0 0 0;
       }
+    }
+  }
+}
+.data_table {
+  td {
+    border-bottom: solid 1px #eaeaea;
+    white-space: nowrap;
+
+  }
+  td.r_pos, th.r_pos {
+    text-align: center;
+    color: $text_soft;
+    width: 15px;
+    padding-left: 4px;
+    padding-right: 4px;
+  }
+  th {
+    font-weight: 600;
+  }
+  tr.selected td {
+    background: $color_1_soft;
+  }
+  .location {
+    width: 35%;
+  }
+  .population {
+    color: $text_soft;
+    width: 16%;
+    text-align: right;
+    border-left: 1px solid #eaeaea;
+  }
+  .expense_per {
+    width: 8%;
+    text-align: right;
+    padding-right: 1%;
+  }
+  .expense {
+    width: 16%;
+    text-align: right; 
+    color: $text_soft;
+    border-left: 1px solid #eaeaea;
+  }
+  .percentage {
+    width: 10%;
+    text-align: right;
+    padding-right: 1%;
+  }
+  .compare {
+    padding-left: 20px;
+    padding-right: 20px;
+    text-align: center;
+    border-left: 1px solid #eaeaea;
+  }
+
+  .relative {
+    width: 45px;
+    border-top: 1px solid #E1E1E1;
+    display: inline-block;
+    margin: 0 0 0 10px;
+    vertical-align: middle;
+    position: relative;
+    span {
+      background: #E69800;
+      @include border-radius(7px);
+      height: 7px;
+      width: 7px;
+      margin-left: -4px;
+      position: absolute;
+      top: -4px;
     }
   }
 }
@@ -620,12 +689,6 @@ table {
   th:last-child {
     width: 25px;
     text-align: center;
-  }
-
-  td {
-    border-bottom: solid 1px #eaeaea;
-    padding-bottom: 14px;
-    white-space: nowrap;
   }
 
   // th:not(:last-child), 

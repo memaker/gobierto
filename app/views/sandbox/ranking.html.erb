@@ -63,115 +63,131 @@
   </div>
 </header>
 
-<div class="items">
-  <table class="">
+<div class="">
+  <table class="data_table">
   <thead>
-    <th>#</th>
+    <th class="r_pos">#</th>
     <th class="location">Municipio</th>
-    <th class="right">Habitantes</th>
-    <th class="right">Gasto total</th>
-    <th class="right">Gasto por habitante</th> 
-    <th >Compara</th>
+    <th class="population">Habitantes</th>
+    <th class="expense_per" title="Gasto por habitante">Gasto/hab</th> 
+    <th class="relative_pos"></th>
+    <th class="expense">Gasto total</th>
+    <th class="percentage">% s/ Total</th> 
+    <th class="relative_pos"></th>
+    <th class="compare">Compara</th>
 
   </thead>
   <tbody>
     <tr>
-      <td>1.</td>
-      <td ><a href="#">Madrid</a> (Madrid)</td>
-      <td class="right">2.456.78</td>
-      <td class="right">1.234.567,87€</td>
-      <td class="right">345€</td>
-      <td >Compara</td>
+      <td class="r_pos">1.</td>
+      <td class="location"><a href="#">Madrid</a> (Madrid)</td>
+      <td class="population">3.123.456</td>
+      <td class="expense_per">345€</td>
+      <td class="relative_pos tipsit" title="98%"><div class="relative"><span style="left:98%"></span></div></td>
+      <td class="expense">1.234.567,87€</td>
+      <td class="percentage">23,4%</td>
+      <td class="relative_pos tipsit" title="50%"><div class="relative"><span style="left:50%"></span></div></td>
+      <td class="compare">Compara</td>
     </tr>
     <tr>
-      <td>2.</td>
-      <td ><a href="#">Barcelona</a> (Barcelona)</td>
-      <td class="right">2.456.78</td>
-      <td class="right">1.234.567,87€</td>
-      <td class="right">345€</td>
-      <td >Compara</td>
+      <td class="r_pos">2.</td>
+      <td class="location"><a href="#">Barcelona</a> (Barcelona)</td>
+      <td class="population">1.845.345</td>
+      <td class="expense_per">345€</td>
+      <td class="relative_pos tipsit" title="1%"><div class="relative"><span style="left:1%"></span></div></td>
+      <td class="expense">1.234.567,87€</td>
+      <td class="percentage">23,4%</td>
+      <td class="relative_pos tipsit" title="50%"><div class="relative"><span style="left:50%"></span></div></td>
+      <td class="compare">Compara</td>
     </tr>
     <tr>
-      <td>3.</td>
-      <td ><a href="#">Valencia</a> (Valencia)</td>
-      <td class="right">2.456.78</td>
-      <td class="right">1.234.567,87€</td>
-      <td class="right">345€</td>
-      <td >Compara</td>
+      <td class="r_pos">3.</td>
+      <td class="location"><a href="#">Valencia</a> (Valencia)</td>
+      <td class="population">534.567</td>
+      <td class="expense_per">345€</td>
+      <td class="relative_pos tipsit" title="10%"><div class="relative"><span style="left:10%"></span></div></td>
+      <td class="expense">1.234.567,87€</td>
+      <td class="percentage">23,4%</td>
+      <td class="relative_pos tipsit" title="50%"><div class="relative"><span style="left:50%"></span></div></td>
+      <td class="compare">Compara</td>
     </tr>
     <tr>
-      <td>4.</td>
-      <td ><a href="#">Bilbao</a> (Bizkaia)</td>
-      <td class="right">2.456.78</td>
-      <td class="right">1.234.567,87€</td>
-      <td class="right">345€</td>
-      <td >Compara</td>
+      <td class="r_pos">4.</td>
+      <td class="location"><a href="#">Bilbao</a> (Bizkaia)</td>
+      <td class="population">534.567</td>
+      <td class="expense_per">345€</td>
+      <td class="relative_pos tipsit" title="20%"><div class="relative"><span style="left:20%"></span></div></td>
+      <td class="expense">1.234.567,87€</td>
+      <td class="percentage">23,4%</td>
+      <td class="relative_pos tipsit" title="50%"><div class="relative"><span style="left:50%"></span></div></td>
+      <td class="compare">Compara</td>
     </tr>
     <tr>
-      <td>5.</td>
-      <td ><a href="#">Madrid</a> (Madrid)</td>
-      <td class="right">2.456.78</td>
-      <td class="right">1.234.567,87€</td>
-      <td class="right">345€</td>
-      <td >Compara</td>
+      <td class="r_pos">5.</td>
+      <td class="location"><a href="#">Madrid</a> (Madrid)</td>
+      <td class="population">534.567</td>
+      <td class="expense_per">345€</td>
+      <td class="relative_pos tipsit" title="30%"><div class="relative"><span style="left:30%"></span></div></td>
+      <td class="expense">1.234.567,87€</td>
+      <td class="percentage">23,4%</td>
+      <td class="relative_pos tipsit" title="50%"><div class="relative"><span style="left:50%"></span></div></td>
+      <td class="compare">Compara</td>
+    </tr>
+    <tr class="selected">
+      <td class="r_pos">6.</td>
+      <td class="location"><a href="#">Barcelona</a> (Barcelona)</td>
+      <td class="population">534.567</td>
+      <td class="expense_per">345€</td>
+      <td class="relative_pos tipsit" title="40%"><div class="relative"><span style="left:40%"></span></div></td>
+      <td class="expense">1.234.567,87€</td>
+      <td class="percentage">23,4%</td>
+      <td class="relative_pos tipsit" title="50%"><div class="relative"><span style="left:50%"></span></div></td>
+      <td class="compare">Compara</td>
     </tr>
     <tr>
-      <td>6.</td>
-      <td ><a href="#">Barcelona</a> (Barcelona)</td>
-      <td class="right">2.456.78</td>
-      <td class="right">1.234.567,87€</td>
-      <td class="right">345€</td>
-      <td >Compara</td>
+      <td class="r_pos">7.</td>
+      <td class="location"><a href="#">Almunia de Doña Godina, La</a> (Zaragoza)</td>
+      <td class="population">534.567</td>
+      <td class="expense_per">345€</td>
+      <td class="relative_pos tipsit" title="50%"><div class="relative"><span style="left:50%"></span></div></td>
+      <td class="expense">1.234.567,87€</td>
+      <td class="percentage">23,4%</td>
+      <td class="relative_pos tipsit" title="50%"><div class="relative"><span style="left:50%"></span></div></td>
+      <td class="compare">Compara</td>
     </tr>
     <tr>
-      <td>7.</td>
-      <td ><a href="#">Almunia de Doña Godina, La</a> (Zaragoza)</td>
-      <td class="right">2.456.78</td>
-      <td class="right">1.234.567,87€</td>
-      <td class="right">345€</td>
-      <td >Compara</td>
+      <td class="r_pos">8.</td>
+      <td class="location"><a href="#">Bilbao</a> (Madrid)</td>
+      <td class="population">534.567</td>
+      <td class="expense_per">345€</td>
+      <td class="relative_pos tipsit" title="60%"><div class="relative"><span style="left:60%"></span></div></td>
+      <td class="expense">1.234.567,87€</td>
+      <td class="percentage">23,4%</td>
+      <td class="relative_pos tipsit" title="50%"><div class="relative"><span style="left:50%"></span></div></td>
+      <td class="compare">Compara</td>
     </tr>
     <tr>
-      <td>8.</td>
-      <td ><a href="#">Bilbao</a> (Madrid)</td>
-      <td class="right">2.456.78</td>
-      <td class="right">1.234.567,87€</td>
-      <td class="right">345€</td>
-      <td >Compara</td>
+      <td class="r_pos">9.</td>
+      <td class="location"><a href="#">Madrid</a> (Madrid)</td>
+      <td class="population">534.567</td>
+      <td class="expense_per">345€</td>
+      <td class="relative_pos tipsit" title="70%"><div class="relative"><span style="left:70%"></span></div></td>
+      <td class="expense">1.234.567,87€</td>
+      <td class="percentage">23,4%</td>
+      <td class="relative_pos tipsit" title="50%"><div class="relative"><span style="left:50%"></span></div></td>
+      <td class="compare">Compara</td>
     </tr>
     <tr>
-      <td>9.</td>
-      <td ><a href="#">Madrid</a> (Madrid)</td>
-      <td class="right">2.456.78</td>
-      <td class="right">1.234.567,87€</td>
-      <td class="right">345€</td>
-      <td >Compara</td>
+      <td class="r_pos">10.</td>
+      <td class="location"><a href="#">Barcelona</a> (Madrid)</td>
+      <td class="population">534.567</td>
+      <td class="expense_per">345€</td>
+      <td class="relative_pos tipsit" title="80%"><div class="relative"><span style="left:80%"></span></div></td>
+      <td class="expense">1.234.567,87€</td>
+      <td class="percentage">23,4%</td>
+      <td class="relative_pos tipsit" title="50%"><div class="relative"><span style="left:50%"></span></div></td>
+      <td class="compare">Compara</td>
     </tr>
-    <tr>
-      <td>10.</td>
-      <td ><a href="#">Barcelona</a> (Madrid)</td>
-      <td class="right">2.456.78</td>
-      <td class="right">1.234.567,87€</td>
-      <td class="right">345€</td>
-      <td >Compara</td>
-    </tr>
-    <tr>
-      <td>11.</td>
-      <td ><a href="#">Valencia</a> (Madrid)</td>
-      <td class="right">2.456.78</td>
-      <td class="right">1.234.567,87€</td>
-      <td class="right">345€</td>
-      <td >Compara</td>
-    </tr>
-    <tr>
-      <td>12.</td>
-      <td ><a href="#">Bilbao</a> (Madrid)</td>
-      <td class="right">2.456.78</td>
-      <td class="right">1.234.567,87€</td>
-      <td class="right">345€</td>
-      <td >Compara</td>
-    </tr>
-    
   </tbody>
   </table>
 </div>
