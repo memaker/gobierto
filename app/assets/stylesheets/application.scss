@@ -661,6 +661,9 @@ table {
     color:#767168;
     font-size: 13px;
   }
+  td[data-link] {
+    cursor: pointer;
+  }
 }
 
 
