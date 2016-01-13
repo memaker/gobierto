@@ -687,6 +687,9 @@ header.place {
     a {
       text-decoration: none;
     }
+    a.current {
+      min-width: 115px;
+    }
     .sep {
       border: none;
       color: #DFDFDF;
