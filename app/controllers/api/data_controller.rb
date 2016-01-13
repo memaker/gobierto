@@ -74,8 +74,6 @@ class Api::DataController < ApplicationController
     @kind = params[:kind]
     @code = params[:code]
 
-    areas = @area == 'economic' ? EconomicArea : FunctionalArea
-    # @category_name = areas.all_items[@kind][@code]
     @category_name = @kind == 'G' ? 'Gasto' : 'Ingreso'
 
     budget_data = budget_data(@year, 'amount')
@@ -84,7 +82,6 @@ class Api::DataController < ApplicationController
     respond_to do |format|
       format.json do
         render json: {
-          # title: ActionController::Base.helpers.truncate(@category_name, length: 35),
           title: @category_name,
           value: format_currency(budget_data[:value]),
           delta_percentage: helpers.number_with_precision(delta_percentage(budget_data[:value], budget_data_previous_year[:value]), precision: 2),
@@ -255,7 +252,6 @@ class Api::DataController < ApplicationController
       total_elements: buckets.length
     }
   end
-
 
   def total_budget_data(year, field, ranking = true)
     query = {
