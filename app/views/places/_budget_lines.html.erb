@@ -1,10 +1,10 @@
 <tr id="code_<%= budget_line['code'] %>">
   <td class="item_name">
-    <% if budget_line['level'] < 3 && BudgetLine.has_children?(budget_line, @area_name) %>
-      <%= link_to '<i class="fa fa-plus-square-o"></i>'.html_safe, 
-            place_budget_path(@place.slug, budget_line['year'], budget_line['kind'], {parent_code: budget_line['code'],area: @area_name }), :remote => true%> 
-      <% end %>
-      <%= link_to budget_line_denomination(@area_name, budget_line['code'],@kind),
+    <% if BudgetLine.has_children?(budget_line, @area_name) %>
+      <%= link_to '<i class="fa fa-plus-square-o"></i>'.html_safe,
+            place_budget_path(@place.slug, budget_line['year'], budget_line['kind'], {parent_code: budget_line['code'], area: @area_name }), remote: true %>
+    <% end %>
+    <%= link_to budget_line_denomination(@area_name, budget_line['code'],@kind),
           budget_line_path(@place.slug, budget_line['year'], budget_line['code'], budget_line['kind'], @area_name)  %>
   </td>
   <td class="right total"><%= number_to_currency budget_line['amount'], precision: 0 %></td>
