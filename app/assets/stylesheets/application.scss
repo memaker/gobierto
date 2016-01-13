@@ -314,6 +314,8 @@ body {
     padding: .6em 1.25em .4em 1.25em;
     text-decoration: none;
     display: block;
+    position: relative;
+    z-index: 0;
     .fa {
       padding: 0 0 0 1em;
       opacity: .5;
@@ -340,6 +342,7 @@ body {
     padding: .5em;
     line-height: 1.2em;
     margin: -9px 0 0 0;
+    min-width: 150px;
     a {
       padding: .4em;
     }
@@ -748,6 +751,19 @@ table {
 header.place {
   position: relative;
   margin: 0 0 1em 0;
+  .breadcrumb {
+    font-size: .8em;
+    a {
+      text-decoration: none;
+    }
+    a.current {
+      min-width: 115px;
+    }
+    .sep {
+      border: none;
+      color: #DFDFDF;
+    }
+  }
   h1 {
     margin: .35em 0;
     font-weight: 600;
@@ -796,6 +812,7 @@ header.place {
 header.table {
   margin: 0 0 1em 0;
   h1 {
+    position: relative;
     margin: 0 0 .35em 0;
     font-weight: 600;
     font-size: 1.1em;
@@ -1689,7 +1706,7 @@ input[type=submit]:hover, .button:hover {
  *
  */
 .sep {
-  border-top: 1px solid $separator;
+  // border-top: 1px solid $separator;
   margin: 1em 0;
   height: 1px;
 }

@@ -20,6 +20,7 @@ set_meta_tags title: 'Compara ' + title # @place.name + ' » ' + kind_literal(@k
     <div class="breadcrumb">
       <%= link_to 'Compara', compare_path %>
     </div>
+
     <h1>
       <span>
         <div class="switcher kind_switcher">
@@ -29,8 +30,38 @@ set_meta_tags title: 'Compara ' + title # @place.name + ' » ' + kind_literal(@k
             <li><%= link_to kind_literal(other_kind(@kind)).capitalize, places_compare_path(@places.map(&:slug).join(':'),@year,other_kind(@kind),'economic') %></li>
           </ul>
         </div>
+        
+        <% (1..@compared_level).each do |level| %>
+          <span class="sep"> » </span>
+        </span>
+
+        <span>
+          <div class="switcher kind_switcher">
+            <%  selected_branch_code = (params[:parent_code].present?) ? params[:parent_code][0...level] : ''
+                if (level == @compared_level)
+                  previous_branch_code = selected_branch_code
+                  current_link_literal = "Total"
+                else
+                  previous_branch_code = selected_branch_code[0..-2]
+                  current_link_literal = budget_line_denomination(@area_name, selected_branch_code, @kind, 20)
+                end 
+                items = items_in_level(@budgets_and_ancestors, level, previous_branch_code)
+                %>
+            <%= link_to "#{current_link_literal} <i class='fa fa-angle-down'></i>".html_safe, places_compare_path(@places.map(&:slug).join(':'),@year,@kind,@area_name, {parent_code: selected_branch_code }), class: 'current' %>
+            <% if items.any? %>
+              <ul>
+                <% items.each do |bl| %>
+                  <li><%= link_to budget_line_denomination(@area_name, bl['code'], @kind), 
+                                        places_compare_path(@places.map(&:slug).join(':'),@year,@kind,@area_name, {parent_code: bl['code'] }) %></li>
+                <% end %>
+              </ul>
+            <% end %>
+          </div>
+        <% end %>    
+      
       </span>
     </h1>
+    
 
     <% if @kind == 'G' %>
       <div class="form_filters">

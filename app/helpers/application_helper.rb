@@ -22,14 +22,19 @@ module ApplicationHelper
     number_with_precision((value.to_f / total.to_f) * 100, precision: 2)
   end
 
-  def budget_line_denomination(area, code, kind)
+  def budget_line_denomination(area, code, kind, capped = -1)
     area = (area == 'economic' ? EconomicArea : FunctionalArea)
-    area.all_items[kind][code]
+    res = area.all_items[kind][code][0..capped]
+    res += "..." if capped > -1
+    res
   end
 
-  def kind_literal(kind)
-    return 'ingresos' if kind == 'I'
-    'gastos'
+  def kind_literal(kind, plural = true)
+    if kind == 'I'
+      plural ? 'ingresos' : 'ingreso'
+    else
+      plural ? 'gastos' : 'gasto'
+    end
   end
 
   def area_literal(area)
@@ -64,6 +69,10 @@ module ApplicationHelper
     options = {}
     options[:parent_code] = parent_code[0..-2] if parent_code.length > 1
     link_to('« anterior', places_compare_path(places.map(&:slug).join(':'),year,kind,area_name, options))
+  end
+
+  def items_in_level(budget_lines, level, parent_code)
+    budget_lines.select {|bl| bl['level'] == level && bl['parent_code'] == parent_code }.uniq{|bl| bl['code'] }
   end
 
   def filter_location_name
