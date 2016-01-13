@@ -42,6 +42,8 @@ $(function () {
         var placeInformation = places[i].split('|');
         var placeName = placeInformation[0];
         var placeURL = placeInformation[1];
+        var placeYear = placeURL.substring(placeURL.lastIndexOf('/') + 1);
+        placeName += ' (' + placeYear +')';
         $listElements.push('<li><a href=' + placeURL + '>' + placeName + '</a></li>');
       }
 
