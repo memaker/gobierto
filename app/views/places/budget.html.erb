@@ -31,6 +31,6 @@
   <%= render partial: 'places/budget_lines', 
               collection: @budget_lines['hits'], 
               as: 'budget_line',
-              locals: { total_budget: @budget_lines['aggregations']['total_budget']['value'], area: @area_name } %>
+              locals: { total_budget: @budget_lines['aggregations']['total_budget']['value'] } %>
   </table>
 </div>
