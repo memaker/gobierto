@@ -49,12 +49,17 @@ class PlacesController < ApplicationController
   end
 
   def ranking
-    per_page = 25
-    page = params[:page] ? params[:page].to_i : 1
+    # TODO: check if the params exist
+    # example http://localhost:3000/ranking/2015/4/I/functional does not exist, is not a valid code 
+    # for incoming and functional
+    @per_page = 25
+    @page = params[:page] ? params[:page].to_i : 1
+    render_404 and return if @page <= 0
 
     @compared_level = params[:code].length
 
-    @places_data = budget_data(@year, 'amount', page, per_page)
+    # TODO: replace amount by generic variable
+    @places_data = ranking_data(@year, 'amount', @page, @per_page)
   end
 
   private
@@ -71,7 +76,9 @@ class PlacesController < ApplicationController
     slug_list.split(':').map {|slug| INE::Places::Place.find_by_slug slug}
   end
 
-  def budget_data(year, field, page, per_page)
+  def ranking_data(year, field, page, per_page)
+    offset = (page-1)*per_page
+
     query = {
       sort: [
         { field.to_sym => { order: 'desc' } }
@@ -92,16 +99,13 @@ class PlacesController < ApplicationController
           }
         }
       },
-      size: 10_000,
+      from: offset,
+      size: per_page,
     }
 
     response = SearchEngine.client.search index: BudgetLine::INDEX, type: @area_name, body: query
-    Rails.logger.info "#{response['took']} ms"
     results = response['hits']['hits'].map{|h| h['_source']}
 
-    return {
-      elements: results[(page - 1)*per_page..page*per_page],
-      total_elements: results.length
-    }
+    Kaminari.paginate_array(results, {limit: per_page, offset: offset, total_count: response['hits']['total']})
   end
 end

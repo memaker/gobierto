@@ -106,4 +106,8 @@ module ApplicationHelper
     attrs << %Q{data-area=#{@area_name || 'economic'}}
     attrs.join(' ')
   end
+
+  def ranking_position(i, page, per_page)
+    (page - 1)*per_page + i + 1
+  end
 end

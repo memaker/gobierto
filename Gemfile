@@ -13,6 +13,7 @@ gem 'jbuilder'
 gem 'actionpack-page_caching'
 gem 'progressbar'
 gem 'ruby-px', require: 'pc-axis/dataset'
+gem 'kaminari'
 
 # Frontend
 gem 'jquery-rails'
