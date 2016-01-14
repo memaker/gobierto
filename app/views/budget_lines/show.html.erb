@@ -5,10 +5,10 @@
 <header class="sub ">
 
   <span class="sep"><%= link_to kind_literal(@kind).capitalize, place_budget_path(@place.slug, @year, @kind, @area_name) %> »</span>
-  <%= render partial: 'breadcrumb', 
+  <%= render partial: 'breadcrumb',
             collection: budget_line_crumbs(@parent_line, @area_name),
-            as: 'budget_line', 
-            spacer_template: 'breadcrumb_spacer' %> 
+            as: 'budget_line',
+            spacer_template: 'breadcrumb_spacer' %>
 
 </header>
 
@@ -68,9 +68,9 @@
       <%= link_to '« Inicio', place_budget_path(@place.slug, @year, @kind, @area_name) %>
     </td>
   </tr>
-  
+
   <%= render partial: 'places/nested_budget_lines' %>
-  
+
   </table>
 </div>
 
@@ -79,7 +79,7 @@
   <div class="main">{{value}}</div>
   <div class="secondary">
     <div class="percentage_change up">{{delta_percentage}}%</div>
-    <div class="ranking"><strong>#{{ranking_position}}</strong>/{{ranking_total_elements}}</div>
+    <div class="ranking"><a href="{{ranking_url}}"><strong>#{{ranking_position}}</strong>/{{ranking_total_elements}}</a></div>
   </div>
 </script>
 
@@ -93,7 +93,7 @@
 <div class="item_description">
   <h3>Acerca de esta partida</h3>
 
-  <div class="tabs"> 
+  <div class="tabs">
     <ul>
       <li><%= link_to 'Descripción', '', class: 'active', data: { "tab-target": 'description' } %></li>
       <li><%= link_to 'Comentario del Ayuntamiento', '', data: { "tab-target": 'comment' } %></li>

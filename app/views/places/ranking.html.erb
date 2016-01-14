@@ -57,7 +57,7 @@
 </header>
 
 <div class="">
-  <table class="data_table">
+  <table class="data_table" id="ranking-table">
   <thead>
     <th class="r_pos">#</th>
     <th class="location">Municipio</th>
@@ -74,7 +74,7 @@
     <% @places_data.each_with_index do |place_data, i| %>
       <% place = INE::Places::Place.find(place_data['ine_code']) %>
       <tr>
-        <td class="r_pos"><%= ranking_position(i, @page, @per_page) %>.</td>
+        <td class="r_pos"><%= Ranking.position(i, @page) %>.</td>
         <td class="location"><%= link_to place.name, place_path(place.slug, @year) %> (<%= place.province.name %>)</td>
         <td class="population"><%= number_with_precision (place_data[ranking_variable('amount')].to_f/place_data[ranking_variable('amount_per_inhabitant')]).floor, precision: 0, delimiter: '.' %></td>
         <td class="expense_per"><%= number_to_currency place_data[ranking_variable('amount_per_inhabitant')] %></td>

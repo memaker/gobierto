@@ -105,10 +105,6 @@ module ApplicationHelper
     attrs.join(' ')
   end
 
-  def ranking_position(i, page, per_page)
-    (page - 1)*per_page + i + 1
-  end
-
   def ranking_variable(what)
     if what == 'amount_per_inhabitant'
       @code.present? ? what : 'total_budget_per_inhabitant'

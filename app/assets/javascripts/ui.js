@@ -55,6 +55,11 @@ $(function(){
     e.preventDefault();
     $('.metric').removeClass('selected');
     $(this).addClass('selected');
+    var $target = $(e.target);
+    if($target.parents('a').length > 0){
+      e.stopPropagation();
+      window.location.href = $target.parents('a').attr('href');
+    }
   });
 
   // adjust height of sidebar
@@ -103,14 +108,14 @@ $(function(){
   });
 
   window.widgets = [];
-  $('[data-widget-type]').each(function(){   
-    window.widgets.push(new WidgetRenderer({   
-      id: $(this).data('widget-type'), url: $(this).data('widget-data-url'), template: $(this).data('widget-template')   
-    }));   
-  });    
-   
-  window.widgets.forEach(function(widget){   
-    widget.render();   
+  $('[data-widget-type]').each(function(){
+    window.widgets.push(new WidgetRenderer({
+      id: $(this).data('widget-type'), url: $(this).data('widget-data-url'), template: $(this).data('widget-template')
+    }));
+  });
+
+  window.widgets.forEach(function(widget){
+    widget.render();
   });
 
   function parent_treemap_url(parent_url) {
@@ -133,7 +138,7 @@ $(function(){
     $(this).removeClass('extended');
     $(this).find('.fa').toggleClass('fa-plus-square-o fa-minus-square-o');
     $(this).parents('tr').next('.child_group').remove();
-    
+
     if (window.treemap != undefined)
       window.treemap.render(parent_treemap_url($(this).attr('href')));
   });
@@ -212,6 +217,11 @@ $(function(){
     $('.tab_content[data-tab="'+tab+'"]').show();
   });
 
-
-  
+  if($('#ranking-table').length > 0 && window.location.hash !== ""){
+    $('#ranking-table td.r_pos').each(function(){
+      if($(this).text() == window.location.hash.slice(1) + '.'){
+        $(this).parents('tr').addClass('selected');
+      }
+    });
+  }
 });

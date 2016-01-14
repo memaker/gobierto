@@ -8,6 +8,7 @@ class Api::DataController < ApplicationController
     year = params[:year].to_i
     total_budget_data = total_budget_data(year, 'total_budget')
     total_budget_data_previous_year = total_budget_data(year - 1, 'total_budget', false)
+    position = total_budget_data[:position].to_i
 
     respond_to do |format|
       format.json do
@@ -15,8 +16,9 @@ class Api::DataController < ApplicationController
           title: 'Gasto total',
           value: format_currency(total_budget_data[:value]),
           delta_percentage: helpers.number_with_precision(delta_percentage(total_budget_data[:value], total_budget_data_previous_year[:value]), precision: 2),
-          ranking_position: total_budget_data[:position],
-          ranking_total_elements: helpers.number_with_precision(total_budget_data[:total_elements], precision: 0)
+          ranking_position: position,
+          ranking_total_elements: helpers.number_with_precision(total_budget_data[:total_elements], precision: 0),
+          ranking_url: places_ranking_path(year,'G','economic','amount', page: Ranking.page_from_position(position), anchor: position)
         }.to_json
       end
     end
@@ -43,6 +45,7 @@ class Api::DataController < ApplicationController
     year = params[:year].to_i
     total_budget_data = total_budget_data(year, 'total_budget_per_inhabitant')
     total_budget_data_previous_year = total_budget_data(year - 1, 'total_budget_per_inhabitant', false)
+    position = total_budget_data[:position].to_i
 
     respond_to do |format|
       format.json do
@@ -50,8 +53,9 @@ class Api::DataController < ApplicationController
           title: 'Gasto por habitante',
           value: helpers.number_to_currency(total_budget_data[:value], precision: 0, strip_insignificant_zeros: true),
           delta_percentage: helpers.number_with_precision(delta_percentage(total_budget_data[:value], total_budget_data_previous_year[:value]), precision: 2),
-          ranking_position: total_budget_data[:position],
-          ranking_total_elements: helpers.number_with_precision(total_budget_data[:total_elements], precision: 0)
+          ranking_position: position,
+          ranking_total_elements: helpers.number_with_precision(total_budget_data[:total_elements], precision: 0),
+          ranking_url: places_ranking_path(year,'G','economic','amount_per_inhabitant', page: Ranking.page_from_position(position), anchor: position)
         }.to_json
       end
     end
@@ -78,6 +82,7 @@ class Api::DataController < ApplicationController
 
     budget_data = budget_data(@year, 'amount')
     budget_data_previous_year = budget_data(@year - 1, 'amount', false)
+    position = budget_data[:position].to_i
 
     respond_to do |format|
       format.json do
@@ -85,8 +90,9 @@ class Api::DataController < ApplicationController
           title: @category_name,
           value: format_currency(budget_data[:value]),
           delta_percentage: helpers.number_with_precision(delta_percentage(budget_data[:value], budget_data_previous_year[:value]), precision: 2),
-          ranking_position: budget_data[:position],
-          ranking_total_elements: helpers.number_with_precision(budget_data[:total_elements], precision: 0)
+          ranking_position: position,
+          ranking_total_elements: helpers.number_with_precision(budget_data[:total_elements], precision: 0),
+          ranking_url: places_ranking_path(@year,@kind,@area,'amount',@code,page: Ranking.page_from_position(position), anchor: position)
         }.to_json
       end
     end
@@ -102,6 +108,7 @@ class Api::DataController < ApplicationController
 
     budget_data = budget_data(@year, 'amount_per_inhabitant')
     budget_data_previous_year = budget_data(@year - 1, 'amount_per_inhabitant', false)
+    position = budget_data[:position].to_i
 
     respond_to do |format|
       format.json do
@@ -109,8 +116,9 @@ class Api::DataController < ApplicationController
           title: "#{@category_name} por habitante",
           value: format_currency(budget_data[:value]),
           delta_percentage: helpers.number_with_precision(delta_percentage(budget_data[:value], budget_data_previous_year[:value]), precision: 2),
-          ranking_position: budget_data[:position],
-          ranking_total_elements: helpers.number_with_precision(budget_data[:total_elements], precision: 0)
+          ranking_position: position,
+          ranking_total_elements: helpers.number_with_precision(budget_data[:total_elements], precision: 0),
+          ranking_url: places_ranking_path(@year,@kind,@area,'amount_per_inhabitant',@code,page: Ranking.page_from_position(position), anchor: position)
         }.to_json
       end
     end
@@ -166,7 +174,7 @@ class Api::DataController < ApplicationController
           },
           filter: {
             bool: {
-              must: [ 
+              must: [
                 {term: { province_id: @place.province_id }},
                 {term: { code: @code }},
                 {term: { year: @year }},

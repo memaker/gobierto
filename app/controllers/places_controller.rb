@@ -52,7 +52,7 @@ class PlacesController < ApplicationController
     # TODO: check if the params exist
     # example http://localhost:3000/ranking/2015/4/I/functional does not exist, is not a valid code
     # for incoming and functional
-    @per_page = 25
+    @per_page = Ranking.per_page
     @page = params[:page] ? params[:page].to_i : 1
     render_404 and return if @page <= 0
 
