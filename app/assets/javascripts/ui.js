@@ -57,8 +57,10 @@ $(function(){
     $(this).addClass('selected');
     var $target = $(e.target);
     if($target.parents('a').length > 0){
-      e.stopPropagation();
       window.location.href = $target.parents('a').attr('href');
+    }
+    if($target.attr('href') !== undefined){
+      window.location.href = $target.attr('href');
     }
   });
 
@@ -165,9 +167,10 @@ $(function(){
     visLineasJ.render($widget.data('line-widget-url'));
 
     $('[data-line-widget-url]').on('click', function(e){
-      e.preventDefault();
-      visLineasJ.measure = $(this).data('line-widget-type');
-      visLineasJ.render($(this).data('line-widget-url'));
+      if(e.target.tagName === 'DIV'){
+        visLineasJ.measure = $(this).data('line-widget-type');
+        visLineasJ.render($(this).data('line-widget-url'));
+      }
     });
   }
 
