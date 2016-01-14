@@ -38,13 +38,11 @@ module ApplicationHelper
   end
 
   def area_literal(area)
-    return 'Funcional' if area == 'functional'
-    'Económica'
+    area == 'functional' ? 'Funcional' : 'Económica'
   end
 
   def other_kind(kind)
-    return 'G' if kind == 'I'
-    'I'
+    kind == 'I' ? 'G' : 'I'
   end
 
   def budget_line_crumbs(budget_line, type)
@@ -77,7 +75,7 @@ module ApplicationHelper
 
   def categories_in_level(area, kind, level, parent_code)
     area = (area == 'economic' ? EconomicArea : FunctionalArea)
-    area.all_items[kind].select{|k,v| k.length == level && k.starts_with?(parent_code)}.sort_by{|k,v| k}
+    area.all_items[kind].select{|k,v| k.length == level && k.starts_with?(parent_code.to_s)}.sort_by{|k,v| k}
   end
 
   def filter_location_name
@@ -109,5 +107,13 @@ module ApplicationHelper
 
   def ranking_position(i, page, per_page)
     (page - 1)*per_page + i + 1
+  end
+
+  def ranking_variable(what)
+    if what == 'amount_per_inhabitant'
+      @code.present? ? what : 'total_budget_per_inhabitant'
+    elsif what == 'amount'
+      @code.present? ? what : 'total_budget'
+    end
   end
 end

@@ -24,7 +24,7 @@ Rails.application.routes.draw do
   get '/compare/:slug_list/:year/:kind/:area' => 'places#compare', as: :places_compare
 
   get 'ranking' => 'pages#ranking'
-  get '/ranking/:year/:code/:kind/:area' => 'places#ranking', as: :places_ranking
+  get '/ranking/:year/:kind/:area/:variable(/:code)' => 'places#ranking', as: :places_ranking
 
   namespace :api do
     get '/data/lines/:ine_code/:year/:what' => 'data#lines', as: :data_lines

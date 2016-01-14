@@ -9,8 +9,8 @@
       <div class="switcher kind_switcher">
         <%= link_to "#{kind_literal(@kind).capitalize} <i class='fa fa-angle-down'></i>".html_safe, '', class: 'current' %>
         <ul>
-          <li><%= link_to kind_literal(@kind).capitalize, places_ranking_path(@year, @code, @kind, @area_name) %></li>
-          <li><%= link_to kind_literal(other_kind(@kind)).capitalize, places_ranking_path(@year, @code, other_kind(@kind), @area_name) %></li>
+          <li><%= link_to kind_literal(@kind).capitalize, places_ranking_path(@year, @kind, @area_name, @variable, @code) %></li>
+          <li><%= link_to kind_literal(other_kind(@kind)).capitalize, places_ranking_path(@year, other_kind(@kind), @area_name, @variable, @code) %></li>
         </ul>
       </div>
 
@@ -21,7 +21,7 @@
     <span>
       <div class="switcher kind_switcher">
         <%
-        selected_branch_code = @code[0...level]
+        selected_branch_code = @code ? @code[0...level] : nil
         if level == @compared_level + 1
           previous_branch_code = @code
           current_link_literal = "Total"
@@ -32,11 +32,11 @@
         items = categories_in_level(@area_name, @kind, level, previous_branch_code)
         %>
 
-        <%= link_to "#{current_link_literal} <i class='fa fa-angle-down'></i>".html_safe, places_ranking_path(@year, selected_branch_code, @kind, @area_name), class: 'current' %>
+        <%= link_to "#{current_link_literal} <i class='fa fa-angle-down'></i>".html_safe, places_ranking_path(@year, @kind, @area_name, @variable, selected_branch_code), class: 'current' %>
         <% if items.any? %>
           <ul>
             <% items.each do |code, name| %>
-              <li><%= link_to budget_line_denomination(@area_name, code, @kind), places_ranking_path(@year, code, @kind, @area_name) %></li>
+              <li><%= link_to budget_line_denomination(@area_name, code, @kind), places_ranking_path(@year, @kind, @area_name, @variable, code) %></li>
             <% end %>
           </ul>
         <% end %>
@@ -48,8 +48,8 @@
   <% if @kind == 'G' %>
     <div class="form_filters">
       <ul>
-        <li><%= link_to 'Económica', places_ranking_path(@year,@code,@kind,'economic'), class: "#{'buttonSelected' if @area_name == 'economic'}" %></li>
-        <li><%= link_to 'Funcional', places_ranking_path(@year,@code,@kind,'functional'), class: "#{'buttonSelected' if @area_name == 'functional'}" %></li>
+        <li><%= link_to 'Económica', places_ranking_path(@year,@kind,'economic',@variable,@code), class: "#{'buttonSelected' if @area_name == 'economic'}" %></li>
+        <li><%= link_to 'Funcional', places_ranking_path(@year,@kind,'functional',@variable,@code), class: "#{'buttonSelected' if @area_name == 'functional'}" %></li>
       </ul>
     </div>
   <% end %>
@@ -75,11 +75,11 @@
       <% place = INE::Places::Place.find(place_data['ine_code']) %>
       <tr>
         <td class="r_pos"><%= ranking_position(i, @page, @per_page) %>.</td>
-        <td class="location"><a href="#"><%= place.name %></a> (<%= place.province.name %>)</td>
-        <td class="population"><%= number_with_precision place_data['population'], precision: 0, delimiter: '.' %></td>
-        <td class="expense_per"><%= number_to_currency place_data['amount_per_inhabitant'] %></td>
+        <td class="location"><%= link_to place.name, place_path(place.slug, @year) %> (<%= place.province.name %>)</td>
+        <td class="population"><%= number_with_precision (place_data[ranking_variable('amount')].to_f/place_data[ranking_variable('amount_per_inhabitant')]).floor, precision: 0, delimiter: '.' %></td>
+        <td class="expense_per"><%= number_to_currency place_data[ranking_variable('amount_per_inhabitant')] %></td>
         <td class="relative_pos tipsit" title="98%"><div class="relative"><span style="left:98%"></span></div></td>
-        <td class="expense"><%= number_to_currency place_data['amount'] %></td>
+        <td class="expense"><%= number_to_currency place_data[ranking_variable('amount')] %></td>
         <td class="percentage">23,4%</td>
         <td class="relative_pos tipsit" title="50%"><div class="relative"><span style="left:50%"></span></div></td>
         <td class="compare">Compara</td>
@@ -89,5 +89,4 @@
   </table>
 
   <%= paginate @places_data %>
-
 </div>

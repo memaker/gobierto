@@ -18,7 +18,7 @@ class PlacesController < ApplicationController
     options = { ine_code: @place.id, level: @level, year: @year, kind: @kind, type: @area_name }
     options[:parent_code] = params[:parent_code] if params[:parent_code].present?
 
-    @budget_lines = BudgetLine.search(options) 
+    @budget_lines = BudgetLine.search(options)
 
     respond_to do |format|
       format.html
@@ -50,16 +50,15 @@ class PlacesController < ApplicationController
 
   def ranking
     # TODO: check if the params exist
-    # example http://localhost:3000/ranking/2015/4/I/functional does not exist, is not a valid code 
+    # example http://localhost:3000/ranking/2015/4/I/functional does not exist, is not a valid code
     # for incoming and functional
     @per_page = 25
     @page = params[:page] ? params[:page].to_i : 1
     render_404 and return if @page <= 0
 
-    @compared_level = params[:code].length
+    @compared_level = params[:code] ? params[:code].length : 0
 
-    # TODO: replace amount by generic variable
-    @places_data = ranking_data(@year, 'amount', @page, @per_page)
+    @places_data = ranking_data(@year, @variable, @page, @per_page)
   end
 
   private
@@ -70,6 +69,10 @@ class PlacesController < ApplicationController
     @area_name = params[:area] || 'economic'
     @year = params[:year]
     @code = params[:code] if params[:code].present?
+    if params[:variable].present?
+      @variable = params[:variable]
+      render_404 and return unless valid_variables.include?(@variable)
+    end
   end
 
   def get_places(slug_list)
@@ -79,33 +82,58 @@ class PlacesController < ApplicationController
   def ranking_data(year, field, page, per_page)
     offset = (page-1)*per_page
 
-    query = {
-      sort: [
-        { field.to_sym => { order: 'desc' } }
-      ],
-      query: {
-        filtered: {
-          query: {
-            match_all: {}
-          },
-          filter: {
-            bool: {
-              must: [
-                {term: { year: year }},
-                {term: { code: @code }},
-                {term: { kind: @kind }}
-              ]
+    if @code
+      query = {
+        sort: [ { field.to_sym => { order: 'desc' } } ],
+        query: {
+          filtered: {
+            query: { match_all: {} },
+            filter: {
+              bool: {
+                must: [
+                  {term: { year: year }},
+                  {term: { code: @code }},
+                  {term: { kind: @kind }}
+                ]
+              }
             }
           }
-        }
-      },
-      from: offset,
-      size: per_page,
-    }
+        },
+        from: offset,
+        size: per_page,
+      }
+      response = SearchEngine.client.search index: BudgetLine::INDEX, type: @area_name, body: query
+    else
+      field = if field == 'amount'
+        'total_budget'
+      else
+        'total_budget_per_inhabitant'
+      end
+      query = {
+        sort: [ { field.to_sym => { order: 'desc' } } ],
+        query: {
+          filtered: {
+            query: { match_all: {} },
+            filter: {
+              bool: {
+                must: [ {term: { year: year }}, ]
+              }
+            }
+          }
+        },
+        from: offset,
+        size: per_page,
+      }
+      response = SearchEngine.client.search index: BudgetLine::INDEX, type: 'total-budget', body: query
+    end
 
-    response = SearchEngine.client.search index: BudgetLine::INDEX, type: @area_name, body: query
     results = response['hits']['hits'].map{|h| h['_source']}
 
     Kaminari.paginate_array(results, {limit: per_page, offset: offset, total_count: response['hits']['total']})
   end
+
+  def valid_variables
+    ['amount','amount_per_inhabitant','population']
+  end
+
 end
