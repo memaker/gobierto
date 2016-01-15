@@ -56,13 +56,23 @@
     <% end %>
 
   </header>
-  <a href="#" class="selected" 
-    data-line-widget-type="per_person"
-    data-line-widget-url="<%= api_data_compare_path(ine_codes: @places.map(&:id).join(':'), year: @year, what: 'per_person', format: :json)%>">Por Habitante</a>
-    |
-    <a href="#" 
-    data-line-widget-type="total_budget" 
-    data-line-widget-url="<%= api_data_compare_path(ine_codes: @places.map(&:id).join(':'), year: @year, what: 'total_budget', format: :json)%>">Gasto Total</a>
+  <% if @compared_level > 1 %>
+    <a href="#" class="selected" 
+      data-line-widget-type="per_person"
+      data-line-widget-url="<%= api_data_compare_budget_lines_path(@places.map(&:id).join(':'), @year, "per_person", @kind, params[:parent_code], @area_name, format: :json )%>">Por Habitante</a>
+      |
+      <a href="#" 
+      data-line-widget-type="total_budget" 
+      data-line-widget-url="<%= api_data_compare_budget_lines_path(@places.map(&:id).join(':'), @year, "total_budget", @kind, params[:parent_code], @area_name, format: :json )%>">Total</a>
+  <% else %>
+    <a href="#" class="selected" 
+      data-line-widget-type="per_person"
+      data-line-widget-url="<%= api_data_compare_path(ine_codes: @places.map(&:id).join(':'), year: @year, what: 'per_person', format: :json)%>">Por Habitante</a>
+      |
+      <a href="#" 
+      data-line-widget-type="total_budget" 
+      data-line-widget-url="<%= api_data_compare_path(ine_codes: @places.map(&:id).join(':'), year: @year, what: 'total_budget', format: :json)%>">Total</a>
+  <% end %>
   <div class="metric_graphs clearfix">
   <div class="widget_graph show clearfix">
     <div id="lines_chart"></div>
