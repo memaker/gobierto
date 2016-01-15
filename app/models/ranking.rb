@@ -1,4 +1,5 @@
 class Ranking
+  # This class is used in the ranking table to provide the information for each row
   class Item < OpenStruct
   end
 
@@ -72,7 +73,7 @@ class Ranking
       },
       size: self.per_page,
     }
-    response = SearchEngine.client.search index: 'data', type: 'population', body: query
+    response = SearchEngine.client.search index: Population::INDEX, type: Population::TYPE, body: query
     population_results = response['hits']['hits'].map{|h| h['_source']}
 
     query = {
@@ -88,7 +89,7 @@ class Ranking
       },
       size: self.per_page,
     }
-    response = SearchEngine.client.search index: BudgetLine::INDEX, type: 'total-budget', body: query
+    response = SearchEngine.client.search index: BudgetTotal::INDEX, type: BudgetTotal::TYPE, body: query
     total_results = response['hits']['hits'].map{|h| h['_source']}
 
     return results.map do |h|
@@ -119,7 +120,7 @@ class Ranking
       from: offset,
       size: self.per_page,
     }
-    response = SearchEngine.client.search index: 'data', type: 'population', body: query
+    response = SearchEngine.client.search index: Population::INDEX, type: Population::TYPE, body: query
     total_elements = response['hits']['total']
     results = response['hits']['hits'].map{|h| h['_source']}
 
@@ -136,7 +137,7 @@ class Ranking
       },
       size: self.per_page,
     }
-    response = SearchEngine.client.search index: BudgetLine::INDEX, type: 'total-budget', body: query
+    response = SearchEngine.client.search index: BudgetTotal::INDEX, type: BudgetTotal::TYPE, body: query
     total_results = response['hits']['hits'].map{|h| h['_source']}
 
     return results.map do |h|
@@ -172,7 +173,7 @@ class Ranking
       from: offset,
       size: self.per_page,
     }
-    response = SearchEngine.client.search index: BudgetLine::INDEX, type: 'total-budget', body: query
+    response = SearchEngine.client.search index: BudgetTotal::INDEX, type: BudgetTotal::TYPE, body: query
     results = response['hits']['hits'].map{|h| h['_source']}
     total_elements = response['hits']['total']
 
@@ -189,7 +190,7 @@ class Ranking
       },
       size: self.per_page,
     }
-    response = SearchEngine.client.search index: 'data', type: 'population', body: query
+    response = SearchEngine.client.search index: Population::INDEX, type: Population::TYPE, body: query
     population_results = response['hits']['hits'].map{|h| h['_source']}
 
     return results.map do |h|

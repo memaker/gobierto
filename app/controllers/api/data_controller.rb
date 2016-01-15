@@ -136,7 +136,7 @@ class Api::DataController < ApplicationController
       result = SearchEngine.client.get index: BudgetLine::INDEX, type: @area, id: [params[:ine_code],@year,@code,@kind].join('/')
       amount = result['_source']['amount'].to_f
 
-      result = SearchEngine.client.get index: BudgetLine::INDEX, type: 'total-budget', id: [params[:ine_code], @year].join('/')
+      result = SearchEngine.client.get index: BudgetTotal::INDEX, type: BudgetTotal::TYPE, id: [params[:ine_code], @year].join('/')
       total_amount = result['_source']['total_budget'].to_f
 
       percentage = (amount.to_f * 100)/total_amount
@@ -288,7 +288,7 @@ class Api::DataController < ApplicationController
     id = "#{params[:ine_code]}/#{year}"
 
     if ranking
-      response = SearchEngine.client.search index: BudgetLine::INDEX, type: 'total-budget', body: query
+      response = SearchEngine.client.search index: BudgetTotal::INDEX, type: BudgetTotal::TYPE, body: query
       Rails.logger.info "#{response['took']} ms"
       buckets = response['hits']['hits'].map{|h| h['_id']}
       position = buckets.index(id) + 1
@@ -298,7 +298,7 @@ class Api::DataController < ApplicationController
     end
 
     begin
-      value = SearchEngine.client.get index: BudgetLine::INDEX, type: 'total-budget', id: id
+      value = SearchEngine.client.get index: BudgetTotal::INDEX, type: BudgetTotal::TYPE, id: id
       value = value['_source'][field]
     rescue Elasticsearch::Transport::Transport::Errors::NotFound
       value = 0

@@ -73,7 +73,7 @@ class Data::Lines
           "terms": {
             "field": "year",
             size: 10_000
-          }, 
+          },
           "aggs": {
             "budget_sum": {
               "sum": {
@@ -130,7 +130,7 @@ class Data::Lines
           "terms": {
             "field": "year",
             size: 10_000
-          }, 
+          },
           "aggs": {
             "budget_sum": {
               "sum": {
@@ -186,7 +186,7 @@ class Data::Lines
           "terms": {
             "field": "year",
             size: 10_000
-          }, 
+          },
           "aggs": {
             "budget_sum": {
               "sum": {
@@ -274,7 +274,7 @@ class Data::Lines
 
   def type
     if @code.nil?
-      "total-budget"
+      BudgetTotal::TYPE
     else
       @area
     end
