@@ -56,6 +56,19 @@
     <% end %>
 
   </header>
+  <a href="#" class="selected" 
+    data-line-widget-type="per_person"
+    data-line-widget-url="<%= api_data_compare_path(ine_codes: @places.map(&:id).join(':'), year: @year, what: 'per_person', format: :json)%>">Por Habitante</a>
+    |
+    <a href="#" 
+    data-line-widget-type="total_budget" 
+    data-line-widget-url="<%= api_data_compare_path(ine_codes: @places.map(&:id).join(':'), year: @year, what: 'total_budget', format: :json)%>">Gasto Total</a>
+  <div class="metric_graphs clearfix">
+  <div class="widget_graph show clearfix">
+    <div id="lines_chart"></div>
+    <div id="lines_tooltip"></div>
+  </div>
+  </div>
 
   <table class="comparison_table" cellspacing="0" cellpadding="0">
     <thead>
