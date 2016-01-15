@@ -1,4 +1,4 @@
-<% set_meta_tags title: "Ránking (TODO)" %>
+<% set_meta_tags title: "Ránking #{@code ? budget_line_denomination(@area_name, @code, @kind, 20) : "#{kind_literal(@kind)} área #{area_literal(@area_name).downcase}"} en #{@year}" %>
 
 <header class="table">
   <div class="breadcrumb">
