@@ -82,7 +82,9 @@
         <td class="expense"><%= number_to_currency place_data[ranking_variable('amount')] %></td>
         <td class="percentage">23,4%</td>
         <td class="relative_pos tipsit" title="50%"><div class="relative"><span style="left:50%"></span></div></td>
-        <td class="compare">Compara</td>
+        <td class="compare">
+          <%= link_to 'Compara', '#', class: 'tool_button js-add_compare_no_hide', data: {place: compare_slug(place,@year)}, title: "Comparar #{place.name} con el resto de municipios que tengas en el comparador" %>
+        </td>
       </tr>
     <% end %>
   </tbody>

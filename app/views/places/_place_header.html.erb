@@ -29,13 +29,12 @@
         <%= link_to '<span>Compara</span> <i class="fa fa-compass"></i>'.html_safe, '', class: 'tool_button' %>
         <div class="inner widget_compare">
 
-          <%= link_to "Añade <strong>#{@place.name}</strong> a tu lista y compara".html_safe, '', id: 'add_compare', class: 'button' %>
+          <%= link_to "Añade <strong>#{@place.name}</strong> a tu lista y compara".html_safe, '', class: 'button js-add_compare', data: {place: compare_slug(@place, @year)} %>
 
           <div class="sep"></div>
 
           <p>Tu lista de comparación</p>
           <ul id='compare_list'>
-            
           </ul>
 
           <div id="view_comp_container" class="center">
@@ -91,10 +90,10 @@
   <% if params['controller'] == 'budget_lines' %>
   <div class="breadcrumb">
     <span class="sep"><%= link_to kind_literal(@kind).capitalize, place_budget_path(@place.slug, @year, @kind, @area_name) %> »</span>
-    <%= render partial: 'breadcrumb', 
+    <%= render partial: 'breadcrumb',
               collection: budget_line_crumbs(@parent_line, @area_name),
-              as: 'budget_line', 
-              spacer_template: 'breadcrumb_spacer' %> 
+              as: 'budget_line',
+              spacer_template: 'breadcrumb_spacer' %>
     </div>
   <% end %>
 </header>

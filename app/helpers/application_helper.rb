@@ -112,4 +112,8 @@ module ApplicationHelper
       @code.present? ? what : 'total_budget'
     end
   end
+
+  def compare_slug(place, year)
+    "#{place.name}|#{place_path(place, year)}|#{place.slug}"
+  end
 end

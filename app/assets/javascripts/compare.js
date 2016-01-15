@@ -18,7 +18,7 @@ $(function () {
   }
 
   $('#add_place').autocomplete($.extend({}, AUTOCOMPLETE_DEFAULTS, addPlaceOptions));
-  
+
   function compareUrl(list) {
     var slugs = $.map(list, function(place, i) {
       return place.split('|')[2];
@@ -26,7 +26,7 @@ $(function () {
     var year = $('body').data('year');
     var area = $('body').data('area');
     var kind = $('body').data('kind');
-    
+
     var url = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/compare/";
     url += slugs.join(':');
     url += "/" + year + "/" + kind + "/" + area;
@@ -34,20 +34,14 @@ $(function () {
   }
 
   //assumes the places cookie is set
-  function updateListAndCompare(){
-    var places = Cookies.get('places');
+  function updateListAndCompare(place){
     var comparison = Cookies.get('comparison');
 
-    if (comparison.length == 0) {
-      //Sets the list to the previous and current one
-      comparison = places.slice(0,2);
-    }
-    else if (comparison.indexOf(places[0]) < 0) {
-      comparison.unshift(places[0]);
-    }
+    if (comparison.indexOf(place) === -1)
+      comparison.unshift(place);
 
     Cookies.set('comparison', comparison);
-    
+
     compare();
   }
 
@@ -69,11 +63,10 @@ $(function () {
     window.location.href = compareUrl(comparison);
   }
 
-  function currentPlaceIsOnList() {
-    var current_place = Cookies.get('places')[0];
+  function currentPlaceIsOnList(place) {
     var comparison = Cookies.get('comparison');
 
-    return comparison.indexOf(current_place) > -1;
+    return comparison.indexOf(place) > -1;
   }
 
   function renderCompareList(list) {
@@ -90,11 +83,14 @@ $(function () {
 
       $compare_list.html($list_elements.join("\n"));
 
-      if (currentPlaceIsOnList()) {
-        $('#add_compare,#without_current_note').css('display',"none");
-        $('.widget_compare .sep').css('display',"none");
-      } 
-
+      $('.js-add_compare').each(function(){
+        var place = $(this).data('place');
+        if (currentPlaceIsOnList(place)) {
+          $(this).hide();
+          $('#without_current_note').hide();
+          $('.widget_compare .sep').hide();
+        }
+      });
     } else {
       $('#view_comp_container').hide();
     }
@@ -104,11 +100,11 @@ $(function () {
   function gatherCompareList() {
     var comparison = Cookies.get('comparison');
 
-    if (comparison === undefined || comparison.length == 0) { 
+    if (comparison === undefined || comparison.length == 0) {
       comparison = [];
-      
+
       var recent_places = Cookies.get('places');
-      
+
       if (recent_places == 'undefined') {
         // if the compare list is empty, we take the site that was previously visited so that he can compare
         // the current one and the previous one
@@ -126,17 +122,17 @@ $(function () {
   }
 
   function overwriteComparisonListWithComparedPlaces() {
-    var comparison = $('.compared_place').map(function(i,place) { 
+    var comparison = $('.compared_place').map(function(i,place) {
       return $(place).text().trim() + "|" + $(place).attr('href') + "|" + $(place).data('slug');
     }).get();
 
-    if (comparison.length > 0) 
+    if (comparison.length > 0)
       Cookies.set('comparison',comparison);
   }
 
-  $('#add_compare').on('click', function(e) {
+  $('.js-add_compare, .js-add_compare_no_hide').on('click', function(e) {
     e.preventDefault();
-    updateListAndCompare();
+    updateListAndCompare($(this).data('place'));
   });
 
   $('#view_compare').on('click', function(e) {
@@ -156,13 +152,14 @@ $(function () {
     e.preventDefault();
     var $th = $(this).parents('th');
     var place = $th.children('a:not(.remove)').text().trim();
-    
+
     removeFromList(place);
     compare();
   });
 
   gatherCompareList();
+
   if (window.location.pathname.indexOf('compare') > -1)
     overwriteComparisonListWithComparedPlaces();
-  
+
 });
