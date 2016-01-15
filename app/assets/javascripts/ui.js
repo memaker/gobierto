@@ -53,7 +53,7 @@ $(function(){
 
   $('[data-line-widget-url]').on('click', function(e){
     e.preventDefault();
-    $('.metric').removeClass('selected');
+    $('.selected').removeClass('selected');
     $(this).addClass('selected');
     var $target = $(e.target);
     if($target.parents('a').length > 0){
