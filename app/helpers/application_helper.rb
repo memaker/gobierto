@@ -110,6 +110,8 @@ module ApplicationHelper
       @code.present? ? what : 'total_budget_per_inhabitant'
     elsif what == 'amount'
       @code.present? ? what : 'total_budget'
+    elsif what == 'population'
+      'value'
     end
   end
 

@@ -27,6 +27,7 @@ class Api::DataController < ApplicationController
   def population
     year = params[:year].to_i
     population_data = Population.ranking_hash_for(params[:ine_code].to_i,year)
+    position = population_data[:position]
 
     respond_to do |format|
       format.json do
@@ -34,8 +35,9 @@ class Api::DataController < ApplicationController
           title: 'Habitantes',
           value: helpers.number_with_delimiter(population_data[:value], precision: 0, strip_insignificant_zeros: true),
           delta_percentage: helpers.number_with_precision(delta_percentage(population_data[:value], population_data[:value]), precision: 2),
-          ranking_position: population_data[:position],
-          ranking_total_elements: helpers.number_with_precision(population_data[:total_elements], precision: 0)
+          ranking_position: position,
+          ranking_total_elements: helpers.number_with_precision(population_data[:total_elements], precision: 0),
+          ranking_url: population_ranking_path(year, page: Ranking.page_from_position(position), anchor: position)
         }.to_json
       end
     end

@@ -49,23 +49,20 @@ class PlacesController < ApplicationController
   end
 
   def ranking
-    # TODO: check if the params exist
-    # example http://localhost:3000/ranking/2015/4/I/functional does not exist, is not a valid code
-    # for incoming and functional
     @per_page = Ranking.per_page
     @page = params[:page] ? params[:page].to_i : 1
     render_404 and return if @page <= 0
 
     @compared_level = params[:code] ? params[:code].length : 0
 
-    @places_data = ranking_data(@year, @variable, @page, @per_page)
+    @ranking_items = Ranking.query({year: @year, variable: @variable, page: @page, code: @code, kind: @kind, area_name: @area_name})
   end
 
   private
 
   def get_params
     @place = INE::Places::Place.find_by_slug params[:slug] if params[:slug].present?
-    @kind = ( %w{income i}.include?(params[:kind].downcase) ? BudgetLine::INCOME : BudgetLine::EXPENSE ) unless params[:action] == 'show'
+    @kind = ( %w{income i}.include?(params[:kind].downcase) ? BudgetLine::INCOME : BudgetLine::EXPENSE ) if action_name != 'show' && params[:kind]
     @area_name = params[:area] || 'economic'
     @year = params[:year]
     @code = params[:code] if params[:code].present?
@@ -77,59 +74,6 @@ class PlacesController < ApplicationController
 
   def get_places(slug_list)
     slug_list.split(':').map {|slug| INE::Places::Place.find_by_slug slug}
-  end
-
-  def ranking_data(year, field, page, per_page)
-    offset = (page-1)*per_page
-
-    if @code
-      query = {
-        sort: [ { field.to_sym => { order: 'desc' } } ],
-        query: {
-          filtered: {
-            query: { match_all: {} },
-            filter: {
-              bool: {
-                must: [
-                  {term: { year: year }},
-                  {term: { code: @code }},
-                  {term: { kind: @kind }}
-                ]
-              }
-            }
-          }
-        },
-        from: offset,
-        size: per_page,
-      }
-      response = SearchEngine.client.search index: BudgetLine::INDEX, type: @area_name, body: query
-    else
-      field = if field == 'amount'
-        'total_budget'
-      else
-        'total_budget_per_inhabitant'
-      end
-      query = {
-        sort: [ { field.to_sym => { order: 'desc' } } ],
-        query: {
-          filtered: {
-            query: { match_all: {} },
-            filter: {
-              bool: {
-                must: [ {term: { year: year }}, ]
-              }
-            }
-          }
-        },
-        from: offset,
-        size: per_page,
-      }
-      response = SearchEngine.client.search index: BudgetLine::INDEX, type: 'total-budget', body: query
-    end
-
-    results = response['hits']['hits'].map{|h| h['_source']}
-
-    Kaminari.paginate_array(results, {limit: per_page, offset: offset, total_count: response['hits']['total']})
   end
 
   def valid_variables

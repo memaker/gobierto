@@ -5,44 +5,52 @@
     <%= link_to 'Ranking' %>
   </div>
   <h1>
-    <span>
-      <div class="switcher kind_switcher">
-        <%= link_to "#{kind_literal(@kind).capitalize} <i class='fa fa-angle-down'></i>".html_safe, '', class: 'current' %>
-        <ul>
-          <li><%= link_to kind_literal(@kind).capitalize, places_ranking_path(@year, @kind, @area_name, @variable) %></li>
-          <li><%= link_to kind_literal(other_kind(@kind)).capitalize, places_ranking_path(@year, other_kind(@kind), @area_name, @variable) %></li>
-        </ul>
-      </div>
-
-      <% (1..@compared_level + 1).each do |level| %>
-        <span class="sep"> » </span>
-    </span>
-
-    <span>
-      <div class="switcher kind_switcher">
-        <%
-        selected_branch_code = @code ? @code[0...level] : nil
-        if level == @compared_level + 1
-          previous_branch_code = @code
-          current_link_literal = "Total"
-        else
-          previous_branch_code = selected_branch_code[0...level-1]
-          current_link_literal = budget_line_denomination(@area_name, selected_branch_code, @kind, 20)
-        end
-        items = categories_in_level(@area_name, @kind, level, previous_branch_code)
-        %>
-
-        <%= link_to "#{current_link_literal} <i class='fa fa-angle-down'></i>".html_safe, places_ranking_path(@year, @kind, @area_name, @variable, selected_branch_code), class: 'current' %>
-        <% if items.any? %>
+    <% if @variable == 'population' %>
+      <span>
+        <div class="switcher kind_switcher">
+          <%= link_to "Población", '', class: 'current' %>
+        </div>
+      </span>
+    <% else %>
+      <span>
+        <div class="switcher kind_switcher">
+          <%= link_to "#{kind_literal(@kind).capitalize} <i class='fa fa-angle-down'></i>".html_safe, '', class: 'current' %>
           <ul>
-            <% items.each do |code, name| %>
-              <li><%= link_to budget_line_denomination(@area_name, code, @kind), places_ranking_path(@year, @kind, @area_name, @variable, code) %></li>
-            <% end %>
+            <li><%= link_to kind_literal(@kind).capitalize, places_ranking_path(@year, @kind, @area_name, @variable) %></li>
+            <li><%= link_to kind_literal(other_kind(@kind)).capitalize, places_ranking_path(@year, other_kind(@kind), @area_name, @variable) %></li>
           </ul>
-        <% end %>
-      </div>
+        </div>
+
+        <% (1..@compared_level + 1).each do |level| %>
+          <span class="sep"> » </span>
+      </span>
+
+      <span>
+        <div class="switcher kind_switcher">
+          <%
+          selected_branch_code = @code ? @code[0...level] : nil
+          if level == @compared_level + 1
+            previous_branch_code = @code
+            current_link_literal = "Total"
+          else
+            previous_branch_code = selected_branch_code[0...level-1]
+            current_link_literal = budget_line_denomination(@area_name, selected_branch_code, @kind, 20)
+          end
+          items = categories_in_level(@area_name, @kind, level, previous_branch_code)
+          %>
+
+          <%= link_to "#{current_link_literal} <i class='fa fa-angle-down'></i>".html_safe, places_ranking_path(@year, @kind, @area_name, @variable, selected_branch_code), class: 'current' %>
+          <% if items.any? %>
+            <ul>
+              <% items.each do |code, name| %>
+                <li><%= link_to budget_line_denomination(@area_name, code, @kind), places_ranking_path(@year, @kind, @area_name, @variable, code) %></li>
+              <% end %>
+            </ul>
+          <% end %>
+        </div>
+      <% end %>
+      </span>
     <% end %>
-    </span>
   </h1>
 
   <% if @kind == 'G' %>
@@ -62,33 +70,44 @@
     <th class="r_pos">#</th>
     <th class="location">Municipio</th>
     <th class="population">Habitantes</th>
-    <th class="expense_per" title="Gasto por habitante">Gasto/hab</th>
-    <th class="relative_pos"></th>
-    <th class="expense">Gasto total</th>
-    <th class="percentage">% s/ Total</th>
-    <th class="relative_pos"></th>
+    <th class="expense_per" title="Gasto por habitante"><%= kind_literal(@kind) %>/hab</th>
+    <% pending do %>
+      <th class="relative_pos"></th>
+    <% end %>
+    <th class="expense"><%= kind_literal(@kind) %> total</th>
+    <% if @variable != 'population' && @code.present? %>
+      <th class="percentage">% s/ Total</th>
+    <% end %>
+    <% pending do %>
+      <th class="relative_pos"></th>
+    <% end %>
     <th class="compare">Compara</th>
   </thead>
 
   <tbody>
-    <% @places_data.each_with_index do |place_data, i| %>
-      <% place = INE::Places::Place.find(place_data['ine_code']) %>
+    <% @ranking_items.each_with_index do |ranking_item, i| %>
       <tr>
         <td class="r_pos"><%= Ranking.position(i, @page) %>.</td>
-        <td class="location"><%= link_to place.name, place_path(place.slug, @year) %> (<%= place.province.name %>)</td>
-        <td class="population"><%= number_with_precision (place_data[ranking_variable('amount')].to_f/place_data[ranking_variable('amount_per_inhabitant')]).floor, precision: 0, delimiter: '.' %></td>
-        <td class="expense_per"><%= number_to_currency place_data[ranking_variable('amount_per_inhabitant')] %></td>
-        <td class="relative_pos tipsit" title="98%"><div class="relative"><span style="left:98%"></span></div></td>
-        <td class="expense"><%= number_to_currency place_data[ranking_variable('amount')] %></td>
-        <td class="percentage">23,4%</td>
-        <td class="relative_pos tipsit" title="50%"><div class="relative"><span style="left:50%"></span></div></td>
+        <td class="location"><%= link_to ranking_item.place.name, place_path(ranking_item.place.slug, @year) %> (<%= ranking_item.place.province.name %>)</td>
+        <td class="population"><%= number_with_precision ranking_item.population, precision: 0, delimiter: '.' %></td>
+        <td class="expense_per"><%= number_to_currency ranking_item.amount_per_inhabitant %></td>
+        <% pending do %>
+          <td class="relative_pos tipsit" title="98%"><div class="relative"><span style="left:98%"></span></div></td>
+        <% end %>
+        <td class="expense"><%= number_to_currency ranking_item.amount %></td>
+        <% if @variable != 'population' && @code.present? %>
+          <td class="percentage"><%= percentage_of_total(ranking_item.amount, ranking_item.total) %>%</td>
+        <% end %>
+        <% pending do %>
+          <td class="relative_pos tipsit" title="50%"><div class="relative"><span style="left:50%"></span></div></td>
+        <% end %>
         <td class="compare">
-          <%= link_to 'Compara', '#', class: 'tool_button js-add_compare_no_hide', data: {place: compare_slug(place,@year)}, title: "Comparar #{place.name} con el resto de municipios que tengas en el comparador" %>
+          <%= link_to 'Compara', '#', class: 'tool_button js-add_compare_no_hide', data: {place: compare_slug(ranking_item.place,@year)}, title: "Comparar #{ranking_item.place.name} con el resto de municipios que tengas en el comparador" %>
         </td>
       </tr>
     <% end %>
   </tbody>
   </table>
 
-  <%= paginate @places_data %>
+  <%= paginate @ranking_items %>
 </div>

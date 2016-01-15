@@ -25,6 +25,7 @@ Rails.application.routes.draw do
 
   get 'ranking' => 'pages#ranking'
   get '/ranking/:year/:kind/:area/:variable(/:code)' => 'places#ranking', as: :places_ranking
+  get '/ranking/:year/population' => 'places#ranking', as: :population_ranking, defaults: {variable: 'population'}
 
   namespace :api do
     get '/data/lines/:ine_code/:year/:what' => 'data#lines', as: :data_lines
