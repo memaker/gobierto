@@ -9,8 +9,8 @@
       <div class="switcher kind_switcher">
         <%= link_to "#{kind_literal(@kind).capitalize} <i class='fa fa-angle-down'></i>".html_safe, '', class: 'current' %>
         <ul>
-          <li><%= link_to kind_literal(@kind).capitalize, places_ranking_path(@year, @kind, @area_name, @variable, @code) %></li>
-          <li><%= link_to kind_literal(other_kind(@kind)).capitalize, places_ranking_path(@year, other_kind(@kind), @area_name, @variable, @code) %></li>
+          <li><%= link_to kind_literal(@kind).capitalize, places_ranking_path(@year, @kind, @area_name, @variable) %></li>
+          <li><%= link_to kind_literal(other_kind(@kind)).capitalize, places_ranking_path(@year, other_kind(@kind), @area_name, @variable) %></li>
         </ul>
       </div>
 
@@ -48,8 +48,8 @@
   <% if @kind == 'G' %>
     <div class="form_filters">
       <ul>
-        <li><%= link_to 'Económica', places_ranking_path(@year,@kind,'economic',@variable,@code), class: "#{'buttonSelected' if @area_name == 'economic'}" %></li>
-        <li><%= link_to 'Funcional', places_ranking_path(@year,@kind,'functional',@variable,@code), class: "#{'buttonSelected' if @area_name == 'functional'}" %></li>
+        <li><%= link_to 'Económica', places_ranking_path(@year,@kind,'economic',@variable), class: "#{'buttonSelected' if @area_name == 'economic'}" %></li>
+        <li><%= link_to 'Funcional', places_ranking_path(@year,@kind,'functional',@variable), class: "#{'buttonSelected' if @area_name == 'functional'}" %></li>
       </ul>
     </div>
   <% end %>
