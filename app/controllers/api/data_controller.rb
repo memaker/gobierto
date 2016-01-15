@@ -67,11 +67,14 @@ class Api::DataController < ApplicationController
     @place = INE::Places::Place.find(params[:ine_code])
     data_line = Data::Lines.new place: @place, year: params[:year], what: params[:what], kind: params[:kind], code: params[:code], area: params[:area]
 
-    respond_to do |format|
-      format.json do
-        render json: data_line.generate_json
-      end
-    end
+    respond_lines_to_json data_line
+  end
+
+  def compare
+    @places = get_places params[:ine_codes]
+    data_line = Data::Lines.new place: @places, year: params[:year], what: params[:what], kind: params[:kind], code: params[:code], area: params[:area]
+
+    respond_lines_to_json data_line
   end
 
   def budget
@@ -313,6 +316,18 @@ class Api::DataController < ApplicationController
 
   def delta_percentage(value, old_value)
      ((value.to_f - old_value.to_f)/old_value.to_f) * 100
+  end
+
+  def get_places(ine_codes)
+    ine_codes.split(':').map {|code| INE::Places::Place.find code}
+  end
+
+  def respond_lines_to_json(data_line)
+    respond_to do |format|
+      format.json do
+        render json: data_line.generate_json
+      end
+    end
   end
 
 end

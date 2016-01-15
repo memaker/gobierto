@@ -4,6 +4,7 @@ class Data::Lines
     @variable = @what == 'total_budget' ? 'total_budget' : 'total_budget_per_inhabitant'
     @year = options[:year]
     @place = options[:place]
+    @is_comparison = @place.is_a?(Array)
     @kind = options[:kind]
     @code = options[:code]
     @area = options[:area]
@@ -20,24 +21,7 @@ class Data::Lines
       year: @year,
       title: lines_title,
       budgets: {
-        @what => [
-          {
-            "name":"mean_province",
-            "values": mean_province
-          },
-          {
-            "name":"mean_autonomy",
-            "values": mean_autonomy
-          },
-          {
-            "name":"mean_national",
-            "values": mean_national
-          },
-          {
-            name: @code ? @category_name : @place.name,
-            "values": place_values
-          }
-        ]
+        @what => budget_values
       }
     }
 
@@ -216,8 +200,9 @@ class Data::Lines
     result.reverse
   end
 
-  def place_values
-    filters = [ {term: { ine_code: @place.id }} ]
+  def place_values(place = nil)
+    place = @place unless place.present?
+    filters = [ {term: { ine_code: place.id }} ]
 
     if @code
       filters.push({term: { code: @code }})
@@ -254,6 +239,37 @@ class Data::Lines
       result.push({date: k.to_s, value: v, dif: dif})
     end
     result
+  end
+
+  def budget_values 
+    return comparison_values if @is_comparison     
+    [
+      {
+        "name":"mean_province",
+        "values": mean_province
+      },
+      {
+        "name":"mean_autonomy",
+        "values": mean_autonomy
+      },
+      {
+        "name":"mean_national",
+        "values": mean_national
+      },
+      {
+        name: @code ? @category_name : @place.name,
+        "values": place_values
+      }
+    ]
+  end
+
+  def comparison_values
+    @place.map do |place|
+      {
+        "name": place.name,
+        "values": place_values(place)
+      }
+    end
   end
 
   def lines_title

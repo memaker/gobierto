@@ -29,6 +29,7 @@ Rails.application.routes.draw do
 
   namespace :api do
     get '/data/lines/:ine_code/:year/:what' => 'data#lines', as: :data_lines
+    get '/data/compare/:ine_codes/:year/:what' => 'data#compare', as: :data_compare
     get '/data/lines/budget_line/:ine_code/:year/:what/:kind/:code/:area' => 'data#lines', as: :data_lines_budget_line
     get '/data/widget/total_budget/:ine_code/:year' => 'data#total_budget', as: :data_total_budget
     get '/data/widget/total_budget_per_inhabitant/:ine_code/:year' => 'data#total_budget_per_inhabitant', as: :data_total_budget_per_inhabitant
