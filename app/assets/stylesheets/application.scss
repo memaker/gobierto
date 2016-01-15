@@ -281,6 +281,9 @@ body {
     line-height: 1.4em;
     margin: 0;
     font-size: .85em;  
+    a {
+      color:white;
+    }
   }
 }
 
@@ -740,6 +743,9 @@ table {
   td.variable_values li {
     color:#767168;
     font-size: 13px;
+  }
+  td[data-link] {
+    cursor: pointer;
   }
 }
 
