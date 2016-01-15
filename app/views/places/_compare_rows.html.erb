@@ -2,6 +2,7 @@
   <tr>
     <td class="budget_line"><%= link_to_unless_current budget_line_denomination(@area_name, code, @kind), 
                                         places_compare_path(@places.map(&:slug).join(':'),@year,@kind,@area_name, {parent_code: code }) %></td>
+    <!--                                    
     <td class="variable_names">
       <ul>
         <li>Total</li>
@@ -9,14 +10,15 @@
         <li>%/total</li>
       </ul>
     </td>
+    -->
     <% @places.each do |place| %>
       <td class="variable_values">
         <% if budget_line = budget_lines.select {|bl| bl['ine_code'] == place.id.to_i }.first %>
-          <ul>
-            <li><%= number_to_currency budget_line['amount'], precision: 0 %></li>
-            <li><%= number_to_currency budget_line['amount_per_inhabitant'], precision: 0 %></li>
-            <li><%= percentage_of_total budget_line['amount'], @totals.detect {|t| t['ine_code'] == place.id.to_i }['total_budget'] %> %</li>
-          </ul>
+          <%= number_to_currency budget_line['amount'], precision: 0 %>
+          <div>
+            <span><%= number_to_currency budget_line['amount_per_inhabitant'], precision: 0 %></span>
+            <%= percentage_of_total budget_line['amount'], @totals.detect {|t| t['ine_code'] == place.id.to_i }['total_budget'] %> %
+          </div>
         <% end %>
       </td>
     <% end %>

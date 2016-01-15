@@ -76,7 +76,7 @@ set_meta_tags title: 'Compara ' + title # @place.name + ' » ' + kind_literal(@k
 
   <table class="data_table comparison_table" cellspacing="0" cellpadding="0">
   <thead>
-    <th colspan="2" class="back_link">
+    <th  class="back_link">
       <% if params[:parent_code].present? %>
         <%= link_to_parent_comparison(@places, @year, @kind, @area_name, params[:parent_code]) %>
       <% end %>
@@ -106,6 +106,7 @@ set_meta_tags title: 'Compara ' + title # @place.name + ' » ' + kind_literal(@k
     <tbody class="totals">
       <tr>
       <td class="budget_line">Totales</td>
+      <!--
       <td class="variable_names">
         <ul>
           <li>Total</li>
@@ -113,6 +114,7 @@ set_meta_tags title: 'Compara ' + title # @place.name + ' » ' + kind_literal(@k
           <li>Población</li>
         </ul>
       </td>
+      -->
       <% @places.each do |place| %>
         <td class="variable_values">
           <% total_line = @totals.select {|tl| tl['ine_code'] == place.id.to_i }.first %>
