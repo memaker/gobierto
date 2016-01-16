@@ -129,6 +129,8 @@ var VisLineasJ = Class.extend({
       this.dataDomain = [d3.min(this.dataChart.map(function(d) { return d3.min(d.values.map(function(v) { return v.value; })); })), 
               d3.max(this.dataChart.map(function(d) { return d3.max(d.values.map(function(v) { return v.value; })); }))];
 
+      console.log(this.dataDomain);
+
       if (this.dataDomain[0] > 100000) {
         var min = Math.floor((this.dataDomain[0] * .1)/10000.0) * 10000
       } else {
@@ -138,7 +140,7 @@ var VisLineasJ = Class.extend({
       if (this.dataDomain[1] > 100000) {
         var max = Math.floor((this.dataDomain[1] * 1.2)/10000.0) * 10000
       } else {
-        var max = Math.floor((this.dataDomain[1] * 1.2)/100.0) * 100
+        var max = Math.ceil((this.dataDomain[1] * 1.2)/100.0) * 100
       }
 
       // Set the scales
