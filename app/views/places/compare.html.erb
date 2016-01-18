@@ -46,43 +46,36 @@
       </h1>
     </div>
 
-    <% if @kind == 'G' %>
-      <div class="form_filters">
-        <ul>
-          <li><%= link_to 'Económica', places_compare_path(@places.map(&:slug).join(':'),@year,@kind,'economic'), class: "#{'buttonSelected' if @area_name == 'economic'}" %></li>
-          <li><%= link_to 'Funcional', places_compare_path(@places.map(&:slug).join(':'),@year,@kind,'functional'), class: "#{'buttonSelected' if @area_name == 'functional'}" %></li>
-        </ul>
-      </div>
-    <% end %>
-
   </header>
-  <% if @compared_level > 1 %>
-    <a href="#" class="selected" 
-      data-line-widget-type="per_person"
-      data-line-widget-url="<%= api_data_compare_budget_lines_path(@places.map(&:id).join(':'), @year, "per_person", @kind, params[:parent_code], @area_name, format: :json )%>">Por Habitante</a>
-      |
-      <a href="#" 
-      data-line-widget-type="total_budget" 
-      data-line-widget-url="<%= api_data_compare_budget_lines_path(@places.map(&:id).join(':'), @year, "total_budget", @kind, params[:parent_code], @area_name, format: :json )%>">Total</a>
-  <% else %>
-    <a href="#" class="selected" 
-      data-line-widget-type="per_person"
-      data-line-widget-url="<%= api_data_compare_path(ine_codes: @places.map(&:id).join(':'), year: @year, what: 'per_person', format: :json)%>">Por Habitante</a>
-      |
-      <a href="#" 
-      data-line-widget-type="total_budget" 
-      data-line-widget-url="<%= api_data_compare_path(ine_codes: @places.map(&:id).join(':'), year: @year, what: 'total_budget', format: :json)%>">Total</a>
-  <% end %>
+  
+  <a href="#" class="selected" 
+    data-line-widget-type="per_person"
+    data-line-widget-url="<%= lines_chart_api_path('per_person', @compared_level, @places, @year, @kind, params[:parent_code], @area_name) %>">Por Habitante</a>
+    |
+    <a href="#" 
+    data-line-widget-type="total_budget" 
+    data-line-widget-url="<%= lines_chart_api_path('total_budget', @compared_level, @places, @year, @kind, params[:parent_code], @area_name)%>">Total</a>
+  
+  
   <div class="metric_graphs clearfix">
   <div class="widget_graph show clearfix">
     <div id="lines_chart"></div>
     <div id="lines_tooltip"></div>
   </div>
   </div>
+  
+  <% if @kind == 'G' %>
+    <div class="form_filters">
+      <ul>
+        <li><%= link_to 'Económica', places_compare_path(@places.map(&:slug).join(':'),@year,@kind,'economic'), class: "#{'buttonSelected' if @area_name == 'economic'}" %></li>
+        <li><%= link_to 'Funcional', places_compare_path(@places.map(&:slug).join(':'),@year,@kind,'functional'), class: "#{'buttonSelected' if @area_name == 'functional'}" %></li>
+      </ul>
+    </div>
+  <% end %>
 
   <table class="comparison_table" cellspacing="0" cellpadding="0">
     <thead>
-      <th colspan="2" class="back_link">
+      <th class="back_link">
         <% if params[:parent_code].present? %>
           <%= link_to_parent_comparison(@places, @year, @kind, @area_name, params[:parent_code]) %>
         <% end %>
@@ -111,8 +104,7 @@
     <% else %>
       <tbody class="totals">
         <tr>
-          <td class="budget_line">Totales</td>
-          <td class="variable_names">
+          <td class="budget_line variable_names">Totales
             <ul>
               <li>Total</li>
               <li>Por Habitante</li>
