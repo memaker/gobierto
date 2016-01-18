@@ -51,17 +51,13 @@ $(function(){
     $(this).find('ul').toggle();
   });
 
+  $('.metric').on('click','.ranking_link', function(e){
+    e.stopImmediatePropagation();
+  })
+
   $('[data-line-widget-url]').on('click', function(e){
-    e.preventDefault();
     $('.selected').removeClass('selected');
     $(this).addClass('selected');
-    var $target = $(e.target);
-    if($target.parents('a').length > 0){
-      window.location.href = $target.parents('a').attr('href');
-    }
-    if($target.attr('href') !== undefined){
-      window.location.href = $target.attr('href');
-    }
   });
 
   // adjust height of sidebar
@@ -167,10 +163,8 @@ $(function(){
     visLineasJ.render($widget.data('line-widget-url'));
 
     $('[data-line-widget-url]').on('click', function(e){
-      if(e.target.tagName === 'DIV'){
-        visLineasJ.measure = $(this).data('line-widget-type');
-        visLineasJ.render($(this).data('line-widget-url'));
-      }
+      visLineasJ.measure = $(this).data('line-widget-type');
+      visLineasJ.render($(this).data('line-widget-url'));
     });
   }
 
