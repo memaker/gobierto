@@ -615,6 +615,7 @@ table {
   }
 }
 .comparison_table {
+  margin-top: 1em;
   .parent tr, .totals tr {
     background-color: #efefef;
     td:first-child {
@@ -714,18 +715,16 @@ table {
   td.variable_values {
     padding-top: 10px;
     padding-right: 10px;
+    white-space: nowrap;
     ul {
-      float:right;
+      float: right;
     }
-    div {
+    .percentage_of_total {
       font-size: .9em;
-      opacity: .55;
-      display: block;
-      span {
-        opacity: .75;
-        display: inline-block;
-        margin-right: 1em;
-      }
+      opacity: .45;
+      min-width: 50px;
+      display: inline-block;
+      margin-left: 5px;
     }
   }
   td {

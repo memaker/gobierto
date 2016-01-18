@@ -55,9 +55,30 @@ $(function(){
     e.stopImmediatePropagation();
   })
 
+  function render_comp_table(what) {
+    what = what.replace('_','-');
+    var other = (what == 'per-person') ? 'total-budget' : 'per-person';
+    $('.variable_values').each(function() {
+      $(this).find('.selected_indicator').text($(this).data(what));
+    });
+    $('li.' + what).show();
+    $('li.' + other).hide();
+  }
+
+  if($('.comparison_table').length > 0) {
+    var $widget = $('[data-line-widget-url].selected');
+    render_comp_table($widget.data('line-widget-type'));
+  }
+
   $('[data-line-widget-url]').on('click', function(e){
     $('.selected').removeClass('selected');
     $(this).addClass('selected');
+
+    if($('.comparison_table').length > 0) {
+      e.preventDefault();
+      render_comp_table($(this).data('line-widget-type'));
+    }
+
   });
 
   // adjust height of sidebar
