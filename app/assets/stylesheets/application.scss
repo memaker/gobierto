@@ -714,7 +714,9 @@ table {
   td.variable_values {
     padding-top: 10px;
     padding-right: 10px;
-    text-align: right;
+    ul {
+      float:right;
+    }
     div {
       font-size: .9em;
       opacity: .55;
@@ -731,6 +733,7 @@ table {
   }
   td.variable_values {
     padding-right: 14px;
+    text-align: right;
   }
   td li {
     text-align: right;
@@ -739,6 +742,7 @@ table {
   td.variable_names li {
     color:#A49E9F;
     font-size: 12px;
+    font-weight:normal;
   }
   td.variable_values li {
     color:#767168;

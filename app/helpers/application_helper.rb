@@ -69,6 +69,16 @@ module ApplicationHelper
     link_to('« anterior', places_compare_path(places.map(&:slug).join(':'),year,kind,area_name, options))
   end
 
+  def lines_chart_api_path(what, compared_level, places, year, kind, parent_code = nil, area_name = 'economic')
+    place_ids = places.map(&:id).join(':')
+    path = if compared_level > 1
+      api_data_compare_budget_lines_path(place_ids, year, what, kind, parent_code, area_name, format: :json )
+    else
+      api_data_compare_path(place_ids, year, what, kind: kind, format: :json)
+    end
+    path
+  end
+
   def items_in_level(budget_lines, level, parent_code)
     budget_lines.select {|bl| bl['level'] == level && bl['parent_code'] == parent_code }.uniq{|bl| bl['code'] }
   end

@@ -2,15 +2,15 @@
   <tr>
     <td class="budget_line"><%= link_to_unless_current budget_line_denomination(@area_name, code, @kind),
                                         places_compare_path(@places.map(&:slug).join(':'),@year,@kind,@area_name, {parent_code: code }) %></td>
-    <td class="variable_names">
-      <!--
+    <!--td class="variable_names">
+      
         <ul>
         <li>Total</li>
         <li>Por Habitante</li>
         <li>%/total</li>
         </ul>
-      -->
-    </td>
+      
+    </td-->
     <% @places.each do |place| %>
 
       <td class="variable_values" data-link="<%= budget_line_path(place.slug, @year, code, @kind, @area_name) %>">
