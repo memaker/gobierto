@@ -31,11 +31,10 @@ namespace :budgets do
     }
   end
 
-  def db
-    @db ||= begin
-              ActiveRecord::Base.establish_connection ActiveRecord::Base.configurations[Rails.env].merge('database' => "gobify-data_#{Rails.env}") if !Rails.env.production?
-              ActiveRecord::Base.connection
-            end
+  def create_db_connection(index)
+    db_name = index
+    ActiveRecord::Base.establish_connection ActiveRecord::Base.configurations[Rails.env].merge('database' => db_name)
+    ActiveRecord::Base.connection
   end
 
   def population(id, year)
@@ -45,7 +44,9 @@ namespace :budgets do
     nil
   end
 
-  def import_functional_budgets(year)
+  def import_functional_budgets(index, year)
+    db = create_db_connection(index)
+
     pbar = ProgressBar.new("functional-#{year}", INE::Places::Place.all.length)
 
     INE::Places::Place.all.each do |place|
@@ -80,13 +81,15 @@ SQL
       end
       next if index_request_body.empty?
 
-      SearchEngine.client.bulk index: 'budgets-forecast', type: 'functional', body: index_request_body
+      SearchEngine.client.bulk index: index, type: 'functional', body: index_request_body
     end
 
     pbar.finish
   end
 
-  def import_economic_budgets(year)
+  def import_economic_budgets(index, year)
+    db = create_db_connection(index)
+
     pbar = ProgressBar.new("economic-#{year}", INE::Places::Place.all.length)
 
     INE::Places::Place.all.each do |place|
@@ -121,7 +124,7 @@ SQL
       end
       next if index_request_body.empty?
 
-      SearchEngine.client.bulk index: 'budgets-forecast', type: 'economic', body: index_request_body
+      SearchEngine.client.bulk index: index, type: 'economic', body: index_request_body
     end
 
     pbar.finish
@@ -157,8 +160,10 @@ SQL
     end
   end
 
-  desc "Import budgets from database into ElasticSearch. Example rake budgets:import['economic',2015]"
-  task :import, [:type,:year] => :environment do |t, args|
+  desc "Import budgets from database into ElasticSearch. Example rake budgets:import['budgets-execution','economic',2015]"
+  task :import, [:index,:type,:year] => :environment do |t, args|
+    index = args[:index] if BUDGETS_INDEXES.include?(args[:index])
+    raise "Invalid index #{args[:index]}" if index.blank?
     type = args[:type] if BUDGETS_TYPES.include?(args[:type])
     raise "Invalid type #{args[:type]}" if type.blank?
 
@@ -167,6 +172,6 @@ SQL
     end
     raise "Invalid year #{args[:year]}" if year.blank?
 
-    self.send("import_#{type}_budgets", year)
+    self.send("import_#{type}_budgets", index, year)
   end
 end
