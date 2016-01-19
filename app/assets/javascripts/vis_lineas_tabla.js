@@ -36,6 +36,7 @@ var VisLineasJ = Class.extend({
     this.kind = null;
     this.dataYear = null;
     this.dataTitle = null;
+    this.lastYear = null;
 
     // Legend
     this.legendEvolution = d3.legend.color();
@@ -59,7 +60,7 @@ var VisLineasJ = Class.extend({
     this.lightLine = 1;
     this.opacity = .7;
     this.opacityLow = .4;
-    this.duration = 1500;
+    this.duration = 400;
     this.mainColor = '#F69C95';
     this.darkColor = '#B87570';
     this.softGrey = '#d6d5d1';
@@ -133,6 +134,7 @@ var VisLineasJ = Class.extend({
       this.dataChart = this.data.budgets[this.measure];
       this.kind = this.data.kind;
       this.dataYear = this.parseDate(this.data.year);
+      this.lastYear = this.parseDate(this.data.year).getFullYear(); // For the mouseover interaction
       this.dataTitle = this.data.title;
 
       this.dataDomain = [d3.min(this.dataChart.map(function(d) { return d3.min(d.values.map(function(v) { return v.value; })); })), 
@@ -300,8 +302,25 @@ var VisLineasJ = Class.extend({
           .enter()
         .append("th")
           .attr('title', function(column) { return column; })
-          .attr('class', function(column) { return column != 'dif' ? '' : 'right per_change'; })
-          .text(function(column) { return column != 'dif' ? '' : 'Cambio sobre año anterior'; });
+          .attr('class', function(column) { 
+            if (column == 'dif') {
+              return 'right per_change'
+            } else if (column == 'value') {
+              return 'right year_header'
+            }
+          }.bind(this))
+          .text(function(column) { 
+            if (column == 'dif') {
+              return 'Cambio sobre año anterior'
+            } else if (column == 'value') {
+              return this.dataYear.getFullYear();
+            } else {
+              return '';
+            }
+          }.bind(this));
+
+      thead.select('.year_header')
+          .style('font-size', '14px')
 
       // create a row for each object in the data
       var rows = tbody.selectAll("tr")
@@ -485,22 +504,48 @@ var VisLineasJ = Class.extend({
       })[0];
     });
 
-    // Update table figures
+    if (this.lastYear != selectedData.date.getFullYear()) {
+        // Hide table figures and update text
+        // Year header
+        d3.selectAll('.year_header')
+          .transition()
+            .duration(this.duration / 2)
+            .style('opacity', 0)
+          .text(selectedData.date.getFullYear())
+          .transition()
+            .duration(this.duration)
+            .style('opacity', 1);
+    
+        // Values
+        d3.selectAll('.value')
+          .transition()
+            .duration(this.duration / 2)
+            .style('opacity', 0)
+          .text(function(d) { 
+              var newValue = filterValues.filter(function(value) { return value.name == d.name; })
+              d.value = newValue[0].value
+              return accounting.formatMoney(d.value); 
+            })
+          .transition()
+            .duration(this.duration)
+            .style('opacity', 1);
+        
+        // Difs
+        d3.selectAll('.dif')
+          .transition()
+            .duration(this.duration / 2)
+            .style('opacity', 0)
+          .text(function(d) { 
+            var newValue = filterValues.filter(function(dif) { return dif.name == d.name; })
+            d.dif = newValue[0].dif
+            return d.dif <= 0 ? d.dif + '%' : '+' + d.dif + '%'; 
+            })
+          .transition()
+            .duration(this.duration)
+            .style('opacity', 1);
+      }
 
-    d3.selectAll('.value')
-      .text(function(d) { 
-        var newValue = filterValues.filter(function(value) { return value.name == d.name; })
-        d.value = newValue[0].value
-        return accounting.formatMoney(d.value); 
-      });
-
-    d3.selectAll('.dif')
-      .text(function(d) { 
-        var newValue = filterValues.filter(function(dif) { return dif.name == d.name; })
-        d.dif = newValue[0].dif
-        return d.dif <= 0 ? d.dif + '%' : '+' + d.dif + '%'; 
-      });
-
+    this.lastYear = selectedData.date.getFullYear();
 
     // Append vertical line
     this.svgLines.selectAll('.v_line')
@@ -511,28 +556,28 @@ var VisLineasJ = Class.extend({
             .attr('y1', selectedCy)
             .attr('x2', selectedCx)
             .attr('y2', selectedCy)
-            .style('stroke', this.blue);
+            .style('stroke', this.darkGrey);
 
     this.svgLines.selectAll('.v_line')
         .transition()
-        .duration(this.duration/3)
+        .duration(this.duration)
         .attr('y1', function(d, i) { return i == 0 ? this.margin.top : selectedCy; }.bind(this))
         .attr('y2', function(d, i) { return i == 0 ? selectedCy : this.height; }.bind(this));
 
     d3.select(selected).transition()
-      .duration(this.duration / 4)
+      .duration(this.duration)
       .attr('r', this.radius * 1.5);
 
     this.svgLines.selectAll('.dot_line')
       .filter(function(d) { return d.name != selectedClass[1] && 'x' + d.date.getFullYear() != selectedClass[2]; })
       .transition()
-      .duration(this.duration / 4)
+      .duration(this.duration)
       .style('opacity', this.opacityLow);
 
     this.svgLines.selectAll('.evolution_line')
       .filter(function(d) { return d.name != selectedClass[1]; })
       .transition()
-      .duration(this.duration / 4)
+      .duration(this.duration)
       .style('opacity', this.opacityLow);
     
 
@@ -547,7 +592,7 @@ var VisLineasJ = Class.extend({
 
     this.svgLines.selectAll('.v_line')
         .transition()
-        .duration(this.duration / 10)
+        .duration(this.duration / 3)
         .attr('y1', selectedCy)
         .attr('y2', selectedCy)
         .remove();
@@ -555,13 +600,13 @@ var VisLineasJ = Class.extend({
 
     this.svgLines.selectAll('.dot_line')
       .transition()
-      .duration(this.duration / 4)
+      .duration(this.duration)
       .attr('r', this.radius)
       .style('opacity', 1);
 
     this.svgLines.selectAll('.evolution_line')
       .transition()
-      .duration(this.duration / 4)
+      .duration(this.duration)
       .style('opacity', 1);
   },
 
