@@ -1,5 +1,5 @@
 namespace :total_budget do
-  TOTAL_BUDGET_INDEXES = ['budgets-forecast']
+  TOTAL_BUDGET_INDEXES = ['budgets-forecast', 'budgets-execution']
   TOTAL_BUDGET_TYPES = ['total-budget']
 
   def create_mapping(index, type)
@@ -55,7 +55,7 @@ namespace :total_budget do
     return result['aggregations']['total_budget']['value'].round(2), result['aggregations']['total_budget_per_inhabitant']['value'].round(2)
   end
 
-  def import_total_budget(year)
+  def import_total_budget(year, index)
     pbar = ProgressBar.new("total-#{year}", INE::Places::Place.all.length)
 
     INE::Places::Place.all.each do |place|
@@ -70,7 +70,7 @@ namespace :total_budget do
       }
 
       id = [place.id,year].join("/")
-      SearchEngine.client.index index: TOTAL_BUDGET_INDEXES.first, type: TOTAL_BUDGET_TYPES.first, id: id, body: data
+      SearchEngine.client.index index: index, type: TOTAL_BUDGET_TYPES.first, id: id, body: data
     end
 
     pbar.finish
@@ -106,12 +106,15 @@ namespace :total_budget do
     end
   end
 
-  desc "Import total budgets"
-  task :import, [:year] => :environment do |t, args|
+  desc "Import total budgets. Example rake total_budget:import['budgets-execution',2014]"
+  task :import, [:index,:year] => :environment do |t, args|
+    index = args[:index] if TOTAL_BUDGET_INDEXES.include?(args[:index])
+    raise "Invalid index #{args[:index]}" if index.blank?
+
     if m = args[:year].match(/\A\d{4}\z/)
       year = m[0].to_i
     end
 
-    import_total_budget(year)
+    import_total_budget(year, index)
   end
 end
