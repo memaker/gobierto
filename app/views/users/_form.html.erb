@@ -1,0 +1,80 @@
+<% if @user.errors.any? %>
+  <div id="error_explanation">
+    <div class="alert alert-danger">
+      El formulario tiene <%= pluralize(@user.errors.count, "error") %>.
+    </div>
+    <ul>
+      <% @user.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<%= form_for @user do |f| %>
+  <div class="form_item">
+    <div class="form_item_cont">
+      <%= f.label :first_name, "Nombre" %>
+      <%= f.text_field :first_name, class: 'i_text', autofocus: true %>
+    </div>
+  </div>
+
+  <div class="form_item">
+    <div class="form_item_cont">
+      <%= f.label :last_name, "Apellidos" %>
+      <%= f.text_field :last_name, class: 'i_text', autofocus: true %>
+    </div>
+  </div>
+
+  <div class="form_item">
+    <div class="form_item_cont">
+      <%= f.label :email, "E-mail" %>
+      <%= f.email_field :email, class: 'i_text' %>
+    </div>
+  </div>
+
+  <% if f.object.new_record? %>
+  <div class="form_item">
+    <div class="form_item_cont">
+      <%= f.label :place_id, "Municipio" %>
+      <%= f.select :place_id, places_for_select, class: 'i_text' %>
+    </div>
+  </div>
+  <% end %>
+
+  <% if f.object.password.present? %>
+  <div class="form_item">
+    <div class="form_item_cont">
+      <%= f.label :current_password, "Contraseña actual" %>
+      <%= f.password_field :current_password, class: 'i_text' %>
+    </div>
+  </div>
+  <% end %>
+
+  <div class="form_item">
+    <div class="form_item_cont">
+      <%= f.label :password, "Contraseña" %>
+      <%= f.password_field :password, class: 'i_text' %>
+    </div>
+  </div>
+
+  <div class="form_item">
+    <div class="form_item_cont">
+      <%= f.label :password_confirmation, "Confirma la contraseña" %>
+      <%= f.password_field :password_confirmation, class: 'i_text' %>
+    </div>
+  </div>
+
+  <div class="form_item full submit_item">
+    <div class="form_item_cont clearfix">
+      <div class="conditions">
+        <% if f.object.new_record? %>
+          <label><%= f.check_box :terms_of_service %> Acepto términos y condiciones</label>
+        <% end %>
+      </div>
+      <%= hidden_field_tag :back_url, request.referer %>
+      <input type="submit" class="submit" value="Enviar">
+    </div>
+  </div>
+<% end %>
+
