@@ -24,7 +24,7 @@ namespace :total_budget do
     }
   end
 
-  def get_data(place,year)
+  def get_data(index,place,year)
     # total budget in a place
     query = {
       query: {
@@ -51,7 +51,7 @@ namespace :total_budget do
       size: 0
     }
 
-    result = SearchEngine.client.search index: 'budgets-forecast', type: 'functional', body: query
+    result = SearchEngine.client.search index: index, type: 'functional', body: query
     return result['aggregations']['total_budget']['value'].round(2), result['aggregations']['total_budget_per_inhabitant']['value'].round(2)
   end
 
@@ -60,7 +60,7 @@ namespace :total_budget do
 
     INE::Places::Place.all.each do |place|
       pbar.inc
-      total_budget, total_budget_per_inhabitant = get_data(place, year)
+      total_budget, total_budget_per_inhabitant = get_data(index, place, year)
 
       data = {
         ine_code: place.id.to_i, province_id: place.province.id.to_i,
