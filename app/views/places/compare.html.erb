@@ -48,11 +48,13 @@
 
   </header>
   
-  <a href="#" class="selected" 
+  <a href="#" class="selected"
+    data-line-widget-series="compare" 
     data-line-widget-type="per_person"
     data-line-widget-url="<%= lines_chart_api_path('per_person', @compared_level, @places, @year, @kind, params[:parent_code], @area_name) %>">Por Habitante</a>
     |
     <a href="#" 
+    data-line-widget-series="compare"
     data-line-widget-type="total_budget" 
     data-line-widget-url="<%= lines_chart_api_path('total_budget', @compared_level, @places, @year, @kind, params[:parent_code], @area_name)%>">Total</a>
   

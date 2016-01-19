@@ -1,7 +1,7 @@
 'use strict';
 
 var VisLineasJ = Class.extend({
-  init: function(divId, tableID, measure) {
+  init: function(divId, tableID, measure, series) {
     this.container = divId;
     this.tableContainer = tableID;
     
@@ -15,11 +15,13 @@ var VisLineasJ = Class.extend({
     // Variable: valid values are total_budget and total_budget_per_inhabitant
     // TODO: check what to do with percentage
     this.measure = measure;
+    this.series = series;
 
     // Scales
     this.xScale = d3.time.scale();
     this.yScale = d3.scale.linear();
-    this.colorScale = d3.scale.ordinal().range(['#F4D06F', '#F8B419', '#DA980A', '#2A8998']);
+    // this.colorScale = d3.scale.ordinal().range(['#F4D06F', '#F8B419', '#DA980A', '#2A8998']);
+    this.colorScale = d3.scale.ordinal();
     this.yScaleTable = d3.scale.ordinal();
     this.xScaleTable = d3.scale.linear();
 
@@ -53,6 +55,7 @@ var VisLineasJ = Class.extend({
     // Constant values
     this.radius = 4;
     this.heavyLine = 3;
+    this.mediumLine = 2;
     this.lightLine = 1;
     this.opacity = .7;
     this.opacityLow = .4;
@@ -62,6 +65,11 @@ var VisLineasJ = Class.extend({
     this.softGrey = '#d6d5d1';
     this.darkGrey = '#554E41';
     this.blue = '#2A8998';
+    this.meanColorRange = ['#F4D06F', '#F8B419', '#DA980A', '#2A8998'];
+    this.comparatorColorRange = ['#2A8998', '#F8B419', '#b82e2e', '#66aa00', '#dd4477', 
+                                  '#636363', '#273F8E', '#e6550d', '#990099', '#06670C'];
+                                    // azul main, amarillo main, rojo g scale, verde g, verde, violeta, 
+                                    // gris
     
     this.niceCategory = null;
   },
@@ -69,6 +77,7 @@ var VisLineasJ = Class.extend({
   render: function(urlData) {
     $(this.container).html('');
     $(this.tableContainer).html('');
+
 
     // Chart dimensions
     this.containerWidth = parseInt(d3.select(this.container).style('width'), 10);
@@ -152,7 +161,7 @@ var VisLineasJ = Class.extend({
         .range([this.height, this.margin.top]);
       
       this.colorScale
-        .range(['#F4D06F', '#F8B419', '#DA980A', '#2A8998'])
+        .range(this.series == 'means' ? this.meanColorRange : this.comparatorColorRange)
         .domain(this.dataChart.map(function(d) { return d.name; }));
        
       // Define the axis 
@@ -217,7 +226,13 @@ var VisLineasJ = Class.extend({
           .attr('class', function(d) { return 'evolution_line ' + this._normalize(d.name); }.bind(this))
           .attr('d', function(d) { return this.line(d.values); }.bind(this))
           .style('stroke', function(d) { return this.colorScale(d.name); }.bind(this))
-          .style('stroke-width', function(d, i) { return i == 3 ? this.heavyLine : this.lightLine; }.bind(this))
+          .style('stroke-width', function(d, i) { 
+            if (this.series == 'means') {
+              return i == 3 ? this.heavyLine : this.lightLine;
+            } else {
+              return this.mediumLine;
+            }
+          }.bind(this))
 
 
       // Add dot to lines
@@ -283,14 +298,14 @@ var VisLineasJ = Class.extend({
           .selectAll("th")
           .data(columns)
           .enter()
-          .append("th")
+        .append("th")
           .attr('title', function(column) { return column; })
           .attr('class', function(column) { return column != 'dif' ? '' : 'right per_change'; })
-              .text(function(column) { return column != 'dif' ? '' : 'Cambio sobre año anterior'; });
+          .text(function(column) { return column != 'dif' ? '' : 'Cambio sobre año anterior'; });
 
       // create a row for each object in the data
       var rows = tbody.selectAll("tr")
-          .data(this.dataChart.reverse())
+          .data(this.series == 'means' ? this.dataChart.reverse() : this.dataChart)
           .enter()
           .append("tr");
 
@@ -327,13 +342,13 @@ var VisLineasJ = Class.extend({
             }.bind(this));
           }.bind(this))
           .enter()
-          .append("td")
+        .append("td")
           .attr('class', function(d) { return d.classed ; })
           .html(function(d, i) {return i != 0 ? d.value : '<i class="' + d.value + '"></i>'; }.bind(this));
 
 
           // Replace bullets colors
-          var bulletsColors = this.colorScale.range().reverse();
+          var bulletsColors = this.series == 'means' ? this.colorScale.range().reverse() : this.colorScale.range();
           d3.selectAll('.le').forEach(function(v) {
             v.forEach(function(d,i) { 
               d3.select(v[i])
