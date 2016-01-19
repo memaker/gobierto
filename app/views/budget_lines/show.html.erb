@@ -1,4 +1,7 @@
-<% set_meta_tags title: "Presupuesto de #{@place.name} » #{kind_literal(@kind).capitalize} » #{budget_line_denomination(@area_name, @code, @kind)}" %>
+<% 
+set_meta_tags title: "Presupuesto de #{@place.name} » #{kind_literal(@kind).capitalize} » #{budget_line_denomination(@area_name, @code, @kind)}" 
+@share_text = "#{kind_literal(@kind, false).capitalize} municipal en #{budget_line_denomination(@area_name, @code, @kind)} de #{@place.name} para el #{@year} by @gobierto. #{request.original_url}"
+%>
 
 <%= render partial: 'places/place_header' %>
 

@@ -48,15 +48,15 @@
         <%= link_to '<span>Comparte</span> <i class="fa fa-share"></i>'.html_safe, '', class: 'tool_button' %>
         <div class="inner widget_share" >
 
-          <% pending do %>
 
           <p><strong>Comparte esta URL</strong></p>
 
           <p>
-            <%= link_to 'Twitter', '', class: 'small_button' %>
-            <%= link_to 'Facebook', '', class: 'small_button' %>
+            <%= link_to 'Twitter', "https://twitter.com/home?status=#{u @share_text}", class: 'small_button popup' %>
+            <%= link_to 'Facebook', "http://www.facebook.com/sharer/sharer.php?u=#{u @share_text}", class: 'small_button popup' %>
             <input type="text" class="small_input">
           </p>
+          <% pending do %>
 
           <div class="sep"></div>
 
@@ -68,8 +68,6 @@
           <div class="sep"></div>
 
           <% end %>
-
-          <p><i>Coming soon...</i></p>
 
           <div class="cta_claim">
             <h3>¿Eres responsable de este municipio?</h3>

@@ -11,6 +11,11 @@ function rebindAll() {
 $(function(){
   $('.spinner').hide();
 
+  $('.popup').click(function(e){
+    e.preventDefault();
+    window.open($(this).attr("href"), "popupWindow", "width=600,height=600,scrollbars=yes");
+  });
+
   if($(window).width() > 740) {
     rebindAll();
   }

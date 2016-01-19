@@ -1,4 +1,9 @@
-<% set_meta_tags title: 'Presupuesto de ' + @place.name %>
+<% 
+  
+  title = "Presupuestos municipales de #{@place.name} para el #{@year}"
+  set_meta_tags title: title 
+  
+  @share_text = "#{title} by @gobierto. #{request.original_url}" %>
 
 <%= render partial: 'place_header' %>
 
