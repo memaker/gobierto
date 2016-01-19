@@ -32,7 +32,11 @@
 <body <%= data_attributes %>>
 
 <div class="top-claim">
-  <p><a href="/about#municipalities">¿Interesado en herramientas de análisis presupuestario para Municipios?</a></p>
+  <% if !logged_in? %>
+    <p><a href="/about#municipalities">¿Interesado en herramientas de análisis presupuestario para Municipios?</a></p>
+  <% else %>
+    <p>Hola <%= current_user.full_name %> · <%= link_to 'Editar datos personales', edit_user_path %> · <%= link_to 'Cerrar sesión', logout_path, method: :delete %></p>
+  <% end %>
 </div>
 
 <div class="container">
