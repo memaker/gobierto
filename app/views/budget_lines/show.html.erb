@@ -1,5 +1,5 @@
-<% 
-set_meta_tags title: "Presupuesto de #{@place.name} » #{kind_literal(@kind).capitalize} » #{budget_line_denomination(@area_name, @code, @kind)}" 
+<%
+set_meta_tags title: "Presupuesto de #{@place.name} » #{kind_literal(@kind).capitalize} » #{budget_line_denomination(@area_name, @code, @kind)}"
 @share_text = "#{kind_literal(@kind, false).capitalize} municipal en #{budget_line_denomination(@area_name, @code, @kind)} de #{@place.name} para el #{@year} by @gobierto. #{request.original_url}"
 %>
 
@@ -58,7 +58,7 @@ set_meta_tags title: "Presupuesto de #{@place.name} » #{kind_literal(@kind).cap
   <table>
   <tr>
     <th>
-      <input type="text" placeholder="Busca partidas" class="search_items">
+      <input type="text" placeholder="Busca partidas de <%= kind_literal(@kind, true) %>" class="search_items" id="search_categories_budget" data-search-url="<%= search_categories_path(@place.slug,@year,@area_name, @kind) %>">
     </th>
     <th class="right "><%= kind_literal(@kind, false) %> total</th>
     <th class="right "><%= kind_literal(@kind, false) %> por hab.</th>

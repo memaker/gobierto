@@ -1,6 +1,6 @@
-<% 
+<%
 title = "#{kind_literal(@kind, true).capitalize} municipales de #{@place.name} para el #{@year}"
-set_meta_tags title: title  
+set_meta_tags title: title
 @share_text = "#{title} by @gobierto. #{request.original_url}"
 %>
 
@@ -25,15 +25,15 @@ set_meta_tags title: title
   <table>
   <tr>
     <th>
-      <input type="text" placeholder="Busca partidas" class="search_items">
+      <input type="text" placeholder="Busca partidas de <%= kind_literal(@kind, true) %>" class="search_items" id="search_categories_budget" data-search-url="<%= search_categories_path(@place.slug,@year,@area_name, @kind) %>">
     </th>
     <th class="right "><%= kind_literal(@kind, false) %> total</th>
     <th class="right "><%= kind_literal(@kind, false) %> por hab.</th>
     <th class="right ">% s/ total</th>
     <th></th>
   </tr>
-  <%= render partial: 'places/budget_lines', 
-              collection: @budget_lines['hits'], 
+  <%= render partial: 'places/budget_lines',
+              collection: @budget_lines['hits'],
               as: 'budget_line',
               locals: { total_budget: @budget_lines['aggregations']['total_budget']['value'] } %>
   </table>
