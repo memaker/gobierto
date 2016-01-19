@@ -338,7 +338,10 @@ var VisLineasJ = Class.extend({
       var rows = tbody.selectAll("tr")
           .data(this.series == 'means' ? this.dataChart.reverse() : this.dataChart)
           .enter()
-          .append("tr");
+        .append("tr")
+          .attr('class', function(d) { return this._normalize(d.name); }.bind(this))
+        .on('mouseover', this._mouseoverTable.bind(this))
+        .on('mouseout', this._mouseoutTable.bind(this));
 
       // create a cell in each row for each column
       var cells = rows.selectAll("td")
@@ -610,6 +613,39 @@ var VisLineasJ = Class.extend({
     //     .remove();
 
 
+    this.svgLines.selectAll('.dot_line')
+      .transition()
+      .duration(this.duration)
+      .attr('r', this.radius)
+      .style('opacity', 1);
+
+    this.svgLines.selectAll('.evolution_line')
+      .transition()
+      .duration(this.duration)
+      .style('opacity', 1);
+  },
+
+  _mouseoverTable: function () {
+    var classed = d3.event.target.classList[d3.event.target.classList.length - 1]
+          
+    this.svgLines.selectAll('.dot_line')
+      .filter(function(d) { return this._normalize(d.name) != classed; }.bind(this))
+      .transition()
+      .duration(this.duration)
+      .style('opacity', this.opacityLow);
+
+    this.svgLines.selectAll('.evolution_line')
+      .filter(function(d) { return this._normalize(d.name) != classed; }.bind(this))
+      .transition()
+      .duration(this.duration)
+      .style('opacity', this.opacityLow);
+
+
+  },
+
+  _mouseoutTable: function () {
+    var classed = d3.event.target.classList[d3.event.target.classList.length - 1]
+             
     this.svgLines.selectAll('.dot_line')
       .transition()
       .duration(this.duration)
