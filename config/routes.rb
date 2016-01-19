@@ -14,6 +14,7 @@ Rails.application.routes.draw do
   end
 
   get 'search' => 'search#index'
+  get 'categories/:slug/:year/:area/:kind' => 'search#categories', as: :search_categories
 
   get '/budget_lines/:slug/:year/:code/:kind/:area' => 'budget_lines#show', as: :budget_line
   get '/places/:slug/:year' => 'places#show', as: :place

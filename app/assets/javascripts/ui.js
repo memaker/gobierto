@@ -22,7 +22,7 @@ $(function(){
 
   var searchOptions = {
     serviceUrl: '/search',
-    onSelect: function (suggestion) {
+    onSelect: function(suggestion) {
       if(suggestion.data.type == 'Place') {
         window.location.href = '/places/' + suggestion.data.slug + '/2015';
       }
@@ -31,6 +31,16 @@ $(function(){
   };
 
   $('.search_auto').autocomplete($.extend({}, AUTOCOMPLETE_DEFAULTS, searchOptions));
+
+  var $searchBudget = $('#search_categories_budget');
+  var searchCategoriesOptions = {
+    serviceUrl: $searchBudget.data('search-url'),
+    onSelect: function(suggestion) {
+      window.location.href = suggestion.data.url;
+    }
+  };
+  $searchBudget.autocomplete($.extend({}, AUTOCOMPLETE_DEFAULTS, searchCategoriesOptions));
+
   $('.sticky').sticky({topSpacing:0});
 
   $(document).on('mouseenter', '.compare_cont', function(e){
