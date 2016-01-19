@@ -1,7 +1,8 @@
-class FunctionalArea < ActiveRecord::Base
-  EXPENSE = 'G'
+class FunctionalArea
+  INDEX = 'budget-categories'
+  TYPE = 'categories'
 
-  self.table_name = "tb_cuentasProgramas"
+  EXPENSE = 'G'
 
   def self.all_items
     @all_items ||= begin
@@ -9,8 +10,28 @@ class FunctionalArea < ActiveRecord::Base
         EXPENSE => {}
       }
 
-      self.all.each do |category|
-        all_items[EXPENSE][category.cdfgr] = category.nombre
+      query = {
+        query: {
+          filtered: {
+            query: {
+              match_all: {}
+            },
+            filter: {
+              bool: {
+                must: [
+                  {term: { area: 'functional' }},
+                ]
+              }
+            }
+          }
+        },
+        size: 10_000
+      }
+      response = SearchEngine.client.search index: INDEX, type: TYPE, body: query
+
+      response['hits']['hits'].each do |h|
+        source = h['_source']
+        all_items[source['kind']][source['code']] = source['name']
       end
 
       all_items

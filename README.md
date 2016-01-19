@@ -2,7 +2,23 @@
 
 ## Elastic Search schema
 
-## Budget Line data
+### Budget categories
+
+- indexes: `budget-categories`
+- types: `categories`
+- document id: `<area>/<code>/<kind>`. Example: `economic/30/G`
+- schema:
+
+```
+  - area:                  { type: 'string', index: 'not_analyzed'  },
+  - code:                  { type: 'string', index: 'not_analyzed'  },
+  - name:                  { type: 'string', index: 'not_analyzed'  },
+  - parent_code:           { type: 'string', index: 'not_analyzed'  },
+  - level:                 { type: 'integer', index: 'not_analyzed' },
+  - kind:                  { type: 'string', index: 'not_analyzed'  }, # income I / expense G
+```
+
+### Budget Line data
 
 - indexes: `budgets-forecast`, `budgets-execution`
 - types: `economic`, `functional`
@@ -22,7 +38,7 @@
   - amount_per_inhabitant: { type: 'double', index: 'not_analyzed'  }
 ```
 
-## Total budgets data
+### Total budgets data
 
 - indexes: `budgets-forecast`
 - types: `total-budget`
@@ -38,7 +54,7 @@
   - total_budget_per_inhabitant: { type: 'double',  index: 'not_analyzed' }
 ```
 
-## Generic data
+### Generic data
 
 - indexes: `data`
 - types: `population`
@@ -52,3 +68,5 @@
   - year:                  { type: 'integer', index: 'not_analyzed' },
   - value:                 { type: 'integer', index: 'not_analyzed' }
 ```
+
+

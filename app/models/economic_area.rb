@@ -1,8 +1,9 @@
-class EconomicArea < ActiveRecord::Base
+class EconomicArea
+  INDEX = 'budget-categories'
+  TYPE = 'categories'
+
   EXPENSE = 'G'
   INCOME  = 'I'
-
-  self.table_name = "tb_cuentasEconomica"
 
   def self.all_items
     @all_items ||= begin
@@ -11,12 +12,31 @@ class EconomicArea < ActiveRecord::Base
         INCOME => {}
       }
 
-      self.all.each do |category|
-        all_items[category.tipreig][category.cdcta] = category.nombre
+      query = {
+        query: {
+          filtered: {
+            query: {
+              match_all: {}
+            },
+            filter: {
+              bool: {
+                must: [
+                  {term: { area: 'economic' }},
+                ]
+              }
+            }
+          }
+        },
+        size: 10_000
+      }
+      response = SearchEngine.client.search index: INDEX, type: TYPE, body: query
+
+      response['hits']['hits'].each do |h|
+        source = h['_source']
+        all_items[source['kind']][source['code']] = source['name']
       end
 
       all_items
     end
   end
-
 end
