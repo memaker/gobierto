@@ -14,7 +14,7 @@
     <% else %>
       <span>
         <div class="switcher kind_switcher">
-          <%= link_to "#{kind_literal(@kind).capitalize} <i class='fa fa-angle-down'></i>".html_safe, '', class: 'current' %>
+          <%= link_to "#{kind_literal(@kind).capitalize} #{'por habitante' if @variable == 'amount_per_inhabitant'} <i class='fa fa-angle-down'></i>".html_safe, '', class: 'current' %>
           <ul>
             <li><%= link_to kind_literal(@kind).capitalize, places_ranking_path(@year, @kind, @area_name, @variable) %></li>
             <li><%= link_to kind_literal(other_kind(@kind)).capitalize, places_ranking_path(@year, other_kind(@kind), @area_name, @variable) %></li>
@@ -53,7 +53,7 @@
     <% end %>
   </h1>
 
-  <% if @kind == 'G' %>
+  <% if @variable != 'population' && @kind == 'G' %>
     <div class="form_filters">
       <ul>
         <li><%= link_to 'Económica', places_ranking_path(@year,@kind,'economic',@variable), class: "#{'buttonSelected' if @area_name == 'economic'}" %></li>
@@ -69,12 +69,12 @@
   <thead>
     <th class="r_pos">#</th>
     <th class="location">Municipio</th>
-    <th class="population">Habitantes</th>
-    <th class="expense_per" title="Gasto por habitante"><%= kind_literal(@kind) %>/hab</th>
+    <th class="population"><%= link_to_unless @variable == 'population', 'Habitantes', population_ranking_path(@year) %></th>
+    <th class="expense_per" title="Gasto por habitante"><%= link_to_unless @variable == 'amount_per_inhabitant', "#{kind_literal(@kind)}/hab", places_ranking_path(@year,@kind,@area_name,'amount_per_inhabitant') %></th>
     <% pending do %>
       <th class="relative_pos"></th>
     <% end %>
-    <th class="expense"><%= kind_literal(@kind) %> total</th>
+    <th class="expense"><%= link_to_unless @variable == 'amount', "#{kind_literal(@kind)} total", places_ranking_path(@year,@kind,@area_name,'amount') %></th>
     <% if @variable != 'population' && @code.present? %>
       <th class="percentage">% s/ Total</th>
     <% end %>

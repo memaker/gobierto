@@ -63,6 +63,7 @@ class PlacesController < ApplicationController
   def get_params
     @place = INE::Places::Place.find_by_slug params[:slug] if params[:slug].present?
     @kind = ( %w{income i}.include?(params[:kind].downcase) ? BudgetLine::INCOME : BudgetLine::EXPENSE ) if action_name != 'show' && params[:kind]
+    @kind ||= BudgetLine::EXPENSE if action_name == 'ranking'
     @area_name = params[:area] || 'economic'
     @year = params[:year]
     @code = params[:code] if params[:code].present?
