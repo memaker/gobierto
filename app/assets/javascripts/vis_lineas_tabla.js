@@ -214,6 +214,18 @@ var VisLineasJ = Class.extend({
        d3.selectAll('.axis').selectAll('line')
         .attr('stroke', this.softGrey);
 
+      // --> DRAW VERTICAL LINE
+      this.svgLines.selectAll('.v_line')
+            .data([this.dataYear])
+            .enter()
+          .append('line')
+            .attr('class', 'v_line')
+            .attr('x1', function(d) { return this.xScale(d); }.bind(this))
+            .attr('y1', this.margin.top)
+            .attr('x2', function(d) { return this.xScale(d); }.bind(this))
+            .attr('y2', this.height)
+            .style('stroke', this.darkGrey);
+
 
       // --> DRAW THE LINES  
       this.chart = this.svgLines.append('g')
@@ -547,22 +559,22 @@ var VisLineasJ = Class.extend({
 
     this.lastYear = selectedData.date.getFullYear();
 
-    // Append vertical line
-    this.svgLines.selectAll('.v_line')
-        .data([selectedCx, selectedCy])
-        .enter().append('line')
-        .attr('class', 'v_line')
-            .attr('x1', selectedCx)
-            .attr('y1', selectedCy)
-            .attr('x2', selectedCx)
-            .attr('y2', selectedCy)
-            .style('stroke', this.darkGrey);
+    // // Append vertical line
+    // this.svgLines.selectAll('.v_line')
+    //     .data([selectedCx, selectedCy])
+    //     .enter().append('line')
+    //     .attr('class', 'v_line')
+    //         .attr('x1', selectedCx)
+    //         .attr('y1', selectedCy)
+    //         .attr('x2', selectedCx)
+    //         .attr('y2', selectedCy)
+    //         .style('stroke', this.darkGrey);
 
     this.svgLines.selectAll('.v_line')
         .transition()
-        .duration(this.duration)
-        .attr('y1', function(d, i) { return i == 0 ? this.margin.top : selectedCy; }.bind(this))
-        .attr('y2', function(d, i) { return i == 0 ? selectedCy : this.height; }.bind(this));
+        .duration(this.duration / 2)
+        .attr('x1', function(d) { return this.xScale(selectedData.date); }.bind(this))
+        .attr('x2', function(d) { return this.xScale(selectedData.date); }.bind(this));
 
     d3.select(selected).transition()
       .duration(this.duration)
@@ -590,12 +602,12 @@ var VisLineasJ = Class.extend({
         selectedCx = d3.select(selected).attr('cx'),
         selectedCy = d3.select(selected).attr('cy');
 
-    this.svgLines.selectAll('.v_line')
-        .transition()
-        .duration(this.duration / 3)
-        .attr('y1', selectedCy)
-        .attr('y2', selectedCy)
-        .remove();
+    // this.svgLines.selectAll('.v_line')
+    //     .transition()
+    //     .duration(this.duration / 3)
+    //     .attr('y1', selectedCy)
+    //     .attr('y2', selectedCy)
+    //     .remove();
 
 
     this.svgLines.selectAll('.dot_line')
