@@ -19,6 +19,7 @@ set_meta_tags title: "Presupuesto de #{@place.name} » #{kind_literal(@kind).cap
   <div class="metric selected tipsit" data-widget-template="#widget-template"
                              title="<%= kind_literal(@kind, false).humanize %> total de esta partida en este año por habitante"
                              data-widget-type="per_person"
+                             data-line-widget-series="means"
                              data-line-widget-url="<%= api_data_lines_budget_line_path(@place.id, @year, "per_person", @kind, @code, @area_name, format: :json ) %>"
                              data-line-widget-type="per_person"
                              data-widget-data-url="<%= api_data_budget_per_inhabitant_path(ine_code: @place.id, year: @year, kind: @kind, code: @code, area: @area_name, format: :json) %>">
@@ -27,6 +28,7 @@ set_meta_tags title: "Presupuesto de #{@place.name} » #{kind_literal(@kind).cap
   <div class="metric tipsit" data-widget-template="#widget-template"
                                       title="<%= kind_literal(@kind, false).humanize %> total de esta partida en este año"
                                       data-widget-type="budget"
+                                      data-line-widget-series="means"
                                       data-line-widget-url="<%= api_data_lines_budget_line_path(@place.id, @year, "total_budget", @kind, @code, @area_name, format: :json ) %>"
                                       data-line-widget-type="total_budget"
                                       data-widget-data-url="<%= api_data_budget_path(ine_code: @place.id, year: @year, kind: @kind, code: @code, area: @area_name, format: :json) %>">
