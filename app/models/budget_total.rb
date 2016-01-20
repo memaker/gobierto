@@ -16,9 +16,6 @@ class BudgetTotal
     query = {
       query: {
         filtered: {
-          query: {
-            match_all: {}
-          },
           filter: {
             bool: {
               must: terms

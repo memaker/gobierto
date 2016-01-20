@@ -24,8 +24,12 @@ module ApplicationHelper
 
   def budget_line_denomination(area, code, kind, capped = -1)
     area = (area == 'economic' ? EconomicArea : FunctionalArea)
-    res = area.all_items[kind][code][0..capped]
-    res += "..." if capped > -1
+    if area.all_items[kind][code].nil?
+      res = " - "
+    else
+      res = area.all_items[kind][code][0..capped]
+      res += "..." if capped > -1
+    end
     res
   end
 

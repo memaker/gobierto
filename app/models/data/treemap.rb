@@ -26,9 +26,6 @@ class Data::Treemap
       ],
       query: {
         filtered: {
-          query: {
-            match_all: {}
-          },
           filter: {
             bool: {
               must: options
