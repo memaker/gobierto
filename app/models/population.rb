@@ -37,16 +37,13 @@ class Population
     terms << {terms: { ine_code: options[:ine_codes] }} if options[:ine_codes].present?
     terms << {term: { ine_code: options[:ine_code] }} if options[:ine_code].present?
     terms << {term: { year: options[:year] }}
-    
+
     query = {
       sort: [
         { value: { order: 'desc' } }
       ],
       query: {
         filtered: {
-          query: {
-            match_all: {}
-          },
           filter: {
             bool: {
               must: terms

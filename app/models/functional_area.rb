@@ -13,9 +13,6 @@ class FunctionalArea
       query = {
         query: {
           filtered: {
-            query: {
-              match_all: {}
-            },
             filter: {
               bool: {
                 must: [

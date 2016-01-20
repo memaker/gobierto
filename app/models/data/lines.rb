@@ -41,9 +41,6 @@ class Data::Lines
     query = {
       query: {
         filtered: {
-          query: {
-            match_all: {}
-          },
           filter: {
             bool: {
               must: filters
@@ -98,9 +95,6 @@ class Data::Lines
     query = {
       query: {
         filtered: {
-          query: {
-            match_all: {}
-          },
           filter: {
             bool: {
               must: filters
@@ -154,9 +148,6 @@ class Data::Lines
     query = {
       query: {
         filtered: {
-          query: {
-            match_all: {}
-          },
           filter: {
             bool: {
               must: filters
@@ -215,9 +206,6 @@ class Data::Lines
       ],
       query: {
         filtered: {
-          query: {
-            match_all: {}
-          },
           filter: {
             bool: {
               must: filters
@@ -241,8 +229,8 @@ class Data::Lines
     result
   end
 
-  def budget_values 
-    return comparison_values if @is_comparison     
+  def budget_values
+    return comparison_values if @is_comparison
     [
       {
         "name":"mean_province",

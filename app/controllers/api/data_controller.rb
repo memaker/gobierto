@@ -174,9 +174,6 @@ class Api::DataController < ApplicationController
     query = {
       query: {
         filtered: {
-          query: {
-            match_all: {}
-          },
           filter: {
             bool: {
               must: [
@@ -223,9 +220,6 @@ class Api::DataController < ApplicationController
       ],
       query: {
         filtered: {
-          query: {
-            match_all: {}
-          },
           filter: {
             bool: {
               must: [
@@ -273,9 +267,6 @@ class Api::DataController < ApplicationController
       ],
       query: {
         filtered: {
-          query: {
-            match_all: {}
-          },
           filter: {
             bool: {
               must: [

@@ -20,9 +20,6 @@ class BudgetLine
       ],
       query: {
         filtered: {
-          query: {
-            match_all: {}
-          },
           filter: {
             bool: {
               must: terms
@@ -65,9 +62,6 @@ class BudgetLine
       ],
       query: {
         filtered: {
-          query: {
-            match_all: {}
-          },
           filter: {
             bool: {
               must: terms
@@ -94,7 +88,7 @@ class BudgetLine
                   ]
                 }
               }]
-    
+
     query = {
       sort: [
         { code: { order: 'asc' } },
@@ -102,9 +96,6 @@ class BudgetLine
       ],
       query: {
         filtered: {
-          query: {
-            match_all: {}
-          },
           filter: {
             bool: {
               must: terms
@@ -124,7 +115,7 @@ class BudgetLine
                 level: budget_line['level'].to_i + 1,
                 type: area }
     options.merge! budget_line.slice('ine_code','kind','year').symbolize_keys
-    
+
     return search(options)['hits'].length > 0
   end
 end
