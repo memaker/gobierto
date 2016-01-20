@@ -346,34 +346,45 @@ var VisLineasJ = Class.extend({
       // create a cell in each row for each column
       var cells = rows.selectAll("td")
           .data(function(row) {
-              
+             
             var filterValues = row.values.filter(function(v) { 
                     return v.date.getFullYear() == this.dataYear.getFullYear();
                   }.bind(this))
             
-            filterValues.map(function(d) { return colors[d.name] != undefined ? d['color']= 'le le-' + colors[d.name] : d['color'] = 'le le-place'; });
+            if (filterValues.length == 0) {
+              filterValues = [row.values[0]]
+              filterValues[0].value = '--'
+              filterValues[0].dif = '--'
+            }
 
-            return columns.map(function(column) {
-                if (column == 'name') {
-                  var value = this.niceCategory[filterValues[0][column]] != undefined ? this.niceCategory[filterValues[0][column]] : filterValues[0][column];
-                  var classed = this._normalize(filterValues[0].name)
+            
 
-                } else if (column == 'value') {
-                  var value = accounting.formatMoney(filterValues[0][column])
-                  var classed = 'value right ' + this._normalize(filterValues[0].name)
-                } else if (column == 'dif') {
-                  var value = filterValues[0][column] < 0 ? filterValues[0][column] + '%' : '+' +filterValues[0][column] + '%'
-                  var classed = 'dif right ' + this._normalize(filterValues[0].name)
-                } else {
-                  var value = filterValues[0][column]
-                  var classed = this._normalize(filterValues[0].name)
-                }
-                return {column: column, 
-                        value: value, 
-                        name: filterValues[0].name,
-                        classed: classed
-                      };
-            }.bind(this));
+              filterValues.map(function(d) { return colors[d.name] != undefined ? d['color']= 'le le-' + colors[d.name] : d['color'] = 'le le-place'; });
+
+
+              return columns.map(function(column) {
+                  if (column == 'name') {
+                    var value = this.niceCategory[filterValues[0][column]] != undefined ? this.niceCategory[filterValues[0][column]] : filterValues[0][column];
+                    var classed = this._normalize(filterValues[0].name)
+
+                  } else if (column == 'value') {
+                    console.log(filterValues[0][column])
+                    var value = filterValues[0][column] != '--' ? accounting.formatMoney(filterValues[0][column]) : filterValues[0][column] + ' €'
+                    var classed = 'value right ' + this._normalize(filterValues[0].name)
+                  } else if (column == 'dif') {
+                    var value = filterValues[0][column] > 0 ? '+' +filterValues[0][column] + '%' : filterValues[0][column] + '%'
+                    var classed = 'dif right ' + this._normalize(filterValues[0].name)
+                  } else {
+                    var value = filterValues[0][column]
+                    var classed = this._normalize(filterValues[0].name)
+                  }
+                  return {column: column, 
+                          value: value, 
+                          name: filterValues[0].name,
+                          classed: classed
+                        };
+              }.bind(this));
+
           }.bind(this))
           .enter()
         .append("td")
