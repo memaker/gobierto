@@ -7,6 +7,9 @@ class PagesController < ApplicationController
   def about
   end
 
+  def pro
+  end
+
   def request_access
     render layout: false
   end

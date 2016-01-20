@@ -4,6 +4,7 @@ Rails.application.routes.draw do
 
   # statics
   get 'about' => 'pages#about'
+  get 'pro' => 'pages#pro'
   get 'request_access' => 'pages#request_access'
   get 'contact_pro' => 'pages#contact_pro'
   get 'contact_citizen' => 'pages#contact_citizen'

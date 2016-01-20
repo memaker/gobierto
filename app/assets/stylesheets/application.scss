@@ -1887,4 +1887,65 @@ footer {
   }
 
 }
+.big_claim, .about_block .big_claim {
+  font-size: 2em; 
+  text-align: center;
+  margin: 1em 4em 2em;
+  line-height: 1.4em;
+  opacity: .6;
+}
+.placeholder {
+  @include border-radius(6px);
+  background: $color_1_soft;
+  height: 200px;
+  width: 100%;
+}
+.features {
+  .sep {
+    border-top: 1px solid #DFDFDF;
+  }
+  h3, h4 {
+    border: 0;
+  }
+  .sections {
+    margin: 0;
+    float: left;
+    width: 28%;
+    h3, h4 {
+      border: none;
+      color: $text_soft;
+    }
+    a {
+      margin: 0;
+    }
+  }
+  .features_col {
+    float: right;
+    width: 68%;
+    font-size: 1.2em;
+    .feature {
+      padding: 0 0 2em 0;
+      margin: 0 0 2em 0;
+      border-bottom: 1px solid #DFDFDF;
+    }
+    h3 {
+      text-align: center;
+      color: $color_1;
+      font-size: 1.8em;
+    }
+    h4 {
+      font-size: .9em;
+      text-transform: uppercase;
+    }
+    ul {
+      margin: 0 0 3em 0;
+    }
+    li {
+      font-size: 1em;
+      line-height: 1.3em;
+      list-style-type: square;
+      margin: 0 2em 1em 2em;
+    }
+  }
+}
 
