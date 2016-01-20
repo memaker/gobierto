@@ -29,9 +29,10 @@ namespace :budget_categories do
   def import_categories(db_name)
     db = create_db_connection(db_name)
 
-    year = 2014
-    import_economic_categories(db, year)
-    import_functional_categories(db, year)
+    (2010..2014).to_a.reverse.each do |year|
+      import_economic_categories(db, year)
+      import_functional_categories(db, year)
+    end
   end
 
   def import_economic_categories(db, year)
@@ -61,7 +62,6 @@ namespace :budget_categories do
       }
 
       id = ['economic',row['cdcta'],row['tipreig']].join('/')
-
       SearchEngine.client.index index: BUDGET_CATEGORIES_INDEX, type: BUDGET_CATEGORIES_TYPE, id: id, body: query
     end
   end
