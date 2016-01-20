@@ -36,12 +36,103 @@ class Ranking
     Kaminari.paginate_array(results, {limit: self.per_page, offset: offset, total_count: total_results})
   end
 
+  # Returns the position of a place in a ranking. The ranking is determined by the field
+  # parameter
+  def self.place_position(options)
+    year = options[:year]
+    ine_code = options[:ine_code]
+    code = options[:code]
+    kind = options[:kind]
+    area = options[:area]
+    field = options[:field]
+
+    if code.present?
+      query = {
+        sort: [ { field.to_sym => { order: 'desc' } } ],
+        query: {
+          filtered: {
+            filter: {
+              bool: {
+                must: [
+                  {term: { year: year }},
+                  {term: { kind: kind }},
+                  {term: { code: code }}
+                ]
+              }
+            }
+          }
+        },
+        size: 10_000,
+        _source: false
+      }
+
+      id = [ine_code, year, code, kind].join('/')
+
+      response = SearchEngine.client.search index: BudgetLine::INDEX, type: area, body: query
+      buckets = response['hits']['hits'].map{|h| h['_id']}
+      return buckets.index(id) + 1
+    else
+      if field == 'population'
+        query = {
+          sort: [
+            { value: { order: 'desc' } }
+          ],
+          query: {
+            filtered: {
+              filter: {
+                bool: {
+                  must: [
+                    {term: { year: year }}
+                  ]
+                }
+              }
+            }
+          },
+          size: 10_000,
+          _source: false
+        }
+        id = [ine_code, year].join('/')
+        response = SearchEngine.client.search index: Population::INDEX, type: Population::TYPE, body: query
+        buckets = response['hits']['hits'].map{|h| h['_id']}
+        return buckets.index(id) + 1
+      else
+        field = (field == 'amount') ? 'total_budget' : 'total_budget_per_inhabitant'
+
+        query = {
+          sort: [
+            { field.to_sym => { order: 'desc' } }
+          ],
+          query: {
+            filtered: {
+              filter: {
+                bool: {
+                  must: [
+                    {term: { year: year }}
+                  ]
+                }
+              }
+            }
+          },
+          size: 10_000,
+          _source: false
+        }
+
+        id = [ine_code, year].join('/')
+
+        response = SearchEngine.client.search index: BudgetTotal::INDEX, type: BudgetTotal::TYPE, body: query
+        buckets = response['hits']['hits'].map{|h| h['_id']}
+        return buckets.index(id) + 1
+      end
+    end
+  end
+
+  ## Private
+
   def self.budget_line_ranking(variable, year, code, kind, area_name, offset)
     query = {
       sort: [ { variable.to_sym => { order: 'desc' } } ],
       query: {
         filtered: {
-          query: { match_all: {} },
           filter: {
             bool: {
               must: [
@@ -63,7 +154,6 @@ class Ranking
     query = {
       query: {
         filtered: {
-          query: { match_all: {} },
           filter: {
             bool: {
               must: [ {term: { year: year }}, {terms: { ine_code: results.map{|h| h['ine_code']}}}]
@@ -79,7 +169,6 @@ class Ranking
     query = {
       query: {
         filtered: {
-          query: { match_all: {} },
           filter: {
             bool: {
               must: [ {term: { year: year }}, {terms: { ine_code: results.map{|h| h['ine_code']}}}]
@@ -109,7 +198,6 @@ class Ranking
       sort: [ { value: { order: 'desc' } } ],
       query: {
         filtered: {
-          query: { match_all: {} },
           filter: {
             bool: {
               must: [ {term: { year: year }}, ]
@@ -127,7 +215,6 @@ class Ranking
     query = {
       query: {
         filtered: {
-          query: { match_all: {} },
           filter: {
             bool: {
               must: [ {term: { year: year }}, {terms: { ine_code: results.map{|h| h['ine_code']}}}]
@@ -162,7 +249,6 @@ class Ranking
       sort: [ { variable.to_sym => { order: 'desc' } } ],
       query: {
         filtered: {
-          query: { match_all: {} },
           filter: {
             bool: {
               must: [ {term: { year: year }}, ]
@@ -180,7 +266,6 @@ class Ranking
     query = {
       query: {
         filtered: {
-          query: { match_all: {} },
           filter: {
             bool: {
               must: [ {term: { year: year }}, {terms: { ine_code: results.map{|h| h['ine_code']}}}]

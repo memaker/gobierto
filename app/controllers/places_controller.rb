@@ -53,6 +53,15 @@ class PlacesController < ApplicationController
     @page = params[:page] ? params[:page].to_i : 1
     render_404 and return if @page <= 0
 
+    if @place
+      place_position = Ranking.place_position(year: @year, ine_code: @place.id, code: @code, kind: @kind, area: @area_name, field: @variable)
+
+      page = Ranking.page_from_position(place_position)
+      if page != @page
+        redirect_to url_for(params.merge(page: page))
+      end
+    end
+
     @compared_level = params[:code] ? params[:code].length : 0
 
     @ranking_items = Ranking.query({year: @year, variable: @variable, page: @page, code: @code, kind: @kind, area_name: @area_name})
@@ -62,6 +71,7 @@ class PlacesController < ApplicationController
 
   def get_params
     @place = INE::Places::Place.find_by_slug params[:slug] if params[:slug].present?
+    @place = INE::Places::Place.find params[:ine_code] if params[:ine_code].present?
     @kind = ( %w{income i}.include?(params[:kind].downcase) ? BudgetLine::INCOME : BudgetLine::EXPENSE ) if action_name != 'show' && params[:kind]
     @kind ||= BudgetLine::EXPENSE if action_name == 'ranking'
     @area_name = params[:area] || 'economic'

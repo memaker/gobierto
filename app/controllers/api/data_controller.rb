@@ -18,7 +18,7 @@ class Api::DataController < ApplicationController
           delta_percentage: helpers.number_with_precision(delta_percentage(total_budget_data[:value], total_budget_data_previous_year[:value]), precision: 2),
           ranking_position: position,
           ranking_total_elements: helpers.number_with_precision(total_budget_data[:total_elements], precision: 0),
-          ranking_url: places_ranking_path(year,'G','economic','amount', page: Ranking.page_from_position(position), anchor: position)
+          ranking_url: places_ranking_path(year,'G','economic','amount', page: Ranking.page_from_position(position), ine_code: params[:ine_code])
         }.to_json
       end
     end
@@ -37,7 +37,7 @@ class Api::DataController < ApplicationController
           delta_percentage: helpers.number_with_precision(delta_percentage(population_data[:value], population_data[:value]), precision: 2),
           ranking_position: position,
           ranking_total_elements: helpers.number_with_precision(population_data[:total_elements], precision: 0),
-          ranking_url: population_ranking_path(year, page: Ranking.page_from_position(position), anchor: position)
+          ranking_url: population_ranking_path(year, page: Ranking.page_from_position(position), ine_code: params[:ine_code])
         }.to_json
       end
     end
@@ -57,7 +57,7 @@ class Api::DataController < ApplicationController
           delta_percentage: helpers.number_with_precision(delta_percentage(total_budget_data[:value], total_budget_data_previous_year[:value]), precision: 2),
           ranking_position: position,
           ranking_total_elements: helpers.number_with_precision(total_budget_data[:total_elements], precision: 0),
-          ranking_url: places_ranking_path(year,'G','economic','amount_per_inhabitant', page: Ranking.page_from_position(position), anchor: position)
+          ranking_url: places_ranking_path(year,'G','economic','amount_per_inhabitant', page: Ranking.page_from_position(position), ine_code: params[:ine_code])
         }.to_json
       end
     end
@@ -97,7 +97,7 @@ class Api::DataController < ApplicationController
           delta_percentage: helpers.number_with_precision(delta_percentage(budget_data[:value], budget_data_previous_year[:value]), precision: 2),
           ranking_position: position,
           ranking_total_elements: helpers.number_with_precision(budget_data[:total_elements], precision: 0),
-          ranking_url: places_ranking_path(@year,@kind,@area,'amount',@code,page: Ranking.page_from_position(position), anchor: position)
+          ranking_url: places_ranking_path(@year,@kind,@area,'amount',@code,page: Ranking.page_from_position(position), ine_code: params[:ine_code])
         }.to_json
       end
     end
@@ -123,7 +123,7 @@ class Api::DataController < ApplicationController
           delta_percentage: helpers.number_with_precision(delta_percentage(budget_data[:value], budget_data_previous_year[:value]), precision: 2),
           ranking_position: position,
           ranking_total_elements: helpers.number_with_precision(budget_data[:total_elements], precision: 0),
-          ranking_url: places_ranking_path(@year,@kind,@area,'amount_per_inhabitant',@code,page: Ranking.page_from_position(position), anchor: position)
+          ranking_url: places_ranking_path(@year,@kind,@area,'amount_per_inhabitant',@code,page: Ranking.page_from_position(position), ine_code: params[:ine_code])
         }.to_json
       end
     end
@@ -238,13 +238,13 @@ class Api::DataController < ApplicationController
         }
       },
       size: 10_000,
+      _source: false
     }
 
     id = "#{params[:ine_code]}/#{year}/#{@code}/#{@kind}"
 
     if ranking
       response = SearchEngine.client.search index: BudgetLine::INDEX, type: @area, body: query
-      Rails.logger.info "#{response['took']} ms"
       buckets = response['hits']['hits'].map{|h| h['_id']}
       position = buckets.index(id) + 1
     else
@@ -286,13 +286,13 @@ class Api::DataController < ApplicationController
         }
       },
       size: 10_000,
+      _source: false
     }
 
     id = "#{params[:ine_code]}/#{year}"
 
     if ranking
       response = SearchEngine.client.search index: BudgetTotal::INDEX, type: BudgetTotal::TYPE, body: query
-      Rails.logger.info "#{response['took']} ms"
       buckets = response['hits']['hits'].map{|h| h['_id']}
       position = buckets.index(id) + 1
     else

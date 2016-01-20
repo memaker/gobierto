@@ -250,14 +250,6 @@ $(function(){
     $('.tab_content[data-tab="'+tab+'"]').show();
   });
 
-  if($('#ranking-table').length > 0 && window.location.hash !== ""){
-    $('#ranking-table td.r_pos').each(function(){
-      if($(this).text() == window.location.hash.slice(1) + '.'){
-        $(this).parents('tr').addClass('selected');
-      }
-    });
-  }
-
   $('[data-link]').click(function(e){
     e.preventDefault();
     window.location.href = $(this).data('link');
