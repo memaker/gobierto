@@ -41,6 +41,8 @@ Rails.application.routes.draw do
     get '/data/widget/budget_percentage_over_total/:ine_code/:year/:code/:area/:kind' => 'data#budget_percentage_over_total', as: :data_budget_percentage_over_total
     get '/data/widget/budget_percentage_over_province/:ine_code/:year/:code/:area/:kind' => 'data#budget_percentage_over_province', as: :data_budget_percentage_over_province
     get '/data/widget/population/:ine_code/:year' => 'data#population', as: :data_population
+
+    get '/categories/:area/:kind' => 'categories#index'
   end
 
 end
