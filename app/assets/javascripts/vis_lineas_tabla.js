@@ -32,6 +32,7 @@ var VisLineasJ = Class.extend({
     // Data
     this.data = null;
     this.dataChart = null;
+    this.dataTable = null;
     this.dataDomain = null;
     this.kind = null;
     this.dataYear = null;
@@ -132,10 +133,53 @@ var VisLineasJ = Class.extend({
       //}.bind(this));
 
       this.dataChart = this.data.budgets[this.measure];
+      // this.dataTable = this.data.budgets[this.measure];
       this.kind = this.data.kind;
       this.dataYear = this.parseDate(this.data.year);
       this.lastYear = this.parseDate(this.data.year).getFullYear(); // For the mouseover interaction
       this.dataTitle = this.data.title;
+
+
+
+      ////// Complete the dataTable.
+      // Get all the years
+      var years = [];
+
+      this.dataChart.map(function(d) { 
+        d.values.map(function(v) { 
+          if (years.map(Number).indexOf(+v.date) == -1) {
+            years.push(v.date)
+          } 
+        }); 
+      });
+
+      // Sort them
+      years = years.sort(d3.ascending)
+
+      // Create a values object for every municipality for every year
+      this.dataChart.map(function(d) {
+        
+        if (d.values.length != years.length) {
+          years.forEach(function(year) {
+
+            // If the year does not exist
+            // Push a new object
+            var aux = d.values.filter(function(v) { 
+              return v.date == year; 
+            });
+
+            if (aux.length == 0) {
+              var obj = {
+                date: year,
+                dif: null,
+                name: d.name,
+                value: null
+              }
+              d.values.push(obj)
+            }
+          });
+        }    
+      });
 
       this.dataDomain = [d3.min(this.dataChart.map(function(d) { return d3.min(d.values.map(function(v) { return v.value; })); })), 
               d3.max(this.dataChart.map(function(d) { return d3.max(d.values.map(function(v) { return v.value; })); }))];
@@ -154,7 +198,7 @@ var VisLineasJ = Class.extend({
 
       // Set the scales
       this.xScale
-        .domain(d3.extent(this.dataChart[0].values, function(d) { return d.date; }))
+        .domain(d3.extent(years))
         .range([this.margin.left, this.width - (this.margin.right)]);
 
       this.yScale
@@ -238,7 +282,7 @@ var VisLineasJ = Class.extend({
           .enter()
         .append('path')
           .attr('class', function(d) { return 'evolution_line ' + this._normalize(d.name); }.bind(this))
-          .attr('d', function(d) { return this.line(d.values); }.bind(this))
+          .attr('d', function(d) { return this.line(d.values.filter(function(v) { return v.value != null; })); }.bind(this))
           .style('stroke', function(d) { return this.colorScale(d.name); }.bind(this))
           .style('stroke-width', function(d, i) { 
             if (this.series == 'means') {
@@ -256,7 +300,7 @@ var VisLineasJ = Class.extend({
         .append('g')
           .attr('class', 'dots')
         .selectAll('circle')
-          .data(function(d) { return d.values; })
+          .data(function(d) { return d.values.filter(function(v) { return v.value != null; }); })
           .enter()
         .append('circle')
           .attr('class', function(d) { return 'dot_line ' + this._normalize(d.name) + ' x' + d.date.getFullYear(); }.bind(this))
@@ -334,6 +378,7 @@ var VisLineasJ = Class.extend({
       thead.select('.year_header')
           .style('font-size', '14px')
 
+      
       // create a row for each object in the data
       var rows = tbody.selectAll("tr")
           .data(this.series == 'means' ? this.dataChart.reverse() : this.dataChart)
@@ -347,43 +392,37 @@ var VisLineasJ = Class.extend({
       var cells = rows.selectAll("td")
           .data(function(row) {
              
-            var filterValues = row.values.filter(function(v) { 
+            var dataChartFiltered = row.values.filter(function(v) { 
                     return v.date.getFullYear() == this.dataYear.getFullYear();
-                  }.bind(this))
-            
-            if (filterValues.length == 0) {
-              filterValues = [row.values[0]]
-              filterValues[0].value = '--'
-              filterValues[0].dif = '--'
-            }
+                  }.bind(this))           
 
-            
+            dataChartFiltered.map(function(d) { return colors[d.name] != undefined ? d['color']= 'le le-' + colors[d.name] : d['color'] = 'le le-place'; });
 
-              filterValues.map(function(d) { return colors[d.name] != undefined ? d['color']= 'le le-' + colors[d.name] : d['color'] = 'le le-place'; });
+            return columns.map(function(column) {
+                if (column == 'name') {
+                  var value = this.niceCategory[dataChartFiltered[0][column]] != undefined ? this.niceCategory[dataChartFiltered[0][column]] : dataChartFiltered[0][column];
+                  var classed = this._normalize(dataChartFiltered[0].name)
 
-
-              return columns.map(function(column) {
-                  if (column == 'name') {
-                    var value = this.niceCategory[filterValues[0][column]] != undefined ? this.niceCategory[filterValues[0][column]] : filterValues[0][column];
-                    var classed = this._normalize(filterValues[0].name)
-
-                  } else if (column == 'value') {
-                    console.log(filterValues[0][column])
-                    var value = filterValues[0][column] != '--' ? accounting.formatMoney(filterValues[0][column]) : filterValues[0][column] + ' €'
-                    var classed = 'value right ' + this._normalize(filterValues[0].name)
-                  } else if (column == 'dif') {
-                    var value = filterValues[0][column] > 0 ? '+' +filterValues[0][column] + '%' : filterValues[0][column] + '%'
-                    var classed = 'dif right ' + this._normalize(filterValues[0].name)
+                } else if (column == 'value') {
+                  var value = dataChartFiltered[0][column] != null ? accounting.formatMoney(dataChartFiltered[0][column]) : '-- €'
+                  var classed = 'value right ' + this._normalize(dataChartFiltered[0].name)
+                } else if (column == 'dif') {
+                  if (dataChartFiltered[0][column] != null) {
+                    var value = dataChartFiltered[0][column] > 0 ? '+' +dataChartFiltered[0][column] + '%' : dataChartFiltered[0][column] + '%'
                   } else {
-                    var value = filterValues[0][column]
-                    var classed = this._normalize(filterValues[0].name)
+                    var value = '--%'
                   }
-                  return {column: column, 
-                          value: value, 
-                          name: filterValues[0].name,
-                          classed: classed
-                        };
-              }.bind(this));
+                  var classed = 'dif right ' + this._normalize(dataChartFiltered[0].name)
+                } else {
+                  var value = dataChartFiltered[0][column]
+                  var classed = this._normalize(dataChartFiltered[0].name)
+                }
+                return {column: column, 
+                        value: value, 
+                        name: dataChartFiltered[0].name,
+                        classed: classed
+                      };
+            }.bind(this));
 
           }.bind(this))
           .enter()
@@ -477,10 +516,10 @@ var VisLineasJ = Class.extend({
   //   this.svgTable.selectAll('.legend_value')
   //       .data(this.dataChart)
   //       .text(function(d) { 
-  //         var filterValues = d.values.filter(function(v) { 
+  //         var dataChartFiltered = d.values.filter(function(v) { 
   //           return v.date.getFullYear() == this.dataYear.getFullYear();
   //         }.bind(this));
-  //         return this.formatPercent(filterValues[0].value) + this._units(); 
+  //         return this.formatPercent(dataChartFiltered[0].value) + this._units(); 
   //       }.bind(this))
   //       .transition()
   //         .duration(this.duration/4)
@@ -495,10 +534,10 @@ var VisLineasJ = Class.extend({
   //    this.svgTable.selectAll('.legend_dif')
   //       .data(this.dataChart)
   //       .text(function(d) { 
-  //         var filterValues = d.values.filter(function(v) { 
+  //         var dataChartFiltered = d.values.filter(function(v) { 
   //           return v.date.getFullYear() == this.dataYear.getFullYear();
   //         }.bind(this));
-  //         return filterValues[0].dif > 0 ? '+' + this.formatPercent(filterValues[0].dif) + this._units() : this.formatPercent(filterValues[0].dif) + this._units(); 
+  //         return dataChartFiltered[0].dif > 0 ? '+' + this.formatPercent(dataChartFiltered[0].dif) + this._units() : this.formatPercent(dataChartFiltered[0].dif) + this._units(); 
   //       }.bind(this))
   //       .transition()
   //         .duration(this.duration/4)
@@ -523,12 +562,13 @@ var VisLineasJ = Class.extend({
         selectedData = d3.select(selected).data()[0],
         selectedCx = d3.select(selected).attr('cx'),
         selectedCy = d3.select(selected).attr('cy');
-
-    var filterValues = this.dataChart.map(function(d, i) { 
+  
+    var dataChartFiltered = this.dataChart.map(function(d, i) { 
       return d.values.filter(function(v) { 
         return v.date.getFullYear() == selectedData.date.getFullYear();
       })[0];
     });
+
 
     if (this.lastYear != selectedData.date.getFullYear()) {
         // Hide table figures and update text
@@ -548,9 +588,9 @@ var VisLineasJ = Class.extend({
             .duration(this.duration / 2)
             .style('opacity', 0)
           .text(function(d) { 
-              var newValue = filterValues.filter(function(value) { return value.name == d.name; })
+              var newValue = dataChartFiltered.filter(function(value) { return value.name == d.name; })
               d.value = newValue[0].value
-              return accounting.formatMoney(d.value); 
+              return d.value != null ? accounting.formatMoney(d.value) : '-- €'; 
             })
           .transition()
             .duration(this.duration)
@@ -562,9 +602,14 @@ var VisLineasJ = Class.extend({
             .duration(this.duration / 2)
             .style('opacity', 0)
           .text(function(d) { 
-            var newValue = filterValues.filter(function(dif) { return dif.name == d.name; })
+            var newValue = dataChartFiltered.filter(function(dif) { return dif.name == d.name; })
             d.dif = newValue[0].dif
-            return d.dif <= 0 ? d.dif + '%' : '+' + d.dif + '%'; 
+            if (d.dif != null) {
+              return d.dif <= 0 ? d.dif + '%' : '+' + d.dif + '%';
+            } else {
+              return '--%'
+            }
+             
             })
           .transition()
             .duration(this.duration)
@@ -572,17 +617,6 @@ var VisLineasJ = Class.extend({
       }
 
     this.lastYear = selectedData.date.getFullYear();
-
-    // // Append vertical line
-    // this.svgLines.selectAll('.v_line')
-    //     .data([selectedCx, selectedCy])
-    //     .enter().append('line')
-    //     .attr('class', 'v_line')
-    //         .attr('x1', selectedCx)
-    //         .attr('y1', selectedCy)
-    //         .attr('x2', selectedCx)
-    //         .attr('y2', selectedCy)
-    //         .style('stroke', this.darkGrey);
 
     this.svgLines.selectAll('.v_line')
         .transition()
