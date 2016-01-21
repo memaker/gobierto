@@ -49,18 +49,16 @@ class PlacesController < ApplicationController
   end
 
   def ranking
-    @per_page = Ranking.per_page
-    @page = params[:page] ? params[:page].to_i : 1
-    render_404 and return if @page <= 0
-
-    if @place
+    if @place && params[:page].nil?
       place_position = Ranking.place_position(year: @year, ine_code: @place.id, code: @code, kind: @kind, area: @area_name, field: @variable)
 
       page = Ranking.page_from_position(place_position)
-      if page != @page
-        redirect_to url_for(params.merge(page: page))
-      end
+      redirect_to url_for(params.merge(page: page))
     end
+
+    @per_page = Ranking.per_page
+    @page = params[:page] ? params[:page].to_i : 1
+    render_404 and return if @page <= 0
 
     @compared_level = params[:code] ? params[:code].length : 0
 
