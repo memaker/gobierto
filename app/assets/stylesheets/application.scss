@@ -1949,3 +1949,47 @@ footer {
   }
 }
 
+
+@media print { 
+
+  // PRO marketing page
+  // header.global,
+  .top-claim,
+  #doorbell-button  {
+    display: none;
+  }
+  header.global {
+    background: none; 
+    height: initial;
+    width: initial;
+    float: none;
+    .links_list,
+    .places_search, 
+    menu {
+      display: none;
+    }
+  }
+  .main_content {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+  .pre_home {
+    padding: 0;
+  }
+  .features .features_col h3 {
+    font-size: 1.2em;
+  }
+  .features .features_col li {
+    font-size: .6em;
+  }
+  .about_block .big_claim {
+    font-size: 1.5em;
+  }
+  .placeholder {
+    border: 1px solid #CCC;
+    height: 100px;
+  }
+
+
+}
