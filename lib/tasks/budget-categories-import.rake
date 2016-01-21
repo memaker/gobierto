@@ -37,16 +37,8 @@ namespace :budget_categories do
 
   def import_economic_categories(db, year)
     first_level_dict = {
-      'G' => {"2"=>"Gastos en bienes corrientes y servicios", "3"=>"Gastos
-              financieros", "4"=>"Transferencias corrientes", "6"=>"Inversiones
-              reales", "7"=>"Transferencias de capital", "8"=>"Activos
-              financieros", "9"=>"Pasivos financieros", "1"=>"Gastos de
-              personal", "5"=>"Fondo de contingencia y otros imprevistos"},
-      'I' =>  {"1"=>"Impuestos directos", "2"=>"Impuestos indirectos",
-               "3"=>"Tasas y otros ingresos", "4"=>"Transferencias corrientes",
-               "5"=>"Ingresos patrimoniales", "6"=>"Enajenación de inversiones
-               reales", "7"=>"Transferencias de capital", "8"=>"Activos
-               financieros", "9"=>"Pasivos financieros"}
+      'G' => {"2"=>"Gastos en bienes corrientes y servicios", "3"=>"Gastos financieros", "4"=>"Transferencias corrientes", "6"=>"Inversiones reales", "7"=>"Transferencias de capital", "8"=>"Activos financieros", "9"=>"Pasivos financieros", "1"=>"Gastos de personal", "5"=>"Fondo de contingencia y otros imprevistos"},
+      'I' =>  {"1"=>"Impuestos directos", "2"=>"Impuestos indirectos", "3"=>"Tasas y otros ingresos", "4"=>"Transferencias corrientes", "5"=>"Ingresos patrimoniales", "6"=>"Enajenación de inversiones reales", "7"=>"Transferencias de capital", "8"=>"Activos financieros", "9"=>"Pasivos financieros"}
     }
 
     table_name = "tb_cuentasEconomica_#{year}"
