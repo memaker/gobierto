@@ -20,7 +20,6 @@ var VisLineasJ = Class.extend({
     // Scales
     this.xScale = d3.time.scale();
     this.yScale = d3.scale.linear();
-    // this.colorScale = d3.scale.ordinal().range(['#F4D06F', '#F8B419', '#DA980A', '#2A8998']);
     this.colorScale = d3.scale.ordinal();
     this.yScaleTable = d3.scale.ordinal();
     this.xScaleTable = d3.scale.linear();
@@ -32,7 +31,6 @@ var VisLineasJ = Class.extend({
     // Data
     this.data = null;
     this.dataChart = null;
-    this.dataTable = null;
     this.dataDomain = null;
     this.kind = null;
     this.dataYear = null;
@@ -78,8 +76,7 @@ var VisLineasJ = Class.extend({
 
   render: function(urlData) {
     $(this.container).html('');
-    $(this.tableContainer).html('');
-
+    $(this.tableContainer).html(''); 
 
     // Chart dimensions
     this.containerWidth = parseInt(d3.select(this.container).style('width'), 10);
@@ -133,7 +130,6 @@ var VisLineasJ = Class.extend({
       //}.bind(this));
 
       this.dataChart = this.data.budgets[this.measure];
-      // this.dataTable = this.data.budgets[this.measure];
       this.kind = this.data.kind;
       this.dataYear = this.parseDate(this.data.year);
       this.lastYear = this.parseDate(this.data.year).getFullYear(); // For the mouseover interaction
@@ -181,6 +177,7 @@ var VisLineasJ = Class.extend({
         }    
       });
 
+
       this.dataDomain = [d3.min(this.dataChart.map(function(d) { return d3.min(d.values.map(function(v) { return v.value; })); })), 
               d3.max(this.dataChart.map(function(d) { return d3.max(d.values.map(function(v) { return v.value; })); }))];
 
@@ -209,7 +206,8 @@ var VisLineasJ = Class.extend({
       this.colorScale
         .range(this.series == 'means' ? this.meanColorRange : this.comparatorColorRange)
         .domain(this.dataChart.map(function(d) { return d.name; }));
-       
+      
+
       // Define the axis 
       this.xAxis
           .scale(this.xScale)
@@ -382,6 +380,7 @@ var VisLineasJ = Class.extend({
       // create a row for each object in the data
       var rows = tbody.selectAll("tr")
           .data(this.series == 'means' ? this.dataChart.reverse() : this.dataChart)
+          // .data(this.dataChart)
           .enter()
         .append("tr")
           .attr('class', function(d) { return this._normalize(d.name); }.bind(this))
@@ -431,14 +430,17 @@ var VisLineasJ = Class.extend({
           .html(function(d, i) {return i != 0 ? d.value : '<i class="' + d.value + '"></i>'; }.bind(this));
 
 
+
           // Replace bullets colors
-          var bulletsColors = this.series == 'means' ? this.colorScale.range().reverse() : this.colorScale.range();
+          
+          var bulletsColors = this.colorScale.range();
+
           d3.selectAll('.le').forEach(function(v) {
             v.forEach(function(d,i) { 
               d3.select(v[i])
-                .style('background', bulletsColors[i])
-            }); 
-          });
+                .style('background', this.series == 'means' ? bulletsColors[(bulletsColors.length - 1) - i] : bulletsColors[i])
+            }.bind(this)); 
+          }.bind(this));
 
     }.bind(this)); // end load data
   }, // end render
