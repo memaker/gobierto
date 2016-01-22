@@ -102,11 +102,13 @@ $color_scale_9: #24190E;
  * Fonts
  *
  */
-@import url("https://fonts.googleapis.com/css?family=Work+Sans:200,400,700,600");
-@import "//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css";        
+@import url("https://fonts.googleapis.com/css?family=Work+Sans:200,400,700,600|Source+Sans+Pro:200,400,700,600");
+@import "//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css";        
 
-$font_headings: 'Work Sans';
-$font_text: 'Work Sans';
+// $font_headings: 'Work Sans';
+$font_headings: 'Source Sans Pro';
+// $font_text: 'Work Sans';
+$font_text: 'Source Sans Pro';
 
 
 /*
@@ -1052,6 +1054,27 @@ header.sub {
     top: 100%;
     left: 41%;
   }
+  .metric.cta {
+    background: $color_logo_yellow;
+    text-align: center;
+    padding: 0;
+
+    a {
+      color: #FFF;
+      display: inline-block;
+      font-size: 1em;
+      text-decoration: none;
+      margin-top: 14px;
+    }
+
+    .fa {
+      background: #FFF;
+      color: $color_logo_yellow;
+      padding: .75em;
+      @include border-radius(3px);
+      
+    }
+  }
 }
 
 .metric_graphs .widget_graph {
@@ -1060,6 +1083,7 @@ header.sub {
 .metric_graphs .show {
   display: block; 
 }
+
 
 
 .ie_intro {
@@ -1263,17 +1287,7 @@ a.list_view_more {
 }
 
 
-/*
- * Forms
- *
- */
-.small_input {
-  padding: .5em .5em .4em .4em;
-  border: 1px solid #DFDFDF;
-}
-textarea {
-  border: 1px solid #DFDFDF;
-}
+
 
 /*
  * Claims
@@ -1453,6 +1467,44 @@ textarea {
 .le-country {
   background: $color_vis_country;
 }
+
+
+/*
+ * Budget Line Feedback
+ *
+ */
+.budget_line_feedback {
+  text-align: center;
+  padding: 3em;
+  .options {
+    margin: 1.5em 0;
+    .button {
+      margin: 0 .2em;
+      span {
+        display: block; 
+        text-transform: uppercase;
+      }
+    }
+  }
+  .reply {
+    max-width: 40em;
+    margin: auto;
+    padding: 2em;
+    background: #FFF;
+    @include border-radius(6px);
+    .inner {
+      margin: 0 20%; 
+    }
+  }
+  .options.yes_no {
+    font-size: 1.5em;
+    .button {
+      font-weight: bold;  
+    }
+    
+  }
+}
+
 
 
 /*
@@ -1680,6 +1732,40 @@ textarea {
   margin: 0;
 }
 
+
+/*
+ * Forms
+ *
+ */
+.small_input {
+  padding: .5em .5em .4em .4em;
+  border: 1px solid #DFDFDF;
+}
+textarea {
+  border: 1px solid #DFDFDF;
+}
+input {
+  font-family: $font_text;
+  box-sizing: border-box;
+  @include border-radius(5px);
+  padding: .65em;
+  display: inline-block;
+  text-decoration: none;
+  font-size: 1em;
+  line-height: 1.2em;
+  border: 1px solid $text_soft;
+  margin: 0 .5em 0 0;
+  strong {
+    font-weight: 400;
+  }
+}
+.exp {
+  font-size: .75em; 
+  font-weight: 200;
+}
+
+
+
 /*
  * Buttons
  *
@@ -1693,13 +1779,18 @@ input[type=submit], .button {
   color: #FFF;
   display: inline-block;
   text-decoration: none;
-  font-size: 13px;
-  line-height: 17px;
+  font-size: 1em;
+  line-height: 1.2em;
   text-align: center; 
   font-weight: 200;
+  border: 0;
+  margin: 0 .5em 0 0;
   strong {
     font-weight: 400;
   }
+}
+input[type=submit] {
+  cursor: pointer;
 }
 input[type=submit]:hover, .button:hover {
   background: darken($color_1, 5%);
@@ -1717,6 +1808,15 @@ input[type=submit]:hover, .button:hover {
   background: darken($color_1, 5%);
   text-decoration: none;
 }
+.button.empty {
+  background: #FFF;
+  color: $text;
+  border: 1px solid $text_soft;
+  span {
+    display: block;
+    text-transform: uppercase;
+  }
+}
 
 
 
@@ -1726,7 +1826,7 @@ input[type=submit]:hover, .button:hover {
  *
  */
 .sep {
-  // border-top: 1px solid $separator;
+  border-top: 1px solid $separator;
   margin: 1em 0;
   height: 1px;
 }
