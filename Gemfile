@@ -9,11 +9,11 @@ gem 'bcrypt'
 gem 'rollbar'
 gem 'meta-tags'
 gem 'ine-places', require: 'ine/places/places'
-gem 'jbuilder'
 gem 'actionpack-page_caching'
 gem 'progressbar'
 gem 'ruby-px', require: 'pc-axis/dataset'
 gem 'kaminari'
+gem 'geocoder'
 
 # Frontend
 gem 'jquery-rails'
