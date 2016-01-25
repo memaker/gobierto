@@ -132,4 +132,10 @@ module ApplicationHelper
   def compare_slug(place, year)
     "#{place.name}|#{place_path(place, year)}|#{place.slug}"
   end
+
+  def parent_code(code)
+    if code.present?
+      code[0..-2]
+    end
+  end
 end
