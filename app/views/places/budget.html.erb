@@ -1,7 +1,6 @@
 <%
-title = "#{kind_literal(@kind, true).capitalize} municipales de #{@place.name} para el #{@year}"
-set_meta_tags title: title
-@share_text = "#{title} by @gobierto. #{request.original_url}"
+@title = "#{kind_literal(@kind, true).capitalize} municipales de #{@place.name} para el #{@year}"
+set_meta_tags title: @title
 %>
 
 <%= render partial: 'place_header' %>
