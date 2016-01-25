@@ -109,14 +109,19 @@ module ApplicationHelper
   def data_attributes
     attrs = []
     if @place
-      attrs << %Q{data-track-url=#{place_path(@place.slug, @year || 2015)}}
-      attrs << %Q{data-place-slug=#{@place.slug}}
-      attrs << %Q{data-place-name=#{@place.name}}
+      attrs << %Q{data-track-url="#{place_path(@place.slug, @year || 2015)}"}
+      attrs << %Q{data-place-slug="#{@place.slug}"}
+      attrs << %Q{data-place-name="#{@place.name}"}
     end
-    attrs << %Q{data-year=#{@year || 2015}}
-    attrs << %Q{data-kind=#{@kind || 'expense'}}
-    attrs << %Q{data-area=#{@area_name || 'economic'}}
-    attrs.join(' ')
+    if action_name == 'compare' and controller_name == 'places'
+      attrs << %Q{data-comparison-name="#{@places.map{|p| p.name }.join('+')}"}
+      attrs << %Q{data-comparison-track-url="#{request.path}"}
+      attrs << %Q{data-comparison-slug="#{params[:slug_list]}"}
+    end
+    attrs << %Q{data-year="#{@year || 2015}"}
+    attrs << %Q{data-kind="#{@kind || 'expense'}"}
+    attrs << %Q{data-area=#{@area_name || 'economic'}"}
+    attrs.join(' ').html_safe
   end
 
   def ranking_variable(what)

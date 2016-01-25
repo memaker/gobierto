@@ -4,7 +4,7 @@ $(function () {
   Cookies.json = true;
   Cookies.defaults.path = '/';
 
-  function storeVisit(){
+  function storePlaceVisit(){
     var $trackUrl = $('[data-track-url]');
     if($trackUrl.length == 0) { return; }
 
@@ -15,7 +15,7 @@ $(function () {
 
     if (places.indexOf(placeInformation) == -1){
       places.unshift(placeInformation);
-    } 
+    }
     else {
       // we put it at the front
       var repeat = places.splice(places.indexOf(placeInformation),1)[0];
@@ -27,22 +27,45 @@ $(function () {
     Cookies.set('places', places);
   }
 
-  function renderHistory(){
-    var $history = $('#history');
-    var places = Cookies.get('places');
+  function storeComparisonVisit(){
+    var $trackUrl = $('[data-comparison-track-url]');
+    if($trackUrl.length == 0) { return; }
 
-    if(places === undefined) { 
-      places = []; 
+    var comparisons = Cookies.get('comparisons');
+    if(comparisons === undefined) { comparisons = []; }
+
+    var comparisonInformation = $trackUrl.data('comparison-name') + '|' + $trackUrl.data('comparison-track-url') + '|' + $trackUrl.data('comparison-slug');
+
+    if (comparisons.indexOf(comparisonInformation) == -1){
+      comparisons.unshift(comparisonInformation);
+    }
+    else {
+      // we put it at the front
+      var repeat = comparisons.splice(comparisons.indexOf(comparisonInformation),1)[0];
+      comparisons.unshift(repeat);
+    }
+
+    if(comparisons.length > 10) { comparisons.pop(); }
+
+    Cookies.set('comparisons', comparisons);
+  }
+
+  function renderCookiesHistory(container, cookieName){
+    var $history = $(container);
+    var elements = Cookies.get(cookieName);
+
+    if(elements === undefined) {
+      elements = [];
     }
 
     if($history !== undefined){
 
       var $listElements = [];
-      for(var i = 0; i < places.length; i++){
-        var placeInformation = places[i].split('|');
+      for(var i = 0; i < elements.length; i++){
+        var placeInformation = elements[i].split('|');
         var placeName = placeInformation[0];
         var placeURL = placeInformation[1];
-        var placeYear = placeURL.substring(placeURL.lastIndexOf('/') + 1);
+        var placeYear = /(\d+)/.exec(placeURL)[0];
         placeName += ' (' + placeYear +')';
         $listElements.push('<li><a href=' + placeURL + '>' + placeName + '</a></li>');
       }
@@ -51,6 +74,8 @@ $(function () {
     }
   }
 
-  storeVisit();
-  renderHistory();
+  storePlaceVisit();
+  storeComparisonVisit();
+  renderCookiesHistory('#history','places');
+  renderCookiesHistory('#comparisons-history','comparisons');
 });
