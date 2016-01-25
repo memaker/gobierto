@@ -83,7 +83,7 @@ namespace :population do
     end
   end
 
-  desc "Import population from PCAxis file into ElasticSearch. Example rake population:import[2014]"
+  desc "Import population from PCAxis file into ElasticSearch. Example rake population:import[2014,'db/data/population/2014.px']"
   task :import, [:year, :file_path] => :environment do |t, args|
     if m = args[:year].match(/\A\d{4}\z/)
       year = m[0].to_i

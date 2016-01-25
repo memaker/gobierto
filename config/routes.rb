@@ -27,6 +27,7 @@ Rails.application.routes.draw do
 
   get 'search' => 'search#index'
   get 'categories/:slug/:year/:area/:kind' => 'search#categories', as: :search_categories
+  get 'geocoder' => 'geocoder#index', as: :geocoder
 
   get '/budget_lines/:slug/:year/:code/:kind/:area' => 'budget_lines#show', as: :budget_line
   get '/places/:slug/:year' => 'places#show', as: :place
@@ -52,6 +53,8 @@ Rails.application.routes.draw do
     get '/data/widget/budget_percentage_over_total/:ine_code/:year/:code/:area/:kind' => 'data#budget_percentage_over_total', as: :data_budget_percentage_over_total
     get '/data/widget/budget_percentage_over_province/:ine_code/:year/:code/:area/:kind' => 'data#budget_percentage_over_province', as: :data_budget_percentage_over_province
     get '/data/widget/population/:ine_code/:year' => 'data#population', as: :data_population
+
+    get '/categories/:area/:kind' => 'categories#index'
   end
 
 end

@@ -34,7 +34,7 @@ $(function () {
   }
 
   //assumes the places cookie is set
-  function updateListAndCompare(place){
+  function updateListAndCompare(place, parentCode){
     var comparison = Cookies.get('comparison');
 
     if (comparison.indexOf(place) === -1)
@@ -42,7 +42,7 @@ $(function () {
 
     Cookies.set('comparison', comparison);
 
-    compare();
+    compare(parentCode);
   }
 
   function removeFromList(place_name) {
@@ -58,9 +58,9 @@ $(function () {
     }
   }
 
-  function compare() {
+  function compare(parentCode) {
     var comparison = Cookies.get('comparison');
-    window.location.href = compareUrl(comparison);
+    window.location.href = compareUrl(comparison) + (parentCode !== null ? "?parent_code=" + parentCode : '');
   }
 
   function currentPlaceIsOnList(place) {
@@ -132,12 +132,12 @@ $(function () {
 
   $('.js-add_compare, .js-add_compare_no_hide').on('click', function(e) {
     e.preventDefault();
-    updateListAndCompare($(this).data('place'));
+    updateListAndCompare($(this).data('place'), $(this).data('parent-code'));
   });
 
   $('#view_compare').on('click', function(e) {
     e.preventDefault();
-    compare();
+    compare($(this).data('parent-code'));
   });
 
   $('#compare_list').on('click', 'a.del_link', function(e) {

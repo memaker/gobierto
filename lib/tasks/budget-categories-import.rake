@@ -37,27 +37,23 @@ namespace :budget_categories do
 
   def import_economic_categories(db, year)
     first_level_dict = {
-      'G' => {"2"=>"Gastos en bienes corrientes y servicios", "3"=>"Gastos
-              financieros", "4"=>"Transferencias corrientes", "6"=>"Inversiones
-              reales", "7"=>"Transferencias de capital", "8"=>"Activos
-              financieros", "9"=>"Pasivos financieros", "1"=>"Gastos de
-              personal", "5"=>"Fondo de contingencia y otros imprevistos"},
-      'I' =>  {"1"=>"Impuestos directos", "2"=>"Impuestos indirectos",
-               "3"=>"Tasas y otros ingresos", "4"=>"Transferencias corrientes",
-               "5"=>"Ingresos patrimoniales", "6"=>"Enajenación de inversiones
-               reales", "7"=>"Transferencias de capital", "8"=>"Activos
-               financieros", "9"=>"Pasivos financieros"}
+      'G' => {"2"=>"Gastos en bienes corrientes y servicios", "3"=>"Gastos financieros", "4"=>"Transferencias corrientes", "6"=>"Inversiones reales", "7"=>"Transferencias de capital", "8"=>"Activos financieros", "9"=>"Pasivos financieros", "1"=>"Gastos de personal", "5"=>"Fondo de contingencia y otros imprevistos"},
+      'I' =>  {"1"=>"Impuestos directos", "2"=>"Impuestos indirectos", "3"=>"Tasas y otros ingresos", "4"=>"Transferencias corrientes", "5"=>"Ingresos patrimoniales", "6"=>"Enajenación de inversiones reales", "7"=>"Transferencias de capital", "8"=>"Activos financieros", "9"=>"Pasivos financieros"}
     }
 
     table_name = "tb_cuentasEconomica_#{year}"
     sql = %Q{SELECT * from "#{table_name}"}
     db.execute(sql).each do |row|
+      code = row['cdcta']
+      level = code.include?('.') ? code.split('.').first.length + 1 : code.length
+      parent_code = code.include?('.') ? code.split('.').first : code[0..-2]
+
       query = {
         area: 'economic',
-        code: row['cdcta'],
-        name: row['cdcta'].length == 1 ? first_level_dict[row['tipreig']][row['cdcta']] : row['nombre'],
-        parent_code: row['cdcta'][0..-2],
-        level: row['cdcta'].length,
+        code: code,
+        name: code.length == 1 ? first_level_dict[row['tipreig']][code] : row['nombre'],
+        parent_code: parent_code,
+        level: level,
         kind: row['tipreig']
       }
 
@@ -76,12 +72,16 @@ namespace :budget_categories do
 
     sql = %Q{select * from "#{table_name}"}
     db.execute(sql).each do |row|
+      code = row['cdfgr']
+      level = code.include?('.') ? code.split('.').first.length + 1 : code.length
+      parent_code = code.include?('.') ? code.split('.').first : code[0..-2]
+
       query = {
         area: 'functional',
-        code: row['cdfgr'],
-        name: row['cdfgr'].length == 1 ? first_level_dict[row['cdfgr']] : row['nombre'],
-        parent_code: row['cdfgr'][0..-2],
-        level: row['cdfgr'].length,
+        code: code,
+        name: code.length == 1 ? first_level_dict[code] : row['nombre'],
+        parent_code: parent_code,
+        level: level,
         kind: 'G'
       }
 

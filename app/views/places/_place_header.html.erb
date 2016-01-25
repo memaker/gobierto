@@ -29,7 +29,8 @@
         <%= link_to '<span>Compara</span> <i class="fa fa-compass"></i>'.html_safe, '', class: 'tool_button' %>
         <div class="inner widget_compare">
 
-          <%= link_to "Añade <strong>#{@place.name}</strong> a tu lista y compara".html_safe, '', class: 'button js-add_compare', data: {place: compare_slug(@place, @year)} %>
+          <%= link_to "Añade <strong>#{@place.name}</strong> a tu lista y compara".html_safe, '',
+            class: 'button js-add_compare', data: {place: compare_slug(@place, @year), "parent-code" => parent_code(params[:code])} %>
 
           <div class="sep"></div>
 
@@ -38,7 +39,8 @@
           </ul>
 
           <div id="view_comp_container" class="center">
-            <%= link_to 'Ver comparación'.html_safe, '', id: 'view_compare', class: 'button' %>
+            <%= link_to 'Ver comparación'.html_safe, '', id: 'view_compare', class: 'button',
+              data: {"parent-code" => parent_code(params[:code]) } %>
             <span class="soft" id="without_current_note">(sin <%= @place.name %>)</span>
           </div>
 
@@ -48,7 +50,6 @@
         <%= link_to '<span>Comparte</span> <i class="fa fa-share"></i>'.html_safe, '', class: 'tool_button' %>
         <div class="inner widget_share" >
 
-
           <p><strong>Comparte esta URL</strong></p>
 
           <p>
@@ -57,16 +58,14 @@
             <input type="text" class="small_input">
           </p>
           <% pending do %>
+            <div class="sep"></div>
 
-          <div class="sep"></div>
+            <p><strong>Incluye un widget en otra web</strong></p>
 
-          <p><strong>Incluye un widget en otra web</strong></p>
+            <textarea></textarea>
+            <p>Copia y pega este código en la web de destino</p>
 
-          <textarea></textarea>
-          <p>Copia y pega este código en la web de destino</p>
-
-          <div class="sep"></div>
-
+            <div class="sep"></div>
           <% end %>
 
           <div class="cta_claim">

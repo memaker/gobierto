@@ -166,7 +166,7 @@ class Api::DataController < ApplicationController
 
     begin
       result = SearchEngine.client.get index: BudgetLine::INDEX, type: @area, id: [params[:ine_code],@year,@code,@kind].join('/')
-      amount = result['_source']['amount'].to_f
+      amount = result['_source']['amount_per_inhabitant'].to_f
     rescue Elasticsearch::Transport::Transport::Errors::NotFound
       amount = 0
     end
@@ -190,16 +190,17 @@ class Api::DataController < ApplicationController
       "aggs": {
         "budget_sum": {
           "sum": {
-            "field": "amount"
+            "field": "amount_per_inhabitant"
           }
         }
       }
     }
 
+
     response = SearchEngine.client.search index: BudgetLine::INDEX, type: @type, body: query
     mean = response['aggregations']['budget_sum']['value'] / response['hits']['hits'].length
 
-    percentage = (amount.to_f * 100)/mean
+    percentage = ((amount.to_f - mean.to_f)/mean.to_f) * 100
 
     respond_to do |format|
       format.json do
