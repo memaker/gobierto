@@ -44,12 +44,16 @@ namespace :budget_categories do
     table_name = "tb_cuentasEconomica_#{year}"
     sql = %Q{SELECT * from "#{table_name}"}
     db.execute(sql).each do |row|
+      code = row['cdcta']
+      level = code.include?('.') ? code.split('.').first.length + 1 : code.length
+      parent_code = code.include?('.') ? code.split('.').first : code[0..-2]
+
       query = {
         area: 'economic',
-        code: row['cdcta'],
-        name: row['cdcta'].length == 1 ? first_level_dict[row['tipreig']][row['cdcta']] : row['nombre'],
-        parent_code: row['cdcta'][0..-2],
-        level: row['cdcta'].length,
+        code: code,
+        name: code.length == 1 ? first_level_dict[row['tipreig']][code] : row['nombre'],
+        parent_code: parent_code,
+        level: level,
         kind: row['tipreig']
       }
 
@@ -68,12 +72,16 @@ namespace :budget_categories do
 
     sql = %Q{select * from "#{table_name}"}
     db.execute(sql).each do |row|
+      code = row['cdfgr']
+      level = code.include?('.') ? code.split('.').first.length + 1 : code.length
+      parent_code = code.include?('.') ? code.split('.').first : code[0..-2]
+
       query = {
         area: 'functional',
-        code: row['cdfgr'],
-        name: row['cdfgr'].length == 1 ? first_level_dict[row['cdfgr']] : row['nombre'],
-        parent_code: row['cdfgr'][0..-2],
-        level: row['cdfgr'].length,
+        code: code,
+        name: code.length == 1 ? first_level_dict[code] : row['nombre'],
+        parent_code: parent_code,
+        level: level,
         kind: 'G'
       }
 
