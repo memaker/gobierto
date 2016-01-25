@@ -39,8 +39,6 @@ module RailsTemplate
     })
 
     config.action_controller.page_cache_directory = "#{Rails.root.to_s}/public/cache"
-
-    config.action_mailer.default_url_options = { host: 'gobierto.es', protocol: 'https' }
   end
 end
 

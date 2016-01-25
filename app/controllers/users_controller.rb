@@ -8,14 +8,25 @@ class UsersController < ApplicationController
   end
 
   def create
-    redirect_to edit_user_path if logged_in?
-
-    @user = User.new create_user_params
-    if @user.save
-      log_in @user
-      redirect_to params[:back_url] || root_path
+    @user = User.find_or_initialize_by email: params[:user][:email]
+    if @user.new_record?
+      created = true
+      @user.save!
     else
-      render 'new'
+      log_in(@user)
+    end
+
+    respond_to do |format|
+      format.html do
+        if created
+          redirect_to root_path, notice: 'Por favor, confirma tu email'
+        else
+          redirect_to :back
+        end
+      end
+      format.js do
+        created ? render('created') : render('logged_in')
+      end
     end
   end
 
@@ -41,7 +52,7 @@ class UsersController < ApplicationController
   private
 
   def create_user_params
-    params.require(:user).permit(:first_name, :last_name, :email, :password, :password_confirmation, :place_id)
+    params.require(:user).permit(:email)
   end
 
   def update_user_params

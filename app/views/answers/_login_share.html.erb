@@ -1,0 +1,19 @@
+<div class="sep"></div>
+<%= form_for User.new, data: {remote: true} do |f| %>
+  <p><small>Puedes seguir esta partida para recibir noticias ocasionales sobre su evolución y opiniones:</small></p>
+  <%= f.email_field :email, placeholder: 'Tu correo-e' %>
+  <input type="submit" class="button" value="Seguir">
+  <div class="exp">
+    <p>No spam, tus opiniones serán siempre privadas <%= link_to 'Más información' %></p>
+  </div>
+<% end %>
+
+<div class="share_post_submit hidden">
+  <p><small>Comprueba tu correo para confirmar tu acción</small></p>
+  <p><small>
+    ¿Quieres compartir esta estadística en
+    <%= link_to 'Twitter', "https://twitter.com/home?status=#{u @share_text}", class: 'small_button popup' %>
+    <%= link_to 'Facebook', "http://www.facebook.com/sharer/sharer.php?u=#{u @share_text}", class: 'small_button popup' %>
+    ?
+  </small></p>
+</div>

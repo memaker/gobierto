@@ -41,12 +41,15 @@ Rails.application.routes.draw do
   get '/ranking/:year/:kind/:area/:variable(/:code)' => 'places#ranking', as: :places_ranking
   get '/ranking/:year/population' => 'places#ranking', as: :population_ranking, defaults: {variable: 'population'}
 
+  # feedback
+  resources :answers, only: [:create]
+
   namespace :api do
     get '/data/lines/:ine_code/:year/:what' => 'data#lines', as: :data_lines
     get '/data/compare/:ine_codes/:year/:what' => 'data#compare', as: :data_compare
     get '/data/lines/budget_line/:ine_code/:year/:what/:kind/:code/:area' => 'data#lines', as: :data_lines_budget_line
     get '/data/compare/budget_line/:ine_codes/:year/:what/:kind/:code/:area' => 'data#compare', as: :data_compare_budget_lines
-  get '/data/widget/total_budget/:ine_code/:year' => 'data#total_budget', as: :data_total_budget
+    get '/data/widget/total_budget/:ine_code/:year' => 'data#total_budget', as: :data_total_budget
     get '/data/widget/total_budget_per_inhabitant/:ine_code/:year' => 'data#total_budget_per_inhabitant', as: :data_total_budget_per_inhabitant
     get '/data/widget/budget/:ine_code/:year/:code/:area/:kind' => 'data#budget', as: :data_budget
     get '/data/widget/budget_per_inhabitant/:ine_code/:year/:code/:area/:kind' => 'data#budget_per_inhabitant', as: :data_budget_per_inhabitant

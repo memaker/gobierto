@@ -46,7 +46,6 @@ set_meta_tags title: "Presupuesto de #{@place.name} » #{kind_literal(@kind).cap
 
   <div class="metric cta">
     <%= link_to 'Levanta la mano <i class="fa fa-hand-paper-o"></i>'.html_safe, 'javascript:void(0);', onclick: "$('.metric_graphs').hide(); $('.budget_line_feedback').show();" %>
-    
   </div>
 </div>
 
@@ -57,143 +56,56 @@ set_meta_tags title: "Presupuesto de #{@place.name} » #{kind_literal(@kind).cap
   </div>
 </div>
 
-
 <div class="widget_graph budget_line_feedback hidden">
-
   <div class="blf_question_1 ">
-
     <p>¿Entiendes de qué va esta partida?</p>
-
     <div class="options yes_no">
-
-      <%= link_to 'Si', 'javascript:void(0)', class: 'button', onclick: "$('.blf_question_1').hide(); $('.blf_question_2').show(); " %>
-      <%= link_to 'No', 'javascript:void(0)', class: 'button', onclick: "$('.blf_question_1').hide(); $('.blf_reply_1').show(); " %>
-
+      <%= link_to 'Sí', answers_path(answer: {question_id: 1, answer_text: 'Sí'}), remote: true, method: :post, class: 'button' %>
+      <%= link_to 'No', answers_path(answer: {question_id: 1, answer_text: 'No'}), remote: true, method: :post, class: 'button' %>
     </div>
-
   </div>
 
   <div class="blf_question_2 hidden">
-
     <p>¿Crees que la cantidad de gasto es apropiada?</p>
-
     <div class="options ">
-
-      <%= link_to 'Me parece <span>POCO</span>'.html_safe, 
-        'javascript:void(0)', class: 'button', onclick: "$('.blf_question_2').hide(); $('.blf_question_3').show(); " %>
-      <%= link_to 'Me parece <span>Apropiado</span>'.html_safe, 
-        'javascript:void(0)', class: 'button', onclick: "$('.blf_question_2').hide(); $('.blf_question_3').show(); " %>
-      <%= link_to 'Me parece <span>mucho</span>'.html_safe, 
-        'javascript:void(0)', class: 'button', onclick: "$('.blf_question_2').hide(); $('.blf_question_3').show(); " %>
-
-      <p>(<%= link_to 'next'.html_safe, 
+      <%= link_to 'Me parece <span>POCO</span>'.html_safe,
+        'javascript:void(0)', class: 'button', onclick: "$('.blf_question_2').hide(); $('.blf_reply_2').show(); " %>
+      <%= link_to 'Me parece <span>Apropiado</span>'.html_safe,
+        'javascript:void(0)', class: 'button', onclick: "$('.blf_question_2').hide(); $('.blf_reply_2').show(); " %>
+      <%= link_to 'Me parece <span>mucho</span>'.html_safe,
+        'javascript:void(0)', class: 'button', onclick: "$('.blf_question_2').hide(); $('.blf_reply_2').show(); " %>
+      <p>(<%= link_to 'next'.html_safe,
         'javascript:void(0)', onclick: "$('.blf_question_2').hide(); $('.blf_reply_2').show(); " %>)</p>
-
     </div>
-
   </div>
-
-  <div class="blf_question_3 hidden">
-
-    <p>¿Cómo te hacen sentir estas cantidades?</p>
-
-    <div class="options ">
-
-      <%= link_to 'Feliz', '', class: 'button' %>
-      <%= link_to 'Indignado', '', class: 'button' %>
-      <%= link_to 'Esperanzado', '', class: 'button' %>
-      <%= link_to 'Triste', '', class: 'button' %>
-      <%= link_to 'Orgulloso', '', class: 'button' %>
-      <%= link_to '+', '', class: 'button' %>
-
-      <p>(<%= link_to 'next'.html_safe, 
-        'javascript:void(0);', onclick: "$('.blf_question_3').hide(); $('.blf_reply_2').show(); " %>)</p>
-
-    </div>
-
-  </div>
-
 
   <div class="blf_reply_1 hidden">
-
     <p>¿Entiendes de qué va esta partida?</p>
-
     <div class="reply">
       <div class="inner">
-
         <p>Puedes solicitar a tu alcalde que amplie la información sobre esta y otras partidas</p>
 
-        <form>
-          <input type="text" value="" placeholder="Tu correo-e">
-          <%= link_to 'Solicitar', 'javascript:void(0);', class: 'button', onclick: "$('.blf_reply_1 form').hide(); $('.blf_reply_1 .share_post_submit').show(); " %>
-          <div class="exp">
-            <p>Para informarte cuando haya respuesta, y para que acccedas a otras herramientas de Gobierto. No spam, info privada <%= link_to 'Más información' %></p>
-          </div>
-        </form>
-
-        <div class="share_post_submit hidden">
-          <p><small>Comprueba tu correo para confirmar tu acción</small></p>
-          <p><small>
-            ¿Quieres que tus vecinos también soliciten más información a tu alcalde en
-            <%= link_to 'Twitter', "https://twitter.com/home?status=#{u @share_text}", class: 'small_button popup' %>
-            <%= link_to 'Facebook', "http://www.facebook.com/sharer/sharer.php?u=#{u @share_text}", class: 'small_button popup' %>
-            ?
-          </small></p>
-        </div>
-
+        <%= render partial: 'answers/login_share' %>
       </div>
     </div>
-
   </div>
 
   <div class="blf_reply_2 hidden">
-
     <p>¿Crees que la cantidad de gasto es apropiada?</p>
-
     <div class="reply">
       <div class="inner">
-
         <p>Gracias por tu opinión. Esta es lo que piensa el resto de la gente que ha opinado:</p>
-
         <p>
-          <div class="button empty">24% <span>Poco</span></div>
-          <div class="button empty">12% <span>Apropiado</span></div>
-          <div class="button empty">67% <span>Mucho</span></div>
+          <div class="button empty">100% <span>Poco</span></div>
+          <div class="button empty">0% <span>Apropiado</span></div>
+          <div class="button empty">0% <span>Mucho</span></div>
         </p>
 
-        <div class="sep"></div>
-
-        <form>
-          <p><small>Puedes seguir esta partida para recibir noticias ocasionales sobre su evolución y opiniones:</small></p>
-          <input type="text" value="" placeholder="Tu correo-e">
-          <%= link_to 'Seguir', 'javascript:void(0);', class: 'button', onclick: "$('.blf_reply_2 form').hide(); $('.blf_reply_2 .share_post_submit').show(); " %>
-          <div class="exp">
-            <p>No spam, tus opiniones serán siempre privadas <%= link_to 'Más información' %></p>
-          </div>
-        </form>
-
-        <div class="share_post_submit hidden">
-          <p><small>Comprueba tu correo para confirmar tu acción</small></p>
-          <p><small>
-            ¿Quieres compartir esta estadística en
-            <%= link_to 'Twitter', "https://twitter.com/home?status=#{u @share_text}", class: 'small_button popup' %>
-            <%= link_to 'Facebook', "http://www.facebook.com/sharer/sharer.php?u=#{u @share_text}", class: 'small_button popup' %>
-            ?
-          </small></p>
-        </div>
-
+        <%= render partial: 'answers/login_share' %>
       </div>
     </div>
-
   </div>
-
-  
-
-
-
 </div>
-
-
 
 <div class="items">
   <table>

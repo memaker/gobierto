@@ -1,0 +1,32 @@
+class AnswersController < ApplicationController
+  respond_to :js
+
+  def create
+    answer = Answer.new answer_params
+    answer.user_id = logged_in? ? current_user.id : nil
+    answer.temporary_user_id = logged_in? ? nil : session.id
+    if answer.save
+      render question_handler_template(answer)
+    else
+      render 'error'
+    end
+  end
+
+  private
+
+  def answer_params
+    params.require(:answer).permit(:question_id, :answer_text)
+  end
+
+  def question_handler_template(answer)
+    if answer.question_id == 1
+      if answer.answer_text == 'No'
+        'question_1_answer_no'
+      else
+        'question_1_answer_yes'
+      end
+    elsif answer.question_id == 2
+      'question_2'
+    end
+  end
+end

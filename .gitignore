@@ -19,4 +19,5 @@ config/secrets.yml
 .byebug_history
 
 public/cache
+public/assets
 **/.DS_Store

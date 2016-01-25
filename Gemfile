@@ -14,6 +14,7 @@ gem 'progressbar'
 gem 'ruby-px', require: 'pc-axis/dataset'
 gem 'kaminari'
 gem 'geocoder'
+gem 'responders'
 
 # Frontend
 gem 'jquery-rails'
@@ -42,6 +43,7 @@ group :test do
   gem 'launchy'
   gem 'email_spec'
   gem 'timecop'
+  gem 'poltergeist'
 end
 
 group :development do
