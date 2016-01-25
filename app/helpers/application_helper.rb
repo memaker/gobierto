@@ -134,7 +134,7 @@ module ApplicationHelper
       attrs << %Q{data-place-name="#{@place.name}"}
     end
     if action_name == 'compare' and controller_name == 'places'
-      attrs << %Q{data-comparison-name="#{@places.map{|p| p.name }.join('+')}"}
+      attrs << %Q{data-comparison-name="#{@places.map{|p| p.name }.join(' + ')}"}
       attrs << %Q{data-comparison-track-url="#{request.path}"}
       attrs << %Q{data-comparison-slug="#{params[:slug_list]}"}
     end
