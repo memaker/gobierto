@@ -120,7 +120,7 @@ module ApplicationHelper
     end
     attrs << %Q{data-year="#{@year || 2015}"}
     attrs << %Q{data-kind="#{@kind || 'expense'}"}
-    attrs << %Q{data-area=#{@area_name || 'economic'}"}
+    attrs << %Q{data-area="#{@area_name || 'economic'}"}
     attrs.join(' ').html_safe
   end
 
