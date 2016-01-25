@@ -171,12 +171,27 @@ header.global {
   float: left;
   padding: 0;
   margin: 0;
+
 }
 .main_content {
   float: right;
   width: calc(100% - 220px - 1.75em);
   margin: 0 1.75em 0 0;
   padding: 2em 0 0 0;
+  @include screen(740) {
+    margin: 0;
+  }
+}
+
+@include screen(740) {
+  header.global,
+  .main_content {
+    width: 100%;  
+  }
+  .top-claim,
+  header.global {
+    display: none;
+  }
 }
 
 /*
