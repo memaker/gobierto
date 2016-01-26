@@ -7,7 +7,9 @@
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
-
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  
   <link rel="apple-touch-icon" sizes="57x57" href="<%= asset_path('favicons/apple-touch-icon-57x57.png') %>">
   <link rel="apple-touch-icon" sizes="60x60" href="<%= asset_path('favicons/apple-touch-icon-60x60.png') %>">
   <link rel="apple-touch-icon" sizes="72x72" href="<%= asset_path('favicons/apple-touch-icon-72x72.png') %>">
@@ -47,46 +49,55 @@
       <%= link_to_unless_current image_tag('LogoGobiertoPresupuestos.png', width: '158'), root_path %>
     </div>
 
-    <input type="text" class="places_search search_auto" value="" placeholder="Busca municipio..." >
-
-    <menu>
-      <ul>
-        <li><%= link_to 'Municipios', root_path, class: 'selected' %></li>
-        <li><%= link_to 'Compara', compare_path %></li>
-        <% pending do %>
-          <li><%= link_to 'Rankings', '/sandbox/ranking' %></li>
-        <% end %>
-        <li><%= link_to 'Servicios', about_path(anchor: 'municipalities') %></li>
-      </ul>
-    </menu>
-
-    <% pending do %>
-      <div class="links_list">
-        <h3>Tus favoritos</h3>
-        <ul>
-          <li><%= link_to 'El Ejido' %></li>
-          <li><%= link_to 'Majadahonda' %></li>
-          <li><%= link_to 'Mijas' %></li>
-          <li><%= link_to 'Talaván' %></li>
-        </ul>
-      </div>
-    <% end %>
-
-    <div class="links_list">
-      <h3>Municipios recientes</h3>
-      <ul id="history">
-      </ul>
+    <div class="resp ham">
+      <%= link_to '<i class="fa fa-bars"></i>'.html_safe, '' %>
     </div>
 
-    <div class="links_list">
-      <h3>Comparaciones recientes</h3>
-      <ul id="comparisons-history">
-      </ul>
+    <div class="desktop">
+
+      <input type="text" class="places_search search_auto" value="" placeholder="Busca municipio..." >
+
+      <menu>
+        <ul>
+          <li><%= link_to 'Municipios', root_path, class: 'selected' %></li>
+          <li><%= link_to 'Compara', compare_path %></li>
+          <% pending do %>
+            <li><%= link_to 'Rankings', '/sandbox/ranking' %></li>
+          <% end %>
+          <li><%= link_to 'Servicios', about_path(anchor: 'municipalities') %></li>
+        </ul>
+      </menu>
+
+      <% pending do %>
+        <div class="links_list">
+          <h3>Tus favoritos</h3>
+          <ul>
+            <li><%= link_to 'El Ejido' %></li>
+            <li><%= link_to 'Majadahonda' %></li>
+            <li><%= link_to 'Mijas' %></li>
+            <li><%= link_to 'Talaván' %></li>
+          </ul>
+        </div>
+      <% end %>
+
+      <div class="links_list">
+        <h3>Municipios recientes</h3>
+        <ul id="history">
+        </ul>
+      </div>
+
+      <div class="links_list">
+        <h3>Comparaciones recientes</h3>
+        <ul id="comparisons-history">
+        </ul>
+      </div>
+
     </div>
 
   </header>
 
-  <div class="switcher year_switcher">
+  <% # Responsive related: pending to see if we change de year selector to the breadcrumb %>
+  <div class="switcher year_switcher desktop">
     <% if @place || @places %>
       <%= link_to "#{@year} <i class='fa fa-angle-down'></i>".html_safe, '', class: 'current' %>
       <ul>
