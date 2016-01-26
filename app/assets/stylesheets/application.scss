@@ -171,7 +171,25 @@ header.global {
   float: left;
   padding: 0;
   margin: 0;
-
+  
+  @include screen(740) {
+    .logo a {
+      background: image-url("LogoGobierto.png") top left no-repeat;
+      height: 30px;
+      width: 100%;
+      background-size: auto 100%;
+      display: block;
+      img {
+        margin-left: -3000px;
+      }
+    }
+    // img,
+    // menu,
+    // .links_list,
+    //  {
+    //   display: none;
+    // }    
+  }
 }
 .main_content {
   float: right;
@@ -189,7 +207,8 @@ header.global {
     width: 100%;  
   }
   .top-claim,
-  header.global {
+  // header.global 
+  {
     display: none;
   }
 }
@@ -280,6 +299,9 @@ header.global {
 // if top-claim present...
 body {
   padding: 2em 0 0 0;
+  @include screen(740) {
+    padding: 0;
+  }
 }
 .top-claim {
   position: absolute;
@@ -1030,6 +1052,11 @@ header.sub {
     min-height: 66px;
     @include transition;
 
+    @include screen(740) {
+      width: 100%;
+      float: none;
+      margin: 0 0 3% 0;
+    }
     
     .label {
       font-weight: 600;
@@ -1229,6 +1256,10 @@ a.list_view_more {
     td {
       padding-top: 8px;
       padding-bottom: 7px;
+      @include screen(740) {
+        font-size: .8em;
+        line-height: 1.2em;
+      }
     }
     // tr:nth-child(2) td {
     //   padding-top: 20px;

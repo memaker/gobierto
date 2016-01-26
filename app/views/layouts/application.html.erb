@@ -49,41 +49,49 @@
       <%= link_to_unless_current image_tag('LogoGobiertoPresupuestos.png', width: '158'), root_path %>
     </div>
 
-    <input type="text" class="places_search search_auto" value="" placeholder="Busca municipio..." >
+    <div class="desktop">
 
-    <menu>
-      <ul>
-        <li><%= link_to 'Municipios', root_path, class: 'selected' %></li>
-        <li><%= link_to 'Compara', compare_path %></li>
-        <% pending do %>
-          <li><%= link_to 'Rankings', '/sandbox/ranking' %></li>
-        <% end %>
-        <li><%= link_to 'Servicios', about_path(anchor: 'municipalities') %></li>
-      </ul>
-    </menu>
+      <input type="text" class="places_search search_auto" value="" placeholder="Busca municipio..." >
 
-    <% pending do %>
-      <div class="links_list">
-        <h3>Tus favoritos</h3>
+      <div class="resp ham">
+        <%= link_to '<i class="fa fa-menu-bars"></i>'.html_safe, '' %>
+      </div>
+
+      <menu>
         <ul>
-          <li><%= link_to 'El Ejido' %></li>
-          <li><%= link_to 'Majadahonda' %></li>
-          <li><%= link_to 'Mijas' %></li>
-          <li><%= link_to 'Talaván' %></li>
+          <li><%= link_to 'Municipios', root_path, class: 'selected' %></li>
+          <li><%= link_to 'Compara', compare_path %></li>
+          <% pending do %>
+            <li><%= link_to 'Rankings', '/sandbox/ranking' %></li>
+          <% end %>
+          <li><%= link_to 'Servicios', about_path(anchor: 'municipalities') %></li>
+        </ul>
+      </menu>
+
+      <% pending do %>
+        <div class="links_list">
+          <h3>Tus favoritos</h3>
+          <ul>
+            <li><%= link_to 'El Ejido' %></li>
+            <li><%= link_to 'Majadahonda' %></li>
+            <li><%= link_to 'Mijas' %></li>
+            <li><%= link_to 'Talaván' %></li>
+          </ul>
+        </div>
+      <% end %>
+
+      <div class="links_list">
+        <h3>Municipios recientes</h3>
+        <ul id="history">
         </ul>
       </div>
-    <% end %>
 
-    <div class="links_list">
-      <h3>Municipios recientes</h3>
-      <ul id="history">
-      </ul>
-    </div>
+      <div class="links_list">
+        <h3>Comparaciones recientes</h3>
+        <ul id="comparisons-history">
+        </ul>
+      </div>
 
-    <div class="links_list">
-      <h3>Comparaciones recientes</h3>
-      <ul id="comparisons-history">
-      </ul>
     </div>
 
   </header>

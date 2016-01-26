@@ -98,7 +98,9 @@ $(function(){
   });
 
   // adjust height of sidebar
-  $('header.global').css('height', $(document).height());
+  if($(window).width() > 740) {
+    $('header.global').css('height', $(document).height());
+  };
 
   $('.switcher').hover(function(e) {
     e.preventDefault();
