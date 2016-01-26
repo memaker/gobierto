@@ -30,6 +30,10 @@ class User < ActiveRecord::Base
     self.verification_token = nil
   end
 
+  def update_pending_answers(session_id)
+    Answer.where({temporary_user_id: session_id}).update_all({user_id: self.id, temporary_user_id: nil})
+  end
+
   private
 
   def set_verification_token

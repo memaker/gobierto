@@ -26,7 +26,7 @@ RSpec.configure do |config|
   end
 
   Capybara.javascript_driver = :poltergeist
-  Capybara.default_max_wait_time = 5
+  Capybara.default_max_wait_time = 10
 
   config.before(:suite) do
     %x[bundle exec rake assets:precompile]

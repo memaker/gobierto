@@ -14,6 +14,7 @@ class UsersController < ApplicationController
       @user.save!
     else
       log_in(@user)
+      @user.update_pending_answers(session.id)
     end
 
     respond_to do |format|
@@ -32,6 +33,8 @@ class UsersController < ApplicationController
 
   def verify
     @user = User.find_by! verification_token: params[:id]
+    log_in(@user)
+
     render 'edit'
   end
 
@@ -40,7 +43,10 @@ class UsersController < ApplicationController
 
   def update
     if @user.update_attributes(update_user_params)
-      @user.clear_verification_token
+      if @user.pending_confirmation?
+        @user.clear_verification_token
+        @user.update_pending_answers(session.id)
+      end
       @user.save!
       redirect_to edit_user_path, notice: 'Datos actualizados correctamente'
     else

@@ -1,15 +1,21 @@
 <div class="sep"></div>
-<%= form_for User.new, data: {remote: true} do |f| %>
-  <p><small>Puedes seguir esta partida para recibir noticias ocasionales sobre su evolución y opiniones:</small></p>
-  <%= f.email_field :email, placeholder: 'Tu correo-e' %>
-  <input type="submit" class="button" value="Seguir">
-  <div class="exp">
-    <p>No spam, tus opiniones serán siempre privadas <%= link_to 'Más información' %></p>
-  </div>
+
+<% if !logged_in? %>
+  <%= form_for User.new, data: {remote: true} do |f| %>
+    <p><small>Puedes seguir esta partida para recibir noticias ocasionales sobre su evolución y opiniones:</small></p>
+    <%= f.email_field :email, placeholder: 'Tu correo-e' %>
+    <input type="submit" class="button" value="Seguir">
+    <div class="exp">
+      <p>No spam, tus opiniones serán siempre privadas <%= link_to 'Más información' %></p>
+    </div>
+  <% end %>
 <% end %>
 
-<div class="share_post_submit hidden">
-  <p><small>Comprueba tu correo para confirmar tu acción</small></p>
+<div class="share_post_submit <%= "hidden" if !logged_in? %>">
+  <% if !logged_in? %>
+    <p><small>Comprueba tu correo para confirmar tu acción</small></p>
+  <% end %>
+
   <p><small>
     ¿Quieres compartir esta estadística en
     <%= link_to 'Twitter', "https://twitter.com/home?status=#{u @share_text}", class: 'small_button popup' %>

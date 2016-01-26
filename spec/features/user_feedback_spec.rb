@@ -30,7 +30,7 @@ RSpec.feature 'User feedback' do
     click_link 'Me parece POCO'
 
     expect(page).to have_content('Gracias por tu opinión')
-    expect(page).to have_content('100% POCO')
+    expect(page).to have_content('100.0% POCO')
     expect(page).to have_content('0% APROPIADO')
     expect(page).to have_content('0% MUCHO')
 
@@ -43,11 +43,31 @@ RSpec.feature 'User feedback' do
     email = current_email
     expect(email).to have_body_text(/Por favor confirma tu email pinchando en el siguiente enlace/)
     click_email_link_matching /verify/
+
+    fill_in 'user_password', with: 'bar123456'
+    fill_in 'user_password_confirmation', with: 'bar123456'
+    click_button 'Enviar'
+
+    expect(page).to have_content("Datos actualizados correctamente")
   end
 
-  scenario 'Logged user gives feedback on a budget line' do
+  scenario 'Logged user gives feedback on a budget line', js: true do
+    login_as 'foo@example.com', 'foo123456'
+
+    visit '/budget_lines/santander/2015/1/G/economic'
+    click_link 'Levanta la mano'
+    click_link 'Sí'
+    click_link 'Me parece POCO'
+
+    expect(page).to have_content('Gracias por tu opinión')
+    expect(page).to have_content('100.0% POCO')
+    expect(page).to have_content('0% APROPIADO')
+    expect(page).to have_content('0% MUCHO')
+
+    expect(page).to_not have_css('#new_user')
+    expect(Answer.last.user_id).to eq(@user.id)
   end
 
-  scenario 'Logged user visits budget line with her feedback' do
+  scenario 'Logged user visits budget line with her feedback', js: true do
   end
 end

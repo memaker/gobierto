@@ -57,7 +57,7 @@ set_meta_tags title: "Presupuesto de #{@place.name} » #{kind_literal(@kind).cap
 </div>
 
 <div class="widget_graph budget_line_feedback hidden">
-  <div class="blf_question_1 ">
+  <div class="blf_question_1">
     <p>¿Entiendes de qué va esta partida?</p>
     <div class="options yes_no">
       <%= link_to 'Sí', answers_path(answer: {question_id: 1, answer_text: 'Sí'}), remote: true, method: :post, class: 'button' %>
@@ -68,43 +68,13 @@ set_meta_tags title: "Presupuesto de #{@place.name} » #{kind_literal(@kind).cap
   <div class="blf_question_2 hidden">
     <p>¿Crees que la cantidad de gasto es apropiada?</p>
     <div class="options ">
-      <%= link_to 'Me parece <span>POCO</span>'.html_safe,
-        'javascript:void(0)', class: 'button', onclick: "$('.blf_question_2').hide(); $('.blf_reply_2').show(); " %>
-      <%= link_to 'Me parece <span>Apropiado</span>'.html_safe,
-        'javascript:void(0)', class: 'button', onclick: "$('.blf_question_2').hide(); $('.blf_reply_2').show(); " %>
-      <%= link_to 'Me parece <span>mucho</span>'.html_safe,
-        'javascript:void(0)', class: 'button', onclick: "$('.blf_question_2').hide(); $('.blf_reply_2').show(); " %>
-      <p>(<%= link_to 'next'.html_safe,
-        'javascript:void(0)', onclick: "$('.blf_question_2').hide(); $('.blf_reply_2').show(); " %>)</p>
+      <% Answer::QUESTION_2_ANSWERS.each do |answer_text| %>
+        <%= link_to "Me parece <span>#{answer_text.upcase}</span>".html_safe, answers_path(answer: {question_id: 2, answer_text: answer_text}), remote: true, method: :post, class: 'button' %>
+      <% end %>
     </div>
   </div>
 
-  <div class="blf_reply_1 hidden">
-    <p>¿Entiendes de qué va esta partida?</p>
-    <div class="reply">
-      <div class="inner">
-        <p>Puedes solicitar a tu alcalde que amplie la información sobre esta y otras partidas</p>
-
-        <%= render partial: 'answers/login_share' %>
-      </div>
-    </div>
-  </div>
-
-  <div class="blf_reply_2 hidden">
-    <p>¿Crees que la cantidad de gasto es apropiada?</p>
-    <div class="reply">
-      <div class="inner">
-        <p>Gracias por tu opinión. Esta es lo que piensa el resto de la gente que ha opinado:</p>
-        <p>
-          <div class="button empty">100% <span>Poco</span></div>
-          <div class="button empty">0% <span>Apropiado</span></div>
-          <div class="button empty">0% <span>Mucho</span></div>
-        </p>
-
-        <%= render partial: 'answers/login_share' %>
-      </div>
-    </div>
-  </div>
+  <div id="reply"></div>
 </div>
 
 <div class="items">
