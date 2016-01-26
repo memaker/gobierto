@@ -160,7 +160,11 @@ module ApplicationHelper
 
   def parent_code(code)
     if code.present?
-      code[0..-2]
+      if code.include?('-')
+        code.split('-').first
+      else
+        code[0..-2]
+      end
     end
   end
 
@@ -174,4 +178,5 @@ module ApplicationHelper
     to_share += "#{signature}#{url}"
     to_share
   end
+
 end
