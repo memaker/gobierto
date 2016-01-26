@@ -49,15 +49,17 @@ set_meta_tags title: "Presupuesto de #{@place.name} » #{kind_literal(@kind).cap
   </div>
 </div>
 
-<div class="metric_graphs clearfix">
+<div class="metric_graphs clearfix <%= 'hidden' if action_name == 'feedback' %>">
   <div class="widget_graph show clearfix">
     <div id="lines_chart"></div>
     <div id="lines_tooltip"></div>
   </div>
 </div>
 
-<div class="widget_graph budget_line_feedback hidden">
-  <% if logged_in? and answer = current_user.has_replied?(question_id: 1, place_id: @place.id, year: @year, area_name: @area_name, kind: @kind, code: @code) %>
+<div class="widget_graph budget_line_feedback <%= 'hidden' if action_name != 'feedback' %>">
+  <% if @question_id %>
+    <div id="reply"><%= render partial: "answers/reply#{@question_id}" %></div>
+  <% elsif logged_in? and answer = current_user.has_replied?(question_id: 1, place_id: @place.id, year: @year, area_name: @area_name, kind: @kind, code: @code) %>
     <% if answer.answer_text == 'No' %>
       <div id="reply"><%= render partial: 'answers/reply1' %></div>
     <% else %>
