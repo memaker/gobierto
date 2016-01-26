@@ -8,7 +8,7 @@ var VisLineasJ = Class.extend({
     // Chart dimensions
     this.containerWidth = null;
     this.tableWidth = null;
-    this.margin = {top: 30, right: 70, bottom: 20, left: 20};
+    this.margin = {top: 30, right: 60, bottom: 20, left: 20};
     this.width = null;
     this.height = null;
     
@@ -80,9 +80,15 @@ var VisLineasJ = Class.extend({
 
     // Chart dimensions
     this.containerWidth = parseInt(d3.select(this.container).style('width'), 10);
-    this.tableWidth = parseInt(d3.select(this.tableContainer).style('width'), 10)
+    this.tableWidth = parseInt(d3.select(this.tableContainer).style('width'), 10);
+    this.margin.right = this.measure == 'per_person' ? this.containerWidth * .07 : this.containerWidth * .15;
+
     this.width = this.containerWidth - this.margin.left - this.margin.right;
     this.height = (this.containerWidth / 2.6) - this.margin.top - this.margin.bottom;
+
+    if (this.height < 230) {
+      this.height = 230;
+    }
 
     // Append svg
     this.svgLines = d3.select(this.container).append('svg')
