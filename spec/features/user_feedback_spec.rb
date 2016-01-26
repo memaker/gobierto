@@ -46,6 +46,7 @@ RSpec.feature 'User feedback' do
 
     fill_in 'user_password', with: 'bar123456'
     fill_in 'user_password_confirmation', with: 'bar123456'
+    select 'Madrid', from: 'user_place_id'
     click_button 'Enviar'
 
     expect(page).to have_content("Datos actualizados correctamente")

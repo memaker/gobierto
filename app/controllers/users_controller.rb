@@ -62,7 +62,7 @@ class UsersController < ApplicationController
   end
 
   def update_user_params
-    params.require(:user).permit(:first_name, :last_name, :email, :password, :password_confirmation, :current_password)
+    params.require(:user).permit(:first_name, :last_name, :email, :password, :password_confirmation, :current_password, :place_id)
   end
 
   def load_current_user

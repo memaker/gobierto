@@ -12,6 +12,7 @@
 //= require vendor/mustache.min
 //= require vendor/d3.v3.min
 //= require vendor/d3-legend.min
+//= require vendor/select2.min
 //= require vendor/klass
 //= require vendor/jquery.inview
 //= require vis_treemap

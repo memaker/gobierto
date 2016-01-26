@@ -33,23 +33,16 @@
     </div>
   </div>
 
-  <% if f.object.new_record? %>
   <div class="form_item">
     <div class="form_item_cont">
       <%= f.label :place_id, "Municipio" %>
-      <%= f.select :place_id, places_for_select, class: 'i_text' %>
+      <% if f.object.place_id.blank? %>
+        <%= f.select :place_id, places_for_select, {}, {class: 'select2'} %>
+      <% else %>
+        <input type="text" value="<%= INE::Places::Place.find(f.object.place_id).name %>" disabled="true"/>
+      <% end %>
     </div>
   </div>
-  <% end %>
-
-  <% if f.object.password.present? %>
-  <div class="form_item">
-    <div class="form_item_cont">
-      <%= f.label :current_password, "Contraseña actual" %>
-      <%= f.password_field :current_password, class: 'i_text' %>
-    </div>
-  </div>
-  <% end %>
 
   <div class="form_item">
     <div class="form_item_cont">

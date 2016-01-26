@@ -11,7 +11,7 @@ function rebindAll() {
 function responsive() {
   if($(window).width() > 740) {
     return true;
-  }  
+  }
 }
 
 $(function(){
@@ -26,6 +26,8 @@ $(function(){
   if($(window).width() > 740) {
     rebindAll();
   }
+
+  $('.select2').select2();
 
   var searchOptions = {
     serviceUrl: '/search',
@@ -110,7 +112,6 @@ $(function(){
   // adjust height of sidebar
   // if($(window).width() > 740) {
   if(responsive()) {
-    console.log('yeah');
     $('header.global').css('height', $(document).height());
   };
 
