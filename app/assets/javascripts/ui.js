@@ -32,6 +32,10 @@ $(function(){
   };
 
   $('.search_auto').autocomplete($.extend({}, AUTOCOMPLETE_DEFAULTS, searchOptions));
+  $('.global .ham .fa-bars').click(function(e){
+    e.preventDefault();
+    $('.global .desktop').toggle();
+  });
 
   var $searchBudget = $('#search_categories_budget');
   var searchCategoriesOptions = {

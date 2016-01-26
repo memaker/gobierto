@@ -173,14 +173,26 @@ header.global {
   margin: 0;
   
   @include screen(740) {
-    .logo a {
-      background: image-url("LogoGobierto.png") top left no-repeat;
-      height: 30px;
-      width: 100%;
-      background-size: auto 100%;
-      display: block;
-      img {
-        margin-left: -3000px;
+    .logo {
+      margin: 1em; 
+      a {
+        background: image-url("LogoGobierto.png") top left no-repeat;
+        height: 30px;
+        width: 100%;
+        background-size: auto 100%;
+        display: block;
+        img {
+          margin-left: -3000px;
+        }
+      }
+      
+    }
+    .ham {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      a {
+        font-size: 1.35em;
       }
     }
     // img,
@@ -1437,6 +1449,10 @@ textarea {
   margin: 1.5em 0;
   background: $color_3_soft;
 
+  @include screen(740) {
+    padding: 1.5em 1em;
+  }
+
   h2 {
     margin: 0 0 .5em 0;
     font-size: 1.2em;
@@ -1459,12 +1475,19 @@ textarea {
     }
   }
   .col-1-2 {
-    width: 58%;
-
+    width: 66%;
   }
   .col-2-2 {
-    width: 36%;
+    width: 33%;
   }
+
+  @include screen(740) {
+    .col-1-2, .col-2-2 {
+      width: 100%;
+      float: none;
+    }
+  }
+
 }
 
 .graph_placeholder {
@@ -1849,6 +1872,11 @@ footer {
 .pre_home {
   padding: 4em;
   text-align: center;
+
+  @include screen(740) {
+    padding: 1em;
+  }
+
   h1 {
     font-size: 1.4em;
     font-weight: 200;
