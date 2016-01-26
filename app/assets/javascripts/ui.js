@@ -8,6 +8,12 @@ function rebindAll() {
   $('.tipsit-treemap').tipsy({fade: true, gravity: $.fn.tipsy.autoNS, html: true});
 }
 
+function responsive() {
+  if($(window).width() > 740) {
+    return true;
+  }  
+}
+
 $(function(){
   $('.spinner').hide();
   Turbolinks.enableProgressBar();
@@ -102,7 +108,9 @@ $(function(){
   });
 
   // adjust height of sidebar
-  if($(window).width() > 740) {
+  // if($(window).width() > 740) {
+  if(responsive()) {
+    console.log('yeah');
     $('header.global').css('height', $(document).height());
   };
 
@@ -115,12 +123,12 @@ $(function(){
     // $(this).find('.current').show();
   });
 
-  // $('.modal_widget').hover(function(e) {
-  //   e.preventDefault();
-  //   $(this).find('.inner').velocity("fadeIn", { duration: 50 });
-  // }, function(e) {
-  //   $(this).find('.inner').velocity("fadeOut", { duration: 50 });
-  // });
+  $('.modal_widget').hover(function(e) {
+    e.preventDefault();
+    $(this).find('.inner').velocity("fadeIn", { duration: 50 });
+  }, function(e) {
+    $(this).find('.inner').velocity("fadeOut", { duration: 50 });
+  });
 
   $('.modal_widget').click(function(e) {
     e.preventDefault();
