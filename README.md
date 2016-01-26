@@ -22,7 +22,7 @@
 
 - indexes: `budgets-forecast`, `budgets-execution`
 - types: `economic`, `functional`
-- document id: `<ine_code>/<year>/<code>/<kind>`. Example: `28079/2015/210/0`
+- document id: `<ine_code>/<year>/<code>/<kind>`. Example: `28079/2015/210/G`
 - schema:
 
 ```
