@@ -12,9 +12,6 @@ class UsersController < ApplicationController
     if @user.new_record?
       created = true
       @user.save!
-    else
-      log_in(@user)
-      @user.update_pending_answers(session.id)
     end
 
     respond_to do |format|
@@ -26,7 +23,7 @@ class UsersController < ApplicationController
         end
       end
       format.js do
-        created ? render('created') : render('logged_in')
+        created ? render('created') : render('login')
       end
     end
   end

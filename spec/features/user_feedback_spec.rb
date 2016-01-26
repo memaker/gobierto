@@ -102,4 +102,20 @@ RSpec.feature 'User feedback' do
     expect(page).to_not have_css('#new_user')
     expect(Answer.last.user_id).to eq(@user.id)
   end
+
+  scenario 'Anonymous user logs in when giving feedback', js: true do
+    visit '/budget_lines/santander/2015/1/G/economic'
+    click_link 'Levanta la mano'
+    click_link 'No'
+
+    expect(page).to have_content('Puedes solicitar a tu alcalde que amplie la información sobre esta y otras partidas')
+    expect(page).to have_content('El 100.0% de personas han respondido que No')
+
+    expect(page).to have_css('#new_user')
+    fill_in 'user_email', with: 'foo@example.com'
+    click_button 'Seguir'
+    fill_in 'session_password', with: 'foo123456'
+    click_button 'Enviar'
+  end
+
 end
