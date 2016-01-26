@@ -447,6 +447,9 @@ header.sticky_top {
   .breadcrumb {
     display: inline-block;
     font-size: 13px;
+    @include screen(740) {
+      display: none;
+    }
   }
   img {
     vertical-align: middle;
@@ -1347,6 +1350,12 @@ a.list_view_more {
     }
     td.item_name {
       width: 50%;
+      @include screen(740) {
+        .fa {
+          display: none;
+        }
+      }
+
     }
     td.total {
       width: 150px;
@@ -1865,19 +1874,21 @@ a.list_view_more {
 textarea {
   border: 1px solid #DFDFDF;
 }
-input {
-  font-family: $font_text;
-  box-sizing: border-box;
-  @include border-radius(5px);
-  padding: .65em;
-  display: inline-block;
-  text-decoration: none;
-  font-size: 1em;
-  line-height: 1.2em;
-  border: 1px solid $text_soft;
-  margin: 0 .5em 0 0;
-  strong {
-    font-weight: 400;
+form {
+  input {
+    font-family: $font_text;
+    box-sizing: border-box;
+    @include border-radius(5px);
+    padding: .65em;
+    display: inline-block;
+    text-decoration: none;
+    font-size: 1em;
+    line-height: 1.2em;
+    border: 1px solid $text_soft;
+    margin: 0 .5em 0 0;
+    strong {
+      font-weight: 400;
+    }
   }
 }
 .exp {
