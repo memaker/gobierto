@@ -185,4 +185,11 @@ module ApplicationHelper
     to_share
   end
 
+  def answers_path_with_params(question_id, answer_text)
+    answers_path(answer: {
+      question_id: question_id, answer_text: answer_text,
+      place_id: @place.id, year: @year, kind: @kind, area_name: @area_name, code: @code
+    })
+  end
+
 end

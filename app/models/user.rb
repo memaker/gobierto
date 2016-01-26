@@ -34,6 +34,10 @@ class User < ActiveRecord::Base
     Answer.where({temporary_user_id: session_id}).update_all({user_id: self.id, temporary_user_id: nil})
   end
 
+  def has_replied?(options)
+    Answer.exists?(options.merge(user_id: self.id))
+  end
+
   private
 
   def set_verification_token

@@ -2,6 +2,7 @@ class AnswersController < ApplicationController
   respond_to :js
 
   def create
+    @budget_line = BudgetLine.new answer_params.slice(:year, :code, :place_id, :area_name, :kind)
     answer = Answer.new answer_params
     answer.user_id = logged_in? ? current_user.id : nil
     answer.temporary_user_id = logged_in? ? nil : session.id
@@ -15,7 +16,7 @@ class AnswersController < ApplicationController
   private
 
   def answer_params
-    params.require(:answer).permit(:question_id, :answer_text)
+    params.require(:answer).permit(:question_id, :answer_text, :place_id, :kind, :area_name, :year, :code)
   end
 
   def question_handler_template(answer)

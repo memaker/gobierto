@@ -1,4 +1,4 @@
-class BudgetLine
+class BudgetLine < OpenStruct
   INDEX = 'budgets-forecast'
 
   INCOME = 'I'
@@ -117,5 +117,9 @@ class BudgetLine
     options.merge! budget_line.slice('ine_code','kind','year').symbolize_keys
 
     return search(options)['hits'].length > 0
+  end
+
+  def to_param
+    {place_id: place_id, year: year, code: code, area_name: area_name, kind: kind}
   end
 end

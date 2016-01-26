@@ -4,7 +4,7 @@
   <div class="inner">
     <p>Gracias por tu opinión. Esta es lo que piensa el resto de la gente que ha opinado:</p>
     <p>
-      <% groups = Answer.percentages_for_question(2) %>
+      <% groups = Answer.percentages_for_question(2, @budget_line.to_param) %>
       <% Answer::QUESTION_2_ANSWERS.each do |answer_text| %>
         <div class="button empty"><%= groups[answer_text] || 0 %>% <span><%= answer_text %></span></div>
       <% end %>

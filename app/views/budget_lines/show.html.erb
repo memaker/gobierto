@@ -57,24 +57,28 @@ set_meta_tags title: "Presupuesto de #{@place.name} » #{kind_literal(@kind).cap
 </div>
 
 <div class="widget_graph budget_line_feedback hidden">
-  <div class="blf_question_1">
-    <p>¿Entiendes de qué va esta partida?</p>
-    <div class="options yes_no">
-      <%= link_to 'Sí', answers_path(answer: {question_id: 1, answer_text: 'Sí'}), remote: true, method: :post, class: 'button' %>
-      <%= link_to 'No', answers_path(answer: {question_id: 1, answer_text: 'No'}), remote: true, method: :post, class: 'button' %>
+  <% if logged_in? && current_user.has_replied?(question_id: 1, place_id: @place.id, year: @year, area_name: @area_name, kind: @kind, code: @code) %>
+    <div id="reply"><%= render partial: 'answers/reply2' %></div>
+  <% else %>
+    <div class="blf_question_1">
+      <p>¿Entiendes de qué va esta partida?</p>
+      <div class="options yes_no">
+        <%= link_to 'Sí', answers_path_with_params(1, 'Sí'), remote: true, method: :post, class: 'button' %>
+        <%= link_to 'No', answers_path_with_params(1, 'No'), remote: true, method: :post, class: 'button' %>
+      </div>
     </div>
-  </div>
 
-  <div class="blf_question_2 hidden">
-    <p>¿Crees que la cantidad de gasto es apropiada?</p>
-    <div class="options ">
-      <% Answer::QUESTION_2_ANSWERS.each do |answer_text| %>
-        <%= link_to "Me parece <span>#{answer_text.upcase}</span>".html_safe, answers_path(answer: {question_id: 2, answer_text: answer_text}), remote: true, method: :post, class: 'button' %>
-      <% end %>
+    <div class="blf_question_2 hidden">
+      <p>¿Crees que la cantidad de gasto es apropiada?</p>
+      <div class="options ">
+        <% Answer::QUESTION_2_ANSWERS.each do |answer_text| %>
+          <%= link_to "Me parece <span>#{answer_text.upcase}</span>".html_safe, answers_path_with_params(2, answer_text), remote: true, method: :post, class: 'button' %>
+        <% end %>
+      </div>
     </div>
-  </div>
 
-  <div id="reply"></div>
+    <div id="reply"></div>
+  <% end %>
 </div>
 
 <div class="items">

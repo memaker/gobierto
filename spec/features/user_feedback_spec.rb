@@ -69,5 +69,22 @@ RSpec.feature 'User feedback' do
   end
 
   scenario 'Logged user visits budget line with her feedback', js: true do
+    place = INE::Places::Place.find_by_slug 'santander'
+
+    Answer.create answer_text: 'Sí', question_id: 1, user_id: @user.id, place_id: place.id, year: 2015, code: 1, area_name: 'economic', kind: 'G'
+    Answer.create answer_text: 'Apropiado', question_id: 2, user_id: @user.id, place_id: place.id, year: 2015, code: 1, area_name: 'economic', kind: 'G'
+    Answer.create answer_text: 'Apropiado', question_id: 2, user_id: @user.id, place_id: place.id, year: 2014, code: 1, area_name: 'economic', kind: 'G'
+
+    login_as 'foo@example.com', 'foo123456'
+
+    visit "/budget_lines/#{place.slug}/2015/1/G/economic"
+    click_link 'Levanta la mano'
+
+    expect(page).to have_content('Gracias por tu opinión')
+    expect(page).to have_content('0% POCO')
+    expect(page).to have_content('100.0% APROPIADO')
+    expect(page).to have_content('0% MUCHO')
+
+    expect(page).to_not have_css('#new_user')
   end
 end
