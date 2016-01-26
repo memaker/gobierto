@@ -45,7 +45,7 @@ set_meta_tags title: "Presupuesto de #{@place.name} » #{kind_literal(@kind).cap
   </div>
 
   <div class="metric cta">
-    <%= link_to 'Levanta la mano <i class="fa fa-hand-paper-o"></i>'.html_safe, 'javascript:void(0);', onclick: "$('.metric_graphs').hide(); $('.budget_line_feedback').show();" %>
+    <%= link_to 'Levanta la mano <i class="fa fa-hand-paper-o"></i>'.html_safe, 'javascript:void(0);', onclick: "$('.metric_graphs').hide(); $('.budget_line_feedback').velocity('fadeIn', { duration: 100 });" %>
   </div>
 </div>
 
