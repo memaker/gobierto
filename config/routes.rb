@@ -12,6 +12,7 @@ Rails.application.routes.draw do
   get 'request_access' => 'pages#request_access'
   get 'contact_pro' => 'pages#contact_pro'
   get 'contact_citizen' => 'pages#contact_citizen'
+  get 'faq' => 'pages#faq'
 
   get 'login' => 'sessions#new', as: :login
   post 'sessions'  => 'sessions#create'
