@@ -10,6 +10,7 @@ function rebindAll() {
 
 $(function(){
   $('.spinner').hide();
+  Turbolinks.enableProgressBar();
 
   $('.popup').click(function(e){
     e.preventDefault();

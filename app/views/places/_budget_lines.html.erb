@@ -6,8 +6,8 @@
     <% else %>
       <i class="fa fa-plus-square-o invisible"></i>
     <% end %>
-    <%= link_to budget_line_denomination(@area_name, budget_line['code'],@kind),
-          budget_line_path(@place.slug, budget_line['year'], budget_line['code'], budget_line['kind'], @area_name)  %>
+    <%= link_to budget_line_denomination(@area_name, budget_line['code'], @kind),
+          budget_line_path(@place.slug, budget_line['year'], budget_line['code'].parameterize, budget_line['kind'], @area_name)  %>
   </td>
   <td class="right total"><%= number_to_currency budget_line['amount'], precision: 0 %></td>
   <td class="right per_hab"><%= number_to_currency budget_line['amount_per_inhabitant'], precision: 0 %></td>

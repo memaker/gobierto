@@ -60,7 +60,7 @@ class PlacesController < ApplicationController
     @page = params[:page] ? params[:page].to_i : 1
     render_404 and return if @page <= 0
 
-    @compared_level = params[:code] ? params[:code].length : 0
+    @compared_level = params[:code] ? (params[:code].include?('-') ? params[:code].split('-').first.length : params[:code].length) : 0
 
     @ranking_items = Ranking.query({year: @year, variable: @variable, page: @page, code: @code, kind: @kind, area_name: @area_name})
   end
@@ -74,7 +74,7 @@ class PlacesController < ApplicationController
     @kind ||= BudgetLine::EXPENSE if action_name == 'ranking'
     @area_name = params[:area] || 'economic'
     @year = params[:year]
-    @code = params[:code] if params[:code].present?
+    @code = code_from_params(params[:code]) if params[:code].present?
     if params[:variable].present?
       @variable = params[:variable]
       render_404 and return unless valid_variables.include?(@variable)

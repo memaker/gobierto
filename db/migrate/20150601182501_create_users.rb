@@ -7,7 +7,6 @@ class CreateUsers < ActiveRecord::Migration
       t.string :password_digest
       t.string :remember_digest
       t.string :password_reset_token
-      t.string :verification_token
       t.integer :place_id
 
       t.timestamps null: false

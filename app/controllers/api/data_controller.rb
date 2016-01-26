@@ -65,14 +65,14 @@ class Api::DataController < ApplicationController
 
   def lines
     @place = INE::Places::Place.find(params[:ine_code])
-    data_line = Data::Lines.new place: @place, year: params[:year], what: params[:what], kind: params[:kind], code: params[:code], area: params[:area]
+    data_line = Data::Lines.new place: @place, year: params[:year], what: params[:what], kind: params[:kind], code: code_from_params(params[:code]), area: params[:area]
 
     respond_lines_to_json data_line
   end
 
   def compare
     @places = get_places params[:ine_codes]
-    data_line = Data::Lines.new place: @places, year: params[:year], what: params[:what], kind: params[:kind], code: params[:code], area: params[:area]
+    data_line = Data::Lines.new place: @places, year: params[:year], what: params[:what], kind: params[:kind], code: code_from_params(params[:code]), area: params[:area]
 
     respond_lines_to_json data_line
   end
@@ -81,7 +81,7 @@ class Api::DataController < ApplicationController
     @year = params[:year].to_i
     @area = params[:area]
     @kind = params[:kind]
-    @code = params[:code]
+    @code = code_from_params(params[:code])
 
     @category_name = @kind == 'G' ? 'Gasto' : 'Ingreso'
 
@@ -97,7 +97,7 @@ class Api::DataController < ApplicationController
           delta_percentage: helpers.number_with_precision(delta_percentage(budget_data[:value], budget_data_previous_year[:value]), precision: 2),
           ranking_position: position,
           ranking_total_elements: helpers.number_with_precision(budget_data[:total_elements], precision: 0),
-          ranking_url: places_ranking_path(@year,@kind,@area,'amount',@code,page: Ranking.page_from_position(position), ine_code: params[:ine_code])
+          ranking_url: places_ranking_path(@year,@kind,@area,'amount',@code.parameterize,page: Ranking.page_from_position(position), ine_code: params[:ine_code])
         }.to_json
       end
     end
@@ -107,7 +107,7 @@ class Api::DataController < ApplicationController
     @year = params[:year].to_i
     @area = params[:area]
     @kind = params[:kind]
-    @code = params[:code]
+    @code = code_from_params(params[:code])
 
     @category_name = @kind == 'G' ? 'Gasto' : 'Ingreso'
 
@@ -123,7 +123,7 @@ class Api::DataController < ApplicationController
           delta_percentage: helpers.number_with_precision(delta_percentage(budget_data[:value], budget_data_previous_year[:value]), precision: 2),
           ranking_position: position,
           ranking_total_elements: helpers.number_with_precision(budget_data[:total_elements], precision: 0),
-          ranking_url: places_ranking_path(@year,@kind,@area,'amount_per_inhabitant',@code,page: Ranking.page_from_position(position), ine_code: params[:ine_code])
+          ranking_url: places_ranking_path(@year,@kind,@area,'amount_per_inhabitant',@code.parameterize,page: Ranking.page_from_position(position), ine_code: params[:ine_code])
         }.to_json
       end
     end
@@ -133,7 +133,7 @@ class Api::DataController < ApplicationController
     @year = params[:year].to_i
     @area = params[:area]
     @kind = params[:kind]
-    @code = params[:code]
+    @code = code_from_params(params[:code])
 
     begin
       result = SearchEngine.client.get index: BudgetLine::INDEX, type: @area, id: [params[:ine_code],@year,@code,@kind].join('/')
@@ -161,7 +161,7 @@ class Api::DataController < ApplicationController
     @year = params[:year].to_i
     @area = params[:area]
     @kind = params[:kind]
-    @code = params[:code]
+    @code = code_from_params(params[:code])
     @place = INE::Places::Place.find(params[:ine_code])
 
     begin

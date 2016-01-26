@@ -28,6 +28,10 @@ module UserSession
     save!
   end
 
+  def generate_verification_token
+    self.verification_token = generate_token
+  end
+
   private
 
   def generate_token

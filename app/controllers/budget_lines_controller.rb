@@ -2,7 +2,7 @@ class BudgetLinesController < ApplicationController
   def show
     @place = INE::Places::Place.find_by_slug params[:slug]
     @year = params[:year]
-    @code = params[:code]
+    @code = code_from_params(params[:code])
     @kind = ( %w{income i}.include?(params[:kind].downcase) ? BudgetLine::INCOME : BudgetLine::EXPENSE )
     @area_name = params[:area] || 'economic'
 

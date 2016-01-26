@@ -53,9 +53,8 @@
           <p><strong>Comparte esta URL</strong></p>
 
           <p>
-            <%= link_to 'Twitter', "https://twitter.com/home?status=#{u @share_text}", class: 'small_button popup' %>
-            <%= link_to 'Facebook', "http://www.facebook.com/sharer/sharer.php?u=#{u @share_text}", class: 'small_button popup' %>
-            <input type="text" class="small_input">
+            <%= link_to 'Twitter', "https://twitter.com/home?status=#{u twitter_share(@title || @share_text, request.original_url)}", class: 'small_button popup' %>
+            <%= link_to 'Facebook', "http://www.facebook.com/sharer/sharer.php?u=#{u request.original_url}", class: 'small_button popup' %>
           </p>
           <% pending do %>
             <div class="sep"></div>

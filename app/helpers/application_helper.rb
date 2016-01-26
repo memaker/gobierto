@@ -134,7 +134,7 @@ module ApplicationHelper
       attrs << %Q{data-place-name="#{@place.name}"}
     end
     if action_name == 'compare' and controller_name == 'places'
-      attrs << %Q{data-comparison-name="#{@places.map{|p| p.name }.join('+')}"}
+      attrs << %Q{data-comparison-name="#{@places.map{|p| p.name }.join(' + ')}"}
       attrs << %Q{data-comparison-track-url="#{request.path}"}
       attrs << %Q{data-comparison-slug="#{params[:slug_list]}"}
     end
@@ -166,7 +166,23 @@ module ApplicationHelper
 
   def parent_code(code)
     if code.present?
-      code[0..-2]
+      if code.include?('-')
+        code.split('-').first
+      else
+        code[0..-2]
+      end
     end
   end
+
+  def twitter_share(message, url)
+    short_url_length = 23
+    total_message_length = 140
+    signature = " by @gobierto. "
+    max_message_length = total_message_length - short_url_length - signature.length
+
+    to_share = (message.length > max_message_length) ? message.slice(0, max_message_length - 3) + "..." : message
+    to_share += "#{signature}#{url}"
+    to_share
+  end
+
 end

@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
 
   rescue_from ActionController::RoutingError, with: :render_404
 
-  helper_method :reset_filters_parameters
+  helper_method :reset_filters_parameters, :code_from_params
 
   before_action :authenticate
 
@@ -20,6 +20,12 @@ class ApplicationController < ActionController::Base
 
   def helpers
     ActionController::Base.helpers
+  end
+
+  def code_from_params(code)
+    if code.present?
+      code.tr('-','.')
+    end
   end
 
   protected
