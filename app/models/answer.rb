@@ -1,4 +1,5 @@
 class Answer < ActiveRecord::Base
+  QUESTION_1_ANSWERS = ['Sí', 'No']
   QUESTION_2_ANSWERS = ['Poco', 'Apropiado', 'Mucho']
 
   def self.percentages_for_question(question_id, options)

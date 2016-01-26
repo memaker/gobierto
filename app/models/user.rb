@@ -35,7 +35,7 @@ class User < ActiveRecord::Base
   end
 
   def has_replied?(options)
-    Answer.exists?(options.merge(user_id: self.id))
+    Answer.where(options.merge(user_id: self.id)).first
   end
 
   private

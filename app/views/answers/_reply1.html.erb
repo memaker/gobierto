@@ -2,7 +2,14 @@
 
 <div class="reply">
   <div class="inner">
-    <p>Puedes solicitar a tu alcalde que amplie la información sobre esta y otras partidas</p>
+    <% if !logged_in? %>
+      <p>Puedes solicitar a tu alcalde que amplie la información sobre esta y otras partidas</p>
+    <% end %>
+
+    <p>
+      <% groups = Answer.percentages_for_question(1, @budget_line.to_param) %>
+      El <strong><%= groups['No'] %>%</strong> de personas han respondido que No
+    </p>
 
     <%= render partial: 'answers/login_share' %>
   </div>

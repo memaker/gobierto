@@ -57,8 +57,12 @@ set_meta_tags title: "Presupuesto de #{@place.name} » #{kind_literal(@kind).cap
 </div>
 
 <div class="widget_graph budget_line_feedback hidden">
-  <% if logged_in? && current_user.has_replied?(question_id: 1, place_id: @place.id, year: @year, area_name: @area_name, kind: @kind, code: @code) %>
-    <div id="reply"><%= render partial: 'answers/reply2' %></div>
+  <% if logged_in? and answer = current_user.has_replied?(question_id: 1, place_id: @place.id, year: @year, area_name: @area_name, kind: @kind, code: @code) %>
+    <% if answer.answer_text == 'No' %>
+      <div id="reply"><%= render partial: 'answers/reply1' %></div>
+    <% else %>
+      <div id="reply"><%= render partial: 'answers/reply2' %></div>
+    <% end %>
   <% else %>
     <div class="blf_question_1">
       <p>¿Entiendes de qué va esta partida?</p>
