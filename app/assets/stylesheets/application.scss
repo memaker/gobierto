@@ -1634,6 +1634,24 @@ a.list_view_more {
     }
     
   }
+  .form_item {
+    text-align: left;
+    .form_item_cont {
+      label {
+        width: 75px;
+      }
+      .i_text {
+        width: 60%;
+      }
+    }
+  }
+  .submit_item {
+    text-align: left;
+    margin-left: 87px;
+  }
+  .recover_password {
+    font-size: .8em;
+  }
 }
 
 
