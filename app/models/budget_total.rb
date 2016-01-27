@@ -28,4 +28,26 @@ class BudgetTotal
     response = SearchEngine.client.search index: INDEX, type: TYPE, body: query
     return response['hits']['hits'].map{ |h| h['_source'] }
   end
+
+  def self.for_ranking(year, variable, offset, per_page)
+    query = {
+      sort: [ { variable.to_sym => { order: 'desc' } } ],
+      query: {
+        filtered: {
+          filter: {
+            bool: {
+              must: [ {term: { year: year }} ]
+            }
+          }
+        }
+      },
+      from: offset,
+      size: per_page
+    }
+    
+    response = SearchEngine.client.search index: BudgetTotal::INDEX, type: BudgetTotal::TYPE, body: query
+    results = response['hits']['hits'].map{|h| h['_source']}
+    total_elements = response['hits']['total']
+    return results, total_elements
+  end
 end

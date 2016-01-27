@@ -245,38 +245,11 @@ class Ranking
                else
                  'total_budget_per_inhabitant'
                end
-    query = {
-      sort: [ { variable.to_sym => { order: 'desc' } } ],
-      query: {
-        filtered: {
-          filter: {
-            bool: {
-              must: [ {term: { year: year }}, ]
-            }
-          }
-        }
-      },
-      from: offset,
-      size: self.per_page,
-    }
-    response = SearchEngine.client.search index: BudgetTotal::INDEX, type: BudgetTotal::TYPE, body: query
-    results = response['hits']['hits'].map{|h| h['_source']}
-    total_elements = response['hits']['total']
+    
+    results, total_elements = BudgetTotal.for_ranking(year, variable, offset, self.per_page)
 
-    query = {
-      query: {
-        filtered: {
-          filter: {
-            bool: {
-              must: [ {term: { year: year }}, {terms: { ine_code: results.map{|h| h['ine_code']}}}]
-            }
-          }
-        }
-      },
-      size: self.per_page,
-    }
-    response = SearchEngine.client.search index: Population::INDEX, type: Population::TYPE, body: query
-    population_results = response['hits']['hits'].map{|h| h['_source']}
+    places_ids = results.map {|h| h['ine_code']}
+    population_results = Population.for_places(places_ids, year)
 
     return results.map do |h|
       id = h['ine_code']
