@@ -5,8 +5,11 @@
     <%= link_to %Q{<span>#{Subscription.for_place(@place)}</span> <i class="fa fa-star-o"></i>}.html_safe, subscriptions_path(place_id: @place.id), method: :post, remote: true, id: 'follow_link', class: 'tool_button tipsit', title: "Suscríbete a las actualizaciones en #{@place.name}" %>
   <% end %>
 <% else %>
+  
   <%= link_to %Q{<span>#{Subscription.for_place(@place)}</span> <i class="fa fa-star-o"></i>}.html_safe, '#', id: 'follow_link', class: 'tool_button tipsit', title: "Suscríbete a las actualizaciones en #{@place.name}" %>
-  <div class="inner">
+
+  <div class="inner widget_follow budget_line_feedback">
+    <p>Puedes guardar <%= @place.name %> como favorito para recibir actualizaciones de datos y nueva información sobre este presupuesto.</p>
     <%= form_for User.new, data: {remote: true} do |f| %>
       <%= f.email_field :email, placeholder: 'Tu correo-e' %>
       <%= hidden_field_tag :follow, @place.id %>
@@ -18,7 +21,7 @@
 
     <div class="share_post_submit <%= "hidden" if !logged_in? %>">
       <% if !logged_in? %>
-        <p><small>Comprueba tu correo para confirmar tu acción</small></p>
+        <p class="highlight">Comprueba tu correo para confirmar tu acción</p>
       <% end %>
     </div>
   </div>

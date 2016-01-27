@@ -1,7 +1,7 @@
 <%= form_for :session, url: sessions_path, remote: (email.present? ? true : false), html: {id: 'new_session'} do |f| %>
 
   <% if email.present? %>
-    <p>Parece que ya tienes cuenta en Gobierto. Haz login para guardar tu opinión:</p>
+    <p class="highlight">Parece que ya tienes cuenta en Gobierto. Haz login para guardar tu opinión:</p>
   <% end %>
 
   <div class="form_item">

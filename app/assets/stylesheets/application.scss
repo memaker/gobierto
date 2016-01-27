@@ -1050,6 +1050,13 @@ header.sub {
         margin: 3em 0 1em 0;
       }
     }
+    .widget_follow {
+      width: 400px;
+      right: 18%;
+      form {
+        font-size: initial;
+      }
+    }
     .widget_share.inner::before {
       left: 80%;
     } 
@@ -2062,7 +2069,11 @@ input[type=submit]:hover, .button:hover {
   -webkit-column-count: 3; /* Chrome, Safari, Opera */
   -moz-column-count: 3; /* Firefox */
 }
-
+.highlight {
+  background: lighten($color_logo_yellow, 30%);
+  @include border-radius(6px);
+  padding: .25em .5em;
+}
 
 /*
  * Footer
