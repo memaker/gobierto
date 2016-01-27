@@ -51,4 +51,31 @@ class BudgetTotal
     total_elements = response['hits']['total']
     return results, total_elements
   end
+
+  def self.place_position_in_ranking(year, variable, ine_code)
+    query = {
+      sort: [
+        { variable.to_sym => { order: 'desc' } }
+      ],
+      query: {
+        filtered: {
+          filter: {
+            bool: {
+              must: [
+                {term: { year: year }}
+              ]
+            }
+          }
+        }
+      },
+      size: 10_000,
+      _source: false
+    }
+
+    id = [ine_code, year].join('/')
+
+    response = SearchEngine.client.search index: BudgetTotal::INDEX, type: BudgetTotal::TYPE, body: query
+    buckets = response['hits']['hits'].map{|h| h['_id']}
+    return buckets.index(id) + 1
+  end
 end

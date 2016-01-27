@@ -97,6 +97,7 @@ class Ranking
         return buckets.index(id).nil? ? nil : buckets.index(id) + 1
       else
         field = (field == 'amount') ? 'total_budget' : 'total_budget_per_inhabitant'
+<<<<<<< 0aa04c05c56875b8fcf80e65f898abe73d364529
 
         query = {
           sort: [
@@ -122,6 +123,9 @@ class Ranking
         response = SearchEngine.client.search index: BudgetTotal::INDEX, type: BudgetTotal::TYPE, body: query
         buckets = response['hits']['hits'].map{|h| h['_id']}
         return buckets.index(id).nil? ? nil : buckets.index(id) + 1
+=======
+        return BudgetTotal.place_position_in_ranking(year, field, ine_code)
+>>>>>>> Refactored Place Position to BudgetTotal
       end
     end
   end
