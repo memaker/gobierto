@@ -136,6 +136,11 @@ $(function(){
     //e.preventDefault();
     //$(this).find('.inner').velocity("fadeIn", { duration: 50 });
   //});
+  
+  $('#follow_link').click(function(e) {
+    e.preventDefault();
+    $('#user_email').focus();
+  });
 
   $('.modal_widget li').hover(function(e) {
     e.preventDefault();

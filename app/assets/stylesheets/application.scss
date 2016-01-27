@@ -1095,7 +1095,18 @@ header.sub {
       color: $color_1;
     }
   }
-
+  a.following {
+    .fa {
+      background: $color_1;
+      color: #FFF;  
+    }
+  }
+  a.following:hover {
+    .fa {
+      background: #FFF;
+      color: $color_1;  
+    }
+  }
 }
 
 .main_metrics {
@@ -2070,7 +2081,7 @@ input[type=submit]:hover, .button:hover {
   -moz-column-count: 3; /* Firefox */
 }
 .highlight {
-  background: lighten($color_logo_yellow, 30%);
+  background: lighten($color_logo_yellow, 35%);
   @include border-radius(6px);
   padding: .25em .5em;
 }
