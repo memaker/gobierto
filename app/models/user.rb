@@ -15,7 +15,8 @@ class User < ActiveRecord::Base
 
   has_many :subscriptions, dependent: :destroy
 
-  before_validation :sanitize_parameters, :set_verification_token
+  before_validation :sanitize_parameters
+  before_create :set_verification_token
   after_create :send_verification_email
 
   scope :sorted, -> { order(id: :desc) }
