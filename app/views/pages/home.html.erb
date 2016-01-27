@@ -7,7 +7,12 @@
 
   <input type="text" class="places_search search_auto" placeholder="Busca municipio..." autofocus="true">
 
-  <p class="example">Por ejemplo: <%= link_to 'Santander', '/places/santander/2015' %>, <%= link_to 'Talaván', '/places/talavan/2015'  %>, <%= link_to 'Órgiva', '/places/orgiva/2015'  %>, <%= link_to 'Zaragoza', '/places/zaragoza/2015'  %>.</p>
+  <p class="example">Por ejemplo: 
+
+    <span class="highlight" id="suggested_location"></span>
+
+
+    <%= link_to 'Santander', '/places/santander/2015' %>, <%= link_to 'Talaván', '/places/talavan/2015'  %>, <%= link_to 'Órgiva', '/places/orgiva/2015'  %>, <%= link_to 'Zaragoza', '/places/zaragoza/2015'  %>.</p>
 
   <div class="clearfix">
 
