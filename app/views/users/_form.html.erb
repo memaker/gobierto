@@ -18,20 +18,21 @@
     <p class="highlight">Confirma tus datos para poder seguir las actualizaciones de los municipios que elijas, interactuar con tus representantes públicos, y más. Tus datos y opiniones serán siempre privados.</p>
   <% else %>
     <h1>Edita tus datos personales</h1>
+    <p class="highlight">Tus datos personales y opiniones serán siempre privados. Si quieres indícanos tu nombre para personalizar tu página ;) <%= link_to 'Más información', '/faq' %></p></p>
   <% end %>
 
 
   <div class="form_item">
     <div class="form_item_cont">
       <%= f.label :first_name, "Nombre" %>
-      <%= f.text_field :first_name, class: 'i_text' %>
+      <%= f.text_field :first_name, class: 'i_text', autofocus: true, placeholder: '(opcional)'  %>
     </div>
   </div>
 
   <div class="form_item">
     <div class="form_item_cont">
       <%= f.label :last_name, "Apellidos" %>
-      <%= f.text_field :last_name, class: 'i_text' %>
+      <%= f.text_field :last_name, class: 'i_text', placeholder: '(opcional)' %>
     </div>
   </div>
 
