@@ -86,6 +86,8 @@ set_meta_tags title: "Presupuesto de #{@place.name} » #{kind_literal(@kind).cap
   <% end %>
 </div>
 
+<% if @budget_lines['hits'].any? %>
+
 <div class="items">
   <table>
   <tr>
@@ -98,16 +100,12 @@ set_meta_tags title: "Presupuesto de #{@place.name} » #{kind_literal(@kind).cap
     <th></th>
   </tr>
 
-  <tr>
-    <td class="item_name" colspan="4">
-      <%= link_to '« Inicio', place_budget_path(@place.slug, @year, @kind, @area_name) %>
-    </td>
-  </tr>
-
   <%= render partial: 'places/nested_budget_lines' %>
 
   </table>
 </div>
+
+<% end %>
 
 <script type="text/html" id="widget-template">
   <div class="label">{{title}}</div>
