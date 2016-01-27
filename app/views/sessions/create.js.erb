@@ -1,3 +1,12 @@
 $('#new_session').hide();
-$('.share_post_submit').show();
-$('.share_post_submit p:eq(0)').hide();
+if($('.share_post_submit').length > 0){
+  $('.share_post_submit').show();
+  $('.share_post_submit p:eq(0)').hide();
+}
+if($('#follow').length > 0){
+  $('.tipsit').each(function(){
+    $(this).tipsy('hide');
+  });
+  $('#follow').html('<%= j(render partial: 'places/follow_place') %>');
+  rebindAll();
+}

@@ -11,6 +11,11 @@ class SessionsController < ApplicationController
     if user && user.authenticate(params[:session][:password])
       log_in user
       user.update_pending_answers(session.id)
+      if session[:follow]
+        subscription = user.subscriptions.create place_id: session[:follow]
+        @place = subscription.place
+        session[:follow] = nil
+      end
     else
       flash[:alert] = 'Credenciales incorrectas. Por favor, vuelve a intentarlo'
     end
@@ -29,6 +34,8 @@ class SessionsController < ApplicationController
 
   def destroy
     log_out
+    redirect_to :back
+  rescue
     redirect_to root_path
   end
 end

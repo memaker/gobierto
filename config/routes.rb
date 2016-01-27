@@ -45,6 +45,9 @@ Rails.application.routes.draw do
   # feedback
   resources :answers, only: [:create]
 
+  # follow place
+  resources :subscriptions, only: [:create, :destroy]
+
   namespace :api do
     get '/data/lines/:ine_code/:year/:what' => 'data#lines', as: :data_lines
     get '/data/compare/:ine_codes/:year/:what' => 'data#compare', as: :data_compare

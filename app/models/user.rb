@@ -13,6 +13,8 @@ class User < ActiveRecord::Base
   validates :terms_of_service, acceptance: true
   validates :place_id, presence: true, on: :update
 
+  has_many :subscriptions, dependent: :destroy
+
   before_validation :sanitize_parameters, :set_verification_token
   after_create :send_verification_email
 
@@ -36,6 +38,10 @@ class User < ActiveRecord::Base
 
   def has_replied?(options)
     Answer.where(options.merge(user_id: self.id)).first
+  end
+
+  def get_subscriptions_on(place)
+    subscriptions.find_by(place_id: place.id)
   end
 
   private

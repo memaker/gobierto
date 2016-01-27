@@ -13,6 +13,7 @@ class UsersController < ApplicationController
       created = true
       @user.save!
     end
+    session[:follow] = params[:follow] if params[:follow]
 
     respond_to do |format|
       format.html do

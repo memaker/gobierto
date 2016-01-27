@@ -1,0 +1,25 @@
+<% if logged_in? %>
+  <% if subscription = current_user.get_subscriptions_on(@place) %>
+    <%= link_to %Q{<span>#{Subscription.for_place(@place)}</span> <i class="fa fa-star"></i>}.html_safe, subscription_path(subscription), method: :delete, remote: true, id: 'follow_link', class: 'tool_button tipsit', title: "Estás suscrito a las actualizaciones en #{@place.name}" %>
+  <% else %>
+    <%= link_to %Q{<span>#{Subscription.for_place(@place)}</span> <i class="fa fa-star-o"></i>}.html_safe, subscriptions_path(place_id: @place.id), method: :post, remote: true, id: 'follow_link', class: 'tool_button tipsit', title: "Suscríbete a las actualizaciones en #{@place.name}" %>
+  <% end %>
+<% else %>
+  <%= link_to %Q{<span>#{Subscription.for_place(@place)}</span> <i class="fa fa-star-o"></i>}.html_safe, '#', id: 'follow_link', class: 'tool_button tipsit', title: "Suscríbete a las actualizaciones en #{@place.name}" %>
+  <div class="inner">
+    <%= form_for User.new, data: {remote: true} do |f| %>
+      <%= f.email_field :email, placeholder: 'Tu correo-e' %>
+      <%= hidden_field_tag :follow, @place.id %>
+      <input type="submit" class="button" value="Seguir">
+      <div class="exp">
+        <p>No spam, tus opiniones serán siempre privadas <%= link_to 'Más información', '/faq', target: 'blank' %></p>
+      </div>
+    <% end %>
+
+    <div class="share_post_submit <%= "hidden" if !logged_in? %>">
+      <% if !logged_in? %>
+        <p><small>Comprueba tu correo para confirmar tu acción</small></p>
+      <% end %>
+    </div>
+  </div>
+<% end %>

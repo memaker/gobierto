@@ -131,12 +131,11 @@ $(function(){
     $(this).find('.inner').velocity("fadeOut", { duration: 50 });
   });
 
-  $('.modal_widget').click(function(e) {
-    e.preventDefault();
-    $(this).find('.inner').velocity("fadeIn", { duration: 50 });
-  });
-
-
+  // TODO: can we remove it? It is causing trouble on the follow form
+  //$('.modal_widget').click(function(e) {
+    //e.preventDefault();
+    //$(this).find('.inner').velocity("fadeIn", { duration: 50 });
+  //});
 
   $('.modal_widget li').hover(function(e) {
     e.preventDefault();
