@@ -12,7 +12,7 @@ gem 'ine-places', require: 'ine/places/places'
 gem 'actionpack-page_caching'
 gem 'progressbar'
 gem 'ruby-px', require: 'pc-axis/dataset'
-gem 'kaminari'
+gem 'kaminari', git: 'git@github.com:amatsuda/kaminari.git'
 gem 'geocoder'
 
 # Frontend
