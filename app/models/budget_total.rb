@@ -22,7 +22,8 @@ class BudgetTotal
             }
           }
         }
-      }
+      },
+      size: 10000
     }
 
     response = SearchEngine.client.search index: INDEX, type: TYPE, body: query

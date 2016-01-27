@@ -194,39 +194,12 @@ class Ranking
   end
 
   def self.population_ranking(variable, year, offset)
-    query = {
-      sort: [ { value: { order: 'desc' } } ],
-      query: {
-        filtered: {
-          filter: {
-            bool: {
-              must: [ {term: { year: year }}, ]
-            }
-          }
-        }
-      },
-      from: offset,
-      size: self.per_page,
-    }
-    response = SearchEngine.client.search index: Population::INDEX, type: Population::TYPE, body: query
-    total_elements = response['hits']['total']
-    results = response['hits']['hits'].map{|h| h['_source']}
-
-    query = {
-      query: {
-        filtered: {
-          filter: {
-            bool: {
-              must: [ {term: { year: year }}, {terms: { ine_code: results.map{|h| h['ine_code']}}}]
-            }
-          }
-        }
-      },
-      size: self.per_page,
-    }
-    response = SearchEngine.client.search index: BudgetTotal::INDEX, type: BudgetTotal::TYPE, body: query
-    total_results = response['hits']['hits'].map{|h| h['_source']}
-
+    
+    results, total_elements = Population.for_ranking(year,offset,self.per_page)
+    
+    places_ids = results.map{|h| h['ine_code']}
+    total_results = BudgetTotal.for_places(places_ids, year)
+    
     return results.map do |h|
       id = h['ine_code']
       Item.new({
