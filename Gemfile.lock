@@ -1,3 +1,11 @@
+GIT
+  remote: git@github.com:amatsuda/kaminari.git
+  revision: 282b2125292d8f4c721dba89510ee4360c071eb0
+  specs:
+    kaminari (1.0.0.alpha)
+      actionpack (>= 3.0.0)
+      activesupport (>= 3.0.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -127,9 +135,6 @@ GEM
       railties (>= 3.1.0)
       turbolinks
     json (1.8.3)
-    kaminari (0.16.3)
-      actionpack (>= 3.0.0)
-      activesupport (>= 3.0.0)
     launchy (2.4.3)
       addressable (~> 2.3)
     libv8 (3.16.14.13)
@@ -284,7 +289,7 @@ DEPENDENCIES
   ine-places
   jquery-rails
   jquery-turbolinks
-  kaminari
+  kaminari!
   launchy
   meta-tags
   oj

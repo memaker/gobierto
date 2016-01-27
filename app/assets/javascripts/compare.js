@@ -60,7 +60,11 @@ $(function () {
 
   function compare(parentCode) {
     var comparison = Cookies.get('comparison');
-    window.location.href = compareUrl(comparison) + (parentCode !== null ? "?parent_code=" + parentCode : '');
+    var compare_url = compareUrl(comparison);
+    if (parentCode !== null && parentCode !== undefined) {
+      compare_url += "?parent_code=" + parentCode;
+    }
+    window.location.href = compare_url;
   }
 
   function currentPlaceIsOnList(place) {
