@@ -1,4 +1,4 @@
 class ApplicationMailer < ActionMailer::Base
-  default from: "no-reply@gobierto.es",
-          reply_to: "no-reply@gobierto.es"
+  default from: "Gobierto <info@gobierto.es>",
+          reply_to: "Gobierto <info@gobierto.es>"
 end
