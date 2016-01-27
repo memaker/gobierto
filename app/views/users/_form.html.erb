@@ -40,6 +40,7 @@
         <%= f.select :place_id, places_for_select, {}, {class: 'select2'} %>
       <% else %>
         <input type="text" value="<%= INE::Places::Place.find(f.object.place_id).name %>" disabled="true"/>
+        <span style="color:red">*</span> <small><em>si quieres volver a cambiar tu municipio <%= link_to 'contacta con nosotros', about_path(anchor: 'contact') %></em></small>
       <% end %>
     </div>
   </div>
