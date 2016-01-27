@@ -4,6 +4,7 @@ class PlacesController < ApplicationController
   def show
     @income_lines = BudgetLine.search(ine_code: @place.id, level: 1, year: @year, kind: BudgetLine::INCOME, type: 'economic')
     @expense_lines = BudgetLine.search(ine_code: @place.id, level: 1, year: @year, kind: BudgetLine::EXPENSE, type: @area_name)
+    @no_data = @income_lines['hits'].empty?
 
     respond_to do |format|
       format.html
@@ -19,6 +20,7 @@ class PlacesController < ApplicationController
     options[:parent_code] = params[:parent_code] if params[:parent_code].present?
 
     @budget_lines = BudgetLine.search(options)
+    @no_data = @budget_lines['hits'].empty?
 
     respond_to do |format|
       format.html
