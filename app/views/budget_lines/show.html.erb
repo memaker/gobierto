@@ -7,7 +7,6 @@ set_meta_tags title: "Presupuesto de #{@place.name} » #{kind_literal(@kind).cap
 
 <header class="sub ">
 
-  <span class="sep"><%= link_to kind_literal(@kind).capitalize, place_budget_path(@place.slug, @year, @kind, @area_name) %> »</span>
   <%= render partial: 'breadcrumb',
             collection: budget_line_crumbs(@parent_line, @area_name),
             as: 'budget_line',

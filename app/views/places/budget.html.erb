@@ -6,7 +6,7 @@ set_meta_tags title: @title
 <%= render partial: 'place_header' %>
 
 <header class="cat">
-  <div class="qty">Total <%= kind_literal @kind %>: <%= number_to_currency @budget_lines['aggregations']['total_budget']['value'], precision: 0 %></div>
+  <div class="qty">Total <%= number_to_currency @budget_lines['aggregations']['total_budget']['value'], precision: 0 %></div>
   <div class="form_filters">
     <% if @kind == 'G' %>
       <ul>
@@ -15,7 +15,7 @@ set_meta_tags title: @title
       </ul>
     <% end %>
   </div>
-  
+
 </header>
 
 <div id="treemap" data-url="<%= place_budget_path(@place.slug, @year, @kind, @area_name, format: :json) %>" class="graph_treemap graph_placeholder">
