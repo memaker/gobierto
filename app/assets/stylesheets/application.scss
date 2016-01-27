@@ -2001,7 +2001,13 @@ input[type=submit]:hover, .button:hover {
 .success, .error, .alert, .notice {
   padding: 20px 30px;
   @include border-radius(6px);
-  margin-bottom: 50px;
+  margin-bottom: 2em;
+
+  .fa {
+    font-size: 1.5em;
+    margin: 0 1em 0 0;
+    vertical-align: top;
+  }
 }
 
 .success {
@@ -2025,6 +2031,7 @@ input[type=submit]:hover, .button:hover {
     border: 1px solid #FF9966;
   }
 }
+
 
 
 
@@ -2133,6 +2140,9 @@ footer {
     font-weight: 200;
     font-size: 1em;
     color: lighten($text, 15%);
+  }
+  h3 {
+    color: lighten($text, 15%); 
   }
   p.example {
     margin: 1em 0 10em 0;
@@ -2266,6 +2276,19 @@ footer {
       list-style-type: square;
       margin: 0 2em 1em 2em;
     }
+  }
+}
+.faqs {
+  h1 {
+
+  }
+  h2 {
+    font-size: 1.6em;
+    margin-top: 2em;
+  }
+  h3 {
+    border-width: 1px;
+    border-color: lighten($text, 45%);
   }
 }
 menu.sections {
