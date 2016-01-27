@@ -15,7 +15,7 @@ RSpec.feature 'User feedback' do
     fill_in 'user_email', with: 'bar@example.com'
     click_button 'Seguir'
 
-    expect(page).to have_content('Comprueba tu correo para confirmar tu acción')
+    expect(page).to have_content('Comprueba tu correo')
 
     open_last_email_for 'bar@example.com'
     email = current_email
@@ -37,7 +37,7 @@ RSpec.feature 'User feedback' do
     fill_in 'user_email', with: 'bar@example.com'
     click_button 'Seguir'
 
-    expect(page).to have_content('Comprueba tu correo para confirmar tu acción')
+    expect(page).to have_content('Comprueba tu correo')
 
     open_last_email_for 'bar@example.com'
     email = current_email
