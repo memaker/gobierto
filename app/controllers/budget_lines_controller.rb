@@ -1,5 +1,19 @@
 class BudgetLinesController < ApplicationController
+  before_action :load_params
+
   def show
+  end
+
+  def feedback
+    @question_id = params[:question_id].to_i
+    render_404 and return unless [1,2].include?(@question_id)
+
+    render 'show'
+  end
+
+  private
+
+  def load_params
     @place = INE::Places::Place.find_by_slug params[:slug]
     @year = params[:year]
     @code = code_from_params(params[:code])
@@ -8,7 +22,10 @@ class BudgetLinesController < ApplicationController
 
     options = { ine_code: @place.id, year: @year, kind: @kind, type: @area_name }
 
+    @budget_line = BudgetLine.new year: @year, kind: @kind, place_id: @place.id, area_name: @area_name, code: @code
+
     @parent_line = BudgetLine.find(options.merge(code: @code))
     @budget_lines = BudgetLine.search(options.merge(parent_code: @code))
   end
+
 end

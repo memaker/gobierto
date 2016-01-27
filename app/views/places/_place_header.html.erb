@@ -17,13 +17,10 @@
 
   <div class="tools_cont">
     <div class="tools sticky">
-      <% pending do %>
-      <div class="modal_widget">
-        <%= link_to '<span>123</span> <i class="fa fa-star-o"></i>'.html_safe, '', class: 'tool_button' %>
-        <div class="inner">
-          wadus follow
+      <% if controller_name == 'places' %>
+        <div class="modal_widget" id="follow">
+          <%= render 'places/follow_place' %>
         </div>
-      </div>
       <% end %>
       <div class="modal_widget">
         <%= link_to '<span>Compara</span> <i class="fa fa-compass"></i>'.html_safe, '', class: 'tool_button' %>
@@ -93,4 +90,8 @@
     </div>
   <% end %>
 </header>
+
+<% if @no_data %>
+  <%= render 'places/no_data' %>
+<% end %>
 

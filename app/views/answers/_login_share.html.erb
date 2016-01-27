@@ -1,0 +1,26 @@
+<div class="sep"></div>
+
+<% if !logged_in? %>
+  <%= form_for User.new, data: {remote: true} do |f| %>
+    <p><small>Puedes seguir esta partida para recibir noticias ocasionales sobre su evolución y opiniones:</small></p>
+    <%= f.email_field :email, placeholder: 'Tu correo-e' %>
+    <input type="submit" class="button" value="Seguir">
+    <div class="exp">
+      <p>No spam, tus opiniones serán siempre privadas <%= link_to 'Más información', '/faq' %></p>
+    </div>
+  <% end %>
+<% end %>
+
+<div class="share_post_submit <%= "hidden" if !logged_in? %>">
+  <% if !logged_in? %>
+    <p><small>Genial! Comprueba tu correo y pincha en el enlace que te enviamos</small></p>
+  <% end %>
+
+  <p><small>
+    <% url = budget_line_feedback_url(@budget_line.place.slug, @budget_line.year, @budget_line.code, @budget_line.kind, @budget_line.area_name,question_id) %>
+    ¿Quieres compartir esta estadística en
+    <%= link_to 'Twitter', "https://twitter.com/home?status=#{u twitter_share("¿Qué opina la gente sobre la partida #{@budget_line.category} de #{@budget_line.place.name}", url)}", class: 'small_button popup' %>
+    <%= link_to 'Facebook', "http://www.facebook.com/sharer/sharer.php?u=#{u url}", class: 'small_button popup' %>
+    ?
+  </small></p>
+</div>

@@ -11,14 +11,14 @@ function rebindAll() {
 function responsive() {
   if($(window).width() > 740) {
     return true;
-  }  
+  }
 }
 
 $(function(){
   $('.spinner').hide();
   Turbolinks.enableProgressBar();
 
-  $('.popup').click(function(e){
+  $(document).on('click', '.popup', function(e){
     e.preventDefault();
     window.open($(this).attr("href"), "popupWindow", "width=600,height=600,scrollbars=yes");
   });
@@ -26,6 +26,8 @@ $(function(){
   if($(window).width() > 740) {
     rebindAll();
   }
+
+  $('.select2').select2();
 
   var searchOptions = {
     serviceUrl: '/search',
@@ -110,7 +112,6 @@ $(function(){
   // adjust height of sidebar
   // if($(window).width() > 740) {
   if(responsive()) {
-    console.log('yeah');
     $('header.global').css('height', $(document).height());
   };
 
@@ -130,12 +131,16 @@ $(function(){
     $(this).find('.inner').velocity("fadeOut", { duration: 50 });
   });
 
-  $('.modal_widget').click(function(e) {
+  // TODO: can we remove it? It is causing trouble on the follow form
+  //$('.modal_widget').click(function(e) {
+    //e.preventDefault();
+    //$(this).find('.inner').velocity("fadeIn", { duration: 50 });
+  //});
+  
+  $('#follow_link').click(function(e) {
     e.preventDefault();
-    $(this).find('.inner').velocity("fadeIn", { duration: 50 });
+    $('#user_email').focus();
   });
-
-
 
   $('.modal_widget li').hover(function(e) {
     e.preventDefault();

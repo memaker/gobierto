@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '4.2.5'
+gem 'rails', '4.2.5.1'
 gem 'pg'
 gem 'sass-rails', '~> 5.0.0'
 gem 'uglifier', '>= 1.3.0'
@@ -14,6 +14,7 @@ gem 'progressbar'
 gem 'ruby-px', require: 'pc-axis/dataset'
 gem 'kaminari', git: 'git@github.com:amatsuda/kaminari.git'
 gem 'geocoder'
+gem 'responders'
 
 # Frontend
 gem 'jquery-rails'
@@ -42,6 +43,7 @@ group :test do
   gem 'launchy'
   gem 'email_spec'
   gem 'timecop'
+  gem 'poltergeist'
 end
 
 group :development do

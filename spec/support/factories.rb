@@ -1,10 +1,13 @@
 module Factories
   def create_user(attrs = {})
-    attrs[:name]      ||= "John Donor"
-    attrs[:username]  ||= attrs[:name].parameterize
-    attrs[:email]     ||= "johndonor@example.com"
-    attrs[:password]              ||= "wadusm4n"
+    attrs[:email]     ||= "foo@example.com"
+    attrs[:password]  ||= "foo123456"
     attrs[:password_confirmation] ||= attrs[:password]
-    User.create!(attrs)
+    attrs[:place_id] ||= 28079
+    User.new(attrs).tap do |u|
+      u.save!
+      u.clear_verification_token
+      u.save!
+    end
   end
 end

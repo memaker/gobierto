@@ -34,11 +34,7 @@
 <body <%= data_attributes %>>
 
 <div class="top-claim">
-  <% if !logged_in? %>
-    <p><a href="/about#municipalities">¿Interesado en herramientas de análisis presupuestario para Municipios?</a></p>
-  <% else %>
-    <p>Hola <%= current_user.full_name %> · <%= link_to 'Editar datos personales', edit_user_path %> · <%= link_to 'Cerrar sesión', logout_path, method: :delete %></p>
-  <% end %>
+  <p><a href="/about#municipalities">¿Interesado en herramientas de análisis presupuestario para Municipios?</a></p>
 </div>
 
 <div class="container">
@@ -67,6 +63,18 @@
           <li><%= link_to 'Servicios', about_path(anchor: 'municipalities') %></li>
         </ul>
       </menu>
+
+      <% if logged_in? %>
+      <div class="links_list personal_links">
+        <p>Hola <strong><%= current_user.full_name %></strong></p>
+        <% if current_user.place_id %>
+          <p>Tu municipio: <%= link_to INE::Places::Place.find(current_user.place_id).name, place_path(INE::Places::Place.find(current_user.place_id), year: 2015) %></p>
+        <% end %>
+        <p><%= link_to 'Editar datos personales', edit_user_path %></p>
+        <p><%= link_to 'Cerrar sesión', logout_path, method: :delete, class: 'logout' %></p>
+      </div>
+      <% end %>
+
 
       <% pending do %>
         <div class="links_list">
@@ -125,7 +133,9 @@
   <menu>
     <ul>
       <li><%= link_to 'Acerca de', about_path %></li>
+      <li><%= link_to 'Preguntas frecuentes', faq_path %></li>
       <li><%= link_to 'Metodología y Fuentes', about_path(anchor: 'method') %></li>
+      <li><%= link_to 'Contacto', about_path(anchor: 'contact') %></li>
     </ul>
   </menu>
 </footer>

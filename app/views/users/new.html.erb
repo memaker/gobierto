@@ -5,6 +5,34 @@
 
     <h1>Nuevo usuario</h1>
 
-    <%= render 'form' %>
+    <% if @user.errors.any? %>
+      <div id="error_explanation">
+        <div class="alert alert-danger">
+          El formulario tiene <%= pluralize(@user.errors.count, "error") %>.
+        </div>
+        <ul>
+          <% @user.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <%= form_for @user do |f| %>
+      <div class="form_item">
+        <div class="form_item_cont">
+          <%= f.label :email, "E-mail" %>
+          <%= f.email_field :email, class: 'i_text' %>
+        </div>
+      </div>
+
+      <div class="form_item full submit_item">
+        <div class="form_item_cont clearfix">
+          <%= hidden_field_tag :back_url, request.referer %>
+          <input type="submit" class="submit" value="Enviar">
+        </div>
+      </div>
+    <% end %>
+
   </div>
 </div>

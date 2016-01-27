@@ -11,10 +11,34 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150601182501) do
+ActiveRecord::Schema.define(version: 20160127073258) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "answers", force: :cascade do |t|
+    t.integer  "user_id"
+    t.string   "temporary_user_id"
+    t.string   "answer_text"
+    t.integer  "question_id"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+    t.integer  "place_id"
+    t.string   "kind"
+    t.integer  "year"
+    t.string   "area_name"
+    t.string   "code"
+  end
+
+  create_table "subscriptions", force: :cascade do |t|
+    t.integer  "user_id",    null: false
+    t.integer  "place_id",   null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "subscriptions", ["place_id"], name: "index_subscriptions_on_place_id", using: :btree
+  add_index "subscriptions", ["user_id"], name: "index_subscriptions_on_user_id", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "first_name"
@@ -26,9 +50,11 @@ ActiveRecord::Schema.define(version: 20150601182501) do
     t.integer  "place_id"
     t.datetime "created_at",           null: false
     t.datetime "updated_at",           null: false
+    t.string   "verification_token"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["place_id"], name: "index_users_on_place_id", using: :btree
 
+  add_foreign_key "subscriptions", "users"
 end

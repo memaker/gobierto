@@ -14,6 +14,7 @@
 @import "cookies_eu";
 @import "vendor/sparkline";
 @import "vendor/jquery.bonsai";
+@import "vendor/select2.min";
 // Old visualizations
 // @import "vis_bars";
 // @import "vis_distribution";
@@ -102,11 +103,13 @@ $color_scale_9: #24190E;
  * Fonts
  *
  */
-@import url("https://fonts.googleapis.com/css?family=Work+Sans:200,400,700,600");
-@import "//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css";        
+@import url("https://fonts.googleapis.com/css?family=Work+Sans:200,400,700,600|Source+Sans+Pro:200,400,700,600");
+@import "//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css";        
 
-$font_headings: 'Work Sans';
-$font_text: 'Work Sans';
+// $font_headings: 'Work Sans';
+$font_headings: 'Source Sans Pro';
+// $font_text: 'Work Sans';
+$font_text: 'Source Sans Pro';
 
 
 /*
@@ -316,6 +319,14 @@ header.global {
       }
     }
   }
+  .personal_links {
+    p {
+      margin: 0;
+    }
+    .logout {
+      color: #AAA;
+    }
+  }
 }
 // if top-claim present...
 body {
@@ -436,6 +447,9 @@ header.sticky_top {
   .breadcrumb {
     display: inline-block;
     font-size: 13px;
+    @include screen(740) {
+      display: none;
+    }
   }
   img {
     vertical-align: middle;
@@ -1036,6 +1050,13 @@ header.sub {
         margin: 3em 0 1em 0;
       }
     }
+    .widget_follow {
+      width: 400px;
+      right: 18%;
+      form {
+        font-size: initial;
+      }
+    }
     .widget_share.inner::before {
       left: 80%;
     } 
@@ -1074,7 +1095,18 @@ header.sub {
       color: $color_1;
     }
   }
-
+  a.following {
+    .fa {
+      background: $color_1;
+      color: #FFF;  
+    }
+  }
+  a.following:hover {
+    .fa {
+      background: #FFF;
+      color: $color_1;  
+    }
+  }
 }
 
 .main_metrics {
@@ -1143,6 +1175,30 @@ header.sub {
     top: 100%;
     left: 41%;
   }
+  .metric.cta {
+    background: $color_logo_yellow;
+    text-align: center;
+    padding: 0;
+
+    a {
+      color: #FFF;
+      display: inline-block;
+      font-size: 1em;
+      text-decoration: none;
+      margin-top: 14px;
+    }
+
+    .fa {
+      background: #FFF;
+      color: $color_logo_yellow;
+      padding: .75em;
+      @include border-radius(3px);
+      
+    }
+  }
+  .metric.cta:hover {
+    background: darken($color_logo_yellow, 5%);
+  }
 }
 
 .metric_graphs .widget_graph {
@@ -1151,6 +1207,7 @@ header.sub {
 .metric_graphs .show {
   display: block; 
 }
+
 
 
 .ie_intro {
@@ -1311,6 +1368,12 @@ a.list_view_more {
     }
     td.item_name {
       width: 50%;
+      @include screen(740) {
+        .fa {
+          display: none;
+        }
+      }
+
     }
     td.total {
       width: 150px;
@@ -1350,29 +1413,17 @@ a.list_view_more {
               padding: 10px 20px;
               td.bar_cont {
                 width: 60px;
-            
               }
             }
           }
         }
       }
-      
     }
   }
 }
 
 
-/*
- * Forms
- *
- */
-.small_input {
-  padding: .5em .5em .4em .4em;
-  border: 1px solid #DFDFDF;
-}
-textarea {
-  border: 1px solid #DFDFDF;
-}
+
 
 /*
  * Claims
@@ -1565,6 +1616,62 @@ textarea {
 .le-country {
   background: $color_vis_country;
 }
+
+
+/*
+ * Budget Line Feedback
+ *
+ */
+.budget_line_feedback {
+  text-align: center;
+  padding: 3em;
+  .options {
+    margin: 1.5em 0;
+    .button {
+      margin: 0 .2em;
+      span {
+        display: block; 
+        text-transform: uppercase;
+      }
+    }
+  }
+  .reply {
+    max-width: 40em;
+    margin: auto;
+    padding: 2em;
+    background: #FFF;
+    @include border-radius(6px);
+    .inner {
+      margin: 0 20%; 
+    }
+  }
+  .options.yes_no {
+    font-size: 1.5em;
+    .button {
+      font-weight: bold;  
+    }
+    
+  }
+  .form_item {
+    text-align: left;
+    .form_item_cont {
+      label {
+        width: 75px;
+      }
+      .i_text {
+        width: 60%;
+      }
+    }
+  }
+  .submit_item {
+    text-align: left;
+    margin-left: 87px;
+  }
+  .recover_password {
+    font-size: .8em;
+  }
+}
+
 
 
 /*
@@ -1791,6 +1898,66 @@ textarea {
 }
 
 
+
+/*
+ * Forms
+ *
+ */
+.small_input {
+  padding: .5em .5em .4em .4em;
+  border: 1px solid #DFDFDF;
+}
+textarea {
+  border: 1px solid #DFDFDF;
+}
+form {
+  input {
+    font-family: $font_text;
+    box-sizing: border-box;
+    @include border-radius(5px);
+    padding: .65em;
+    display: inline-block;
+    text-decoration: none;
+    font-size: 1em;
+    line-height: 1.2em;
+    border: 1px solid $text_soft;
+    margin: 0 .5em 0 0;
+    strong {
+      font-weight: 400;
+    }
+  }
+}
+.exp {
+  font-size: .75em; 
+  font-weight: 200;
+}
+.form_item {
+  margin: 0 0 1em 0;
+  .form_item_cont {
+    label {
+      display: inline-block;
+      font-size: .8em;
+      width: 200px;
+      text-align: right;
+      padding: 0 10px 0 0;
+    }
+    .i_text {
+      width: 300px;
+    }
+
+  }
+}
+.submit_item {
+  margin-left: 210px;
+  .submit {
+    padding: .75em 2em;
+  }
+}
+.field_with_errors {
+  display: inline;
+}
+
+
 /*
  * Buttons
  *
@@ -1804,13 +1971,18 @@ input[type=submit], .button {
   color: #FFF;
   display: inline-block;
   text-decoration: none;
-  font-size: 13px;
-  line-height: 17px;
+  font-size: 1em;
+  line-height: 1.2em;
   text-align: center; 
   font-weight: 200;
+  border: 0;
+  margin: 0 .5em 0 0;
   strong {
     font-weight: 400;
   }
+}
+input[type=submit] {
+  cursor: pointer;
 }
 input[type=submit]:hover, .button:hover {
   background: darken($color_1, 5%);
@@ -1828,6 +2000,55 @@ input[type=submit]:hover, .button:hover {
   background: darken($color_1, 5%);
   text-decoration: none;
 }
+.button.empty {
+  background: #FFF;
+  color: $text;
+  border: 1px solid $text_soft;
+  span {
+    display: block;
+    text-transform: uppercase;
+  }
+}
+
+
+
+/*
+ * Flash messages
+ *
+ */
+.success, .error, .alert, .notice {
+  padding: 20px 30px;
+  @include border-radius(6px);
+  margin-bottom: 2em;
+
+  .fa {
+    font-size: 1.5em;
+    margin: 0 1em 0 0;
+    vertical-align: top;
+  }
+}
+
+.success {
+  background: #CCCC00;
+  color: #FFF;
+}
+.error {
+  background: #FF9966;
+  color: #FFF;
+}
+.alert {
+  background: #FFEBE0;
+  color: #AE5D3B;
+}
+.notice {
+  background: #F5F5CC;
+  color: #787A03;
+}
+.field_with_errors {
+  input {
+    border: 1px solid #FF9966;
+  }
+}
 
 
 
@@ -1837,7 +2058,7 @@ input[type=submit]:hover, .button:hover {
  *
  */
 .sep {
-  // border-top: 1px solid $separator;
+  border-top: 1px solid $separator;
   margin: 1em 0;
   height: 1px;
 }
@@ -1859,7 +2080,11 @@ input[type=submit]:hover, .button:hover {
   -webkit-column-count: 3; /* Chrome, Safari, Opera */
   -moz-column-count: 3; /* Firefox */
 }
-
+.highlight {
+  background: lighten($color_logo_yellow, 35%);
+  @include border-radius(6px);
+  padding: .25em .5em;
+}
 
 /*
  * Footer
@@ -1937,6 +2162,9 @@ footer {
     font-weight: 200;
     font-size: 1em;
     color: lighten($text, 15%);
+  }
+  h3 {
+    color: lighten($text, 15%); 
   }
   p.example {
     margin: 1em 0 10em 0;
@@ -2070,6 +2298,19 @@ footer {
       list-style-type: square;
       margin: 0 2em 1em 2em;
     }
+  }
+}
+.faqs {
+  h1 {
+
+  }
+  h2 {
+    font-size: 1.6em;
+    margin-top: 2em;
+  }
+  h3 {
+    border-width: 1px;
+    border-color: lighten($text, 45%);
   }
 }
 menu.sections {

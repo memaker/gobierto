@@ -163,6 +163,12 @@ module ApplicationHelper
     "#{place.name}|#{place_path(place, year)}|#{place.slug}"
   end
 
+  def places_for_select
+    INE::Places::Place.all.map do |place|
+      [place.name, place.id]
+    end
+  end
+
   def parent_code(code)
     if code.present?
       if code.include?('-')
@@ -182,6 +188,13 @@ module ApplicationHelper
     to_share = (message.length > max_message_length) ? message.slice(0, max_message_length - 3) + "..." : message
     to_share += "#{signature}#{url}"
     to_share
+  end
+
+  def answers_path_with_params(question_id, answer_text)
+    answers_path(answer: {
+      question_id: question_id, answer_text: answer_text,
+      place_id: @place.id, year: @year, kind: @kind, area_name: @area_name, code: @code
+    })
   end
 
 end

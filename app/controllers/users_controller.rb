@@ -8,15 +8,32 @@ class UsersController < ApplicationController
   end
 
   def create
-    redirect_to edit_user_path if logged_in?
-
-    @user = User.new create_user_params
-    if @user.save
-      log_in @user
-      redirect_to params[:back_url] || root_path
-    else
-      render 'new'
+    @user = User.find_or_initialize_by email: params[:user][:email]
+    if @user.new_record?
+      created = true
+      @user.save!
     end
+    session[:follow] = params[:follow] if params[:follow]
+
+    respond_to do |format|
+      format.html do
+        if created
+          redirect_to root_path, notice: 'Por favor, confirma tu email'
+        else
+          redirect_to :back
+        end
+      end
+      format.js do
+        created ? render('created') : render('login')
+      end
+    end
+  end
+
+  def verify
+    @user = User.find_by! verification_token: params[:id]
+    log_in(@user)
+
+    render 'edit'
   end
 
   def edit
@@ -24,6 +41,11 @@ class UsersController < ApplicationController
 
   def update
     if @user.update_attributes(update_user_params)
+      if @user.pending_confirmation?
+        @user.clear_verification_token
+        @user.update_pending_answers(session.id)
+        store_subscriptions
+      end
       @user.save!
       redirect_to edit_user_path, notice: 'Datos actualizados correctamente'
     else
@@ -35,11 +57,11 @@ class UsersController < ApplicationController
   private
 
   def create_user_params
-    params.require(:user).permit(:first_name, :last_name, :email, :password, :password_confirmation, :place_id)
+    params.require(:user).permit(:email)
   end
 
   def update_user_params
-    params.require(:user).permit(:first_name, :last_name, :email, :password, :password_confirmation, :current_password)
+    params.require(:user).permit(:first_name, :last_name, :email, :password, :password_confirmation, :current_password, :place_id)
   end
 
   def load_current_user
