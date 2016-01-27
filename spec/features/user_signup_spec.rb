@@ -6,8 +6,6 @@ RSpec.feature 'User signup' do
     click_link 'Levanta la mano'
     click_link 'No'
 
-    expect(page).to have_content('Puedes solicitar a tu alcalde que amplie la información sobre esta y otras partidas')
-
     fill_in 'user_email', with: 'bar@example.com'
     click_button 'Seguir'
 
@@ -26,6 +24,5 @@ RSpec.feature 'User signup' do
     click_button 'Enviar'
 
     expect(page).to have_content("Datos actualizados correctamente")
-    expect(page).to_not have_content("Venga, ya casi estamos")
   end
 end

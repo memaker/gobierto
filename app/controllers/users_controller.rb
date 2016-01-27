@@ -47,7 +47,7 @@ class UsersController < ApplicationController
         store_subscriptions
       end
       @user.save!
-      redirect_to edit_user_path, notice: 'Datos actualizados correctamente'
+      redirect_to root_path, notice: 'Datos actualizados correctamente'
     else
       flash.now.alert = 'No se han podido actualizar los datos'
       render 'edit'
