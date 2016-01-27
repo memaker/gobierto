@@ -47,7 +47,7 @@
     <div class="form_item_cont">
       <%= f.label :place_id, "Tu municipio" %>
       <% if f.object.place_id.blank? %>
-        <%= f.select :place_id, places_for_select, {}, {class: 'select2'} %>
+        <%= f.select :place_id, places_for_select, {include_blank: true}, {class: 'select2'} %>
         <div class="submit_item explanation"><small>(El municipio donde resides. Además de este podrás seguir a otros para recibir sus actualizaciones)</small></div>
       <% else %>
         <input type="text" value="<%= INE::Places::Place.find(f.object.place_id).name %>" class="i_text" disabled="true"/>
@@ -83,3 +83,30 @@
   </div>
 <% end %>
 
+<% content_for(:javascript) do %>
+  $('.select2').select2({
+    ajax: {
+      url: "/api/places",
+      dataType: 'json',
+      delay: 250,
+      data: function(params) {
+        return {
+          q: params.term
+        };
+      },
+      processResults: function(data) {
+        return {
+          results: $.map(data, function (item) {
+            return {
+              text: item.value,
+              id: item.data.id
+            }
+          })
+        };
+      },
+      cache: true
+    },
+    escapeMarkup: function (markup) { return markup; },
+    minimumInputLength: 3
+  });
+<% end %>

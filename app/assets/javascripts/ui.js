@@ -27,8 +27,6 @@ $(function(){
     rebindAll();
   }
 
-  $('.select2').select2();
-
   var searchOptions = {
     serviceUrl: '/search',
     onSelect: function(suggestion) {
@@ -136,7 +134,7 @@ $(function(){
     //e.preventDefault();
     //$(this).find('.inner').velocity("fadeIn", { duration: 50 });
   //});
-  
+
   $('#follow_link').click(function(e) {
     e.preventDefault();
     $('#user_email').focus();

@@ -63,6 +63,7 @@ Rails.application.routes.draw do
     get '/data/widget/population/:ine_code/:year' => 'data#population', as: :data_population
 
     get '/categories/:area/:kind' => 'categories#index'
+    get '/places' => 'places#index'
   end
 
 end
