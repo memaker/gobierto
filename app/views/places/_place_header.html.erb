@@ -17,9 +17,11 @@
 
   <div class="tools_cont">
     <div class="tools sticky">
-      <div class="modal_widget" id="follow">
-        <%= render 'places/follow_place' %>
-      </div>
+      <% if controller_name == 'places' %>
+        <div class="modal_widget" id="follow">
+          <%= render 'places/follow_place' %>
+        </div>
+      <% end %>
       <div class="modal_widget">
         <%= link_to '<span>Compara</span> <i class="fa fa-compass"></i>'.html_safe, '', class: 'tool_button' %>
         <div class="inner widget_compare">

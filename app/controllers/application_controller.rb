@@ -38,4 +38,12 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def store_subscriptions
+    if session[:follow]
+      subscription = current_user.subscriptions.create place_id: session[:follow]
+      @place = subscription.place
+      session[:follow] = nil
+    end
+  end
+
 end

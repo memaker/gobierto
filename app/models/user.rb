@@ -41,7 +41,9 @@ class User < ActiveRecord::Base
   end
 
   def get_subscriptions_on(place)
-    subscriptions.find_by(place_id: place.id)
+    if place
+      subscriptions.find_by(place_id: place.id)
+    end
   end
 
   private

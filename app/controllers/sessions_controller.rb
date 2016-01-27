@@ -10,12 +10,8 @@ class SessionsController < ApplicationController
 
     if user && user.authenticate(params[:session][:password])
       log_in user
-      user.update_pending_answers(session.id)
-      if session[:follow]
-        subscription = user.subscriptions.create place_id: session[:follow]
-        @place = subscription.place
-        session[:follow] = nil
-      end
+      current_user.update_pending_answers(session.id)
+      store_subscriptions
     else
       flash[:alert] = 'Credenciales incorrectas. Por favor, vuelve a intentarlo'
     end

@@ -44,6 +44,7 @@ class UsersController < ApplicationController
       if @user.pending_confirmation?
         @user.clear_verification_token
         @user.update_pending_answers(session.id)
+        store_subscriptions
       end
       @user.save!
       redirect_to edit_user_path, notice: 'Datos actualizados correctamente'
