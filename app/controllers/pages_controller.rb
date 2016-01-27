@@ -10,6 +10,9 @@ class PagesController < ApplicationController
   def pro
   end
 
+  def faq
+  end
+
   def request_access
     render layout: false
   end
