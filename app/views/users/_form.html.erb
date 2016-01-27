@@ -15,7 +15,7 @@
 
   <% if current_user.pending_confirmation? %>
     <h1>Venga, ya casi estamos</h1>
-    <p class="highlight">Confirma tus datos para </p>
+    <p class="highlight">Confirma tus datos para poder seguir las actualizaciones de los municipios que elijas, interactuar con tus representantes públicos, y más. Tus datos y opiniones serán siempre privados.</p>
   <% else %>
     <h1>Edita tus datos personales</h1>
   <% end %>
@@ -44,9 +44,10 @@
 
   <div class="form_item">
     <div class="form_item_cont">
-      <%= f.label :place_id, "Municipio" %>
+      <%= f.label :place_id, "Tu municipio" %>
       <% if f.object.place_id.blank? %>
-        <%= f.select :place_id, places_for_select, {}, {class: 'select2'} %>
+        <%= f.select :place_id, places_for_select, {}, {class: 'select2'} %> 
+        <div class="submit_item explanation"><small>(El municipio donde resides. Además de este podrás seguir a otros para recibir sus actualizaciones)</small></div>
       <% else %>
         <input type="text" value="<%= INE::Places::Place.find(f.object.place_id).name %>" class="i_text" disabled="true"/>
         <span style="color:red">*</span> <small><em>si quieres volver a cambiar tu municipio <%= link_to 'contacta con nosotros', about_path(anchor: 'contact') %></em></small>
