@@ -6,8 +6,6 @@
 
 <%= render partial: 'place_header' %>
 
-<%= render 'places/cta_block' %>
-
 <div class="main_metrics clearfix">
 
   <div class="metric selected"
@@ -48,7 +46,7 @@
   <div class="sep"></div>
 </div>
 
-<div class="ie_intro">
+<div class="ie_intro clearfix">
 
   <div class="col-1-2 ">
 
@@ -116,6 +114,8 @@
   </div>
 
 </div>
+
+<%= render 'places/cta_block' %>
 
 <script type="text/html" id="widget-template">
   <div class="label">{{title}}</div>
