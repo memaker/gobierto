@@ -53,6 +53,11 @@ module ApplicationHelper
     res
   end
 
+  def budget_line_description(area, code, kind)
+    area = (area == 'economic' ? EconomicArea : FunctionalArea)
+    area.all_descriptions[kind][code.to_s]
+  end
+
   def kind_literal(kind, plural = true)
     if kind == 'I'
       plural ? 'ingresos' : 'ingreso'
