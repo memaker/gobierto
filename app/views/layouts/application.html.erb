@@ -7,9 +7,9 @@
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
-  
+
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  
+
   <link rel="apple-touch-icon" sizes="57x57" href="<%= asset_path('favicons/apple-touch-icon-57x57.png') %>">
   <link rel="apple-touch-icon" sizes="60x60" href="<%= asset_path('favicons/apple-touch-icon-60x60.png') %>">
   <link rel="apple-touch-icon" sizes="72x72" href="<%= asset_path('favicons/apple-touch-icon-72x72.png') %>">
@@ -63,6 +63,9 @@
           <li><%= link_to 'Servicios', about_path(anchor: 'municipalities') %></li>
         </ul>
       </menu>
+
+      <div class="links_list" id="location">
+      </div>
 
       <% if logged_in? %>
       <div class="links_list personal_links">
