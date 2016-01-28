@@ -21,6 +21,9 @@ $(function(){
   $(document).on('click', '.popup', function(e){
     e.preventDefault();
     window.open($(this).attr("href"), "popupWindow", "width=600,height=600,scrollbars=yes");
+    if($(this).data('rel') !== undefined){
+      ga('send', 'event', 'Social Shares', 'Click', $(this).data('rel'), {nonInteraction: true});
+    }
   });
 
   if($(window).width() > 740) {
@@ -31,6 +34,7 @@ $(function(){
     serviceUrl: '/search',
     onSelect: function(suggestion) {
       if(suggestion.data.type == 'Place') {
+        ga('send', 'event', 'Place Search', 'Click', 'Search', {nonInteraction: true});
         window.location.href = '/places/' + suggestion.data.slug + '/2015';
       }
     },
@@ -116,10 +120,17 @@ $(function(){
   $('.switcher').hover(function(e) {
     e.preventDefault();
     $(this).find('ul').show();
-    // $(this).find('.current').hide();
   }, function(e) {
     $(this).find('ul').hide();
-    // $(this).find('.current').show();
+  });
+
+  $('.switcher').click(function(e){
+    ga('send', 'event', 'Year Selection', 'Click', 'ChangeYear', {nonInteraction: true});
+  });
+
+  $('.modal_widget').click(function(e) {
+    var eventLabel = $(this).attr('id');
+    ga('send', 'event', 'Header Tools', 'Click', eventLabel, {nonInteraction: true});
   });
 
   $('.modal_widget').hover(function(e) {
@@ -281,7 +292,7 @@ $(function(){
     e.preventDefault();
     var target = $(this).data('target');
     $('.ie_intro').css('min-height', ie_intro_height);
-    $(this).parents('div:eq(0)').velocity('fadeOut', 
+    $(this).parents('div:eq(0)').velocity('fadeOut',
       {
         duration: 100,
         complete: function(e) {
@@ -289,7 +300,7 @@ $(function(){
         }
       }
     );
-    
+
     window.incomeTreemap.render($('#income-treemap').data('economic-url'));
     window.expenseTreemap.render($('#expense-treemap').data('functional-url'));
   });
