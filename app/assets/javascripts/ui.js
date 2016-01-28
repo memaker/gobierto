@@ -125,6 +125,8 @@ $(function(){
   $('.modal_widget').hover(function(e) {
     e.preventDefault();
     $(this).find('.inner').velocity("fadeIn", { duration: 50 });
+    var eventLabel = $(this).attr('id');
+    ga('send', 'event', 'Header Tools', 'Hover', eventLabel, {nonInteraction: true});
   }, function(e) {
     $(this).find('.inner').velocity("fadeOut", { duration: 50 });
   });
@@ -275,11 +277,9 @@ $(function(){
   });
 
   var ie_intro_height = $('.ie_intro').height();
-
   $('[data-rel="cont-switch"]').click(function(e){
     e.preventDefault();
     var target = $(this).data('target');
-    // fix height
     $('.ie_intro').css('min-height', ie_intro_height);
     $(this).parents('div:eq(0)').velocity('fadeOut', 
       {
@@ -289,11 +289,14 @@ $(function(){
         }
       }
     );
-    // unfix height
     
-
     window.incomeTreemap.render($('#income-treemap').data('economic-url'));
     window.expenseTreemap.render($('#expense-treemap').data('functional-url'));
   });
 
+  // Google Analytics Events
+  $('.form_filters a').click(function(e) {
+    var eventLabel = $(this).attr('id');
+    ga('send', 'event', 'Expense Type Selector', 'Click', eventLabel, {nonInteraction: true});
+  })
 });

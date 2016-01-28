@@ -69,8 +69,8 @@
   <% if @kind == 'G' %>
     <div class="form_filters">
       <ul>
-        <li><%= link_to 'Económica', places_compare_path(@places.map(&:slug).join(':'),@year,@kind,'economic'), class: "#{'buttonSelected' if @area_name == 'economic'}" %></li>
-        <li><%= link_to 'Funcional', places_compare_path(@places.map(&:slug).join(':'),@year,@kind,'functional'), class: "#{'buttonSelected' if @area_name == 'functional'}" %></li>
+        <li><%= link_to 'Económica', places_compare_path(@places.map(&:slug).join(':'),@year,@kind,'economic'), class: "#{'buttonSelected' if @area_name == 'economic'}", id: 'Economica' %></li>
+        <li><%= link_to 'Funcional', places_compare_path(@places.map(&:slug).join(':'),@year,@kind,'functional'), class: "#{'buttonSelected' if @area_name == 'functional'}", id: 'Funcional' %></li>
       </ul>
     </div>
   <% end %>
