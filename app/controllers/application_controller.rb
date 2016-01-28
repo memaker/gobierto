@@ -7,8 +7,6 @@ class ApplicationController < ActionController::Base
 
   helper_method :reset_filters_parameters, :code_from_params
 
-  before_action :authenticate
-
   def render_404
     render file: "public/404", status: 404, layout: false, handlers: [:erb], formats: [:html]
   end
@@ -29,14 +27,6 @@ class ApplicationController < ActionController::Base
   end
 
   protected
-
-  def authenticate
-    return true unless Rails.env.production?
-
-    authenticate_or_request_with_http_basic do |username, password|
-      username == 'gobierto' && password == 'presupuestos'
-    end
-  end
 
   def store_subscriptions
     if session[:follow]
