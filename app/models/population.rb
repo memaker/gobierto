@@ -1,6 +1,8 @@
 class Population
   INDEX = 'data'
   TYPE = 'population'
+  FILTER_MIN = 0
+  FILTER_MAX = 5000000
 
   def self.for(ine_code, year)
     return for_places(ine_code, year) if ine_code.is_a?(Array)
@@ -43,7 +45,8 @@ class Population
     population_filter = filters.present? ? filters[:population] : {}
     response = population_query({year: year, to_rank: true, filters: population_filter})
     buckets = response['hits']['hits'].map{|h| h['_id']}
-    return buckets.index(id) + 1
+    position = buckets.index(id) ? buckets.index(id) + 1 : 0;
+    return position + 1
   end
 
   private
@@ -73,10 +76,6 @@ class Population
     query.merge!(size: options[:per_page]) if options[:per_page].present?
     query.merge!(from: options[:offset]) if options[:offset].present?
     query.merge!(_source: false) if options[:to_rank]
-
-    puts "options: #{options}"
-    puts "query:"
-    pp query
 
     SearchEngine.client.search index: Population::INDEX, type: Population::TYPE, body: query
   end

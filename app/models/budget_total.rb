@@ -30,52 +30,52 @@ class BudgetTotal
     return response['hits']['hits'].map{ |h| h['_source'] }
   end
 
-  def self.for_ranking(year, variable, offset, per_page)
-    query = {
-      sort: [ { variable.to_sym => { order: 'desc' } } ],
-      query: {
-        filtered: {
-          filter: {
-            bool: {
-              must: [ {term: { year: year }} ]
-            }
-          }
-        }
-      },
-      from: offset,
-      size: per_page
-    }
-    
-    response = SearchEngine.client.search index: BudgetTotal::INDEX, type: BudgetTotal::TYPE, body: query
+  def self.for_ranking(year, variable, offset, per_page, filters)
+    response = budget_total_query(year: year, variable: variable, filters: filters, offset: offset, per_page: per_page)
     results = response['hits']['hits'].map{|h| h['_source']}
     total_elements = response['hits']['total']
     return results, total_elements
   end
 
-  def self.place_position_in_ranking(year, variable, ine_code)
+  def self.place_position_in_ranking(year, variable, ine_code, filters)
+    response = budget_total_query(year: year, variable: variable, filters: filters, to_rank: true)
+
+    buckets = response['hits']['hits'].map{|h| h['_id']}
+    id = [ine_code, year].join('/')
+    position = buckets.index(id) ? buckets.index(id) + 1 : 0;
+    return position
+  end
+
+  def self.budget_total_query(options)
+    population_filter = options[:filters].present? ? options[:filters][:population] : nil
+    
+    if (population_filter && (population_filter[:from].to_i > Population::FILTER_MIN || population_filter[:to].to_i < Population::FILTER_MAX))
+      pop_results,total_elements = Population.for_ranking(options[:year], 0, nil, options[:filters])
+      ine_codes = pop_results.map{|p| p['ine_code']}
+    end
+
+    terms = [{term: { year: options[:year] }}]
+    terms << [{terms: { ine_code: ine_codes }}] if ine_codes
+    
     query = {
       sort: [
-        { variable.to_sym => { order: 'desc' } }
+        { options[:variable].to_sym => { order: 'desc' } }
       ],
       query: {
         filtered: {
           filter: {
             bool: {
-              must: [
-                {term: { year: year }}
-              ]
+              must: terms
             }
           }
         }
       },
-      size: 10_000,
-      _source: false
+      size: 10000
     }
-
-    id = [ine_code, year].join('/')
-
-    response = SearchEngine.client.search index: BudgetTotal::INDEX, type: BudgetTotal::TYPE, body: query
-    buckets = response['hits']['hits'].map{|h| h['_id']}
-    return buckets.index(id) + 1
+    query.merge!(size: options[:per_page]) if options[:per_page].present?
+    query.merge!(from: options[:offset]) if options[:offset].present?
+    query.merge!(_source: false) if options[:to_rank]
+    
+    SearchEngine.client.search index: BudgetTotal::INDEX, type: BudgetTotal::TYPE, body: query
   end
 end

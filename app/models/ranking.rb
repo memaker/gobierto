@@ -12,6 +12,7 @@ class Ranking
   end
 
   def self.page_from_position(position)
+    return 1 if position < 1
     (position.to_f / self.per_page.to_f).ceil
   end
 
@@ -31,7 +32,7 @@ class Ranking
     elsif variable == 'population'
       self.population_ranking(variable, year, offset, filters)
     else
-      self.total_budget_ranking(variable, year, offset)
+      self.total_budget_ranking(variable, year, offset, filters)
     end
 
     Kaminari.paginate_array(results, {limit: self.per_page, offset: offset, total_count: total_results})
@@ -53,7 +54,7 @@ class Ranking
         return Population.place_position_in_ranking(year, ine_code, filters)
       else
         field = (field == 'amount') ? 'total_budget' : 'total_budget_per_inhabitant'
-        return BudgetTotal.place_position_in_ranking(year, field, ine_code)
+        return BudgetTotal.place_position_in_ranking(year, field, ine_code, filters)
       end
     end
   end
@@ -101,14 +102,14 @@ class Ranking
     end, total_elements
   end
 
-  def self.total_budget_ranking(variable, year, offset)
+  def self.total_budget_ranking(variable, year, offset, filters)
     variable = if variable == 'amount'
                  'total_budget'
                else
                  'total_budget_per_inhabitant'
                end
     
-    results, total_elements = BudgetTotal.for_ranking(year, variable, offset, self.per_page)
+    results, total_elements = BudgetTotal.for_ranking(year, variable, offset, self.per_page, filters)
 
     places_ids = results.map {|h| h['ine_code']}
     population_results = Population.for_places(places_ids, year)
