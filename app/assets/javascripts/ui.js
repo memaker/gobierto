@@ -187,7 +187,7 @@ $(function(){
     return parent_url + '&amp;format=json';
   }
 
-    /* Tree navigation */
+  /* Tree navigation */
   $('.items').on('ajax:success', 'a[data-remote=true]', function(event, data, status, xhr) {
     $(this).addClass('extended');
     $(this).find('.fa').toggleClass('fa-plus-square-o fa-minus-square-o');
@@ -200,8 +200,9 @@ $(function(){
     $(this).find('.fa').toggleClass('fa-plus-square-o fa-minus-square-o');
     $(this).parents('tr').next('.child_group').remove();
 
-    if (window.treemap != undefined)
-      window.treemap.render(parent_treemap_url($(this).attr('href')));
+    var url = parent_treemap_url($(this).attr('href'));
+    window.incomeTreemap.render(url);
+    window.expenseTreemap.render(url);
   });
 
   $('.items').on('ajax:beforeSend', 'a:not(.extended)', function(event, xhr, settings) {
@@ -211,12 +212,12 @@ $(function(){
   });
 
   if($('#income-treemap').length > 0){
-    window.incomeTreemap = new TreemapVis('#income-treemap', 'big', false);
+    window.incomeTreemap = new TreemapVis('#income-treemap', 'big', true);
     window.incomeTreemap.render($('#income-treemap').data('economic-url'));
   }
 
   if($('#expense-treemap').length > 0){
-    window.expenseTreemap = new TreemapVis('#expense-treemap', 'big', false);
+    window.expenseTreemap = new TreemapVis('#expense-treemap', 'big', true);
     window.expenseTreemap.render($('#expense-treemap').data('functional-url'));
   }
 
@@ -231,28 +232,23 @@ $(function(){
     });
   }
 
-  if($('#treemap').length > 0){
-    window.treemap = new TreemapVis('#treemap', 'big', true);
-    window.treemap.render($('#treemap').data('url'));
-
-    // When the treemap is clicked, we extract the URL of the node
-    // and detect which is the link that expands the tree nodes with the
-    // children. That node is clicked, and it triggers the treemap re-rendering
-    $(document).on('click', '.treemap_node', function(e){
-      e.preventDefault();
-      // Remove all open tipsy
-      $('.tipsit-treemap').each(function(){
-        $(this).data('tipsy').hide();
-      });
-      var url = $(this).data('url');
-      var parser = document.createElement('a');
-      parser.href = url;
-      url = parser.pathname + parser.search;
-      var parts = url.split('?');
-      url = parts[0].split('.')[0] + '?' + parts[1];
-      $('a[href="'+ url + '"]').click();
+  // When the treemap is clicked, we extract the URL of the node
+  // and detect which is the link that expands the tree nodes with the
+  // children. That node is clicked, and it triggers the treemap re-rendering
+  $(document).on('click', '.treemap_node', function(e){
+    e.preventDefault();
+    // Remove all open tipsy
+    $('.tipsit-treemap').each(function(){
+      $(this).data('tipsy').hide();
     });
-  }
+    var url = $(this).data('url');
+    var parser = document.createElement('a');
+    parser.href = url;
+    url = parser.pathname + parser.search;
+    var parts = url.split('?');
+    url = parts[0].split('.')[0] + '?' + parts[1];
+    $('a[href="'+ url + '"]').click();
+  });
 
   $('header.place').bind('inview', function(event, isInView) {
     if (isInView) {
