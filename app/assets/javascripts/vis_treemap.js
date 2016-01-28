@@ -16,7 +16,8 @@ var TreemapVis = Class.extend({
     this.treemap = null;
     this.container = null;
 
-    var colors = ['#FFD100', '#FE7000', '#ED2F00', '#940099', '#487304', '#4A73B0', '#1B4145', '#444300', '#24190E'];
+    // var colors = ['#FFD100', '#FE7000', '#ED2F00', '#940099', '#487304', '#4A73B0', '#1B4145', '#444300', '#24190E'];
+    var colors = ['#FFBCC8', '#FF6181', '#EE2657', '#8C3044', '#516773', '#427991', '#1F3F4F', '#473D3F', '#24191B'];
     this.colorScale = d3.scale.ordinal().range(colors);
 
     this.opacity = 1;
