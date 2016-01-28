@@ -20,10 +20,8 @@ class PlacesController < ApplicationController
     options[:parent_code] = params[:parent_code] if params[:parent_code].present?
 
     @budget_lines = BudgetLine.search(options)
-    @no_data = @budget_lines['hits'].empty?
 
     respond_to do |format|
-      format.html
       format.json do
         data_line = Data::Treemap.new place: @place, year: @year, kind: @kind, type: @area_name, parent_code: params[:parent_code]
         render json: data_line.generate_json
