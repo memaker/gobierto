@@ -49,6 +49,8 @@
 
   <div class="cont-expenses">
     <header class="cat expenses">
+      <h2><%= link_to 'Ingresos', '#', data: {rel: 'cont-switch', target: 'cont-income'} %></h2>
+      <span class="sep">|</span>
       <h2>Gastos</h2>
 
       <div class="form_filters">
@@ -57,8 +59,6 @@
           <li><%= link_to 'Funcional', place_path(@place.slug, @year, {area: 'functional'}), remote: true, class: 'toggle buttonSelected' %></li>
         </ul>
       </div>
-
-      | <h2><%= link_to 'Ingresos', '#', data: {rel: 'cont-switch', target: 'cont-income'} %></h2>
 
       <div id="total_expense_budget" class="qty"><%= number_to_currency @expense_lines['aggregations']['total_budget']['value'], precision: 0 %></div>
     </header>
@@ -78,7 +78,8 @@
   <div class="cont-income hidden">
     <header class="cat incomes">
       <h2>Ingresos</h2>
-      | <h2><%= link_to 'Gastos', '#', data: {rel: 'cont-switch', target: 'cont-expenses'} %></h2>
+      <span class="sep">|</span>
+      <h2><%= link_to 'Gastos', '#', data: {rel: 'cont-switch', target: 'cont-expenses'} %></h2>
       <div class="qty"><%= number_to_currency @income_lines['aggregations']['total_budget']['value'], precision: 0 %></div>
     </header>
 

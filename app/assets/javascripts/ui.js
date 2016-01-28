@@ -278,10 +278,23 @@ $(function(){
     window.location.href = $(this).data('link');
   });
 
+  var ie_intro_height = $('.ie_intro').height();
+
   $('[data-rel="cont-switch"]').click(function(e){
     e.preventDefault();
-    $(this).parents('div:eq(0)').addClass('hidden');
-    $('.' + $(this).data('target')).removeClass('hidden');
+    var target = $(this).data('target');
+    // fix height
+    $('.ie_intro').css('min-height', ie_intro_height);
+    $(this).parents('div:eq(0)').velocity('fadeOut', 
+      {
+        duration: 100,
+        complete: function(e) {
+          $('.' + target).velocity('fadeIn', {duration: 100});
+        }
+      }
+    );
+    // unfix height
+    
 
     window.incomeTreemap.render($('#income-treemap').data('economic-url'));
     window.expenseTreemap.render($('#expense-treemap').data('functional-url'));
