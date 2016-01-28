@@ -1335,7 +1335,7 @@ a.list_view_more {
   table {
     margin: 0 0 2em 0;
     td:not(:last-child) {
-      font-size: .95em;  
+      font-size: 1.1em;  
       border-bottom: 1px solid #DFDFDF;
       @include screen(740) {
         font-size: .8em;
@@ -1393,6 +1393,10 @@ a.list_view_more {
     }
     tr.child_group {
       td {
+        table {
+          margin-bottom: 0;
+        }
+        
         .child_tb_cont {
           font-size: .95em;
           background: #F5F4F4;
@@ -1407,12 +1411,25 @@ a.list_view_more {
         tr.child_group {
           td {
             .child_tb_cont {
-              background: #E4E2E2;  
+              background: #ECECEC;  
               @include border-radius(6px);
               margin: 0 0 0 20px;
               padding: 10px 20px;
               td.bar_cont {
                 width: 60px;
+              }
+            }
+          }
+          tr.child_group {
+            td {
+              padding-top: 4px;
+              .child_tb_cont {
+                // background: #FFF;  
+                margin: 0;
+                padding: 0 5px 0px 20px;
+                td.bar_cont {
+                  width: 60px;
+                }
               }
             }
           }
