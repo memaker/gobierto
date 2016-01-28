@@ -46,6 +46,65 @@ class BudgetLine < OpenStruct
     return self.search(options)['hits'][0]
   end
 
+  def self.for_ranking(options)
+    query = {
+      sort: [ { options[:variable].to_sym => { order: 'desc' } } ],
+      query: {
+        filtered: {
+          filter: {
+            bool: {
+              must: [
+                {term: { year: options[:year] }},
+                {term: { kind: options[:kind] }},
+                {term: { code: options[:code] }}
+              ]
+            }
+          }
+        }
+      },
+      from: options[:offset],
+      size: options[:per_page]
+    }
+
+    puts "for_ranking: "
+    pp query
+    
+    response = SearchEngine.client.search index: BudgetLine::INDEX, type: options[:area_name], body: query
+    results = response['hits']['hits'].map{|h| h['_source']}
+    total_elements = response['hits']['total']
+
+    return results, total_elements
+  end
+
+  def self.place_position_in_ranking(options)
+    query = {
+      sort: [ { options[:field].to_sym => { order: 'desc' } } ],
+      query: {
+        filtered: {
+          filter: {
+            bool: {
+              must: [
+                {term: { year: options[:year] }},
+                {term: { kind: options[:kind] }},
+                {term: { code: options[:code] }}
+              ]
+            }
+          }
+        }
+      },
+      size: 10_000,
+      _source: false
+    }
+
+    id = %w{ine_code year code kind}.map {|f| options[f.to_sym]}.join('/')
+    puts "place_position_in_ranking: "
+    pp query
+
+    response = SearchEngine.client.search index: BudgetLine::INDEX, type: options[:area], body: query
+    buckets = response['hits']['hits'].map{|h| h['_id']}
+    return buckets.index(id) + 1
+  end
+
   def self.compare(options)
     terms = [{terms: { ine_code: options[:ine_codes] }},
              {term: { level: options[:level] }},

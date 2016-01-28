@@ -2,7 +2,6 @@
 //= require jquery.turbolinks
 //= require jquery_ujs
 //= require turbolinks
-
 //= require vendor/velocity.min
 //= require vendor/jquery.sticky
 //= require vendor/tipsy
@@ -15,6 +14,7 @@
 //= require vendor/select2.min
 //= require vendor/klass
 //= require vendor/jquery.inview
+//= require vendor/nouislider
 //= require vis_treemap
 //= require vis_lineas_tabla
 //= require widget_renderer

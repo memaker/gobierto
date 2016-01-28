@@ -15,8 +15,9 @@ class Population
     population_query_results(year: year)
   end
 
-  def self.for_ranking(year, offset, per_page)
-    response = population_query(year: year, offset: offset, per_page: per_page,)
+  def self.for_ranking(year, offset, per_page, filters)
+    population_filter = filters.present? ? filters[:population] : {}
+    response = population_query(year: year, offset: offset, per_page: per_page, filters: population_filter)
     total_elements = response['hits']['total']
     return response['hits']['hits'].map{|h| h['_source']}, total_elements
   end
@@ -37,12 +38,21 @@ class Population
     }
   end
 
+  def self.place_position_in_ranking(year, ine_code, filters)
+    id = [ine_code, year].join('/')
+    population_filter = filters.present? ? filters[:population] : {}
+    response = population_query({year: year, to_rank: true, filters: population_filter})
+    buckets = response['hits']['hits'].map{|h| h['_id']}
+    return buckets.index(id) + 1
+  end
+
   private
   def self.population_query(options)
     terms = []
     terms << {terms: { ine_code: options[:ine_codes] }} if options[:ine_codes].present?
     terms << {term: { ine_code: options[:ine_code] }} if options[:ine_code].present?
     terms << {term: { year: options[:year] }}
+    terms << {range: { value: { gte: options[:filters][:from].to_i, lte: options[:filters][:to].to_i} }} if options[:filters].present?
 
     query = {
       sort: [
@@ -60,8 +70,13 @@ class Population
       size: 10_000
     }
 
-    query[:size] = options[:per_page] if options[:per_page].present?
-    query[:from] = options[:offset] if options[:offset].present?
+    query.merge!(size: options[:per_page]) if options[:per_page].present?
+    query.merge!(from: options[:offset]) if options[:offset].present?
+    query.merge!(_source: false) if options[:to_rank]
+
+    puts "options: #{options}"
+    puts "query:"
+    pp query
 
     SearchEngine.client.search index: Population::INDEX, type: Population::TYPE, body: query
   end

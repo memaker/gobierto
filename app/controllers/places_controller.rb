@@ -55,12 +55,12 @@ class PlacesController < ApplicationController
   end
 
   def ranking
+    @filters = params[:filters]
     if @place && params[:page].nil?
-      place_position = Ranking.place_position(year: @year, ine_code: @place.id, code: @code, kind: @kind, area: @area_name, field: @variable)
-      render_404 and return if place_position.nil?
+      place_position = Ranking.place_position(year: @year, ine_code: @place.id, code: @code, kind: @kind, area: @area_name, field: @variable, filters: @filters)
 
       page = Ranking.page_from_position(place_position)
-      redirect_to url_for(params.merge(page: page))
+      redirect_to url_for(params.merge(page: page)) and return
     end
 
     @per_page = Ranking.per_page
@@ -68,8 +68,12 @@ class PlacesController < ApplicationController
     render_404 and return if @page <= 0
 
     @compared_level = params[:code] ? (params[:code].include?('-') ? params[:code].split('-').first.length : params[:code].length) : 0
-
-    @ranking_items = Ranking.query({year: @year, variable: @variable, page: @page, code: @code, kind: @kind, area_name: @area_name})
+    @ranking_items = Ranking.query({year: @year, variable: @variable, page: @page, code: @code, kind: @kind, area_name: @area_name, filters: @filters})
+    
+    respond_to do |format|
+      format.html
+      format.js
+    end
   end
 
   private

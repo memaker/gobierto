@@ -278,6 +278,42 @@ $(function(){
     $('a[href="'+ url + '"]').click();
   });
 
+  if ($('.filters').length > 0) {
+    var pop_slider = document.getElementById('filter_size');
+
+    noUiSlider.create(pop_slider, {
+      start: [0, 5000000],
+      snap: true,
+      connect: true,
+      range: {
+        'min': 0,
+        '10%':1000,
+        '20%':5000,
+        '30%':10000,
+        '40%':25000,
+        '50%':50000,
+        '60%':100000,
+        '70%':200000,
+        '80%':500000,
+        'max': 5000000
+      }
+    });
+    
+    pop_slider.noUiSlider.on('update', function( values, handle ) {
+      $('#size_value_' + handle).text(parseInt(values[handle]));
+    });    
+
+    pop_slider.noUiSlider.on('change', function( values, handle ) {
+      var ranking_url = $('[data-ranking-url]').data('ranking-url');
+      ranking_url+= "&filters[population][from]=" + parseInt(values[0]);
+      ranking_url+= "&filters[population][to]=" + parseInt(values[1]);
+      console.log(ranking_url);
+      $.ajax(ranking_url);
+    });
+
+  }
+
+
   $('header.place').bind('inview', function(event, isInView) {
     if (isInView) {
       $('.tools').css('z-index', 10);

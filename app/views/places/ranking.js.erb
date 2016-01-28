@@ -1,0 +1,2 @@
+$('#ranking-table').replaceWith("<%= j(render partial: 'places/ranking_table') %>")
+$('.pagination').replaceWith("<%= j(paginate @ranking_items) %>")

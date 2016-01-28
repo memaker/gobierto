@@ -7,6 +7,7 @@
 @import "vendor/tipsy";
 @import "vendor/jquery.dynatable";
 @import "vendor/quill.snow";
+@import "vendor/nouislider";
 // @import "vendor/pickadate/classic";
 // @import "vendor/pickadate/classic.date";
 // @import "vendor/pickadate/classic.time";
@@ -21,7 +22,6 @@
 // @import "vis_dispersion";
 // @import "vis_evolution";
 // @import "vis_lineas_j";
-
 @import "treemap";
 @import "vis_lineas_tabla";
 
@@ -2486,11 +2486,32 @@ menu.sections {
     border: 1px solid #CCC;
     height: 100px;
   }
-
-
 }
 
+.filters {
+  height:100px;
+  background-color: $color_3_soft;
+  margin-bottom: 25px;
+  padding:20px 20px 0px;
 
+  ul { 
+    width:100%;
+    margin:0px;
+    padding: 0px;
+  }
+
+  li {
+    list-style-type: none;
+    display:inline-block;
+    width: 24%;
+    font-size: 11px;
+    span {
+      font-size: 11px;
+      font-weight: bold;
+      color: $text;
+    }
+  }
+}
 
 /*
  * Pre Home
