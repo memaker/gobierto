@@ -217,7 +217,7 @@ $(function(){
 
   if($('#expense-treemap').length > 0){
     window.expenseTreemap = new TreemapVis('#expense-treemap', 'small', false);
-    window.expenseTreemap.render($('#expense-treemap').data('economic-url'));
+    window.expenseTreemap.render($('#expense-treemap').data('functional-url'));
   }
 
   if($('#lines_chart').length > 0){

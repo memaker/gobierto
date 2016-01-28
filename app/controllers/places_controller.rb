@@ -74,7 +74,7 @@ class PlacesController < ApplicationController
     @place = INE::Places::Place.find params[:ine_code] if params[:ine_code].present?
     @kind = ( %w{income i}.include?(params[:kind].downcase) ? BudgetLine::INCOME : BudgetLine::EXPENSE ) if action_name != 'show' && params[:kind]
     @kind ||= BudgetLine::EXPENSE if action_name == 'ranking'
-    @area_name = params[:area] || 'economic'
+    @area_name = params[:area] || 'functional'
     @year = params[:year]
     @code = code_from_params(params[:code]) if params[:code].present?
     if params[:variable].present?
