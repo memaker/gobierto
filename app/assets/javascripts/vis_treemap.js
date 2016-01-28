@@ -66,7 +66,7 @@ var TreemapVis = Class.extend({
             }
           }.bind(this))
         .attr("title", function(d){ 
-          return "<strong>" + d.name + "</strong><br>" + accounting.formatMoney(d.budget) + "<br>" + d.budget_per_inhabitant + "€/habitante";
+          return "<strong>" + d.name + "</strong><br>" + accounting.formatMoney(d.budget, "€", 0, '.') + "<br>" + accounting.formatMoney(d.budget_per_inhabitant, "€", 0, ',') + " /hab";
         }.bind(this))
         .attr("data-url", function(d){ 
           if(this.clickable){
@@ -81,7 +81,7 @@ var TreemapVis = Class.extend({
           } else {
             // If the square is small, don't add the text
             if(d.dx > 70 && d.dy > 90) {
-              return "<p><strong>" + d.name + "</strong></p><p>" + d.budget_per_inhabitant + "€/habitante</p>";
+              return "<p><strong>" + d.name + "</strong></p><p>" + accounting.formatMoney(d.budget_per_inhabitant, "€", 0) + "/hab</p>";
             }
           }
         })
