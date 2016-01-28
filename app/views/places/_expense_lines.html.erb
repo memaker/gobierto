@@ -1,0 +1,13 @@
+<tr>
+  <th>
+    <input type="text" placeholder="Busca partidas de gastos" class="search_items search_categories_budget" data-search-url="<%= search_categories_path(@place.slug,@year, area_name, BudgetLine::EXPENSE) %>">
+  </th>
+  <th class="right "><%= kind_literal(BudgetLine::EXPENSE, false) %> total</th>
+  <th class="right "><%= kind_literal(BudgetLine::EXPENSE, false) %> por hab.</th>
+  <th class="right ">% s/ total</th>
+  <th></th>
+</tr>
+<%= render partial: 'places/budget_lines',
+           collection: @expense_lines['hits'],
+           as: 'budget_line',
+           locals: { total_budget: @expense_lines['aggregations']['total_budget']['value'], kind: BudgetLine::EXPENSE, area_name: area_name } %>

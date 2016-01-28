@@ -43,7 +43,7 @@ $(function(){
     $('.global .desktop').toggle();
   });
 
-  var $searchBudget = $('#search_categories_budget');
+  var $searchBudget = $('.search_categories_budget');
   var searchCategoriesOptions = {
     serviceUrl: $searchBudget.data('search-url'),
     onSelect: function(suggestion) {
@@ -211,12 +211,12 @@ $(function(){
   });
 
   if($('#income-treemap').length > 0){
-    window.incomeTreemap = new TreemapVis('#income-treemap', 'small', false);
+    window.incomeTreemap = new TreemapVis('#income-treemap', 'big', false);
     window.incomeTreemap.render($('#income-treemap').data('economic-url'));
   }
 
   if($('#expense-treemap').length > 0){
-    window.expenseTreemap = new TreemapVis('#expense-treemap', 'small', false);
+    window.expenseTreemap = new TreemapVis('#expense-treemap', 'big', false);
     window.expenseTreemap.render($('#expense-treemap').data('functional-url'));
   }
 
@@ -264,10 +264,6 @@ $(function(){
     }
   });
 
-  $('.ie_intro .items table').click(function(e) {
-    window.location.href = $(this).data("url");
-  });
-
   $('.tabs li a').click(function(e) {
     e.preventDefault();
     $(this).parent().parent().find('li a').removeClass('active');
@@ -280,6 +276,15 @@ $(function(){
   $('[data-link]').click(function(e){
     e.preventDefault();
     window.location.href = $(this).data('link');
+  });
+
+  $('[data-rel="cont-switch"]').click(function(e){
+    e.preventDefault();
+    $(this).parents('div:eq(0)').addClass('hidden');
+    $('.' + $(this).data('target')).removeClass('hidden');
+
+    window.incomeTreemap.render($('#income-treemap').data('economic-url'));
+    window.expenseTreemap.render($('#expense-treemap').data('functional-url'));
   });
 
 });

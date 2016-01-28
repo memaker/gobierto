@@ -1,5 +1,4 @@
 <%
-
   @title = "Presupuestos municipales de #{@place.name} para el #{@year}"
   set_meta_tags title: @title
 %>
@@ -48,34 +47,7 @@
 
 <div class="ie_intro clearfix">
 
-  <div class="col-1-2 ">
-
-    <header class="cat incomes">
-      <h2>Ingresos</h2>
-      <div class="qty"><%= number_to_currency @income_lines['aggregations']['total_budget']['value'], precision: 0 %></div>
-    </header>
-
-    <div class="graph" id="income-treemap" data-economic-url="<%= place_budget_path(@place.slug, @year, BudgetLine::INCOME, 'economic', format: :json) %>">
-    </div>
-
-    <div class="items">
-      <table data-url="<%= place_budget_path(@place.slug, @year, 'income', 'economic') %>">
-        <%= render  partial: 'places/place_budget_lines',
-                    collection: @income_lines['hits'],
-                    as: 'budget_line',
-                    locals: { area: 'economic',
-                              kind: 'I',
-                              total_budget: @income_lines['aggregations']['total_budget']['value']} %>
-      </table>
-
-      <div class="show_all">
-        <%= link_to 'Ver desglose de ingresos', place_budget_path(@place.slug, @year, 'income', 'economic'), class: 'list_view_more' %>
-      </div>
-    </div>
-  </div>
-
-  <div class="col-2-2 ">
-
+  <div class="cont-expenses">
     <header class="cat expenses">
       <h2>Gastos</h2>
 
@@ -86,6 +58,8 @@
         </ul>
       </div>
 
+      | <h2><%= link_to 'Ingresos', '#', data: {rel: 'cont-switch', target: 'cont-income'} %></h2>
+
       <div id="total_expense_budget" class="qty"><%= number_to_currency @expense_lines['aggregations']['total_budget']['value'], precision: 0 %></div>
     </header>
 
@@ -94,23 +68,40 @@
                        data-economic-url="<%= place_budget_path(@place.slug, @year, BudgetLine::EXPENSE, 'economic', format: :json) %>">
     </div>
 
-
     <div class="items">
-      <table id="expense_lines" data-url="<%= place_budget_path(@place.slug, @year, 'expense', {area: @area_name} ) %>">
-        <%= render  partial: 'places/place_budget_lines',
-                    collection: @expense_lines['hits'],
-                    as: 'budget_line',
-                    locals: { area: @area_name,
-                              kind: 'G',
-                              total_budget: @expense_lines['aggregations']['total_budget']['value']} %>
+      <table id="expense_lines">
+        <%= render partial: 'places/expense_lines', locals: { area_name: @area_name } %>
       </table>
+    </div>
+  </div>
 
-      <div class="show_all">
-        <%= link_to 'Ver desglose de gastos', place_budget_path(@place.slug, @year, 'expense', {area: @area_name} ), class: 'list_view_more', id: 'show_expenses_link' %>
-      </div>
+  <div class="cont-income hidden">
+    <header class="cat incomes">
+      <h2>Ingresos</h2>
+      | <h2><%= link_to 'Gastos', '#', data: {rel: 'cont-switch', target: 'cont-expenses'} %></h2>
+      <div class="qty"><%= number_to_currency @income_lines['aggregations']['total_budget']['value'], precision: 0 %></div>
+    </header>
 
+    <div class="graph" id="income-treemap" data-economic-url="<%= place_budget_path(@place.slug, @year, BudgetLine::INCOME, 'economic', format: :json) %>">
     </div>
 
+    <div class="items">
+      <table>
+      <tr>
+        <th>
+          <input type="text" placeholder="Busca partidas de ingresos" class="search_items search_categories_budget" data-search-url="<%= search_categories_path(@place.slug,@year, 'economic', BudgetLine::INCOME) %>">
+        </th>
+        <th class="right "><%= kind_literal(BudgetLine::INCOME, false) %> total</th>
+        <th class="right "><%= kind_literal(BudgetLine::INCOME, false) %> por hab.</th>
+        <th class="right ">% s/ total</th>
+        <th></th>
+      </tr>
+      <%= render partial: 'places/budget_lines',
+                  collection: @income_lines['hits'],
+                  as: 'budget_line',
+                  locals: { total_budget: @income_lines['aggregations']['total_budget']['value'], kind: BudgetLine::INCOME, area_name: 'economic' } %>
+      </table>
+    </div>
   </div>
 
 </div>
