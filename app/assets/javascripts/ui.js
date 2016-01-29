@@ -214,8 +214,10 @@ $(function(){
     $(this).parents('tr').next('.child_group').remove();
 
     var url = parent_treemap_url($(this).attr('href'));
-    window.incomeTreemap.render(url);
-    window.expenseTreemap.render(url);
+    if ($('#income-treemap').is(':visible'))
+      window.incomeTreemap.render(url);
+    if ($('#expense-treemap').is(':visible'))
+      window.expenseTreemap.render(url);
   });
 
   $('.items').on('ajax:beforeSend', 'a:not(.extended)', function(event, xhr, settings) {
@@ -296,13 +298,20 @@ $(function(){
       {
         duration: 100,
         complete: function(e) {
-          $('.' + target).velocity('fadeIn', {duration: 100});
+          $('.' + target).velocity('fadeIn', {
+            duration: 100,
+            complete: function(e) {
+              if (target.indexOf('income') > 1) {
+                window.incomeTreemap.render($('#income-treemap').data('economic-url'));
+              }
+              else {
+                window.expenseTreemap.render($('#expense-treemap').data('functional-url'));
+              }
+            }});
         }
       }
     );
-
-    window.incomeTreemap.render($('#income-treemap').data('economic-url'));
-    window.expenseTreemap.render($('#expense-treemap').data('functional-url'));
+    
   });
 
   // Google Analytics Events

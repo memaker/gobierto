@@ -31,7 +31,7 @@ var TreemapVis = Class.extend({
     this.containerWidth = parseInt(d3.select(this.containerId).style('width'), 10);
     this.width = this.containerWidth - this.margin.left - this.margin.right;
     this.height = (this.containerWidth / this.sizeFactor) - this.margin.top - this.margin.bottom;
-
+    
     this.container = d3.select(this.containerId)
       .style("position", "relative")
       .style("width", (this.width + this.margin.left + this.margin.right) + "px")
