@@ -24,7 +24,7 @@ class UsersController < ApplicationController
         end
       end
       format.js do
-        created ? render('created') : render('login')
+        (created || @user.pending_confirmation?) ? render('created') : render('login')
       end
     end
   end
