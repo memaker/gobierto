@@ -1,6 +1,8 @@
 class BudgetTotal
   INDEX = 'budgets-forecast'
   TYPE = 'total-budget'
+  TOTAL_FILTER_MIN = 0
+  TOTAL_FILTER_MAX = 5000000000
 
   def self.for(ine_code, year)
     return for_places(ine_code, year) if ine_code.is_a?(Array)
@@ -47,15 +49,22 @@ class BudgetTotal
   end
 
   def self.budget_total_query(options)
-    population_filter = options[:filters].present? ? options[:filters][:population] : nil
+    terms = [{term: { year: options[:year] }}]
+
+    if options[:filters].present?
+      population_filter =  options[:filters][:population]
+      total_filter = options[:filters][:total]
+    end
     
     if (population_filter && (population_filter[:from].to_i > Population::FILTER_MIN || population_filter[:to].to_i < Population::FILTER_MAX))
       pop_results,total_elements = Population.for_ranking(options[:year], 0, nil, options[:filters])
       ine_codes = pop_results.map{|p| p['ine_code']}
+      terms << [{terms: { ine_code: ine_codes }}] if ine_codes.any?
     end
 
-    terms = [{term: { year: options[:year] }}]
-    terms << [{terms: { ine_code: ine_codes }}] if ine_codes
+    if (total_filter && (total_filter[:from].to_i > BudgetTotal::TOTAL_FILTER_MIN || total_filter[:to].to_i < BudgetTotal::TOTAL_FILTER_MAX))
+      terms << {range: { total_budget: { gte: total_filter[:from].to_i, lte: total_filter[:to].to_i} }}
+    end
     
     query = {
       sort: [

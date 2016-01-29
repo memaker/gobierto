@@ -3,7 +3,7 @@ $(function () {
     function updateRanking() {
       var ranking_url = $('[data-ranking-url]').data('ranking-url');
       var params = ""
-      $('#filter_population').each(function() {
+      $('#filter_population, #filter_total').each(function() {
         var values = this.noUiSlider.get();
         var filter_name = this.id.replace('filter_','');
         params+= "&filters[" + filter_name + "][from]=" + parseInt(values[0]);
@@ -74,7 +74,7 @@ $(function () {
     });
 
     tot_slider.noUiSlider.on('change', function( values, handle ) {
-      // updateRanking();
+      updateRanking();
     });
   }
 });
