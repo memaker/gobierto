@@ -3,7 +3,7 @@ $(function () {
     function updateRanking() {
       var ranking_url = $('[data-ranking-url]').data('ranking-url');
       var params = ""
-      $('#filter_population, #filter_total').each(function() {
+      $('#filter_population, #filter_total, #filter_per_inhabitant').each(function() {
         var values = this.noUiSlider.get();
         var filter_name = this.id.replace('filter_','');
         params+= "&filters[" + filter_name + "][from]=" + parseInt(values[0]);
@@ -14,7 +14,6 @@ $(function () {
     }
 
     var pop_slider = document.getElementById('filter_population');
-
     noUiSlider.create(pop_slider, {
       start: [0, 5000000],
       snap: true,
@@ -42,7 +41,6 @@ $(function () {
     });
 
     var tot_slider = document.getElementById('filter_total');
-
     noUiSlider.create(tot_slider, {
       start: [0, 5000000000],
       snap: true,
@@ -74,6 +72,36 @@ $(function () {
     });
 
     tot_slider.noUiSlider.on('change', function( values, handle ) {
+      updateRanking();
+    });
+
+    var inh_slider = document.getElementById('filter_per_inhabitant');
+    noUiSlider.create(inh_slider, {
+      start: [0, 20000],
+      snap: true,
+      connect: true,
+      range: {
+        'min':0,
+        '11%':500,
+        '18%':600,
+        '25%':700,
+        '31%':800,
+        '38%':900,
+        '45%':1000,
+        '50%':1500,
+        '60%':2000,
+        '70%':5000,
+        '80%':7500,
+        '90%':10000,
+        'max':20000
+      }
+    });
+
+    inh_slider.noUiSlider.on('update', function( values, handle ) {
+      $('#per_inhabitant_value_' + handle).text(parseInt(values[handle]));
+    });
+
+    inh_slider.noUiSlider.on('change', function( values, handle ) {
       updateRanking();
     });
   }

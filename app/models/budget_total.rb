@@ -3,6 +3,8 @@ class BudgetTotal
   TYPE = 'total-budget'
   TOTAL_FILTER_MIN = 0
   TOTAL_FILTER_MAX = 5000000000
+  PER_INHABITANT_FILTER_MIN = 0
+  PER_INHABITANT_FILTER_MAX = 20000
 
   def self.for(ine_code, year)
     return for_places(ine_code, year) if ine_code.is_a?(Array)
@@ -54,6 +56,7 @@ class BudgetTotal
     if options[:filters].present?
       population_filter =  options[:filters][:population]
       total_filter = options[:filters][:total]
+      per_inhabitant_filter = options[:filters][:per_inhabitant]
     end
     
     if (population_filter && (population_filter[:from].to_i > Population::FILTER_MIN || population_filter[:to].to_i < Population::FILTER_MAX))
@@ -64,6 +67,10 @@ class BudgetTotal
 
     if (total_filter && (total_filter[:from].to_i > BudgetTotal::TOTAL_FILTER_MIN || total_filter[:to].to_i < BudgetTotal::TOTAL_FILTER_MAX))
       terms << {range: { total_budget: { gte: total_filter[:from].to_i, lte: total_filter[:to].to_i} }}
+    end
+
+    if (per_inhabitant_filter && (per_inhabitant_filter[:from].to_i > BudgetTotal::PER_INHABITANT_FILTER_MIN || per_inhabitant_filter[:to].to_i < BudgetTotal::PER_INHABITANT_FILTER_MAX))
+      terms << {range: { total_budget_per_inhabitant: { gte: per_inhabitant_filter[:from].to_i, lte: per_inhabitant_filter[:to].to_i} }}
     end
     
     query = {
