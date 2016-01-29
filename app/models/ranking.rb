@@ -75,7 +75,7 @@ class Ranking
       id = h['ine_code']
       Item.new({
         place: INE::Places::Place.find(id),
-        population: population_results.detect{|h| h['ine_code'] == id}['value'],
+        population: population_results.detect{|h| h['ine_code'] == id}.try(:[],'value'),
         amount_per_inhabitant: h['amount_per_inhabitant'],
         amount: h['amount'],
         total: total_results.detect{|h| h['ine_code'] == id}['total_budget']
@@ -118,7 +118,7 @@ class Ranking
       id = h['ine_code']
       Item.new({
         place: INE::Places::Place.find(id),
-        population: population_results.detect{|h| h['ine_code'] == id}['value'],
+        population: population_results.detect{|h| h['ine_code'] == id}.try(:[],'value'),
         amount_per_inhabitant: h['total_budget_per_inhabitant'],
         amount: h['total_budget'],
         total: h['total_budget']
