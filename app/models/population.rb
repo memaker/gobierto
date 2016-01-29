@@ -18,8 +18,7 @@ class Population
   end
 
   def self.for_ranking(year, offset, per_page, filters)
-    population_filter = filters.present? ? filters[:population] : {}
-    response = population_query(year: year, offset: offset, per_page: per_page, filters: population_filter)
+    response = population_query(year: year, offset: offset, per_page: per_page, filters: filters)
     total_elements = response['hits']['total']
     return response['hits']['hits'].map{|h| h['_source']}, total_elements
   end
@@ -42,8 +41,7 @@ class Population
 
   def self.place_position_in_ranking(year, ine_code, filters)
     id = [ine_code, year].join('/')
-    population_filter = filters.present? ? filters[:population] : {}
-    response = population_query({year: year, to_rank: true, filters: population_filter})
+    response = population_query({year: year, to_rank: true, filters: filters})
     buckets = response['hits']['hits'].map{|h| h['_id']}
     position = buckets.index(id) ? buckets.index(id) + 1 : 0;
     return position + 1
@@ -55,7 +53,21 @@ class Population
     terms << {terms: { ine_code: options[:ine_codes] }} if options[:ine_codes].present?
     terms << {term: { ine_code: options[:ine_code] }} if options[:ine_code].present?
     terms << {term: { year: options[:year] }}
-    terms << {range: { value: { gte: options[:filters][:from].to_i, lte: options[:filters][:to].to_i} }} if options[:filters].present?
+
+    if options[:filters].present?
+      population_filter =  options[:filters][:population]
+      total_filter = options[:filters][:total]
+    end
+
+    if (total_filter && (total_filter[:from].to_i > BudgetTotal::TOTAL_FILTER_MIN || total_filter[:to].to_i < BudgetTotal::TOTAL_FILTER_MAX))
+      results,total_elements = BudgetTotal.for_ranking(options[:year], 'total_budget', 0, nil, {total: total_filter})
+      ine_codes = results.map{|p| p['ine_code']}
+      terms << [{terms: { ine_code: ine_codes }}] if ine_codes.any?
+    end
+
+    if (population_filter && (population_filter[:from].to_i > Population::FILTER_MIN || population_filter[:to].to_i < Population::FILTER_MAX))
+      terms << {range: { value: { gte: population_filter[:from].to_i, lte: population_filter[:to].to_i} }}
+    end
 
     query = {
       sort: [
@@ -76,6 +88,10 @@ class Population
     query.merge!(size: options[:per_page]) if options[:per_page].present?
     query.merge!(from: options[:offset]) if options[:offset].present?
     query.merge!(_source: false) if options[:to_rank]
+
+    puts "Population Query Options => #{options}"
+    puts query
+    puts "______________________________________"
 
     SearchEngine.client.search index: Population::INDEX, type: Population::TYPE, body: query
   end

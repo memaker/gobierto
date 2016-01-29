@@ -57,8 +57,8 @@ class BudgetTotal
     end
     
     if (population_filter && (population_filter[:from].to_i > Population::FILTER_MIN || population_filter[:to].to_i < Population::FILTER_MAX))
-      pop_results,total_elements = Population.for_ranking(options[:year], 0, nil, options[:filters])
-      ine_codes = pop_results.map{|p| p['ine_code']}
+      results,total_elements = Population.for_ranking(options[:year], 0, nil, {population: population_filter})
+      ine_codes = results.map{|p| p['ine_code']}
       terms << [{terms: { ine_code: ine_codes }}] if ine_codes.any?
     end
 
@@ -84,6 +84,10 @@ class BudgetTotal
     query.merge!(size: options[:per_page]) if options[:per_page].present?
     query.merge!(from: options[:offset]) if options[:offset].present?
     query.merge!(_source: false) if options[:to_rank]
+
+    puts "BudgetTotal Query Options => #{options}"
+    puts query
+    puts "______________________________________"
     
     SearchEngine.client.search index: BudgetTotal::INDEX, type: BudgetTotal::TYPE, body: query
   end
