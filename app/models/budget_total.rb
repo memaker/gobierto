@@ -91,10 +91,6 @@ class BudgetTotal
     query.merge!(size: options[:per_page]) if options[:per_page].present?
     query.merge!(from: options[:offset]) if options[:offset].present?
     query.merge!(_source: false) if options[:to_rank]
-
-    puts "BudgetTotal Query Options => #{options}"
-    puts query
-    puts "______________________________________"
     
     SearchEngine.client.search index: BudgetTotal::INDEX, type: BudgetTotal::TYPE, body: query
   end

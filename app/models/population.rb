@@ -44,6 +44,7 @@ class Population
     response = population_query({year: year, to_rank: true, filters: filters})
     buckets = response['hits']['hits'].map{|h| h['_id']}
     position = buckets.index(id) ? buckets.index(id) + 1 : 0;
+    puts "position: #{position}"
     return position + 1
   end
 
@@ -57,10 +58,21 @@ class Population
     if options[:filters].present?
       population_filter =  options[:filters][:population]
       total_filter = options[:filters][:total]
+      per_inhabitant_filter = options[:filters][:per_inhabitant]
     end
 
-    if (total_filter && (total_filter[:from].to_i > BudgetTotal::TOTAL_FILTER_MIN || total_filter[:to].to_i < BudgetTotal::TOTAL_FILTER_MAX))
-      results,total_elements = BudgetTotal.for_ranking(options[:year], 'total_budget', 0, nil, {total: total_filter})
+    if total_filter || per_inhabitant_filter
+      budget_filters = {}
+      
+      if (total_filter && (total_filter[:from].to_i > BudgetTotal::TOTAL_FILTER_MIN || total_filter[:to].to_i < BudgetTotal::TOTAL_FILTER_MAX))
+        budget_filters[:total] = total_filter
+      end
+      
+      if (per_inhabitant_filter && (per_inhabitant_filter[:from].to_i > BudgetTotal::PER_INHABITANT_FILTER_MIN || per_inhabitant_filter[:to].to_i < BudgetTotal::PER_INHABITANT_FILTER_MAX))
+        budget_filters[:per_inhabitant] = per_inhabitant_filter
+      end
+      
+      results,total_elements = BudgetTotal.for_ranking(options[:year], 'total_budget', 0, nil, budget_filters)
       ine_codes = results.map{|p| p['ine_code']}
       terms << [{terms: { ine_code: ine_codes }}] if ine_codes.any?
     end
@@ -88,10 +100,6 @@ class Population
     query.merge!(size: options[:per_page]) if options[:per_page].present?
     query.merge!(from: options[:offset]) if options[:offset].present?
     query.merge!(_source: false) if options[:to_rank]
-
-    puts "Population Query Options => #{options}"
-    puts query
-    puts "______________________________________"
 
     SearchEngine.client.search index: Population::INDEX, type: Population::TYPE, body: query
   end

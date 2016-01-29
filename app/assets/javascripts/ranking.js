@@ -10,7 +10,6 @@ $(function () {
         params+= "&filters[" + filter_name + "][to]=" + parseInt(values[1]);
       })
       $.ajax(ranking_url + params);
-  // filter_per_inhabitant
     }
 
     var pop_slider = document.getElementById('filter_population');
