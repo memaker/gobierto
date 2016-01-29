@@ -160,8 +160,6 @@ $(function(){
     $(this).find('.del_item').velocity("fadeOut", { duration: 0 });
   });
 
-
-
   $('th.location').hover(function(e) {
     e.preventDefault();
     $(this).find('.remove').velocity("fadeIn", { duration: 100 });
@@ -250,7 +248,7 @@ $(function(){
   // When the treemap is clicked, we extract the URL of the node
   // and detect which is the link that expands the tree nodes with the
   // children. That node is clicked, and it triggers the treemap re-rendering
-  $(document).on('click', '.treemap_node', function(e){
+  $('body').on('click', '.treemap_node', function(e){
     e.preventDefault();
     // Remove all open tipsy
     $('.tipsit-treemap').each(function(){
