@@ -1160,7 +1160,7 @@ header.sub {
     }
 
   }
-  .metric:hover {
+  .metric[data-widget-template]:hover {
     background: darken($color_1_soft, 20%);
     cursor: pointer;
   }
