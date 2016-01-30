@@ -1,5 +1,6 @@
 class PlacesController < ApplicationController
   before_action :get_params
+  before_action :solve_income_area_mismatch, except: [:show]
 
   def show
     @income_lines = BudgetLine.search(ine_code: @place.id, level: 1, year: @year, kind: BudgetLine::INCOME, type: 'economic')
@@ -78,6 +79,14 @@ class PlacesController < ApplicationController
     if params[:variable].present?
       @variable = params[:variable]
       render_404 and return unless valid_variables.include?(@variable)
+    end
+  end
+
+  def solve_income_area_mismatch
+    area = (params[:area].present? ? params[:area].downcase : '')
+    kind = (params[:kind].present? ? params[:kind].downcase : '')
+    if %w{income i}.include?(kind) && area == 'functional'
+      redirect_to url_for params.merge(area: 'economic', kind: 'I') and return
     end
   end
 

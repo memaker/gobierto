@@ -42,8 +42,13 @@ module ApplicationHelper
     number_with_precision((value.to_f / total.to_f) * 100, precision: 2)
   end
 
+  def area_class(area, kind)
+    return FunctionalArea if (area == 'functional' && %{income i}.exclude?(kind.downcase))
+    EconomicArea
+  end
+
   def budget_line_denomination(area, code, kind, capped = -1)
-    area = (area == 'economic' ? EconomicArea : FunctionalArea)
+    area = area_class area, kind
     if area.all_items[kind][code].nil?
       res = " - "
     else
@@ -54,7 +59,7 @@ module ApplicationHelper
   end
 
   def budget_line_description(area, code, kind)
-    area = (area == 'economic' ? EconomicArea : FunctionalArea)
+    area = area_class area, kind
     area.all_descriptions[kind][code.to_s]
   end
 
@@ -113,7 +118,7 @@ module ApplicationHelper
   end
 
   def categories_in_level(area, kind, level, parent_code)
-    area = (area == 'economic' ? EconomicArea : FunctionalArea)
+    area = area_class area, kind
     area.all_items[kind].select{|k,v| k.length == level && k.starts_with?(parent_code.to_s)}.sort_by{|k,v| k}
   end
 
