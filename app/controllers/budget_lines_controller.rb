@@ -25,6 +25,7 @@ class BudgetLinesController < ApplicationController
     @budget_line = BudgetLine.new year: @year, kind: @kind, place_id: @place.id, area_name: @area_name, code: @code
 
     @parent_line = BudgetLine.find(options.merge(code: @code))
+    render_404 and return if @parent_line.nil?
     @budget_lines = BudgetLine.search(options.merge(parent_code: @code))
   end
 
