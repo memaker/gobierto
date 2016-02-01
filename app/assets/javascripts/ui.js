@@ -143,10 +143,13 @@ $(function(){
   });
 
   // TODO: can we remove it? It is causing trouble on the follow form
-  //$('.modal_widget').click(function(e) {
-    //e.preventDefault();
-    //$(this).find('.inner').velocity("fadeIn", { duration: 50 });
-  //});
+  $('.modal_widget').click(function(e) {
+    if($('.modal_widget .inner').css('display') == 'none') {
+      e.preventDefault();  
+      console.log('preventing');
+      $(this).find('.inner').velocity("fadeIn", { duration: 50 });
+    }
+  });
 
   $('#follow_link').click(function(e) {
     e.preventDefault();

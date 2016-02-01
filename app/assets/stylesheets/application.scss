@@ -1069,6 +1069,10 @@ header.sub {
       form {
         font-size: initial;
       }
+      @include screen(740) {
+        right: 0;
+        width: calc(100% - 4em);
+      }
     }
     .widget_share.inner::before {
       left: 80%;
