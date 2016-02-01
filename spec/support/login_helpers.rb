@@ -1,13 +1,11 @@
 module LoginHelpers
   def login_as(email, password)
-    visit home_page
+    visit '/login'
 
-    within(:css, '#new_session') do
-      fill_in 'Email', with: email
-      fill_in 'Password', with: password
+    fill_in 'session_email', with: email
+    fill_in 'session_password', with: password
 
-      click_button 'Log in'
-    end
+    click_button 'Enviar'
   end
 end
 

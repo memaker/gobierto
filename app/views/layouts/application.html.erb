@@ -7,9 +7,9 @@
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
-  
+
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  
+
   <link rel="apple-touch-icon" sizes="57x57" href="<%= asset_path('favicons/apple-touch-icon-57x57.png') %>">
   <link rel="apple-touch-icon" sizes="60x60" href="<%= asset_path('favicons/apple-touch-icon-60x60.png') %>">
   <link rel="apple-touch-icon" sizes="72x72" href="<%= asset_path('favicons/apple-touch-icon-72x72.png') %>">
@@ -34,11 +34,7 @@
 <body <%= data_attributes %>>
 
 <div class="top-claim">
-  <% if !logged_in? %>
-    <p><a href="/about#municipalities">¿Interesado en herramientas de análisis presupuestario para Municipios?</a></p>
-  <% else %>
-    <p>Hola <%= current_user.full_name %> · <%= link_to 'Editar datos personales', edit_user_path %> · <%= link_to 'Cerrar sesión', logout_path, method: :delete %></p>
-  <% end %>
+  <p><a href="/about#municipalities">Herramientas de comunicación para Municipios</a></p>
 </div>
 
 <div class="container">
@@ -67,6 +63,18 @@
           <li><%= link_to 'Servicios', about_path(anchor: 'municipalities') %></li>
         </ul>
       </menu>
+
+      <% if logged_in? %>
+      <div class="links_list personal_links">
+        <p>Hola <strong><%= current_user.full_name %></strong></p>
+        <% if current_user.place_id %>
+          <p>Tu municipio: <%= link_to INE::Places::Place.find(current_user.place_id).name, place_path(INE::Places::Place.find(current_user.place_id), year: 2015) %></p>
+        <% end %>
+        <p><%= link_to 'Editar datos personales', edit_user_path %></p>
+        <p><%= link_to 'Cerrar sesión', logout_path, method: :delete, class: 'logout' %></p>
+      </div>
+      <% end %>
+
 
       <% pending do %>
         <div class="links_list">
@@ -101,12 +109,12 @@
     <% if @place || @places %>
       <%= link_to "#{@year} <i class='fa fa-angle-down'></i>".html_safe, '', class: 'current' %>
       <ul>
-        <li><%= link_to '2015', request.path.sub(/\d{4}/,'2015') %></li>
-        <li><%= link_to '2014', request.path.sub(/\d{4}/,'2014') %></li>
-        <li><%= link_to '2013', request.path.sub(/\d{4}/,'2013') %></li>
-        <li><%= link_to '2012', request.path.sub(/\d{4}/,'2012') %></li>
-        <li><%= link_to '2011', request.path.sub(/\d{4}/,'2011') %></li>
-        <li><%= link_to '2010', request.path.sub(/\d{4}/,'2010') %></li>
+        <li><%= link_to '2015', url_for(params.reject {|k,v| k == 'page' }.merge(year: 2015)) %></li>
+        <li><%= link_to '2014', url_for(params.reject {|k,v| k == 'page' }.merge(year: 2014)) %></li>
+        <li><%= link_to '2013', url_for(params.reject {|k,v| k == 'page' }.merge(year: 2013)) %></li>
+        <li><%= link_to '2012', url_for(params.reject {|k,v| k == 'page' }.merge(year: 2012)) %></li>
+        <li><%= link_to '2011', url_for(params.reject {|k,v| k == 'page' }.merge(year: 2011)) %></li>
+        <li><%= link_to '2010', url_for(params.reject {|k,v| k == 'page' }.merge(year: 2011)) %></li>
       </ul>
     <% end %>
   </div>
@@ -125,7 +133,9 @@
   <menu>
     <ul>
       <li><%= link_to 'Acerca de', about_path %></li>
+      <li><%= link_to 'Preguntas frecuentes', faq_path %></li>
       <li><%= link_to 'Metodología y Fuentes', about_path(anchor: 'method') %></li>
+      <li><%= link_to 'Contacto', about_path(anchor: 'contact') %></li>
     </ul>
   </menu>
 </footer>
@@ -151,8 +161,15 @@
   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
   })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-  ga('create', 'UA-69636046-2', 'auto');
+  <% if Rails.env.production? %>
+    ga('create', 'UA-69636046-2', 'auto');
+  <% else %>
+    ga('create', 'UA-69636046-3', 'auto'); // DEV account 
+  <% end %>
+
   ga('send', 'pageview');
+
+  
 
   <!-- Hotjar Tracking Code for http://presupuestos.gobierto.es -->
   (function(h,o,t,j,a,r){
@@ -163,8 +180,6 @@
       r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
       a.appendChild(r);
   })(window,document,'//static.hotjar.com/c/hotjar-','.js?sv=');
-
-
 
 </script>
 

@@ -7,7 +7,6 @@ set_meta_tags title: "Presupuesto de #{@place.name} » #{kind_literal(@kind).cap
 
 <header class="sub ">
 
-  <span class="sep"><%= link_to kind_literal(@kind).capitalize, place_budget_path(@place.slug, @year, @kind, @area_name) %> »</span>
   <%= render partial: 'breadcrumb',
             collection: budget_line_crumbs(@parent_line, @area_name),
             as: 'budget_line',
@@ -20,47 +19,80 @@ set_meta_tags title: "Presupuesto de #{@place.name} » #{kind_literal(@kind).cap
                              title="<%= kind_literal(@kind, false).humanize %> total de esta partida en este año por habitante"
                              data-widget-type="per_person"
                              data-line-widget-series="means"
-                             data-line-widget-url="<%= api_data_lines_budget_line_path(@place.id, @year, "per_person", @kind, @code, @area_name, format: :json ) %>"
+                             data-line-widget-url="<%= api_data_lines_budget_line_path(@place.id, @year, "per_person", @kind, @code.parameterize, @area_name, format: :json ) %>"
                              data-line-widget-type="per_person"
-                             data-widget-data-url="<%= api_data_budget_per_inhabitant_path(ine_code: @place.id, year: @year, kind: @kind, code: @code, area: @area_name, format: :json) %>">
+                             data-widget-data-url="<%= api_data_budget_per_inhabitant_path(ine_code: @place.id, year: @year, kind: @kind, code: @code.parameterize, area: @area_name, format: :json) %>">
   </div>
 
   <div class="metric tipsit" data-widget-template="#widget-template"
                                       title="<%= kind_literal(@kind, false).humanize %> total de esta partida en este año"
                                       data-widget-type="budget"
                                       data-line-widget-series="means"
-                                      data-line-widget-url="<%= api_data_lines_budget_line_path(@place.id, @year, "total_budget", @kind, @code, @area_name, format: :json ) %>"
+                                      data-line-widget-url="<%= api_data_lines_budget_line_path(@place.id, @year, "total_budget", @kind, @code.parameterize, @area_name, format: :json ) %>"
                                       data-line-widget-type="total_budget"
-                                      data-widget-data-url="<%= api_data_budget_path(ine_code: @place.id, year: @year, kind: @kind, code: @code, area: @area_name, format: :json) %>">
+                                      data-widget-data-url="<%= api_data_budget_path(ine_code: @place.id, year: @year, kind: @kind, code: @code.parameterize, area: @area_name, format: :json) %>">
   </div>
 
   <div class="metric" data-widget-template="#small-widget-template"
                       data-widget-type="budget_percentage_over_total"
-                      data-widget-data-url="<%= api_data_budget_percentage_over_total_path(ine_code: @place.id, year: @year, kind: @kind, code: @code, area: @area_name, format: :json) %>">
+                      data-widget-data-url="<%= api_data_budget_percentage_over_total_path(ine_code: @place.id, year: @year, kind: @kind, code: @code.parameterize, area: @area_name, format: :json) %>">
   </div>
 
   <div class="metric" data-widget-template="#small-widget-template"
                       data-widget-type="budget_percentage_over_province"
-                      data-widget-data-url="<%= api_data_budget_percentage_over_province_path(ine_code: @place.id, year: @year, kind: @kind, code: @code, area: @area_name, format: :json) %>">
+                      data-widget-data-url="<%= api_data_budget_percentage_over_province_path(ine_code: @place.id, year: @year, kind: @kind, code: @code.parameterize, area: @area_name, format: :json) %>">
   </div>
 
-  <div class="metric">
+  <div class="metric cta">
+    <%= link_to 'Levanta la mano <i class="fa fa-hand-paper-o"></i>'.html_safe, 'javascript:void(0);', onclick: "$('.metric_graphs').hide(); $('.budget_line_feedback').velocity('fadeIn', { duration: 100 });" %>
   </div>
 </div>
 
-<div class="metric_graphs clearfix">
+<div class="metric_graphs clearfix <%= 'hidden' if action_name == 'feedback' %>">
   <div class="widget_graph show clearfix">
     <div class="col-1-2" id="lines_chart"></div>
     <div class="col-2-2" id="lines_tooltip"></div>
   </div>
 </div>
 
+<div class="widget_graph budget_line_feedback <%= 'hidden' if action_name != 'feedback' %>">
+  <% if @question_id %>
+    <div id="reply"><%= render partial: "answers/reply#{@question_id}" %></div>
+  <% elsif logged_in? and answer = current_user.has_replied?(question_id: 1, place_id: @place.id, year: @year, area_name: @area_name, kind: @kind, code: @code) %>
+    <% if answer.answer_text == 'No' %>
+      <div id="reply"><%= render partial: 'answers/reply1' %></div>
+    <% else %>
+      <div id="reply"><%= render partial: 'answers/reply2' %></div>
+    <% end %>
+  <% else %>
+    <div class="blf_question_1">
+      <p>¿Entiendes de qué va esta partida?</p>
+      <div class="options yes_no">
+        <%= link_to 'Sí', answers_path_with_params(1, 'Sí'), remote: true, method: :post, class: 'button' %>
+        <%= link_to 'No', answers_path_with_params(1, 'No'), remote: true, method: :post, class: 'button' %>
+      </div>
+    </div>
+
+    <div class="blf_question_2 hidden">
+      <p>¿Crees que la cantidad de gasto es apropiada?</p>
+      <div class="options ">
+        <% Answer::QUESTION_2_ANSWERS.each do |answer_text| %>
+          <%= link_to "Me parece <span>#{answer_text.upcase}</span>".html_safe, answers_path_with_params(2, answer_text), remote: true, method: :post, class: 'button' %>
+        <% end %>
+      </div>
+    </div>
+
+    <div id="reply"></div>
+  <% end %>
+</div>
+
+<% if @budget_lines['hits'].any? %>
 
 <div class="items">
   <table>
   <tr>
     <th>
-      <input type="text" placeholder="Busca partidas de <%= kind_literal(@kind, true) %>" class="search_items" id="search_categories_budget" data-search-url="<%= search_categories_path(@place.slug,@year,@area_name, @kind) %>">
+      <input type="text" placeholder="Busca otras partidas de <%= kind_literal(@kind, true) %>" class="search_items" id="search_categories_budget" data-search-url="<%= search_categories_path(@place.slug,@year,@area_name, @kind) %>">
     </th>
     <th class="right "><%= kind_literal(@kind, false) %> total</th>
     <th class="right "><%= kind_literal(@kind, false) %> por hab.</th>
@@ -68,16 +100,12 @@ set_meta_tags title: "Presupuesto de #{@place.name} » #{kind_literal(@kind).cap
     <th></th>
   </tr>
 
-  <tr>
-    <td class="item_name" colspan="4">
-      <%= link_to '« Inicio', place_budget_path(@place.slug, @year, @kind, @area_name) %>
-    </td>
-  </tr>
-
   <%= render partial: 'places/nested_budget_lines' %>
 
   </table>
 </div>
+
+<% end %>
 
 <script type="text/html" id="widget-template">
   <div class="label">{{title}}</div>
@@ -108,7 +136,12 @@ set_meta_tags title: "Presupuesto de #{@place.name} » #{kind_literal(@kind).cap
   </div>
 
   <div class="tab_content" data-tab="description">
-    <p class="placeholder_no_info">Todavía no hay información.</p>
+    <% if desc = budget_line_description(@area_name, @code, @kind) %>
+      <p class=""><strong><%= budget_line_denomination(@area_name, @code, @kind) %></strong><br/>
+      <%= desc %></p>
+    <% else %>
+      <p class="placeholder_no_info">Todavía no hay información.</p>
+    <% end %>
   </div>
 
   <div class="tab_content" data-tab="comment" style="display: none;">

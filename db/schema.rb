@@ -11,10 +11,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151118102459) do
+ActiveRecord::Schema.define(version: 20160127073258) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "answers", force: :cascade do |t|
+    t.integer  "user_id"
+    t.string   "temporary_user_id"
+    t.string   "answer_text"
+    t.integer  "question_id"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+    t.integer  "place_id"
+    t.string   "kind"
+    t.integer  "year"
+    t.string   "area_name"
+    t.string   "code"
+  end
 
   create_table "economic_yearly_totals", id: false, force: :cascade do |t|
     t.string  "cdcta",      limit: 6
@@ -75,6 +89,16 @@ ActiveRecord::Schema.define(version: 20151118102459) do
   add_index "poblacion_municipal_2014", ["codigo"], name: "index_poblacion_municipal_2014_on_codigo", using: :btree
   add_index "poblacion_municipal_2014", ["province_id"], name: "index_poblacion_municipal_2014_on_province_id", using: :btree
   add_index "poblacion_municipal_2014", ["total"], name: "index_poblacion_municipal_2014_on_total", using: :btree
+
+  create_table "subscriptions", force: :cascade do |t|
+    t.integer  "user_id",    null: false
+    t.integer  "place_id",   null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "subscriptions", ["place_id"], name: "index_subscriptions_on_place_id", using: :btree
+  add_index "subscriptions", ["user_id"], name: "index_subscriptions_on_user_id", using: :btree
 
   create_table "tb_cuentasEconomica", id: false, force: :cascade do |t|
     t.string  "tipreig", limit: 1
@@ -369,9 +393,11 @@ ActiveRecord::Schema.define(version: 20151118102459) do
     t.integer  "place_id"
     t.datetime "created_at",           null: false
     t.datetime "updated_at",           null: false
+    t.string   "verification_token"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["place_id"], name: "index_users_on_place_id", using: :btree
 
+  add_foreign_key "subscriptions", "users"
 end

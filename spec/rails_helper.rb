@@ -4,6 +4,7 @@ require 'spec_helper'
 require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
 require 'capybara/rspec'
+require 'capybara/poltergeist'
 require 'email_spec'
 
 Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
@@ -20,11 +21,18 @@ RSpec.configure do |config|
   config.include(EmailSpec::Helpers)
   config.include(EmailSpec::Matchers)
 
+  Capybara.register_driver :poltergeist do |app|
+    Capybara::Poltergeist::Driver.new(app, {port: 8888})
+  end
+
+  Capybara.javascript_driver = :poltergeist
+  Capybara.default_max_wait_time = 10
+
   config.before(:suite) do
     %x[bundle exec rake assets:precompile]
 
-    DatabaseCleaner.strategy = :transaction
-    DatabaseCleaner.clean_with(:truncation)
+    DatabaseCleaner.strategy = :truncation
+    DatabaseCleaner.clean_with(:transaction)
   end
 
   config.around(:each) do |example|

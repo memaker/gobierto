@@ -2,7 +2,12 @@
   <div class="breadcrumb">
     <%= @place.province.autonomous_region.name %> » <%= @place.province.name %>
   </div>
-  <h1><%= link_to_unless_current @place.name, place_path(@place.slug, @year) %></h1>
+  <h1>
+    <%= link_to_unless_current @place.name, place_path(@place.slug, @year) %>
+    <% if params[:area] %>
+      » <%= kind_literal(@kind).humanize %> presupuestados
+    <% end %>
+  </h1>
   <% pending do %>
   <menu>
     <ul>
@@ -17,15 +22,12 @@
 
   <div class="tools_cont">
     <div class="tools sticky">
-      <% pending do %>
-      <div class="modal_widget">
-        <%= link_to '<span>123</span> <i class="fa fa-star-o"></i>'.html_safe, '', class: 'tool_button' %>
-        <div class="inner">
-          wadus follow
+      <% if controller_name == 'places' %>
+        <div class="modal_widget" id="follow">
+          <%= render 'places/follow_place' %>
         </div>
-      </div>
       <% end %>
-      <div class="modal_widget">
+      <div class="modal_widget" id="compare">
         <%= link_to '<span>Compara</span> <i class="fa fa-compass"></i>'.html_safe, '', class: 'tool_button' %>
         <div class="inner widget_compare">
 
@@ -46,15 +48,15 @@
 
         </div>
       </div>
-      <div class="modal_widget">
+      <div class="modal_widget" id="share">
         <%= link_to '<span>Comparte</span> <i class="fa fa-share"></i>'.html_safe, '', class: 'tool_button' %>
         <div class="inner widget_share" >
 
           <p><strong>Comparte esta URL</strong></p>
 
           <p>
-            <%= link_to 'Twitter', "https://twitter.com/home?status=#{u twitter_share(@title || @share_text, request.original_url)}", class: 'small_button popup' %>
-            <%= link_to 'Facebook', "http://www.facebook.com/sharer/sharer.php?u=#{u request.original_url}", class: 'small_button popup' %>
+            <%= link_to 'Twitter', "https://twitter.com/home?status=#{u twitter_share(@title || @share_text, request.original_url)}", class: 'small_button popup', data: {rel: 'Twitter'} %>
+            <%= link_to 'Facebook', "http://www.facebook.com/sharer/sharer.php?u=#{u request.original_url}", class: 'small_button popup', data: {rel: 'Facebook'} %>
           </p>
           <% pending do %>
             <div class="sep"></div>
@@ -93,4 +95,8 @@
     </div>
   <% end %>
 </header>
+
+<% if @no_data %>
+  <%= render 'places/no_data' %>
+<% end %>
 

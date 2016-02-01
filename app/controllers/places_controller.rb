@@ -1,9 +1,11 @@
 class PlacesController < ApplicationController
   before_action :get_params
+  before_action :solve_income_area_mismatch, except: [:show]
 
   def show
     @income_lines = BudgetLine.search(ine_code: @place.id, level: 1, year: @year, kind: BudgetLine::INCOME, type: 'economic')
     @expense_lines = BudgetLine.search(ine_code: @place.id, level: 1, year: @year, kind: BudgetLine::EXPENSE, type: @area_name)
+    @no_data = @income_lines['hits'].empty?
 
     respond_to do |format|
       format.html
@@ -21,7 +23,6 @@ class PlacesController < ApplicationController
     @budget_lines = BudgetLine.search(options)
 
     respond_to do |format|
-      format.html
       format.json do
         data_line = Data::Treemap.new place: @place, year: @year, kind: @kind, type: @area_name, parent_code: params[:parent_code]
         render json: data_line.generate_json
@@ -60,7 +61,7 @@ class PlacesController < ApplicationController
     @page = params[:page] ? params[:page].to_i : 1
     render_404 and return if @page <= 0
 
-    @compared_level = params[:code] ? params[:code].length : 0
+    @compared_level = params[:code] ? (params[:code].include?('-') ? params[:code].split('-').first.length : params[:code].length) : 0
 
     @ranking_items = Ranking.query({year: @year, variable: @variable, page: @page, code: @code, kind: @kind, area_name: @area_name})
   end
@@ -72,12 +73,20 @@ class PlacesController < ApplicationController
     @place = INE::Places::Place.find params[:ine_code] if params[:ine_code].present?
     @kind = ( %w{income i}.include?(params[:kind].downcase) ? BudgetLine::INCOME : BudgetLine::EXPENSE ) if action_name != 'show' && params[:kind]
     @kind ||= BudgetLine::EXPENSE if action_name == 'ranking'
-    @area_name = params[:area] || 'economic'
+    @area_name = params[:area] || 'functional'
     @year = params[:year]
-    @code = params[:code] if params[:code].present?
+    @code = code_from_params(params[:code]) if params[:code].present?
     if params[:variable].present?
       @variable = params[:variable]
       render_404 and return unless valid_variables.include?(@variable)
+    end
+  end
+
+  def solve_income_area_mismatch
+    area = (params[:area].present? ? params[:area].downcase : '')
+    kind = (params[:kind].present? ? params[:kind].downcase : '')
+    if %w{income i}.include?(kind) && area == 'functional'
+      redirect_to url_for params.merge(area: 'economic', kind: 'I') and return
     end
   end
 

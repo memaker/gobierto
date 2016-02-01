@@ -38,10 +38,9 @@ Rails.application.configure do
   config.active_support.deprecation = :stderr
 
   # Raises error for missing translations
-  # config.action_view.raise_on_missing_translations = true
+  config.action_view.raise_on_missing_translations = true
 
-  config.assets.digest = true
-  config.assets.prefix = "/capybara_test_assets"
-  config.action_controller.asset_host = "file://#{::Rails.root}/public"
+  config.i18n.fallbacks = false
 
+  config.action_mailer.default_url_options = { host: 'localhost', port: 8888 }
 end

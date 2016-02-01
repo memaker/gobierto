@@ -4,26 +4,17 @@ class GeocoderController < ApplicationController
       loc1 = [result.latitude, result.longitude]
 
       dist = 500_000
-      place = nil
+      @place = nil
       INE::Places::Place.all.each do |p|
         loc2 = [p.lat.to_f, p.lon.to_f]
 
         new_dist = distance(loc1, loc2)
         if (new_dist < dist)
-          place = p
+          @place = p
           dist = new_dist
         end
       end
-
-      if place
-        Rails.logger.info "=================================="
-        Rails.logger.info place.name
-        Rails.logger.info dist
-        Rails.logger.info "=================================="
-      end
     end
-
-    render nothing: true
   end
 
   private

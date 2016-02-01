@@ -42,8 +42,13 @@ module ApplicationHelper
     number_with_precision((value.to_f / total.to_f) * 100, precision: 2)
   end
 
+  def area_class(area, kind)
+    return FunctionalArea if (area == 'functional' && %{income i}.exclude?(kind.downcase))
+    EconomicArea
+  end
+
   def budget_line_denomination(area, code, kind, capped = -1)
-    area = (area == 'economic' ? EconomicArea : FunctionalArea)
+    area = area_class area, kind
     if area.all_items[kind][code].nil?
       res = " - "
     else
@@ -51,6 +56,11 @@ module ApplicationHelper
       res += "..." if capped > -1
     end
     res
+  end
+
+  def budget_line_description(area, code, kind)
+    area = area_class area, kind
+    area.all_descriptions[kind][code.to_s]
   end
 
   def kind_literal(kind, plural = true)
@@ -108,7 +118,7 @@ module ApplicationHelper
   end
 
   def categories_in_level(area, kind, level, parent_code)
-    area = (area == 'economic' ? EconomicArea : FunctionalArea)
+    area = area_class area, kind
     area.all_items[kind].select{|k,v| k.length == level && k.starts_with?(parent_code.to_s)}.sort_by{|k,v| k}
   end
 
@@ -158,20 +168,39 @@ module ApplicationHelper
     "#{place.name}|#{place_path(place, year)}|#{place.slug}"
   end
 
+  def places_for_select
+    INE::Places::Place.all.map do |place|
+      [place.name, place.id]
+    end
+  end
+
   def parent_code(code)
     if code.present?
-      code[0..-2]
+      if code.include?('-')
+        code.split('-').first
+      else
+        code[0..-2]
+      end
     end
   end
 
   def twitter_share(message, url)
-    short_url_length = 23
+    short_url_length = 24
     total_message_length = 140
-    signature = " by @gobierto. "
+    signature = "En @gobierto: "
     max_message_length = total_message_length - short_url_length - signature.length
 
-    to_share = (message.length > max_message_length) ? message.slice(0, max_message_length - 3) + "..." : message
-    to_share += "#{signature}#{url}"
+    to_share = signature
+    to_share += (message.length > max_message_length) ? message.slice(0, max_message_length - 3) + "..." : message
+    to_share += " "+url
     to_share
   end
+
+  def answers_path_with_params(question_id, answer_text)
+    answers_path(answer: {
+      question_id: question_id, answer_text: answer_text,
+      place_id: @place.id, year: @year, kind: @kind, area_name: @area_name, code: @code
+    })
+  end
+
 end

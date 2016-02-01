@@ -10,15 +10,28 @@ class SessionsController < ApplicationController
 
     if user && user.authenticate(params[:session][:password])
       log_in user
-      redirect_to params[:back_url] || root_path
+      current_user.update_pending_answers(session.id)
+      store_subscriptions
     else
       flash[:alert] = 'Credenciales incorrectas. Por favor, vuelve a intentarlo'
-      redirect_to :back
+    end
+
+    respond_to do |format|
+      format.html do
+        if logged_in?
+          redirect_to :back
+        else
+          render 'new'
+        end
+      end
+      format.js
     end
   end
 
   def destroy
     log_out
+    redirect_to :back
+  rescue
     redirect_to root_path
   end
 end

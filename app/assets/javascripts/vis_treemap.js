@@ -16,7 +16,8 @@ var TreemapVis = Class.extend({
     this.treemap = null;
     this.container = null;
 
-    var colors = ['#FFD100', '#FE7000', '#ED2F00', '#940099', '#487304', '#4A73B0', '#1B4145', '#444300', '#24190E'];
+    // var colors = ['#FFD100', '#FE7000', '#ED2F00', '#940099', '#487304', '#4A73B0', '#1B4145', '#444300', '#24190E'];
+    var colors = ['#FFBCC8', '#FF6181', '#EE2657', '#8C3044', '#516773', '#427991', '#1F3F4F', '#473D3F', '#24191B'];
     this.colorScale = d3.scale.ordinal().range(colors);
 
     this.opacity = 1;
@@ -30,7 +31,7 @@ var TreemapVis = Class.extend({
     this.containerWidth = parseInt(d3.select(this.containerId).style('width'), 10);
     this.width = this.containerWidth - this.margin.left - this.margin.right;
     this.height = (this.containerWidth / this.sizeFactor) - this.margin.top - this.margin.bottom;
-
+    
     this.container = d3.select(this.containerId)
       .style("position", "relative")
       .style("width", (this.width + this.margin.left + this.margin.right) + "px")
@@ -65,7 +66,7 @@ var TreemapVis = Class.extend({
             }
           }.bind(this))
         .attr("title", function(d){ 
-          return "<strong>" + d.name + "</strong><br>" + accounting.formatMoney(d.budget) + "<br>" + d.budget_per_inhabitant + "€/habitante";
+          return "<strong>" + d.name + "</strong><br>" + accounting.formatMoney(d.budget, "€", 0, '.') + "<br>" + accounting.formatMoney(d.budget_per_inhabitant, "€", 0, ',') + " /hab";
         }.bind(this))
         .attr("data-url", function(d){ 
           if(this.clickable){
@@ -80,7 +81,7 @@ var TreemapVis = Class.extend({
           } else {
             // If the square is small, don't add the text
             if(d.dx > 70 && d.dy > 90) {
-              return "<p><strong>" + d.name + "</strong></p><p>" + d.budget_per_inhabitant + "€/habitante</p>";
+              return "<p><strong>" + d.name + "</strong></p><p>" + accounting.formatMoney(d.budget_per_inhabitant, "€", 0) + "/hab</p>";
             }
           }
         })
@@ -91,7 +92,7 @@ var TreemapVis = Class.extend({
   _position: function() {
     this.style("left", function(d) { return d.x + "px"; })
       .style("top", function(d) { return d.y + "px"; })
-      .style("width", function(d) { return Math.max(0, d.dx - 1) + "px"; })
-      .style("height", function(d) { return Math.max(0, d.dy - 1) + "px"; });
+      .style("width", function(d) { return Math.max(0, d.dx) + "px"; })
+      .style("height", function(d) { return Math.max(0, d.dy) + "px"; });
   },
 });

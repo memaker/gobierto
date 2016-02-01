@@ -1,4 +1,4 @@
-class BudgetLine
+class BudgetLine < OpenStruct
   INDEX = 'budgets-forecast'
 
   INCOME = 'I'
@@ -117,5 +117,20 @@ class BudgetLine
     options.merge! budget_line.slice('ine_code','kind','year').symbolize_keys
 
     return search(options)['hits'].length > 0
+  end
+
+  def to_param
+    {place_id: place_id, year: year, code: code, area_name: area_name, kind: kind}
+  end
+
+  def place
+    if place_id
+      INE::Places::Place.find(place_id)
+    end
+  end
+
+  def category
+    area = area_name == 'economic' ? EconomicArea : FunctionalArea
+    area.all_items[self.kind][self.code]
   end
 end
