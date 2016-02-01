@@ -13,6 +13,9 @@ Rails.application.routes.draw do
   get 'contact_pro' => 'pages#contact_pro'
   get 'contact_citizen' => 'pages#contact_citizen'
   get 'faq' => 'pages#faq'
+  get 'legal/cookies' => 'pages#legal_cookies'
+  get 'legal/legal' => 'pages#legal_legal'
+  get 'legal/privacy' => 'pages#legal_privacy'
 
   # user and session management
   get 'login' => 'sessions#new', as: :login

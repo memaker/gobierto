@@ -13,6 +13,15 @@ class PagesController < ApplicationController
   def faq
   end
 
+  def legal_cookies
+  end
+
+  def legal_legal
+  end
+
+  def legal_privacy
+  end
+
   def request_access
     render layout: false
   end

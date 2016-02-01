@@ -137,6 +137,11 @@
       <li><%= link_to 'Metodología y Fuentes', about_path(anchor: 'method') %></li>
       <li><%= link_to 'Contacto', about_path(anchor: 'contact') %></li>
     </ul>
+
+    <ul class="legal">
+      <li><%= link_to 'Aviso legal', legal_legal_path %></li>
+      <li><%= link_to 'Política de privacidad', legal_privacy_path %></li>
+      <li><%= link_to 'Política de cookies', legal_cookies_path %></li>
   </menu>
 </footer>
 
@@ -168,8 +173,6 @@
   <% end %>
 
   ga('send', 'pageview');
-
-  
 
   <!-- Hotjar Tracking Code for http://presupuestos.gobierto.es -->
   (function(h,o,t,j,a,r){
