@@ -2154,6 +2154,11 @@ footer {
       height: auto;
     }
   }
+  .legal {
+    a {
+      color: $text_soft;
+    }
+  }
 }
 
 
@@ -2175,6 +2180,10 @@ footer {
   padding: 4em;
   text-align: center;
 
+  img {
+    max-width: 100%;
+  }
+
   @include screen(740) {
     padding: 1em;
   }
@@ -2186,11 +2195,21 @@ footer {
     img {
       vertical-align: middle;
     }
-    span:before {
-      content: '|';
-      margin: 0 1em 0 .5em;
-      color: lighten($text, 40%);
+    span { 
+      display: block; 
     }
+    
+    @include screen(740, 4000) {
+      span { 
+        display: inline; 
+      }
+      span:before {
+        content: '|';
+        margin: 0 1em 0 .5em;
+        color: lighten($text, 40%);
+      }
+    }
+
   }
   .places_search {
     font-size: 1.6em;
