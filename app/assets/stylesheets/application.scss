@@ -462,6 +462,9 @@ header.sticky_top {
     border: 1px solid red;
     display: inline-block;
   }
+  @include screen(740) {
+    padding: .4em;
+  }
 }
 
 
@@ -962,12 +965,16 @@ header.sub {
   text-align: right; 
 
   @include screen(740) {
-    padding-top: .25em;
+    padding-top: .5em;
   }
 
   .modal_widget {
     display: inline-block;
     margin: 0 0 0 1em;
+
+    @include screen(740) {
+      margin: 0 0 0 .5em;
+    }
     
     .inner {
       text-align: left;
@@ -1158,9 +1165,14 @@ header.sub {
       line-height: 1em;
       opacity: .7;
     }
-
   }
-  .metric[data-widget-template]:hover {
+  @include screen(740) {
+    .metric:not([data-widget-template]) {
+      display: none;
+    }
+  }
+
+  .metric[data-line-widget-series]:hover {
     background: darken($color_1_soft, 20%);
     cursor: pointer;
   }
@@ -1193,18 +1205,17 @@ header.sub {
       text-decoration: none;
       margin-top: 14px;
     }
-
     .fa {
       background: #FFF;
       color: $color_logo_yellow;
       padding: .75em;
       @include border-radius(3px);
-      
     }
   }
   .metric.cta:hover {
     background: darken($color_logo_yellow, 5%);
   }
+  
 }
 
 .metric_graphs .widget_graph {
