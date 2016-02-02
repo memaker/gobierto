@@ -206,6 +206,7 @@ $(function(){
   $('.items').on('ajax:success', 'a[data-remote=true]', function(event, data, status, xhr) {
     $(this).addClass('extended');
     $(this).find('.fa').toggleClass('fa-plus-square-o fa-minus-square-o');
+    ga('send', 'event', 'Tree Navigation', 'Open', $(this).attr('href'), {nonInteraction: true});
   });
 
   /* Collapses branch - Prevents resending the form when extended */
@@ -220,6 +221,7 @@ $(function(){
       window.incomeTreemap.render(url);
     if ($('#expense-treemap').is(':visible'))
       window.expenseTreemap.render(url);
+    ga('send', 'event', 'Tree Navigation', 'Close', '', {nonInteraction: true});
   });
 
   $('.items').on('ajax:beforeSend', 'a:not(.extended)', function(event, xhr, settings) {
