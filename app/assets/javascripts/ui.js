@@ -22,6 +22,7 @@ $(function(){
     e.preventDefault();
     window.open($(this).attr("href"), "popupWindow", "width=600,height=600,scrollbars=yes");
     if($(this).data('rel') !== undefined){
+      console.log('social: '+$(this).data('rel'));
       ga('send', 'event', 'Social Shares', 'Click', $(this).data('rel'), {nonInteraction: true});
     }
   });

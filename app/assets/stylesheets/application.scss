@@ -865,6 +865,7 @@ header.place {
     margin: .35em 0;
     font-weight: 600;
     font-size: 1.65em;
+    display: inline-block;
     span {
       font-weight: 200;
     }
@@ -874,6 +875,18 @@ header.place {
     }
     a {
       text-decoration: none;
+    }
+  }
+  .share_links {
+    display: inline-block;
+    margin: 0 1em;
+    a {
+      padding: .2em .4em;
+      margin: 0 .5em 0 0;
+      width: 20px;
+      text-align: center;
+      vertical-align: bottom;
+      @include border-radius(3px);
     }
   }
   menu {
@@ -954,13 +967,13 @@ header.sub {
   top: 1.5em;
   z-index: 10;
   .is-sticky {
-    width: 368px;
+    width: 390px;
     z-index: 500;
     padding-top: .5em;
   }
 }
 .tools {
-  width: 368px;
+  width: 390px;
   padding-top: .5em;
   text-align: right; 
 

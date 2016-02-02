@@ -8,6 +8,12 @@
       » <%= kind_literal(@kind).humanize %> presupuestados
     <% end %>
   </h1>
+
+  <div class="share_links">
+    <%= link_to '<i class="fa fa-twitter"></i>'.html_safe, "https://twitter.com/home?status=#{u twitter_share(@title || @share_text, request.original_url)}", class: 'small_button popup', data: {rel: 'Twitter'} %>
+    <%= link_to '<i class="fa fa-facebook"></i>'.html_safe, "http://www.facebook.com/sharer/sharer.php?u=#{u request.original_url}", class: 'small_button popup', data: {rel: 'Facebook'} %>
+  </div>
+
   <% pending do %>
   <menu>
     <ul>
@@ -48,26 +54,9 @@
 
         </div>
       </div>
-      <div class="modal_widget" id="share">
-        <%= link_to '<span>Comparte</span> <i class="fa fa-share"></i>'.html_safe, '', class: 'tool_button' %>
+      <div class="modal_widget" id="in_your_web">
+        <%= link_to '<span>En tu web</span> <i class="fa fa-share"></i>'.html_safe, '', class: 'tool_button' %>
         <div class="inner widget_share" >
-
-          <p><strong>Comparte esta URL</strong></p>
-
-          <p>
-            <%= link_to 'Twitter', "https://twitter.com/home?status=#{u twitter_share(@title || @share_text, request.original_url)}", class: 'small_button popup', data: {rel: 'Twitter'} %>
-            <%= link_to 'Facebook', "http://www.facebook.com/sharer/sharer.php?u=#{u request.original_url}", class: 'small_button popup', data: {rel: 'Facebook'} %>
-          </p>
-          <% pending do %>
-            <div class="sep"></div>
-
-            <p><strong>Incluye un widget en otra web</strong></p>
-
-            <textarea></textarea>
-            <p>Copia y pega este código en la web de destino</p>
-
-            <div class="sep"></div>
-          <% end %>
 
           <div class="cta_claim">
             <h3>¿Eres responsable de este municipio?</h3>
