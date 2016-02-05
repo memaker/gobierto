@@ -4,6 +4,10 @@ class PlacesController < ApplicationController
 
   def show
     render_404 and return if @place.nil?
+    if @year.nil?
+      redirect_to place_path(@place, 2015) and return
+    end
+
     @income_lines = BudgetLine.search(ine_code: @place.id, level: 1, year: @year, kind: BudgetLine::INCOME, type: 'economic')
     @expense_lines = BudgetLine.search(ine_code: @place.id, level: 1, year: @year, kind: BudgetLine::EXPENSE, type: @area_name)
     @no_data = @income_lines['hits'].empty?
