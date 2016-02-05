@@ -41,9 +41,7 @@ class SearchController < ApplicationController
   private
 
   def search_across_models(query)
-    INE::Places::Place.collection_for_search(query) +
-      INE::Places::Province.collection_for_search(query) +
-      INE::Places::AutonomousRegion.collection_for_search(query)
+    INE::Places::Place.collection_for_search(query)
   end
 
   def get_year_codes(place, area, kind, year)
