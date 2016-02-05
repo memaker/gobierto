@@ -1376,6 +1376,10 @@ a.list_view_more {
         line-height: 1.2em;
       }
     }
+    th:first-child {
+      width:50%;
+      padding-right:5%;
+    }
     th {
       font-size: .75em;
       background: none;
