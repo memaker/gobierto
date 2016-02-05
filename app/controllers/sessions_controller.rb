@@ -13,7 +13,7 @@ class SessionsController < ApplicationController
       current_user.update_pending_answers(session.id)
       store_subscriptions
     else
-      flash[:alert] = 'Credenciales incorrectas. Por favor, vuelve a intentarlo'
+      flash.now[:alert] = 'Credenciales incorrectas. Por favor, vuelve a intentarlo'
     end
 
     respond_to do |format|
