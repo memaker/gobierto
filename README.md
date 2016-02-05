@@ -54,7 +54,7 @@
   - total_budget_per_inhabitant: { type: 'double',  index: 'not_analyzed' }
 ```
 
-### Generic data
+### Population data
 
 - indexes: `data`
 - types: `population`
@@ -69,4 +69,17 @@
   - value:                 { type: 'integer', index: 'not_analyzed' }
 ```
 
+### Places data
 
+- indexes: `data`
+- types: `places`
+- document id: `<ine_code>`. Example: `28079`
+- schema:
+
+```
+  - ine_code:              { type: 'integer', index: 'not_analyzed' },
+  - province_id:           { type: 'integer', index: 'not_analyzed' },
+  - autonomy_id:           { type: 'integer', index: 'not_analyzed' },
+  - year:                  { type: 'integer', index: 'not_analyzed' },
+  - name:                  { type: 'string',  index: 'analyzed', analyzer: 'spanish' }
+```

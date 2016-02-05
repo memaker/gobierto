@@ -43,5 +43,3 @@ module RailsTemplate
     config.action_mailer.default_url_options = { host: 'gobierto.es', protocol: 'https' }
   end
 end
-
-require 'extend_ine_places'
