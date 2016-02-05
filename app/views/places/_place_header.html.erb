@@ -3,6 +3,19 @@
     <%= @place.province.autonomous_region.name %> » <%= @place.province.name %>
   </div>
   <h1>
+    <div class="switcher year_switcher">
+      <% if @place || @places %>
+        <%= link_to "#{@year} <i class='fa fa-angle-down'></i>".html_safe, '', class: 'current' %>
+        <ul>
+          <li><%= link_to '2015', url_for(params.reject {|k,v| k == 'page' }.merge(year: 2015)) %></li>
+          <li><%= link_to '2014', url_for(params.reject {|k,v| k == 'page' }.merge(year: 2014)) %></li>
+          <li><%= link_to '2013', url_for(params.reject {|k,v| k == 'page' }.merge(year: 2013)) %></li>
+          <li><%= link_to '2012', url_for(params.reject {|k,v| k == 'page' }.merge(year: 2012)) %></li>
+          <li><%= link_to '2011', url_for(params.reject {|k,v| k == 'page' }.merge(year: 2011)) %></li>
+          <li><%= link_to '2010', url_for(params.reject {|k,v| k == 'page' }.merge(year: 2011)) %></li>
+        </ul>
+      <% end %>
+    </div>
     <%= link_to_unless_current @place.name, place_path(@place.slug, @year) %>
     <% if params[:area] %>
       » <%= kind_literal(@kind).humanize %> presupuestados
