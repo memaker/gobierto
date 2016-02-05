@@ -48,8 +48,17 @@ $(function(){
     $('.global .desktop').toggle();
   });
 
-  var $searchBudget = $('.search_categories_budget');
+  var $searchBudget = $('.search_categories_budget-expense');
   var searchCategoriesOptions = {
+    serviceUrl: $searchBudget.data('search-url'),
+    onSelect: function(suggestion) {
+      window.location.href = suggestion.data.url;
+    }
+  };
+  $searchBudget.autocomplete($.extend({}, AUTOCOMPLETE_DEFAULTS, searchCategoriesOptions));
+
+  $searchBudget = $('.search_categories_budget-income');
+  searchCategoriesOptions = {
     serviceUrl: $searchBudget.data('search-url'),
     onSelect: function(suggestion) {
       window.location.href = suggestion.data.url;
@@ -146,7 +155,7 @@ $(function(){
   // TODO: can we remove it? It is causing trouble on the follow form
   $('.modal_widget').click(function(e) {
     if($('.modal_widget .inner').css('display') == 'none') {
-      e.preventDefault();  
+      e.preventDefault();
       console.log('preventing');
       $(this).find('.inner').velocity("fadeIn", { duration: 50 });
     }
@@ -315,7 +324,7 @@ $(function(){
         }
       }
     );
-    
+
   });
 
   // Google Analytics Events

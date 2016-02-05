@@ -9,7 +9,7 @@ $('#show_expenses_link').replaceWith("<%= j link_to 'Ver desglose de gastos',
 window.expenseTreemap.render($('#expense-treemap').data("<%= @area_name %>-url"));
 rebindAll();
 
-var $searchBudget = $('.search_categories_budget');
+var $searchBudget = $('.search_categories_budget-expense');
 var searchCategoriesOptions = {
   serviceUrl: $searchBudget.data('search-url'),
   onSelect: function(suggestion) {
