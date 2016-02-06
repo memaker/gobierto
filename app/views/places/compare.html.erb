@@ -2,10 +2,11 @@
 
 <div class="compare">
   <header class="place">
-
-    <div class="breadcrumb">
       <h1>
-        Compara <span class="sep"> » </span>
+        <%= render partial: 'year_switcher' %>
+        Compara
+      </h1>
+      <div>
         <span>
           <div class="switcher kind_switcher">
             <%= link_to "#{kind_literal(@kind).capitalize} <i class='fa fa-angle-down'></i>".html_safe, '', class: 'current' %>
@@ -43,9 +44,7 @@
           </div>
         <% end %>
         </span>
-      </h1>
-    </div>
-
+      </div>
   </header>
   
   <a href="#" class="selected"
