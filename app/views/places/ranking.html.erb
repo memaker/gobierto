@@ -1,9 +1,9 @@
 <% set_meta_tags title: "Ránking #{@variable == 'population' ? 'Población' : (@code ? budget_line_denomination(@area_name, @code, @kind, 20) : "#{kind_literal(@kind)} área #{area_literal(@area_name).downcase}")} en #{@year}" %>
 
 <header class="place">
-  
+
   <h1>
-    <%= render partial: 'year_switcher' %>
+    <%= render partial: 'places/year_switcher' %>
     <%= link_to 'Ranking' %>
   </h1>
   <div>
