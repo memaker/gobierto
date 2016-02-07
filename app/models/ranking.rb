@@ -70,7 +70,7 @@ class Ranking
 
       response = SearchEngine.client.search index: BudgetLine::INDEX, type: area, body: query
       buckets = response['hits']['hits'].map{|h| h['_id']}
-      return buckets.index(id) + 1
+      return buckets.index(id).nil? ? nil : buckets.index(id) + 1
     else
       if field == 'population'
         query = {
@@ -94,7 +94,7 @@ class Ranking
         id = [ine_code, year].join('/')
         response = SearchEngine.client.search index: Population::INDEX, type: Population::TYPE, body: query
         buckets = response['hits']['hits'].map{|h| h['_id']}
-        return buckets.index(id) + 1
+        return buckets.index(id).nil? ? nil : buckets.index(id) + 1
       else
         field = (field == 'amount') ? 'total_budget' : 'total_budget_per_inhabitant'
 
@@ -121,7 +121,7 @@ class Ranking
 
         response = SearchEngine.client.search index: BudgetTotal::INDEX, type: BudgetTotal::TYPE, body: query
         buckets = response['hits']['hits'].map{|h| h['_id']}
-        return buckets.index(id) + 1
+        return buckets.index(id).nil? ? nil : buckets.index(id) + 1
       end
     end
   end

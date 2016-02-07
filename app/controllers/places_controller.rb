@@ -57,6 +57,7 @@ class PlacesController < ApplicationController
   def ranking
     if @place && params[:page].nil?
       place_position = Ranking.place_position(year: @year, ine_code: @place.id, code: @code, kind: @kind, area: @area_name, field: @variable)
+      render_404 and return if place_position.nil?
 
       page = Ranking.page_from_position(place_position)
       redirect_to url_for(params.merge(page: page))
