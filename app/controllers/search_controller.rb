@@ -41,12 +41,12 @@ class SearchController < ApplicationController
   private
 
   def search_across_models(query)
-    return [] if query.length < 3
+    return [] if query.blank? || query.length < 3
 
     query = {
       query: {
         wildcard: {
-          name: "#{query}*"
+          name: "#{query.downcase}*"
         }
       },
       size: 10_000
