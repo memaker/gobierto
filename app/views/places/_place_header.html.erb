@@ -29,7 +29,7 @@
 
   <div class="tools_cont">
     <div class="tools sticky">
-      <% if controller_name == 'places' %>
+      <% if ['places','budget_lines'].include?(controller_name) %>
         <div class="modal_widget" id="follow">
           <%= render 'places/follow_place' %>
         </div>
