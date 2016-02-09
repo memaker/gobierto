@@ -45,8 +45,11 @@ class SearchController < ApplicationController
 
     query = {
       query: {
-        wildcard: {
-          name: "#{query.downcase}*"
+        match_phrase_prefix: {
+          name: {
+            query: "#{query.downcase}",
+            slop: 10
+          }
         }
       },
       size: 10_000
