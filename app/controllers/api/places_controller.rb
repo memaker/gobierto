@@ -16,11 +16,14 @@ class Api::PlacesController < ApplicationController
 
     query = {
       query: {
-        wildcard: {
-          name: "#{query.downcase}*"
+        match_phrase_prefix: {
+          name: {
+            query: "#{query.downcase}",
+            slop: 3
+          }
         }
       },
-      size: 10_000
+      size: 25
     }
 
     response = SearchEngine.client.search index: 'data', type: 'places', body: query
