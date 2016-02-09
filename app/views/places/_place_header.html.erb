@@ -2,7 +2,7 @@
   <div class="breadcrumb">
     <%= @place.province.autonomous_region.name %> » <%= @place.province.name %>
   </div>
-  <h1>
+  <h1 title="<%= 'Presupuestos municipales de ' + @place.name %>">
     <%= render partial: 'places/year_switcher' %>
     <%= link_to_unless_current @place.name, place_path(@place.slug, @year) %>
     <% if params[:area] %>

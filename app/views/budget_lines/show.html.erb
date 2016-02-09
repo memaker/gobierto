@@ -1,6 +1,7 @@
 <%
-set_meta_tags title: "Presupuesto de #{@place.name} » #{kind_literal(@kind).capitalize} » #{budget_line_denomination(@area_name, @code, @kind)}"
+set_meta_tags title: "#{kind_literal(@kind).capitalize} en #{budget_line_denomination(@area_name, @code, @kind)} en #{@place.name} para #{@year}"
 @share_text = "#{kind_literal(@kind, false).capitalize} municipal de #{@place.name} en #{budget_line_denomination(@area_name, @code, @kind)} para el #{@year}"
+set_meta_tags description: "Datos de #{kind_literal(@kind).singularize} en #{budget_line_denomination(@area_name, @code, @kind)} en #{@place.name}. Consulta y visualiza la partida de #{budget_line_denomination(@area_name, @code, @kind)} para #{@place.name} en los últimos años y compara con otros municipios" 
 %>
 
 <%= render partial: 'places/place_header' %>
