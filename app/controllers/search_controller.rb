@@ -55,15 +55,6 @@ class SearchController < ApplicationController
       size: 25
     }
 
-    # query = {
-    #   query: {
-    #     wildcard: {
-    #       name: "#{query.downcase}"
-    #     }
-    #   },
-    #   size: 10_000
-    # }
-
     response = SearchEngine.client.search index: 'data', type: 'places', body: query
     source = response['hits']['hits'].map{|h| h['_source'] }
     source.map do |place|
