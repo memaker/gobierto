@@ -48,12 +48,21 @@ class SearchController < ApplicationController
         match_phrase_prefix: {
           name: {
             query: "#{query.downcase}",
-            slop: 10
+            slop: 3
           }
         }
       },
-      size: 10_000
+      size: 25
     }
+
+    # query = {
+    #   query: {
+    #     wildcard: {
+    #       name: "#{query.downcase}"
+    #     }
+    #   },
+    #   size: 10_000
+    # }
 
     response = SearchEngine.client.search index: 'data', type: 'places', body: query
     source = response['hits']['hits'].map{|h| h['_source'] }
