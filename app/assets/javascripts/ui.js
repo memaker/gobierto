@@ -18,7 +18,7 @@ $(function(){
   $('.spinner').hide();
   Turbolinks.enableProgressBar();
 
-  $(document).on('click', '.popup', function(e){
+  $('body').on('click', '.popup', function(e){
     e.preventDefault();
     window.open($(this).attr("href"), "popupWindow", "width=600,height=600,scrollbars=yes");
     if($(this).data('rel') !== undefined){
@@ -69,16 +69,6 @@ $(function(){
   $searchBudget.autocomplete($.extend({}, AUTOCOMPLETE_DEFAULTS, searchCategoriesOptions));
 
   $('.sticky').sticky({topSpacing:0});
-
-  $(document).on('mouseenter', '.compare_cont', function(e){
-    e.preventDefault();
-    $(this).find('.compare').velocity("fadeIn", { duration: 250 });
-  });
-
-  $(document).on('mouseleave', '.compare_cont', function(e){
-    e.preventDefault();
-    $(this).find('.compare').velocity("fadeOut", { duration: 250 });
-  });
 
   $('#kind').on('change', function(e){
     $.ajax('/categories/economic/' + $(this).val());
