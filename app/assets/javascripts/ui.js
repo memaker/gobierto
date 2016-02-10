@@ -24,6 +24,7 @@ $(function(){
     if($(this).data('rel') !== undefined){
       console.log('social: '+$(this).data('rel'));
       ga('send', 'event', 'Social Shares', 'Click', $(this).data('rel'), {nonInteraction: true});
+      mixpanel.track('Social Shares', { 'Click': $(this).data('rel')});
     }
   });
 
@@ -36,6 +37,7 @@ $(function(){
     onSelect: function(suggestion) {
       if(suggestion.data.type == 'Place') {
         ga('send', 'event', 'Place Search', 'Click', 'Search', {nonInteraction: true});
+        mixpanel.track('Place Search', { 'Place': suggestion.data.slug});
         window.location.href = '/places/' + suggestion.data.slug + '/2015';
       }
     },
@@ -136,11 +138,13 @@ $(function(){
 
   $('.switcher').click(function(e){
     ga('send', 'event', 'Year Selection', 'Click', 'ChangeYear', {nonInteraction: true});
+    mixpanel.track('Year Selection', { 'Year Selected': e.target.innerHTML});
   });
 
   $('.modal_widget').click(function(e) {
     var eventLabel = $(this).attr('id');
     ga('send', 'event', 'Header Tools', 'Click', eventLabel, {nonInteraction: true});
+    mixpanel.track('Header Tools', { 'Modal': eventLabel, 'Action': 'Click'});
   });
 
   $('.modal_widget').hover(function(e) {
@@ -148,6 +152,8 @@ $(function(){
     $(this).find('.inner').velocity("fadeIn", { duration: 50 });
     var eventLabel = $(this).attr('id');
     ga('send', 'event', 'Header Tools', 'Hover', eventLabel, {nonInteraction: true});
+    mixpanel.track('Header Tools', { 'Modal': eventLabel, 'Action': 'Hover'});
+
   }, function(e) {
     $(this).find('.inner').velocity("fadeOut", { duration: 50 });
   });
@@ -156,7 +162,6 @@ $(function(){
   $('.modal_widget').click(function(e) {
     if($('.modal_widget .inner').css('display') == 'none') {
       e.preventDefault();
-      console.log('preventing');
       $(this).find('.inner').velocity("fadeIn", { duration: 50 });
     }
   });
@@ -216,6 +221,7 @@ $(function(){
     $(this).addClass('extended');
     $(this).find('.fa').toggleClass('fa-plus-square-o fa-minus-square-o');
     ga('send', 'event', 'Tree Navigation', 'Open', $(this).attr('href'), {nonInteraction: true});
+    mixpanel.track("Tree Navigation", {"Open": $(this).attr('href')});
   });
 
   /* Collapses branch - Prevents resending the form when extended */
@@ -231,6 +237,7 @@ $(function(){
     if ($('#expense-treemap').is(':visible'))
       window.expenseTreemap.render(url);
     ga('send', 'event', 'Tree Navigation', 'Close', '', {nonInteraction: true});
+    mixpanel.track("Tree Navigation", {"Close": $(this).attr('href')});
   });
 
   $('.items').on('ajax:beforeSend', 'a:not(.extended)', function(event, xhr, settings) {
@@ -331,5 +338,6 @@ $(function(){
   $('.form_filters a').click(function(e) {
     var eventLabel = $(this).attr('id');
     ga('send', 'event', 'Expense Type Selector', 'Click', eventLabel, {nonInteraction: true});
+    mixpanel.track("Expense Type Selector", {"Type": eventLabel});
   })
 });
