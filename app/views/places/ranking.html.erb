@@ -73,12 +73,12 @@
         <div id="filter_population"></div>
         Entre <span id='size_value_0'></span> y <span id='size_value_1'></span></li>
       <li>
-        <span>Gasto total</span>
+        <span><%= kind_literal(@kind, false).titleize %> total</span>
         <div id="filter_total"></div>
         Entre <span id='total_value_0'></span> y <span id='total_value_1'></span>
       </li>
       <li>
-        <span>Gasto por habitante</span>
+        <span><%= kind_literal(@kind, false).titleize %> por habitante</span>
         <div id="filter_per_inhabitant"></div>
         Entre <span id='per_inhabitant_value_0'></span> y <span id='per_inhabitant_value_1'></span>
       </li>
