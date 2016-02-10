@@ -174,6 +174,12 @@ module ApplicationHelper
     end
   end
 
+  def aarr_for_select
+    INE::Places::AutonomousRegion.all.sort_by(&:name).map do |ar|
+      [ar.name, ar.id]
+    end
+  end
+
   def parent_code(code)
     if code.present?
       if code.include?('-')

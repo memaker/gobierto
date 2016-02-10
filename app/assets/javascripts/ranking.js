@@ -6,9 +6,13 @@ $(function () {
       $('#filter_population, #filter_total, #filter_per_inhabitant').each(function() {
         var values = this.noUiSlider.get();
         var filter_name = this.id.replace('filter_','');
-        params+= "&filters[" + filter_name + "][from]=" + parseInt(values[0]);
-        params+= "&filters[" + filter_name + "][to]=" + parseInt(values[1]);
+        params+= "&f[" + filter_name + "][from]=" + parseInt(values[0]);
+        params+= "&f[" + filter_name + "][to]=" + parseInt(values[1]);
       })
+      if ($('#aarr').val() != '') {
+        params+= "&f[aarr]=" + $('#aarr').val();
+      }
+
       $.ajax(ranking_url + params);
     }
 
@@ -103,5 +107,9 @@ $(function () {
     inh_slider.noUiSlider.on('change', function( values, handle ) {
       updateRanking();
     });
+
+    $('body').on('change','#aarr', function(v) {
+      updateRanking();
+    })
   }
 });

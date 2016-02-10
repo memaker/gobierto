@@ -2488,33 +2488,36 @@ menu.sections {
   }
 }
 
-.filters {
-  height:100px;
-  background-color: $color_3_soft;
-  margin-bottom: 25px;
-  padding:20px 20px 0px;
+.rankings {
+  clear:right;
+  .filters {
+    height:100px;
+    background-color: $color_3_soft;
+    margin-bottom: 25px;
+    padding:20px 20px 0px;
 
-  ul { 
-    width:100%;
-    margin:0px;
-    padding: 0px;
-  }
+    ul { 
+      width:100%;
+      margin:0px;
+      padding: 0px;
+    }
 
-  li {
-    list-style-type: none;
-    display:inline-block;
-    width: 25%;
-    font-size: 11px;
-    padding-right: 3%;
-    padding-left:3%;
-    span {
+    li {
+      list-style-type: none;
+      display:inline-block;
+      width: 18%;
       font-size: 11px;
-      font-weight: bold;
-      color: $text;
+      padding-right: 3%;
+      padding-left:3%;
+      vertical-align: top;
+      span {
+        font-size: 11px;
+        font-weight: bold;
+        color: $text;
+      }
     }
   }
 }
-
 /*
  * Pre Home
  *

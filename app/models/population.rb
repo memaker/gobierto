@@ -59,6 +59,7 @@ class Population
       population_filter =  options[:filters][:population]
       total_filter = options[:filters][:total]
       per_inhabitant_filter = options[:filters][:per_inhabitant]
+      aarr_filter = options[:filters][:aarr]
     end
 
     if total_filter || per_inhabitant_filter
@@ -80,6 +81,8 @@ class Population
     if (population_filter && (population_filter[:from].to_i > Population::FILTER_MIN || population_filter[:to].to_i < Population::FILTER_MAX))
       terms << {range: { value: { gte: population_filter[:from].to_i, lte: population_filter[:to].to_i} }}
     end
+
+    terms << {term: { autonomy_id: aarr_filter }} if aarr_filter
 
     query = {
       sort: [

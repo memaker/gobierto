@@ -55,7 +55,7 @@ class PlacesController < ApplicationController
   end
 
   def ranking
-    @filters = params[:filters]
+    @filters = params[:f]
     if @place && params[:page].nil?
 
       place_position = Ranking.place_position(year: @year, ine_code: @place.id, code: @code, kind: @kind, area: @area_name, field: @variable, filters: @filters)

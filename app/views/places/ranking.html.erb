@@ -65,7 +65,7 @@
 
 </header>
 
-<div class="">
+<div class="rankings">
   <div class="filters" data-ranking-url="<%= url_for(params.except('page').merge(format:'js')) %>">
     <ul>
       <li>
@@ -81,6 +81,13 @@
         <span>Gasto por habitante</span>
         <div id="filter_per_inhabitant"></div>
         Entre <span id='per_inhabitant_value_0'></span> y <span id='per_inhabitant_value_1'></span>
+      </li>
+      <li>
+        <span>Comunidad Autónoma</span>
+        <div id="filter_per_aarr">
+          <%= select_tag(:aarr,options_for_select(aarr_for_select), {prompt: 'Todas'}) %>
+        </div>
+        
       </li>
   </div>
 
