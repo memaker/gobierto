@@ -61,7 +61,9 @@ class BudgetTotal
     end
     
     if (population_filter && (population_filter[:from].to_i > Population::FILTER_MIN || population_filter[:to].to_i < Population::FILTER_MAX))
-      results,total_elements = Population.for_ranking(options[:year], 0, nil, {population: population_filter})
+      reduced_filter = {population: population_filter}
+      reduced_filter.merge!(aarr: aarr_filter) if aarr_filter
+      results,total_elements = Population.for_ranking(options[:year], 0, nil, reduced_filter)
       ine_codes = results.map{|p| p['ine_code']}
       terms << [{terms: { ine_code: ine_codes }}] if ine_codes.any?
     end

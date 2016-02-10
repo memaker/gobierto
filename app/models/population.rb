@@ -72,6 +72,8 @@ class Population
       if (per_inhabitant_filter && (per_inhabitant_filter[:from].to_i > BudgetTotal::PER_INHABITANT_FILTER_MIN || per_inhabitant_filter[:to].to_i < BudgetTotal::PER_INHABITANT_FILTER_MAX))
         budget_filters[:per_inhabitant] = per_inhabitant_filter
       end
+
+      budget_filters.merge!(aarr: aarr_filter) if aarr_filter
       
       results,total_elements = BudgetTotal.for_ranking(options[:year], 'total_budget', 0, nil, budget_filters)
       ine_codes = results.map{|p| p['ine_code']}
