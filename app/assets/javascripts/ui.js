@@ -18,6 +18,14 @@ $(function(){
   $('.spinner').hide();
   Turbolinks.enableProgressBar();
 
+  // Modals
+  $('.open_modal').magnificPopup({
+    type: 'inline',
+    removalDelay: 300,
+    mainClass: 'mfp-fade'
+    // other options
+  });
+  
   $('body').on('click', '.popup', function(e){
     e.preventDefault();
     window.open($(this).attr("href"), "popupWindow", "width=600,height=600,scrollbars=yes");

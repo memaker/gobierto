@@ -5,7 +5,7 @@
 /* ToDo: Change to production location */
 @import "vendor/populities";
 @import "vendor/tipsy";
-@import "vendor/jquery.dynatable";
+// @import "vendor/jquery.dynatable";
 @import "vendor/quill.snow";
 // @import "vendor/pickadate/classic";
 // @import "vendor/pickadate/classic.date";
@@ -15,6 +15,7 @@
 @import "vendor/sparkline";
 @import "vendor/jquery.bonsai";
 @import "vendor/select2.min";
+@import "vendor/magnific-popup";
 // Old visualizations
 // @import "vis_bars";
 // @import "vis_distribution";
@@ -2546,4 +2547,46 @@ html.turbolinks-progress-bar::before {
     width: 100%;
     float: none;
   }
+}
+
+
+
+
+/*
+ * Modals
+ *
+ *
+ */
+/* overlay at start */
+.mfp-fade.mfp-bg {
+  opacity: 0;
+
+  -webkit-transition: all 0.15s ease-out;
+  -moz-transition: all 0.15s ease-out;
+  transition: all 0.15s ease-out;
+}
+/* overlay animate in */
+.mfp-fade.mfp-bg.mfp-ready {
+  opacity: 0.8;
+}
+/* overlay animate out */
+.mfp-fade.mfp-bg.mfp-removing {
+  opacity: 0;
+}
+
+/* content at start */
+.mfp-fade.mfp-wrap .mfp-content {
+  opacity: 0;
+
+  -webkit-transition: all 0.15s ease-out;
+  -moz-transition: all 0.15s ease-out;
+  transition: all 0.15s ease-out;
+}
+/* content animate it */
+.mfp-fade.mfp-wrap.mfp-ready .mfp-content {
+  opacity: 1;
+}
+/* content animate out */
+.mfp-fade.mfp-wrap.mfp-removing .mfp-content {
+  opacity: 0;
 }

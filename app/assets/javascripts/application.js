@@ -15,6 +15,7 @@
 //= require vendor/select2.min
 //= require vendor/klass
 //= require vendor/jquery.inview
+//= require vendor/jquery.magnific-popup.min
 //= require vis_treemap
 //= require vis_lineas_tabla
 //= require widget_renderer
