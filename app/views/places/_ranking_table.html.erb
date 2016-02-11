@@ -19,7 +19,7 @@
 
   <tbody>
     <% @ranking_items.each_with_index do |ranking_item, i| %>
-      <tr <%= 'class="selected"'.html_safe if ranking_item.place == @place %>>
+      <tr <%= 'class="selected"'.html_safe if ranking_item.place == @place %> id='<%= "place_#{ranking_item.place.id}" %>'>
         <td class="r_pos"><%= Ranking.position(i, @page) %>.</td>
         <td class="location"><%= link_to ranking_item.place.name, place_path(ranking_item.place.slug, @year) %> (<%= ranking_item.place.province.name %>)</td>
         <td class="population"><%= number_with_precision ranking_item.population, precision: 0, delimiter: '.' %></td>

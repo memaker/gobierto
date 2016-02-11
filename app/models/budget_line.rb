@@ -42,11 +42,7 @@ class BudgetLine < OpenStruct
     }
   end
 
-  def self.find(options)
-    return self.search(options)['hits'][0]
-  end
-
-  def self.for_ranking(options)
+  def self.budget_line_query(options)
     query = {
       sort: [ { options[:variable].to_sym => { order: 'desc' } } ],
       query: {
@@ -62,11 +58,22 @@ class BudgetLine < OpenStruct
           }
         }
       },
-      from: options[:offset],
-      size: options[:per_page]
+      size: 10_000
     }
-    
-    response = SearchEngine.client.search index: BudgetLine::INDEX, type: options[:area_name], body: query
+
+    query.merge!(size: options[:per_page]) if options[:per_page].present?
+    query.merge!(from: options[:offset]) if options[:offset].present?
+    query.merge!(_source: false) if options[:to_rank]
+
+    SearchEngine.client.search index: BudgetLine::INDEX, type: options[:area_name], body: query
+  end
+
+  def self.find(options)
+    return self.search(options)['hits'][0]
+  end
+
+  def self.for_ranking(options)
+    response = budget_line_query(options)
     results = response['hits']['hits'].map{|h| h['_source']}
     total_elements = response['hits']['total']
 
@@ -74,28 +81,9 @@ class BudgetLine < OpenStruct
   end
 
   def self.place_position_in_ranking(options)
-    query = {
-      sort: [ { options[:field].to_sym => { order: 'desc' } } ],
-      query: {
-        filtered: {
-          filter: {
-            bool: {
-              must: [
-                {term: { year: options[:year] }},
-                {term: { kind: options[:kind] }},
-                {term: { code: options[:code] }}
-              ]
-            }
-          }
-        }
-      },
-      size: 10_000,
-      _source: false
-    }
-
     id = %w{ine_code year code kind}.map {|f| options[f.to_sym]}.join('/')
     
-    response = SearchEngine.client.search index: BudgetLine::INDEX, type: options[:area], body: query
+    response = budget_line_query(options.merge(to_rank: true))
     buckets = response['hits']['hits'].map{|h| h['_id']}
     return buckets.index(id) + 1
   end

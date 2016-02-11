@@ -21,8 +21,6 @@ class Ranking
     variable = options[:variable]
     page = options[:page]
     code = options[:code]
-    kind = options[:kind]
-    area_name = options[:area_name]
     filters = options[:filters]
 
     offset = (page-1)*self.per_page
@@ -38,23 +36,23 @@ class Ranking
     Kaminari.paginate_array(results, {limit: self.per_page, offset: offset, total_count: total_results})
   end
 
-  # Returns the position of a place in a ranking. The ranking is determined by the field
+  # Returns the position of a place in a ranking. The ranking is determined by the variable
   # parameter
   def self.place_position(options)
     year = options[:year]
     ine_code = options[:ine_code]
     code = options[:code]
-    field = options[:field]
+    variable = options[:variable]
     filters = options[:filters]
 
     if code.present?
       return BudgetLine.place_position_in_ranking(options)
     else
-      if field == 'population'
+      if variable == 'population'
         return Population.place_position_in_ranking(year, ine_code, filters)
       else
-        field = (field == 'amount') ? 'total_budget' : 'total_budget_per_inhabitant'
-        return BudgetTotal.place_position_in_ranking(year, field, ine_code, filters)
+        variable = (variable == 'amount') ? 'total_budget' : 'total_budget_per_inhabitant'
+        return BudgetTotal.place_position_in_ranking(year, variable, ine_code, filters)
       end
     end
   end
