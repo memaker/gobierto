@@ -8,7 +8,7 @@
   
   <%= link_to %Q{<span>Seguir (#{Subscription.for_place(@place)})</span> <i class="fa fa-star-o"></i>}.html_safe, '#', id: 'follow_link', class: 'tool_button tipsit', title: "Suscríbete a las actualizaciones en #{@place.name}" %>
 
-  <div class="inner widget_follow budget_line_feedback modal" id="user_signup">
+  <div class="inner widget_follow budget_line_feedback" id="user_signup">
     <p>Puedes guardar <%= @place.name %> como favorito para recibir actualizaciones de datos y nueva información sobre este presupuesto.</p>
     <%= form_for User.new, data: {remote: true} do |f| %>
       <%= f.email_field :email, placeholder: 'Tu correo-e' %>
