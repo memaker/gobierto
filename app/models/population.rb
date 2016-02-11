@@ -44,7 +44,6 @@ class Population
     response = population_query({year: year, to_rank: true, filters: filters})
     buckets = response['hits']['hits'].map{|h| h['_id']}
     position = buckets.index(id) ? buckets.index(id) + 1 : 0;
-    puts "position: #{position}"
     return position + 1
   end
 
