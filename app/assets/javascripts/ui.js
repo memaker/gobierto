@@ -22,7 +22,7 @@ $(function(){
     e.preventDefault();
     window.open($(this).attr("href"), "popupWindow", "width=600,height=600,scrollbars=yes");
     if($(this).data('rel') !== undefined){
-      console.log('social: '+$(this).data('rel'));
+      // console.log('social: '+$(this).data('rel'));
       ga('send', 'event', 'Social Shares', 'Click', $(this).data('rel'), {nonInteraction: true});
     }
   });
@@ -134,9 +134,7 @@ $(function(){
     $(this).find('ul').hide();
   });
 
-  $('.switcher').click(function(e){
-    ga('send', 'event', 'Year Selection', 'Click', 'ChangeYear', {nonInteraction: true});
-  });
+  
 
   $('.modal_widget').click(function(e) {
     var eventLabel = $(this).attr('id');
@@ -327,7 +325,12 @@ $(function(){
 
   });
 
-  // Google Analytics Events
+
+
+  /*
+   * Google Analytics Events
+   * 
+  */
   $('.form_filters a').click(function(e) {
     var eventLabel = $(this).attr('id');
     ga('send', 'event', 'Expense Type Selector', 'Click', eventLabel, {nonInteraction: true});
