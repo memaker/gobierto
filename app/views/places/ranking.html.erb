@@ -1,5 +1,7 @@
-<% set_meta_tags title: "Ránking #{@variable == 'population' ? 'Población' : (@code ? budget_line_denomination(@area_name, @code, @kind, 20) : "#{kind_literal(@kind)} área #{area_literal(@area_name).downcase}")} en #{@year}" %>
+<% 
+page_title = "Ránking #{@variable == 'population' ? 'Población' : (@code ? budget_line_denomination(@area_name, @code, @kind) : "#{kind_literal(@kind)} área #{area_literal(@area_name).downcase}")}"
 
+set_meta_tags title: page_title + "en #{@year}" %>
 
 <header class="place">
 
@@ -14,9 +16,15 @@
 
   <h1>
     <%= render partial: 'places/year_switcher' %>
-    <%= link_to 'Ranking' %>
+    <%= page_title %>
   </h1>
-  <div>
+
+  <div class="share_links">
+    <%= link_to '<i class="fa fa-twitter"></i>'.html_safe, "https://twitter.com/home?status=#{u twitter_share(page_title || @share_text, request.original_url)}", class: 'small_button popup', data: {rel: 'Twitter'} %>
+    <%= link_to '<i class="fa fa-facebook"></i>'.html_safe, "http://www.facebook.com/sharer/sharer.php?u=#{u request.original_url}", class: 'small_button popup', data: {rel: 'Facebook'} %>
+  </div>
+
+  <header class="sub">
     <% if @variable == 'population' %>
       <span>
         <div class="switcher kind_switcher">
@@ -63,28 +71,34 @@
       <% end %>
       </span>
     <% end %>
-  </div>
+  </header>
 </header>
 
 <div class="rankings">
-  <div class="filters" data-ranking-url="<%= url_for(params.except('page').merge(format:'js')) %>">
+  <div class="filters " data-ranking-url="<%= url_for(params.except('page').merge(format:'js')) %>">
     <ul>
       <li>
-        <span>Tamaño del municipio</span>
-        <div id="filter_population"></div>
+        <h4>Tamaño del municipio</h4>
+        <div class="filter_cont">
+          <div id="filter_population"></div>
+        </div>
         Entre <span id='size_value_0'></span> y <span id='size_value_1'></span></li>
       <li>
-        <span><%= kind_literal(@kind, false).titleize %> total</span>
-        <div id="filter_total"></div>
+        <h4><%= kind_literal(@kind, false).titleize %> total</h4>
+        <div class="filter_cont">
+          <div id="filter_total"></div>
+        </div>
         Entre <span id='total_value_0'></span> y <span id='total_value_1'></span>
       </li>
       <li>
-        <span><%= kind_literal(@kind, false).titleize %> por habitante</span>
-        <div id="filter_per_inhabitant"></div>
+        <h4><%= kind_literal(@kind, false).titleize %> por habitante</h4>
+        <div class="filter_cont">
+          <div id="filter_per_inhabitant"></div>
+        </div>
         Entre <span id='per_inhabitant_value_0'></span> y <span id='per_inhabitant_value_1'></span>
       </li>
       <li>
-        <span>Comunidad Autónoma</span>
+        <h4>Comunidad Autónoma</h4>
         <div id="filter_per_aarr">
           <%= select_tag(:aarr,options_for_select(aarr_for_select), {prompt: 'Todas'}) %>
         </div>
