@@ -2,7 +2,7 @@ $(function () {
   if ($('.filters').length > 0) {
     function updateRanking() {
       var ranking_url = $('[data-ranking-url]').data('ranking-url');
-      var params = ""
+      var params = (ranking_url.indexOf('?') > 0) ? '' : '?'; 
       $('#filter_population, #filter_total, #filter_per_inhabitant').each(function() {
         var values = this.noUiSlider.get();
         var filter_name = this.id.replace('filter_','');
