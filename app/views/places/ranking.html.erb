@@ -2,6 +2,15 @@
 
 <header class="place">
 
+  <% if @variable != 'population' && @kind == 'G' %>
+    <div class="form_filters">
+      <ul>
+        <li><%= link_to 'Económica', places_ranking_path(@year,@kind,'economic',@variable, ine_code: params[:ine_code]), class: "#{'buttonSelected' if @area_name == 'economic'}", id: 'Economica' %></li>
+        <li><%= link_to 'Funcional', places_ranking_path(@year,@kind,'functional',@variable, ine_code: params[:ine_code]), class: "#{'buttonSelected' if @area_name == 'functional'}", id: 'Funcional' %></li>
+      </ul>
+    </div>
+  <% end %>
+
   <h1>
     <%= render partial: 'places/year_switcher' %>
     <%= link_to 'Ranking' %>
@@ -36,7 +45,7 @@
             current_link_literal = "Total"
           else
             previous_branch_code = selected_branch_code[0...level-1]
-            current_link_literal = budget_line_denomination(@area_name, selected_branch_code, @kind, 20)
+            current_link_literal = budget_line_denomination(@area_name, selected_branch_code, @kind, 60)
           end
           items = categories_in_level(@area_name, @kind, level, previous_branch_code)
           %>
@@ -54,15 +63,6 @@
       </span>
     <% end %>
   </div>
-  <% if @variable != 'population' && @kind == 'G' %>
-    <div class="form_filters">
-      <ul>
-        <li><%= link_to 'Económica', places_ranking_path(@year,@kind,'economic',@variable, ine_code: params[:ine_code]), class: "#{'buttonSelected' if @area_name == 'economic'}", id: 'Economica' %></li>
-        <li><%= link_to 'Funcional', places_ranking_path(@year,@kind,'functional',@variable, ine_code: params[:ine_code]), class: "#{'buttonSelected' if @area_name == 'functional'}", id: 'Funcional' %></li>
-      </ul>
-    </div>
-  <% end %>
-
 </header>
 
 <div class="rankings">
