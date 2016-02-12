@@ -36,7 +36,7 @@ $(function () {
     });
     
     pop_slider.noUiSlider.on('update', function( values, handle ) {
-      $('#size_value_' + handle).text(parseInt(values[handle]));
+      $('#size_value_' + handle).text(accounting.formatNumber(values[handle], 0, "."));
     });    
 
     pop_slider.noUiSlider.on('change', function( values, handle ) {
@@ -71,7 +71,7 @@ $(function () {
     });
 
     tot_slider.noUiSlider.on('update', function( values, handle ) {
-      $('#total_value_' + handle).text(parseInt(values[handle]));
+      $('#total_value_' + handle).text(accounting.formatNumber(values[handle], 0, "."));
     });
 
     tot_slider.noUiSlider.on('change', function( values, handle ) {
@@ -101,7 +101,7 @@ $(function () {
     });
 
     inh_slider.noUiSlider.on('update', function( values, handle ) {
-      $('#per_inhabitant_value_' + handle).text(parseInt(values[handle]));
+      $('#per_inhabitant_value_' + handle).text(accounting.formatNumber(values[handle], 0, "."));
     });
 
     inh_slider.noUiSlider.on('change', function( values, handle ) {
