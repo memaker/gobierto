@@ -1,15 +1,9 @@
 
 $(function () {
 
-  function addClassFor ( element, className, duration ) {
-    $(element).addClass(className);
-    setTimeout(function(){
-      $(element).removeClass(className);
-    }, duration);
-  }
-
   if ($('.filters').length > 0) {
     function updateRanking() {
+      $('.spinner').addClass('show');
       var ranking_url = $('[data-ranking-url]').data('ranking-url');
       var params = (ranking_url.indexOf('?') > 0) ? '' : '?'; 
       $('#filter_population, #filter_total, #filter_per_inhabitant').each(function() {
@@ -47,10 +41,6 @@ $(function () {
       }
     });
     
-    pop_slider.noUiSlider.on('set', function() {
-      $('.spinner').addClass('show');
-    });
-
     pop_slider.noUiSlider.on('update', function( values, handle ) {
       $('#size_value_' + handle).text(accounting.formatNumber(values[handle], 0, "."));
     });

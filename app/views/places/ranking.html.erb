@@ -1,15 +1,6 @@
 <% set_meta_tags title: "Ránking #{@variable == 'population' ? 'Población' : (@code ? budget_line_denomination(@area_name, @code, @kind, 20) : "#{kind_literal(@kind)} área #{area_literal(@area_name).downcase}")} en #{@year}" %>
 
 
-<div class="spinner">
-  <div class="bg"></div>
-  <div class="cont">
-    <%= image_tag 'https://media.giphy.com/media/e6qcLoiqjihVe/giphy.gif', class: 'spin' %>
-    <small><%= link_to 'src', 'https://giphy.com/gifs/art-animation-illustration-e6qcLoiqjihVe' %></small>
-  </div>
-</div>
-
-
 <header class="place">
 
   <% if @variable != 'population' && @kind == 'G' %>

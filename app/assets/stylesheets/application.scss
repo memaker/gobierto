@@ -2249,7 +2249,7 @@ footer {
   z-index: 100;
   text-align: center;
   .bg {
-    opacity: .5;
+    opacity: .2;
     background: #000;
     position: absolute;
     top: 0;
@@ -2264,7 +2264,7 @@ footer {
     margin: 6em;
     position: relative;
     background: #FFF;
-    @include border-radius(12px);
+    @include border-radius(6px);
     img.spin {
       height: auto;
       width: 20%;
@@ -2274,6 +2274,13 @@ footer {
 .spinner.show {
   display: block;
   opacity: 1;
+}
+.rt_cont {
+  .spinner .cont {
+    margin: 2em auto;
+    width: 40%;
+    font-size: 3em;
+  }
 }
 
 
@@ -2559,6 +2566,9 @@ menu.sections {
         color: $text;
       }
     }
+  }
+  .rt_cont {
+    position: relative;
   }
 }
 /*
