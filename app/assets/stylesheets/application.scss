@@ -2229,12 +2229,46 @@ footer {
  * Spinner
  *
  */
+.spinner {
+  //@include transition;
+  transition: all 0.3s ease-out;
+  opacity: 0;
+  display: none;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  z-index: 100;
+  text-align: center;
+  .bg {
+    opacity: .5;
+    background: #000;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    z-index: 199;
+  }
+  .cont {
+    z-index: 200;
+    padding: 3em;
+    margin: 6em;
+    position: relative;
+    background: #FFF;
+    @include border-radius(12px);
+    img.spin {
+      height: auto;
+      width: 20%;
+    }
+  }
+}
 .spinner.show {
   display: block;
+  opacity: 1;
 }
-.spinner {
-  display: none;
-}
+
 
 
 /*

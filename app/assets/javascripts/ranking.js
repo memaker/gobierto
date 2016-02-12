@@ -24,7 +24,7 @@ $(function () {
 
       $.ajax(ranking_url + params);
       $(document).ajaxSuccess(function(){
-        // $('.spinner').removeClass('show');
+        $('.spinner').removeClass('show');
       });
     }
 
@@ -48,7 +48,7 @@ $(function () {
     });
     
     pop_slider.noUiSlider.on('set', function() {
-      // $('.spinner').addClass('show');
+      $('.spinner').addClass('show');
     });
 
     pop_slider.noUiSlider.on('update', function( values, handle ) {
