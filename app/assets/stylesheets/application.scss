@@ -2229,10 +2229,12 @@ footer {
  * Spinner
  *
  */
-.spinnner {
+.spinner.show {
+  display: block;
+}
+.spinner {
   display: none;
 }
-
 
 
 /*

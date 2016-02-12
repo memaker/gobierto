@@ -1,4 +1,13 @@
+
 $(function () {
+
+  function addClassFor ( element, className, duration ) {
+    $(element).addClass(className);
+    setTimeout(function(){
+      $(element).removeClass(className);
+    }, duration);
+  }
+
   if ($('.filters').length > 0) {
     function updateRanking() {
       var ranking_url = $('[data-ranking-url]').data('ranking-url');
@@ -14,6 +23,9 @@ $(function () {
       }
 
       $.ajax(ranking_url + params);
+      $(document).ajaxSuccess(function(){
+        // $('.spinner').removeClass('show');
+      });
     }
 
     var pop_slider = document.getElementById('filter_population');
@@ -35,9 +47,13 @@ $(function () {
       }
     });
     
+    pop_slider.noUiSlider.on('set', function() {
+      // $('.spinner').addClass('show');
+    });
+
     pop_slider.noUiSlider.on('update', function( values, handle ) {
       $('#size_value_' + handle).text(accounting.formatNumber(values[handle], 0, "."));
-    });    
+    });
 
     pop_slider.noUiSlider.on('change', function( values, handle ) {
       updateRanking();

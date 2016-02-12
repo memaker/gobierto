@@ -1,5 +1,9 @@
 <% set_meta_tags title: "Ránking #{@variable == 'population' ? 'Población' : (@code ? budget_line_denomination(@area_name, @code, @kind, 20) : "#{kind_literal(@kind)} área #{area_literal(@area_name).downcase}")} en #{@year}" %>
 
+
+<div class="spinner">SPINNER</div>
+
+
 <header class="place">
 
   <% if @variable != 'population' && @kind == 'G' %>
@@ -93,4 +97,7 @@
 
 <%= render partial: 'ranking_table' %>
 <%= paginate @ranking_items, remote: true %>
+
 </div>
+
+

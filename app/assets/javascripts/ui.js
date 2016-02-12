@@ -15,7 +15,7 @@ function responsive() {
 }
 
 $(function(){
-  $('.spinner').hide();
+  // $('.spinner').hide();
   Turbolinks.enableProgressBar();
 
   $(document).on('click', '.popup', function(e){
