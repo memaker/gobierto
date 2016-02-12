@@ -53,7 +53,7 @@ module ApplicationHelper
       res = " - "
     else
       res = area.all_items[kind][code][0..capped]
-      res += "..." if capped > -1
+      res += "..." if capped < res.length && capped > -1
     end
     res
   end
