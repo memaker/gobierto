@@ -111,7 +111,8 @@ set_meta_tags title: page_title + "en #{@year}" %>
 
   <div class="disclaimer">
     <div class="sep"></div>
-    <p>La base de datos que utilizamos no incluye datos para el 100% de los municipios, por lo que las medias están calculadas solo con los datos que existen (que son la gran mayoría). Más información: <%= link_to '¿Por qué no hay datos de todos los municipios?', faq_path(anchor: 'no_data') %>
+    <p>La base de datos que utilizamos no incluye datos para el 100% de los municipios, por lo que no mostramos los municipios para los que no hay datos. Más información: <%= link_to '¿Por qué no hay datos de todos los municipios?', faq_path(anchor: 'no_data') %>
+    </p>
   </div>
 
 </div>

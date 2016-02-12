@@ -1255,6 +1255,15 @@ header.sub {
   
 }
 
+.metric_graphs {
+  .help {
+    font-size: .75em;
+    float: right;
+    a {
+      color: $text_soft;
+    }
+  }
+}
 .metric_graphs .widget_graph {
   display: none;
 }
