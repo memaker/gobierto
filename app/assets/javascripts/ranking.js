@@ -2,8 +2,9 @@
 $(function () {
 
   if ($('.filters').length > 0) {
+
     function updateRanking() {
-      $('.spinner').addClass('show');
+      
       var ranking_url = $('[data-ranking-url]').data('ranking-url');
       var params = (ranking_url.indexOf('?') > 0) ? '' : '?'; 
       $('#filter_population, #filter_total, #filter_per_inhabitant').each(function() {
@@ -16,9 +17,13 @@ $(function () {
         params+= "&f[aarr]=" + $('#aarr').val();
       }
 
-      $.ajax(ranking_url + params);
-      $(document).ajaxSuccess(function(){
-        $('.spinner').removeClass('show');
+      $.ajax(ranking_url + params, {
+        beforeSend: function() {
+          $('.spinner').addClass('show');
+        },
+        complete: function() {
+          $('.spinner').removeClass('show');
+        }
       });
     }
 
