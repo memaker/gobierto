@@ -9,7 +9,7 @@ $(function () {
 
     $(window).on('popstate', function(e) {
       var params = decodeURIComponent(window.location.search);
-      
+
       var aarr_re = /f\[aarr\]=(\d+)/
       if (aarr_re.test(params)) {
         $('#filter_per_aarr #aarr').val(aarr_re.exec(window.location.search)[1]);
@@ -42,7 +42,7 @@ $(function () {
 
     function updateRanking(push_the_state) {
       var ranking_url = $('[data-ranking-url]').data('ranking-url');
-      var params = (ranking_url.indexOf('?') > 0) ? '' : '?'; 
+      var params = (ranking_url.indexOf('?') > 0) ? '' : '?';
       $('#filter_population, #filter_total, #filter_per_inhabitant').each(function() {
         var values = this.noUiSlider.get();
         var filter_name = this.id.replace('filter_','');
@@ -53,12 +53,12 @@ $(function () {
         params+= "&f[aarr]=" + $('#aarr').val();
       }
       ranking_url += params;
-      
+
       $.ajax(ranking_url, {
         beforeSend: function() {
           $('.spinner').addClass('show');
           if(push_the_state) {
-            history.pushState({params},'',ranking_url.replace('.js?','?'));
+            history.pushState({},'',ranking_url.replace('.js?','?'));
           }
         },
         complete: function() {
@@ -86,7 +86,7 @@ $(function () {
         'max': 5000000
       }
     });
-    
+
     pop_slider.noUiSlider.on('update', function( values, handle ) {
       $('#size_value_' + handle).text(accounting.formatNumber(values[handle], 0, "."));
     });
