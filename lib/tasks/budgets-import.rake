@@ -33,8 +33,7 @@ namespace :budgets do
     }
   end
 
-  def create_db_connection(index)
-    db_name = index
+  def create_db_connection(db_name)
     ActiveRecord::Base.establish_connection ActiveRecord::Base.configurations[Rails.env].merge('database' => db_name)
     ActiveRecord::Base.connection
   end
@@ -46,8 +45,8 @@ namespace :budgets do
     nil
   end
 
-  def import_functional_budgets(index, year)
-    db = create_db_connection(index)
+  def import_functional_budgets(db_name, index, year)
+    db = create_db_connection(db_name)
 
     pbar = ProgressBar.new("functional-#{year}", INE::Places::Place.all.length)
 
@@ -89,8 +88,8 @@ SQL
     pbar.finish
   end
 
-  def import_economic_budgets(index, year)
-    db = create_db_connection(index)
+  def import_economic_budgets(db_name, index, year)
+    db = create_db_connection(db_name)
 
     pbar = ProgressBar.new("economic-#{year}", INE::Places::Place.all.length)
 
@@ -167,8 +166,9 @@ SQL
     end
   end
 
-  desc "Import budgets from database into ElasticSearch. Example rake budgets:import['budgets-execution','economic',2015]"
-  task :import, [:index,:type,:year] => :environment do |t, args|
+  desc "Import budgets from database into ElasticSearch. Example rake budgets:import['budgets-dbname', 'budgets-execution','economic',2015]"
+  task :import, [:db_name, :index,:type,:year] => :environment do |t, args|
+    db_name = args[:db_name]
     index = args[:index] if BUDGETS_INDEXES.include?(args[:index])
     raise "Invalid index #{args[:index]}" if index.blank?
     type = args[:type] if BUDGETS_TYPES.include?(args[:type])
@@ -179,6 +179,6 @@ SQL
     end
     raise "Invalid year #{args[:year]}" if year.blank?
 
-    self.send("import_#{type}_budgets", index, year)
+    self.send("import_#{type}_budgets", db_name, index, year)
   end
 end
