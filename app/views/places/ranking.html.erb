@@ -75,7 +75,7 @@ set_meta_tags title: page_title + "en #{@year}" %>
 </header>
 
 <div class="rankings">
-  <div class="filters " data-ranking-url="<%= url_for(params.slice('ine_code').merge(format:'js')) %>">
+  <div class="filters " data-ranking-url="<%= url_for(params.slice('ine_code')) %>">
     <ul>
       <li>
         <h4>Tamaño del municipio</h4>
