@@ -1,1 +1,210 @@
-# TODO
+<header class="place ranking">
+
+  <div>
+    <h1>
+      <%= render partial: 'places/year_switcher' %>
+      <%= title 'Rankings' %>
+    </h1>
+  </div>
+
+  <%= image_tag('illustrations/analitica.jpg', class: 'f_right') %>
+
+  <p>Consulta los municipios que más gasto total y  por habitante realizan para cada partida.</p>
+
+  <div class="ranking_main_links">
+    <%= link_to 'Ingresos' %>
+    <%= link_to 'Gastos' %>
+  </div>
+
+</header>
+
+
+<div class="ranking_list">
+
+  <div class="sep"></div>
+
+  <h4>Algunas cifras destacadas</h4>
+
+  <div class="ranking_card clearfix" data-href="PUT_HERE_DESTINATION">
+    <div class="share_links">
+      <%= link_to '<i class="fa fa-twitter"></i>'.html_safe, "https://twitter.com/home?status=#{u twitter_share('PENDING: Ranking Title' || @share_text, request.original_url)}", class: 'small_button popup', data: {rel: 'Twitter'} %>
+      <%= link_to '<i class="fa fa-facebook"></i>'.html_safe, "http://www.facebook.com/sharer/sharer.php?u=#{u request.original_url}", class: 'small_button popup', data: {rel: 'Facebook'} %>
+    </div>
+    <h2><%= link_to 'Top ingresos por entradas a museos, exposiciones, espectáculos' %></h2>
+    <div class="winner">
+      <span>7.456.789€</span> 
+      <span class="place">Sevilla</span>
+    </div>
+    <div class="runner_ups">
+      <ol>
+        <li>Sevilla</li>
+        <li>Málaga</li>
+        <li>Zaragoza</li>
+        <li>Valencia</li>
+        <li>Córdoba</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="ranking_card clearfix" data-href="PUT_HERE_DESTINATION">
+    <div class="share_links">
+      <%= link_to '<i class="fa fa-twitter"></i>'.html_safe, "https://twitter.com/home?status=#{u twitter_share('PENDING: Ranking Title' || @share_text, request.original_url)}", class: 'small_button popup', data: {rel: 'Twitter'} %>
+      <%= link_to '<i class="fa fa-facebook"></i>'.html_safe, "http://www.facebook.com/sharer/sharer.php?u=#{u request.original_url}", class: 'small_button popup', data: {rel: 'Facebook'} %>
+    </div>
+    <h2><%= link_to 'Top ingresos por entradas a museos, exposiciones, espectáculos' %></h2>
+    <div class="winner">
+      <span>7.456.789€</span> 
+      <span class="place">Almunia de Doña Godina, La</span>
+    </div>
+    <div class="runner_ups">
+      <ol>
+        <li>Almunia de Doña Godina, La</li>
+        <li>Málaga</li>
+        <li>Zaragoza</li>
+        <li>Valencia</li>
+        <li>Córdoba</li>
+      </ol>
+    </div>
+  </div>
+  <div class="ranking_card clearfix" data-href="PUT_HERE_DESTINATION">
+    <div class="share_links">
+      <%= link_to '<i class="fa fa-twitter"></i>'.html_safe, "https://twitter.com/home?status=#{u twitter_share('PENDING: Ranking Title' || @share_text, request.original_url)}", class: 'small_button popup', data: {rel: 'Twitter'} %>
+      <%= link_to '<i class="fa fa-facebook"></i>'.html_safe, "http://www.facebook.com/sharer/sharer.php?u=#{u request.original_url}", class: 'small_button popup', data: {rel: 'Facebook'} %>
+    </div>
+    <h2><%= link_to 'Top ingresos por entradas a museos, exposiciones, espectáculos' %></h2>
+    <div class="winner">
+      <span>7.456.789€</span> 
+      <span class="place">Sevilla</span>
+    </div>
+    <div class="runner_ups">
+      <ol>
+        <li>Sevilla</li>
+        <li>Málaga</li>
+        <li>Zaragoza</li>
+        <li>Valencia</li>
+        <li>Córdoba</li>
+      </ol>
+    </div>
+  </div>
+  <div class="ranking_card clearfix" data-href="PUT_HERE_DESTINATION">
+    <div class="share_links">
+      <%= link_to '<i class="fa fa-twitter"></i>'.html_safe, "https://twitter.com/home?status=#{u twitter_share('PENDING: Ranking Title' || @share_text, request.original_url)}", class: 'small_button popup', data: {rel: 'Twitter'} %>
+      <%= link_to '<i class="fa fa-facebook"></i>'.html_safe, "http://www.facebook.com/sharer/sharer.php?u=#{u request.original_url}", class: 'small_button popup', data: {rel: 'Facebook'} %>
+    </div>
+    <h2><%= link_to 'Top ingresos por entradas a museos, exposiciones, espectáculos' %></h2>
+    <div class="winner">
+      <span>7.456.789€</span> 
+      <span class="place">Sevilla</span>
+    </div>
+    <div class="runner_ups">
+      <ol>
+        <li>Sevilla</li>
+        <li>Málaga</li>
+        <li>Zaragoza</li>
+        <li>Valencia</li>
+        <li>Córdoba</li>
+      </ol>
+    </div>
+  </div>
+  <div class="ranking_card clearfix" data-href="PUT_HERE_DESTINATION">
+    <div class="share_links">
+      <%= link_to '<i class="fa fa-twitter"></i>'.html_safe, "https://twitter.com/home?status=#{u twitter_share('PENDING: Ranking Title' || @share_text, request.original_url)}", class: 'small_button popup', data: {rel: 'Twitter'} %>
+      <%= link_to '<i class="fa fa-facebook"></i>'.html_safe, "http://www.facebook.com/sharer/sharer.php?u=#{u request.original_url}", class: 'small_button popup', data: {rel: 'Facebook'} %>
+    </div>
+    <h2><%= link_to 'Top ingresos por entradas a museos, exposiciones, espectáculos' %></h2>
+    <div class="winner">
+      <span>7.456.789€</span> 
+      <span class="place">Sevilla</span>
+    </div>
+    <div class="runner_ups">
+      <ol>
+        <li>Sevilla</li>
+        <li>Málaga</li>
+        <li>Zaragoza</li>
+        <li>Valencia</li>
+        <li>Córdoba</li>
+      </ol>
+    </div>
+  </div>
+  <div class="ranking_card clearfix" data-href="PUT_HERE_DESTINATION">
+    <div class="share_links">
+      <%= link_to '<i class="fa fa-twitter"></i>'.html_safe, "https://twitter.com/home?status=#{u twitter_share('PENDING: Ranking Title' || @share_text, request.original_url)}", class: 'small_button popup', data: {rel: 'Twitter'} %>
+      <%= link_to '<i class="fa fa-facebook"></i>'.html_safe, "http://www.facebook.com/sharer/sharer.php?u=#{u request.original_url}", class: 'small_button popup', data: {rel: 'Facebook'} %>
+    </div>
+    <h2><%= link_to 'Top ingresos por entradas a museos, exposiciones, espectáculos' %></h2>
+    <div class="winner">
+      <span>7.456.789€</span> 
+      <span class="place">Sevilla</span>
+    </div>
+    <div class="runner_ups">
+      <ol>
+        <li>Sevilla</li>
+        <li>Málaga</li>
+        <li>Zaragoza</li>
+        <li>Valencia</li>
+        <li>Córdoba</li>
+      </ol>
+    </div>
+  </div>
+  <div class="ranking_card clearfix" data-href="PUT_HERE_DESTINATION">
+    <div class="share_links">
+      <%= link_to '<i class="fa fa-twitter"></i>'.html_safe, "https://twitter.com/home?status=#{u twitter_share('PENDING: Ranking Title' || @share_text, request.original_url)}", class: 'small_button popup', data: {rel: 'Twitter'} %>
+      <%= link_to '<i class="fa fa-facebook"></i>'.html_safe, "http://www.facebook.com/sharer/sharer.php?u=#{u request.original_url}", class: 'small_button popup', data: {rel: 'Facebook'} %>
+    </div>
+    <h2><%= link_to 'Top ingresos por entradas a museos, exposiciones, espectáculos' %></h2>
+    <div class="winner">
+      <span>7.456.789€</span> 
+      <span class="place">Sevilla</span>
+    </div>
+    <div class="runner_ups">
+      <ol>
+        <li>Sevilla</li>
+        <li>Málaga</li>
+        <li>Zaragoza</li>
+        <li>Valencia</li>
+        <li>Córdoba</li>
+      </ol>
+    </div>
+  </div>
+  <div class="ranking_card clearfix" data-href="PUT_HERE_DESTINATION">
+    <div class="share_links">
+      <%= link_to '<i class="fa fa-twitter"></i>'.html_safe, "https://twitter.com/home?status=#{u twitter_share('PENDING: Ranking Title' || @share_text, request.original_url)}", class: 'small_button popup', data: {rel: 'Twitter'} %>
+      <%= link_to '<i class="fa fa-facebook"></i>'.html_safe, "http://www.facebook.com/sharer/sharer.php?u=#{u request.original_url}", class: 'small_button popup', data: {rel: 'Facebook'} %>
+    </div>
+    <h2><%= link_to 'Top ingresos por entradas a museos, exposiciones, espectáculos' %></h2>
+    <div class="winner">
+      <span>7.456.789€</span> 
+      <span class="place">Sevilla</span>
+    </div>
+    <div class="runner_ups">
+      <ol>
+        <li>Sevilla</li>
+        <li>Málaga</li>
+        <li>Zaragoza</li>
+        <li>Valencia</li>
+        <li>Córdoba</li>
+      </ol>
+    </div>
+  </div>
+  <div class="ranking_card clearfix" data-href="PUT_HERE_DESTINATION">
+    <div class="share_links">
+      <%= link_to '<i class="fa fa-twitter"></i>'.html_safe, "https://twitter.com/home?status=#{u twitter_share('PENDING: Ranking Title' || @share_text, request.original_url)}", class: 'small_button popup', data: {rel: 'Twitter'} %>
+      <%= link_to '<i class="fa fa-facebook"></i>'.html_safe, "http://www.facebook.com/sharer/sharer.php?u=#{u request.original_url}", class: 'small_button popup', data: {rel: 'Facebook'} %>
+    </div>
+    <h2><%= link_to 'Top ingresos por entradas a museos, exposiciones, espectáculos' %></h2>
+    <div class="winner">
+      <span>7.456.789€</span> 
+      <span class="place">Rozas de Madrid, Las</span>
+    </div>
+    <div class="runner_ups">
+      <ol>
+        <li>Sevilla</li>
+        <li>Málaga</li>
+        <li>Zaragoza</li>
+        <li>Valencia</li>
+        <li>Córdoba</li>
+      </ol>
+    </div>
+  </div>
+
+</div>

@@ -2609,6 +2609,110 @@ menu.sections {
     box-shadow: none;
   }
 }
+header.ranking {
+  padding-bottom: 3em;
+
+  img {
+    width: 65%;
+    margin: 0 0 0 1em;
+    max-width: 600px;
+  }
+  h1 {
+    margin-bottom: 2em;
+  }
+  p {
+    font-size: 1.3em;
+    width: 50%;
+    margin: 0 0 2em 0;
+  }
+  .ranking_main_links {
+    font-size: 1.8em;
+    a {
+      margin: 0 2em 0 0;
+    }
+  }
+
+}
+.ranking_card {
+  background: $color_1_soft;
+  @include transition;
+  padding: 1.5em;
+  @include border-radius(6px);
+  width: 48%;
+  float: left;
+  box-sizing: border-box;
+  margin-bottom: 2em;
+
+  @include screen(740) {
+    width: 100%;
+    float: none
+  }
+
+  h2 {
+    margin: 0 0 1em 0;
+    font-size: 1.3em;
+    font-weight: 400;
+  }
+  a {
+    text-decoration: none;
+  }
+  .winner {
+    background: #FFF;
+    @include border-radius(6px);
+    box-sizing: border-box;
+    padding: .4em .7em 0;
+    width: 48%;
+    float: left;
+    font-size: 1.3em;
+    min-height: 6em;
+    span {
+      line-height: 1.5em;
+      display: block;
+      font-weight: 600;
+    }
+    span.place {
+      font-weight: 200;
+    }
+  }
+  .runner_ups {
+    float: right;
+    width: 42%;
+    font-size: .9em;
+    font-weight: 200;
+    ol {
+      margin: 0;
+      padding: 0;
+      li {
+        white-space: nowrap;
+      }
+    }
+  }
+  .share_links {
+    float: right; 
+    margin: 0 0 0 1em;
+    .small_button {
+      padding: none;
+      @include border-radius(30px);
+      width: 23px;
+      text-align: center;
+      padding: 1px;
+      font-size: .8em;
+    }
+  }
+}
+.ranking_card:hover {
+  cursor: pointer;
+  background: darken($color_1_soft, 10%);
+}
+.ranking_card:nth-child(2n) {
+  float: right;
+}
+.ranking_list:nth-child(2) {
+  
+}
+
+
+
 /*
  * Pre Home
  *
