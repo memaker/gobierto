@@ -339,7 +339,9 @@ $(function(){
 
 
   $('.ranking_card').click(function(e) {
-    Turbolinks.visit($('.ranking_card').first().attr('data-href'));
+    Turbolinks.visit($(this).find('h2 a').attr('href'));
   });
+
+
 
 });
