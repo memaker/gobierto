@@ -1,5 +1,7 @@
 namespace :budgets do
-  BUDGETS_INDEXES = ['budgets-forecast', 'budgets-execution']
+  FORECAST_INDEX = 'budgets-forecast-v2'
+  EXECUTION_INDEX = 'budgets-execution-v2'
+  BUDGETS_INDEXES = [FORECAST_INDEX, EXECUTION_INDEX]
   BUDGETS_TYPES = ['economic', 'functional']
 
   def create_mapping(index, type)
@@ -63,7 +65,7 @@ namespace :budgets do
       sql = <<-SQL
 SELECT tb_funcional_#{year}.cdfgr as code, sum(tb_funcional_#{year}.importe) as amount
 FROM tb_funcional_#{year}
-INNER JOIN "tb_inventario_#{year}" ON tb_inventario_#{year}.id = tb_funcional_#{year}.id AND tb_inventario_#{year}.codente = '#{format("%.5i", place.id)}AA000'
+INNER JOIN "tb_inventario_#{year}" ON tb_inventario_#{year}.idente = tb_funcional_#{year}.idente AND tb_inventario_#{year}.codente = '#{format("%.5i", place.id)}AA000'
 GROUP BY tb_funcional_#{year}.cdfgr
 SQL
 
@@ -103,17 +105,16 @@ SQL
         population: pop
       }
 
-      amount_column = if index == 'budgets-forecast'
+      amount_column = if index == FORECAST_INDEX
                         'importe'
-                      elsif index == 'budgets-execution'
+                      elsif index == EXECUTION_INDEX
                         'importer'
                       end
 
       sql = <<-SQL
-SELECT tb_economica_#{year}.cdcta as code, tb_economica_#{year}.tipreig AS kind, sum(tb_economica_#{year}.#{amount_column}) as amount
+SELECT tb_economica_#{year}.cdcta as code, tb_economica_#{year}.tipreig AS kind, tb_economica_#{year}.#{amount_column} as amount
 FROM tb_economica_#{year}
-INNER JOIN "tb_inventario_#{year}" ON tb_inventario_#{year}.id = tb_economica_#{year}.id AND tb_inventario_#{year}.codente = '#{format("%.5i", place.id)}AA000'
-GROUP BY tb_economica_#{year}.cdcta, tb_economica_#{year}.tipreig
+INNER JOIN "tb_inventario_#{year}" ON tb_inventario_#{year}.idente = tb_economica_#{year}.idente AND tb_inventario_#{year}.codente = '#{format("%.5i", place.id)}AA000'
 SQL
 
       index_request_body = []
