@@ -328,21 +328,13 @@ header.global {
     }
   }
 }
-// if top-claim present...
-body {
-  padding: 2em 0 0 0;
-  @include screen(740) {
-    padding: 0;
-  }
-}
+
 .top-claim {
-  position: absolute;
   z-index: 30;
   background: $color_1;
   color: $background;
   text-align: center;
   margin: 0;
-  height: 2em;
   width: 100%;
   top: 0;
   left: 0;
@@ -351,11 +343,12 @@ body {
     line-height: 1.4em;
     margin: 0;
     font-size: .85em;  
-    a {
-      color:white;
-    }
+  }
+  a {
+    color: #FFF;
   }
 }
+
 
 .switcher {
   display: inline-block;

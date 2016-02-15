@@ -331,5 +331,7 @@ $(function(){
   $('.form_filters a').click(function(e) {
     var eventLabel = $(this).attr('id');
     ga('send', 'event', 'Expense Type Selector', 'Click', eventLabel, {nonInteraction: true});
-  })
+  });
+
+
 });

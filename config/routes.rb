@@ -16,6 +16,7 @@ Rails.application.routes.draw do
   get 'legal/cookies' => 'pages#legal_cookies'
   get 'legal/legal' => 'pages#legal_legal'
   get 'legal/privacy' => 'pages#legal_privacy'
+  get 'en' => 'pages#en'
 
   # user and session management
   get 'login' => 'sessions#new', as: :login

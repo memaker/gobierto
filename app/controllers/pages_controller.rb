@@ -22,6 +22,9 @@ class PagesController < ApplicationController
   def legal_privacy
   end
 
+  def en
+  end
+
   def request_access
     render layout: false
   end
