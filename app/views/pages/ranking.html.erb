@@ -2,18 +2,17 @@
 
   <div>
     <h1>
-      <%= render partial: 'places/year_switcher' %>
       <%= title 'Rankings' %>
     </h1>
   </div>
 
   <%= image_tag('illustrations/analitica.jpg', class: 'f_right') %>
 
-  <p>Consulta los municipios que más gasto total y  por habitante realizan para cada partida.</p>
+  <p>Consulta los municipios que más gasto total y por habitante realizan para cada partida.</p>
 
   <div class="ranking_main_links">
-    <%= link_to 'Ingresos' %>
-    <%= link_to 'Gastos' %>
+    <%= link_to 'Ingresos', places_ranking_path(2015, 'I', 'economic', 'amount') %>
+    <%= link_to 'Gastos', places_ranking_path(2015, 'G', 'functional', 'amount') %>
   </div>
 
 </header>
@@ -53,12 +52,40 @@
       
   </div>  
 
+  <div class="ranking_card clearfix" 
+      data-widget-type="ranking_5"
+      data-widget-template="#widget-template" 
+      data-widget-data-url="/api/data/widget/ranking/2015/G/functional/amount/338.json">
+      
+  </div>
+
+  <div class="ranking_card clearfix" 
+      data-widget-type="ranking_6"
+      data-widget-template="#widget-template" 
+      data-widget-data-url="/api/data/widget/ranking/2015/G/functional/per_inhabitant/338.json">
+      
+  </div>  
+
+  <div class="ranking_card clearfix" 
+      data-widget-type="ranking_7"
+      data-widget-template="#widget-template" 
+      data-widget-data-url="/api/data/widget/ranking/2015/I/economic/amount/10.json">
+      
+  </div>
+
+  <div class="ranking_card clearfix" 
+      data-widget-type="ranking_8"
+      data-widget-template="#widget-template" 
+      data-widget-data-url="/api/data/widget/ranking/2015/I/economic/per_inhabitant/10.json">
+      
+  </div>  
+
   <script type="text/html" id="widget-template">
     <div class="share_links">
-      <%= link_to '<i class="fa fa-twitter"></i>'.html_safe, "https://twitter.com/home?status=#{u twitter_share('PENDING: Ranking Title' || @share_text, request.original_url)}", class: 'small_button popup', data: {rel: 'Twitter'} %>
-      <%= link_to '<i class="fa fa-facebook"></i>'.html_safe, "http://www.facebook.com/sharer/sharer.php?u=#{u request.original_url}", class: 'small_button popup', data: {rel: 'Facebook'} %>
+      <%= link_to '<i class="fa fa-twitter"></i>'.html_safe, "https://twitter.com/home?status={{twitter_share}}", class: 'small_button popup', data: {rel: 'Twitter'} %>
+      <%= link_to '<i class="fa fa-facebook"></i>'.html_safe, "http://www.facebook.com/sharer/sharer.php?u={{ranking_url}}", class: 'small_button popup', data: {rel: 'Facebook'} %>
     </div>
-    <h2><a href="{{ranking_url}}">{{title}}</a></h2>
+    <h2><a href="{{ranking_path}}">{{title}}</a></h2>
     <div class="winner">
       <span>{{top_amount}}</span> 
       <span class="place">{{top_place_name}}</span>
