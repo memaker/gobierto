@@ -34,7 +34,7 @@ class BudgetTotal
     return response['hits']['hits'].map{ |h| h['_source'] }
   end
 
-  def self.for_ranking(year, variable, offset, per_page, filters)
+  def self.for_ranking(year, variable, offset, per_page, filters = {})
     response = budget_total_query(year: year, variable: variable, filters: filters, offset: offset, per_page: per_page)
     results = response['hits']['hits'].map{|h| h['_source']}
     total_elements = response['hits']['total']

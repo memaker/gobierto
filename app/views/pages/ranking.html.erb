@@ -24,187 +24,53 @@
   <div class="sep"></div>
 
   <h4>Algunas cifras destacadas</h4>
-
-  <div class="ranking_card clearfix" data-href="PUT_HERE_DESTINATION">
-    <div class="share_links">
-      <%= link_to '<i class="fa fa-twitter"></i>'.html_safe, "https://twitter.com/home?status=#{u twitter_share('PENDING: Ranking Title' || @share_text, request.original_url)}", class: 'small_button popup', data: {rel: 'Twitter'} %>
-      <%= link_to '<i class="fa fa-facebook"></i>'.html_safe, "http://www.facebook.com/sharer/sharer.php?u=#{u request.original_url}", class: 'small_button popup', data: {rel: 'Facebook'} %>
-    </div>
-    <h2><%= link_to 'Top ingresos por entradas a museos, exposiciones, espectáculos' %></h2>
-    <div class="winner">
-      <span>7.456.789€</span> 
-      <span class="place">Sevilla</span>
-    </div>
-    <div class="runner_ups">
-      <ol>
-        <li>Sevilla</li>
-        <li>Málaga</li>
-        <li>Zaragoza</li>
-        <li>Valencia</li>
-        <li>Córdoba</li>
-      </ol>
-    </div>
+  
+  <div class="ranking_card clearfix" 
+      data-widget-type="ranking_1"
+      data-widget-template="#widget-template" 
+      data-widget-data-url="/api/data/widget/ranking/2015/G/economic/per_inhabitant.json">
+      
   </div>
 
-  <div class="ranking_card clearfix" data-href="PUT_HERE_DESTINATION">
+  <div class="ranking_card clearfix" 
+      data-widget-type="ranking_2"
+      data-widget-template="#widget-template" 
+      data-widget-data-url="/api/data/widget/ranking/2015/G/economic/amount.json">
+      
+  </div>  
+
+  <div class="ranking_card clearfix" 
+      data-widget-type="ranking_3"
+      data-widget-template="#widget-template" 
+      data-widget-data-url="/api/data/widget/ranking/2014/I/economic/per_inhabitant.json">
+      
+  </div>
+
+  <div class="ranking_card clearfix" 
+      data-widget-type="ranking_4"
+      data-widget-template="#widget-template" 
+      data-widget-data-url="/api/data/widget/ranking/2014/I/economic/amount.json">
+      
+  </div>  
+
+  <script type="text/html" id="widget-template">
     <div class="share_links">
       <%= link_to '<i class="fa fa-twitter"></i>'.html_safe, "https://twitter.com/home?status=#{u twitter_share('PENDING: Ranking Title' || @share_text, request.original_url)}", class: 'small_button popup', data: {rel: 'Twitter'} %>
       <%= link_to '<i class="fa fa-facebook"></i>'.html_safe, "http://www.facebook.com/sharer/sharer.php?u=#{u request.original_url}", class: 'small_button popup', data: {rel: 'Facebook'} %>
     </div>
-    <h2><%= link_to 'Top ingresos por entradas a museos, exposiciones, espectáculos' %></h2>
+    <h2><a href="{{ranking_url}}">{{title}}</a></h2>
     <div class="winner">
-      <span>7.456.789€</span> 
-      <span class="place">Almunia de Doña Godina, La</span>
+      <span>{{top_amount}}</span> 
+      <span class="place">{{top_place_name}}</span>
     </div>
     <div class="runner_ups">
       <ol>
-        <li>Almunia de Doña Godina, La</li>
-        <li>Málaga</li>
-        <li>Zaragoza</li>
-        <li>Valencia</li>
-        <li>Córdoba</li>
+        {{#top_5}}
+          <li>{{place_name}}</li>
+        {{/top_5}}
       </ol>
     </div>
-  </div>
-  <div class="ranking_card clearfix" data-href="PUT_HERE_DESTINATION">
-    <div class="share_links">
-      <%= link_to '<i class="fa fa-twitter"></i>'.html_safe, "https://twitter.com/home?status=#{u twitter_share('PENDING: Ranking Title' || @share_text, request.original_url)}", class: 'small_button popup', data: {rel: 'Twitter'} %>
-      <%= link_to '<i class="fa fa-facebook"></i>'.html_safe, "http://www.facebook.com/sharer/sharer.php?u=#{u request.original_url}", class: 'small_button popup', data: {rel: 'Facebook'} %>
-    </div>
-    <h2><%= link_to 'Top ingresos por entradas a museos, exposiciones, espectáculos' %></h2>
-    <div class="winner">
-      <span>7.456.789€</span> 
-      <span class="place">Sevilla</span>
-    </div>
-    <div class="runner_ups">
-      <ol>
-        <li>Sevilla</li>
-        <li>Málaga</li>
-        <li>Zaragoza</li>
-        <li>Valencia</li>
-        <li>Córdoba</li>
-      </ol>
-    </div>
-  </div>
-  <div class="ranking_card clearfix" data-href="PUT_HERE_DESTINATION">
-    <div class="share_links">
-      <%= link_to '<i class="fa fa-twitter"></i>'.html_safe, "https://twitter.com/home?status=#{u twitter_share('PENDING: Ranking Title' || @share_text, request.original_url)}", class: 'small_button popup', data: {rel: 'Twitter'} %>
-      <%= link_to '<i class="fa fa-facebook"></i>'.html_safe, "http://www.facebook.com/sharer/sharer.php?u=#{u request.original_url}", class: 'small_button popup', data: {rel: 'Facebook'} %>
-    </div>
-    <h2><%= link_to 'Top ingresos por entradas a museos, exposiciones, espectáculos' %></h2>
-    <div class="winner">
-      <span>7.456.789€</span> 
-      <span class="place">Sevilla</span>
-    </div>
-    <div class="runner_ups">
-      <ol>
-        <li>Sevilla</li>
-        <li>Málaga</li>
-        <li>Zaragoza</li>
-        <li>Valencia</li>
-        <li>Córdoba</li>
-      </ol>
-    </div>
-  </div>
-  <div class="ranking_card clearfix" data-href="PUT_HERE_DESTINATION">
-    <div class="share_links">
-      <%= link_to '<i class="fa fa-twitter"></i>'.html_safe, "https://twitter.com/home?status=#{u twitter_share('PENDING: Ranking Title' || @share_text, request.original_url)}", class: 'small_button popup', data: {rel: 'Twitter'} %>
-      <%= link_to '<i class="fa fa-facebook"></i>'.html_safe, "http://www.facebook.com/sharer/sharer.php?u=#{u request.original_url}", class: 'small_button popup', data: {rel: 'Facebook'} %>
-    </div>
-    <h2><%= link_to 'Top ingresos por entradas a museos, exposiciones, espectáculos' %></h2>
-    <div class="winner">
-      <span>7.456.789€</span> 
-      <span class="place">Sevilla</span>
-    </div>
-    <div class="runner_ups">
-      <ol>
-        <li>Sevilla</li>
-        <li>Málaga</li>
-        <li>Zaragoza</li>
-        <li>Valencia</li>
-        <li>Córdoba</li>
-      </ol>
-    </div>
-  </div>
-  <div class="ranking_card clearfix" data-href="PUT_HERE_DESTINATION">
-    <div class="share_links">
-      <%= link_to '<i class="fa fa-twitter"></i>'.html_safe, "https://twitter.com/home?status=#{u twitter_share('PENDING: Ranking Title' || @share_text, request.original_url)}", class: 'small_button popup', data: {rel: 'Twitter'} %>
-      <%= link_to '<i class="fa fa-facebook"></i>'.html_safe, "http://www.facebook.com/sharer/sharer.php?u=#{u request.original_url}", class: 'small_button popup', data: {rel: 'Facebook'} %>
-    </div>
-    <h2><%= link_to 'Top ingresos por entradas a museos, exposiciones, espectáculos' %></h2>
-    <div class="winner">
-      <span>7.456.789€</span> 
-      <span class="place">Sevilla</span>
-    </div>
-    <div class="runner_ups">
-      <ol>
-        <li>Sevilla</li>
-        <li>Málaga</li>
-        <li>Zaragoza</li>
-        <li>Valencia</li>
-        <li>Córdoba</li>
-      </ol>
-    </div>
-  </div>
-  <div class="ranking_card clearfix" data-href="PUT_HERE_DESTINATION">
-    <div class="share_links">
-      <%= link_to '<i class="fa fa-twitter"></i>'.html_safe, "https://twitter.com/home?status=#{u twitter_share('PENDING: Ranking Title' || @share_text, request.original_url)}", class: 'small_button popup', data: {rel: 'Twitter'} %>
-      <%= link_to '<i class="fa fa-facebook"></i>'.html_safe, "http://www.facebook.com/sharer/sharer.php?u=#{u request.original_url}", class: 'small_button popup', data: {rel: 'Facebook'} %>
-    </div>
-    <h2><%= link_to 'Top ingresos por entradas a museos, exposiciones, espectáculos' %></h2>
-    <div class="winner">
-      <span>7.456.789€</span> 
-      <span class="place">Sevilla</span>
-    </div>
-    <div class="runner_ups">
-      <ol>
-        <li>Sevilla</li>
-        <li>Málaga</li>
-        <li>Zaragoza</li>
-        <li>Valencia</li>
-        <li>Córdoba</li>
-      </ol>
-    </div>
-  </div>
-  <div class="ranking_card clearfix" data-href="PUT_HERE_DESTINATION">
-    <div class="share_links">
-      <%= link_to '<i class="fa fa-twitter"></i>'.html_safe, "https://twitter.com/home?status=#{u twitter_share('PENDING: Ranking Title' || @share_text, request.original_url)}", class: 'small_button popup', data: {rel: 'Twitter'} %>
-      <%= link_to '<i class="fa fa-facebook"></i>'.html_safe, "http://www.facebook.com/sharer/sharer.php?u=#{u request.original_url}", class: 'small_button popup', data: {rel: 'Facebook'} %>
-    </div>
-    <h2><%= link_to 'Top ingresos por entradas a museos, exposiciones, espectáculos' %></h2>
-    <div class="winner">
-      <span>7.456.789€</span> 
-      <span class="place">Sevilla</span>
-    </div>
-    <div class="runner_ups">
-      <ol>
-        <li>Sevilla</li>
-        <li>Málaga</li>
-        <li>Zaragoza</li>
-        <li>Valencia</li>
-        <li>Córdoba</li>
-      </ol>
-    </div>
-  </div>
-  <div class="ranking_card clearfix" data-href="PUT_HERE_DESTINATION">
-    <div class="share_links">
-      <%= link_to '<i class="fa fa-twitter"></i>'.html_safe, "https://twitter.com/home?status=#{u twitter_share('PENDING: Ranking Title' || @share_text, request.original_url)}", class: 'small_button popup', data: {rel: 'Twitter'} %>
-      <%= link_to '<i class="fa fa-facebook"></i>'.html_safe, "http://www.facebook.com/sharer/sharer.php?u=#{u request.original_url}", class: 'small_button popup', data: {rel: 'Facebook'} %>
-    </div>
-    <h2><%= link_to 'Top ingresos por entradas a museos, exposiciones, espectáculos' %></h2>
-    <div class="winner">
-      <span>7.456.789€</span> 
-      <span class="place">Rozas de Madrid, Las</span>
-    </div>
-    <div class="runner_ups">
-      <ol>
-        <li>Sevilla</li>
-        <li>Málaga</li>
-        <li>Zaragoza</li>
-        <li>Valencia</li>
-        <li>Córdoba</li>
-      </ol>
-    </div>
-  </div>
+
+  </script>
 
 </div>

@@ -44,6 +44,7 @@ group :test do
   gem 'email_spec'
   gem 'timecop'
   gem 'poltergeist'
+  gem 'rack-test', require: "rack/test"
 end
 
 group :development do

@@ -168,6 +168,10 @@ module ApplicationHelper
     "#{place.name}|#{place_path(place, year)}|#{place.slug}"
   end
 
+  def place_name(ine_code)
+    INE::Places::Place.find(ine_code).try(:name)
+  end
+
   def places_for_select
     INE::Places::Place.all.map do |place|
       [place.name, place.id]

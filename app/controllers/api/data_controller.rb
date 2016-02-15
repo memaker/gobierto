@@ -212,7 +212,41 @@ class Api::DataController < ApplicationController
     end
   end
 
+  def ranking
+    @year = params[:year].to_i
+    @area = params[:area]
+    @kind = params[:kind]
+    @var = params[:variable]
+    @variable = (@var == 'amount') ? 'total_budget' : 'total_budget_per_inhabitant'
+    
+    offset = 0
+    max_results = 5
+
+    results, total_elements = BudgetTotal.for_ranking(@year, @variable, offset, max_results)
+    top = results.first
+    
+    respond_to do |format|
+      format.json do
+        render json: {
+          title: ranking_title(@variable, @year, @kind),
+          top_place_name: place_name(top['ine_code']),
+          top_amount: helpers.number_to_currency(top[@variable], precision: 0, strip_insignificant_zeros: true),
+          ranking_url: places_ranking_path(@year, @kind, @area, @var),
+          top_5: results.map {|r| { place_name: place_name(r['ine_code'])}}
+        }.to_json
+      end
+    end
+  end
+
   private
+
+  def ranking_title(variable, year, kind)
+    title = ["Top"]
+    title << ((kind == 'G') ? 'gastos' : 'ingresos')
+    title << ((variable == 'total_budget') ? 'totales' : 'por habitante')
+    title << "en el #{year}"
+    title.join(' ')
+  end
 
   def budget_data(year, field, ranking = true)
     query = {
