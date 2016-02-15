@@ -1,5 +1,7 @@
 namespace :total_budget do
-  TOTAL_BUDGET_INDEXES = ['budgets-forecast', 'budgets-execution']
+  FORECAST_INDEX = 'budgets-forecast-v2'
+  EXECUTION_INDEX = 'budgets-execution-v2'
+  TOTAL_BUDGET_INDEXES = [FORECAST_INDEX, EXECUTION_INDEX]
   TOTAL_BUDGET_TYPES = ['total-budget']
 
   def create_mapping(index, type)

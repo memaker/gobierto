@@ -166,7 +166,7 @@ SQL
     end
   end
 
-  desc "Import budgets from database into ElasticSearch. Example rake budgets:import['budgets-dbname', 'budgets-execution','economic',2015]"
+  desc "Import budgets from database into ElasticSearch. Example rake budgets:import['budgets-dbname','budgets-execution','economic',2015]"
   task :import, [:db_name, :index,:type,:year] => :environment do |t, args|
     db_name = args[:db_name]
     index = args[:index] if BUDGETS_INDEXES.include?(args[:index])
