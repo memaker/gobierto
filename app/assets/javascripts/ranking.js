@@ -1,10 +1,46 @@
 
 $(function () {
 
+  var POPULATION_RANGE = [0, 5000000];
+  var TOTAL_RANGE = [0, 5000000000];
+  var PER_INHABITANT_RANGE = [0, 20000];
+
   if ($('.filters').length > 0) {
 
-    function updateRanking() {
+    $(window).on('popstate', function(e) {
+      var params = decodeURIComponent(window.location.search);
       
+      var aarr_re = /f\[aarr\]=(\d+)/
+      if (aarr_re.test(params)) {
+        $('#filter_per_aarr #aarr').val(aarr_re.exec(window.location.search)[1]);
+      } else {
+        $('#filter_per_aarr #aarr').val('');
+      }
+
+      $(['population','total', 'per_inhabitant']).each(function(index, filter_name) {
+        var the_filter = document.getElementById('filter_' + filter_name);
+        if (getFilterParams(filter_name) != null) {
+          the_filter.noUiSlider.set(getFilterParams(filter_name));
+        } else {
+          the_filter.noUiSlider.set(eval(filter_name.toUpperCase() + '_RANGE'));
+        }
+      });
+      updateRanking(false);
+    })
+
+    function getFilterParams(filter_name) {
+      var params = decodeURIComponent(window.location.search);
+      var from_re = new RegExp("f\\[" + filter_name + "\\]\\[from\\]=(\\d+)")
+      var to_re = new RegExp("f\\[" + filter_name + "\\]\\[to\\]=(\\d+)")
+
+      var results = null
+      if (from_re.test(params) && to_re.test(params)) {
+        results = [from_re.exec(params)[1], to_re.exec(params)[1]];
+      }
+      return results;
+    }
+
+    function updateRanking(push_the_state) {
       var ranking_url = $('[data-ranking-url]').data('ranking-url');
       var params = (ranking_url.indexOf('?') > 0) ? '' : '?'; 
       $('#filter_population, #filter_total, #filter_per_inhabitant').each(function() {
@@ -16,10 +52,14 @@ $(function () {
       if ($('#aarr').val() != '') {
         params+= "&f[aarr]=" + $('#aarr').val();
       }
-
-      $.ajax(ranking_url + params, {
+      ranking_url += params;
+      
+      $.ajax(ranking_url, {
         beforeSend: function() {
           $('.spinner').addClass('show');
+          if(push_the_state) {
+            history.pushState({params},'',ranking_url.replace('.js?','?'));
+          }
         },
         complete: function() {
           $('.spinner').removeClass('show');
@@ -29,8 +69,9 @@ $(function () {
 
     var pop_slider = document.getElementById('filter_population');
     noUiSlider.create(pop_slider, {
-      start: [0, 5000000],
+      start: getFilterParams('population') || POPULATION_RANGE,
       snap: true,
+      animate: false,
       connect: true,
       range: {
         'min': 0,
@@ -51,13 +92,14 @@ $(function () {
     });
 
     pop_slider.noUiSlider.on('change', function( values, handle ) {
-      updateRanking();
+      updateRanking(true);
     });
 
     var tot_slider = document.getElementById('filter_total');
     noUiSlider.create(tot_slider, {
-      start: [0, 5000000000],
+      start: getFilterParams('total') || TOTAL_RANGE,
       snap: true,
+      animate: false,
       connect: true,
       range: {
         'min':0,
@@ -86,12 +128,13 @@ $(function () {
     });
 
     tot_slider.noUiSlider.on('change', function( values, handle ) {
-      updateRanking();
+      updateRanking(true);
     });
 
     var inh_slider = document.getElementById('filter_per_inhabitant');
     noUiSlider.create(inh_slider, {
-      start: [0, 20000],
+      start: getFilterParams('per_inhabitant') || PER_INHABITANT_RANGE,
+      animate: false,
       snap: true,
       connect: true,
       range: {
@@ -116,11 +159,11 @@ $(function () {
     });
 
     inh_slider.noUiSlider.on('change', function( values, handle ) {
-      updateRanking();
+      updateRanking(true);
     });
 
     $('body').on('change','#aarr', function(v) {
-      updateRanking();
+      updateRanking(true);
     })
   }
 });
