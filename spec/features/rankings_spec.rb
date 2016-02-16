@@ -34,7 +34,7 @@ RSpec.feature "Rankings", type: :feature do
       }
 
       visit "#{ranking_url}?#{params.to_query}"
-      expect(page).to have_selector('tr:nth-child(7) td', :text => 'Brunete')
+      expect(page).to have_selector('tr:nth-child(6) td', :text => 'Brunete')
     end
 
     scenario 'with excluding filters' do
@@ -148,7 +148,7 @@ RSpec.feature "Rankings", type: :feature do
 
       scenario 'specifying a given Place, it redirects to the page where that Place appears in the ranking' do
         visit "#{ranking_url}?ine_code=28026"
-        expect(page).to have_current_path("#{ranking_url}?ine_code=28026&page=126")
+        expect(page).to have_current_path("#{ranking_url}?ine_code=28026&page=124")
       end
 
       scenario 'specifying a given Place, the place is highlighted' do
@@ -278,7 +278,7 @@ RSpec.feature "Rankings", type: :feature do
 
       scenario 'specifying a given Place, it redirects to the page where that Place appears in the ranking' do
         visit "#{ranking_url}?ine_code=28026"
-        expect(page).to have_current_path("#{ranking_url}?ine_code=28026&page=126")
+        expect(page).to have_current_path("#{ranking_url}?ine_code=28026&page=124")
       end
 
       scenario 'specifying a given Place, the place is highlighted' do

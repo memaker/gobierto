@@ -14,7 +14,7 @@ describe "Data API" do
         
         expect(json['title']).to eq('Top gastos totales en el 2015')
         expect(json['top_place_name']).to eq("Madrid")
-        expect(json['top_amount']).to eq("4.650.554.218 €")
+        expect(json['top_amount']).to eq("4.382.585.028 €")
         expect(json['ranking_path']).to eq("/ranking/2015/G/economic/amount")
 
         expect(json['top_5'].length).to eq(5)
@@ -104,7 +104,7 @@ describe "Data API" do
         expect(json['top_5']).to include({"place_name" => "Barcelona"})
         expect(json['top_5']).to include({"place_name" => "Valencia"})
         expect(json['top_5']).to include({"place_name" => "Málaga"})
-        expect(json['top_5']).to include({"place_name" => "Sevilla"})
+        expect(json['top_5']).to include({"place_name" => "Donostia/San Sebastián"})
       end
 
       it 'works also for Income' do
