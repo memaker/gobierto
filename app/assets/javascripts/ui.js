@@ -15,7 +15,7 @@ function responsive() {
 }
 
 $(function(){
-  $('.spinner').hide();
+  // $('.spinner').hide();
   Turbolinks.enableProgressBar();
 
   // Modals
@@ -25,12 +25,11 @@ $(function(){
     mainClass: 'mfp-fade'
     // other options
   });
-  
+
   $('body').on('click', '.popup', function(e){
     e.preventDefault();
     window.open($(this).attr("href"), "popupWindow", "width=600,height=600,scrollbars=yes");
     if($(this).data('rel') !== undefined){
-      console.log('social: '+$(this).data('rel'));
       ga('send', 'event', 'Social Shares', 'Click', $(this).data('rel'), {nonInteraction: true});
       mixpanel.track('Social Shares', { 'Click': $(this).data('rel')});
     }
@@ -118,7 +117,6 @@ $(function(){
       e.preventDefault();
       render_comp_table($(this).data('line-widget-type'));
     }
-
   });
 
   // adjust height of sidebar
@@ -332,10 +330,17 @@ $(function(){
 
   });
 
-  // Google Analytics Events
+  /*
+   * Google Analytics Events
+   *
+  */
   $('.form_filters a').click(function(e) {
     var eventLabel = $(this).attr('id');
     ga('send', 'event', 'Expense Type Selector', 'Click', eventLabel, {nonInteraction: true});
     mixpanel.track("Expense Type Selector", {"Type": eventLabel});
-  })
+  });
+
+  $('.ranking_card').click(function(e) {
+    Turbolinks.visit($(this).find('h2 a').attr('href'));
+  });
 });

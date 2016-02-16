@@ -53,7 +53,7 @@ module ApplicationHelper
       res = " - "
     else
       res = area.all_items[kind][code][0..capped]
-      res += "..." if capped > -1
+      res += "..." if capped < res.length && capped > -1
     end
     res
   end
@@ -168,9 +168,19 @@ module ApplicationHelper
     "#{place.name}|#{place_path(place, year)}|#{place.slug}"
   end
 
+  def place_name(ine_code)
+    INE::Places::Place.find(ine_code).try(:name)
+  end
+
   def places_for_select
     INE::Places::Place.all.map do |place|
       [place.name, place.id]
+    end
+  end
+
+  def aarr_for_select
+    INE::Places::AutonomousRegion.all.sort_by(&:name).map do |ar|
+      [ar.name, ar.id]
     end
   end
 

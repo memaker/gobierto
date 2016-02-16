@@ -1,8 +1,10 @@
 namespace :budgets do
-  BUDGETS_INDEXES = ['budgets-forecast', 'budgets-execution']
+  FORECAST_INDEX = 'budgets-forecast-v2'
+  EXECUTION_INDEX = 'budgets-execution-v2'
+  BUDGETS_INDEXES = [FORECAST_INDEX, EXECUTION_INDEX]
   BUDGETS_TYPES = ['economic', 'functional']
 
-  def create_mapping(index, type)
+  def create_budgets_mapping(index, type)
     m = SearchEngine.client.indices.get_mapping index: index, type: type
     return unless m.empty?
 
@@ -31,8 +33,7 @@ namespace :budgets do
     }
   end
 
-  def create_db_connection(index)
-    db_name = index
+  def create_db_connection(db_name)
     ActiveRecord::Base.establish_connection ActiveRecord::Base.configurations[Rails.env].merge('database' => db_name)
     ActiveRecord::Base.connection
   end
@@ -44,8 +45,8 @@ namespace :budgets do
     nil
   end
 
-  def import_functional_budgets(index, year)
-    db = create_db_connection(index)
+  def import_functional_budgets(db_name, index, year)
+    db = create_db_connection(db_name)
 
     pbar = ProgressBar.new("functional-#{year}", INE::Places::Place.all.length)
 
@@ -63,7 +64,7 @@ namespace :budgets do
       sql = <<-SQL
 SELECT tb_funcional_#{year}.cdfgr as code, sum(tb_funcional_#{year}.importe) as amount
 FROM tb_funcional_#{year}
-INNER JOIN "tb_inventario_#{year}" ON tb_inventario_#{year}.id = tb_funcional_#{year}.id AND tb_inventario_#{year}.codente = '#{format("%.5i", place.id)}AA000'
+INNER JOIN "tb_inventario_#{year}" ON tb_inventario_#{year}.idente = tb_funcional_#{year}.idente AND tb_inventario_#{year}.codente = '#{format("%.5i", place.id)}AA000'
 GROUP BY tb_funcional_#{year}.cdfgr
 SQL
 
@@ -87,8 +88,8 @@ SQL
     pbar.finish
   end
 
-  def import_economic_budgets(index, year)
-    db = create_db_connection(index)
+  def import_economic_budgets(db_name, index, year)
+    db = create_db_connection(db_name)
 
     pbar = ProgressBar.new("economic-#{year}", INE::Places::Place.all.length)
 
@@ -103,17 +104,16 @@ SQL
         population: pop
       }
 
-      amount_column = if index == 'budgets-forecast'
+      amount_column = if index == FORECAST_INDEX
                         'importe'
-                      elsif index == 'budgets-execution'
+                      elsif index == EXECUTION_INDEX
                         'importer'
                       end
 
       sql = <<-SQL
-SELECT tb_economica_#{year}.cdcta as code, tb_economica_#{year}.tipreig AS kind, sum(tb_economica_#{year}.#{amount_column}) as amount
+SELECT tb_economica_#{year}.cdcta as code, tb_economica_#{year}.tipreig AS kind, tb_economica_#{year}.#{amount_column} as amount
 FROM tb_economica_#{year}
-INNER JOIN "tb_inventario_#{year}" ON tb_inventario_#{year}.id = tb_economica_#{year}.id AND tb_inventario_#{year}.codente = '#{format("%.5i", place.id)}AA000'
-GROUP BY tb_economica_#{year}.cdcta, tb_economica_#{year}.tipreig
+INNER JOIN "tb_inventario_#{year}" ON tb_inventario_#{year}.idente = tb_economica_#{year}.idente AND tb_inventario_#{year}.codente = '#{format("%.5i", place.id)}AA000'
 SQL
 
       index_request_body = []
@@ -161,13 +161,14 @@ SQL
 
       BUDGETS_TYPES.each do |type|
         puts "- Creating #{index} #{type}"
-        create_mapping(index, type)
+        create_budgets_mapping(index, type)
       end
     end
   end
 
-  desc "Import budgets from database into ElasticSearch. Example rake budgets:import['budgets-execution','economic',2015]"
-  task :import, [:index,:type,:year] => :environment do |t, args|
+  desc "Import budgets from database into ElasticSearch. Example rake budgets:import['budgets-dbname','budgets-execution','economic',2015]"
+  task :import, [:db_name, :index,:type,:year] => :environment do |t, args|
+    db_name = args[:db_name]
     index = args[:index] if BUDGETS_INDEXES.include?(args[:index])
     raise "Invalid index #{args[:index]}" if index.blank?
     type = args[:type] if BUDGETS_TYPES.include?(args[:type])
@@ -178,6 +179,6 @@ SQL
     end
     raise "Invalid year #{args[:year]}" if year.blank?
 
-    self.send("import_#{type}_budgets", index, year)
+    self.send("import_#{type}_budgets", db_name, index, year)
   end
 end

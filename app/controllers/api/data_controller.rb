@@ -212,7 +212,57 @@ class Api::DataController < ApplicationController
     end
   end
 
+  def ranking
+    @year = params[:year].to_i
+    @area = params[:area]
+    @kind = params[:kind]
+    @var = params[:variable]
+    @code = params[:code]
+    
+    offset = 0
+    max_results = 5
+
+    if @code.present?
+      @variable = (@var == 'amount') ? 'amount' : 'amount_per_inhabitant'
+      results, total_elements = BudgetLine.for_ranking({year: @year,
+                                                        area_name: @area,
+                                                        kind: @kind,
+                                                        code: @code,
+                                                        variable: @variable,
+                                                        offset: 0,
+                                                        per_page: 5})      
+    else
+      @variable = (@var == 'amount') ? 'total_budget' : 'total_budget_per_inhabitant'
+      results, total_elements = BudgetTotal.for_ranking(@year, @variable, offset, max_results)
+    end
+    
+    top = results.first
+    title = ranking_title(@variable, @year, @kind, @code, @area)
+    respond_to do |format|
+      format.json do
+        render json: {
+          title: title,
+          top_place_name: place_name(top['ine_code']),
+          top_amount: helpers.number_to_currency(top[@variable], precision: 0, strip_insignificant_zeros: true),
+          ranking_path: places_ranking_path(@year, @kind, @area, @var, @code),
+          ranking_url: places_ranking_url(@year, @kind, @area, @var, @code),
+          twitter_share: ERB::Util.url_encode(twitter_share(title, places_ranking_url(@year, @kind, @area, @var, @code))),
+          top_5: results.map {|r| { place_name: place_name(r['ine_code'])}}
+        }.to_json
+      end
+    end
+  end
+
   private
+
+  def ranking_title(variable, year, kind, code, area_name)
+    title = ["Top"]
+    title << ((kind == 'G') ? 'gastos' : 'ingresos')
+    title << ((variable == 'total_budget' or variable == 'amount') ? 'totales' : 'por habitante')
+    title << "en #{budget_line_denomination(area_name, code, kind)}" if code.present?
+    title << "en el #{year}"
+    title.join(' ')
+  end
 
   def budget_data(year, field, ranking = true)
     query = {

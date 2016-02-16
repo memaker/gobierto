@@ -6,6 +6,7 @@ require 'rspec/rails'
 require 'capybara/rspec'
 require 'capybara/poltergeist'
 require 'email_spec'
+require 'rack/test'
 
 Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 

@@ -16,6 +16,7 @@ Rails.application.routes.draw do
   get 'legal/cookies' => 'pages#legal_cookies'
   get 'legal/legal' => 'pages#legal_legal'
   get 'legal/privacy' => 'pages#legal_privacy'
+  get 'en' => 'pages#en'
 
   # user and session management
   get 'login' => 'sessions#new', as: :login
@@ -65,6 +66,7 @@ Rails.application.routes.draw do
     get '/data/widget/budget_percentage_over_total/:ine_code/:year/:code/:area/:kind' => 'data#budget_percentage_over_total', as: :data_budget_percentage_over_total
     get '/data/widget/budget_percentage_over_province/:ine_code/:year/:code/:area/:kind' => 'data#budget_percentage_over_province', as: :data_budget_percentage_over_province
     get '/data/widget/population/:ine_code/:year' => 'data#population', as: :data_population
+    get '/data/widget/ranking/:year/:kind/:area/:variable(/:code)' => 'data#ranking', as: :data_ranking
 
     get '/categories/:area/:kind' => 'categories#index'
     get '/places' => 'places#index'

@@ -12,6 +12,7 @@ class Ranking
   end
 
   def self.page_from_position(position)
+    return 1 if position < 1
     (position.to_f / self.per_page.to_f).ceil
   end
 
@@ -20,172 +21,59 @@ class Ranking
     variable = options[:variable]
     page = options[:page]
     code = options[:code]
-    kind = options[:kind]
-    area_name = options[:area_name]
+    filters = options[:filters]
 
     offset = (page-1)*self.per_page
 
     results, total_results = if code
-      self.budget_line_ranking(variable, year, code, kind, area_name, offset)
+      self.budget_line_ranking(options, offset)
     elsif variable == 'population'
-      self.population_ranking(variable, year, offset)
+      self.population_ranking(variable, year, offset, filters)
     else
-      self.total_budget_ranking(variable, year, offset)
+      self.total_budget_ranking(variable, year, offset, filters)
     end
 
     Kaminari.paginate_array(results, {limit: self.per_page, offset: offset, total_count: total_results})
   end
 
-  # Returns the position of a place in a ranking. The ranking is determined by the field
+  # Returns the position of a place in a ranking. The ranking is determined by the variable
   # parameter
   def self.place_position(options)
     year = options[:year]
     ine_code = options[:ine_code]
     code = options[:code]
-    kind = options[:kind]
-    area = options[:area]
-    field = options[:field]
+    variable = options[:variable]
+    filters = options[:filters]
 
     if code.present?
-      query = {
-        sort: [ { field.to_sym => { order: 'desc' } } ],
-        query: {
-          filtered: {
-            filter: {
-              bool: {
-                must: [
-                  {term: { year: year }},
-                  {term: { kind: kind }},
-                  {term: { code: code }}
-                ]
-              }
-            }
-          }
-        },
-        size: 10_000,
-        _source: false
-      }
-
-      id = [ine_code, year, code, kind].join('/')
-
-      response = SearchEngine.client.search index: BudgetLine::INDEX, type: area, body: query
-      buckets = response['hits']['hits'].map{|h| h['_id']}
-      return buckets.index(id).nil? ? nil : buckets.index(id) + 1
+      return BudgetLine.place_position_in_ranking(options)
     else
-      if field == 'population'
-        query = {
-          sort: [
-            { value: { order: 'desc' } }
-          ],
-          query: {
-            filtered: {
-              filter: {
-                bool: {
-                  must: [
-                    {term: { year: year }}
-                  ]
-                }
-              }
-            }
-          },
-          size: 10_000,
-          _source: false
-        }
-        id = [ine_code, year].join('/')
-        response = SearchEngine.client.search index: Population::INDEX, type: Population::TYPE, body: query
-        buckets = response['hits']['hits'].map{|h| h['_id']}
-        return buckets.index(id).nil? ? nil : buckets.index(id) + 1
+      if variable == 'population'
+        return Population.place_position_in_ranking(year, ine_code, filters)
       else
-        field = (field == 'amount') ? 'total_budget' : 'total_budget_per_inhabitant'
-
-        query = {
-          sort: [
-            { field.to_sym => { order: 'desc' } }
-          ],
-          query: {
-            filtered: {
-              filter: {
-                bool: {
-                  must: [
-                    {term: { year: year }}
-                  ]
-                }
-              }
-            }
-          },
-          size: 10_000,
-          _source: false
-        }
-
-        id = [ine_code, year].join('/')
-
-        response = SearchEngine.client.search index: BudgetTotal::INDEX, type: BudgetTotal::TYPE, body: query
-        buckets = response['hits']['hits'].map{|h| h['_id']}
-        return buckets.index(id).nil? ? nil : buckets.index(id) + 1
+        variable = (variable == 'amount') ? 'total_budget' : 'total_budget_per_inhabitant'
+        return BudgetTotal.place_position_in_ranking(year, variable, ine_code, filters)
       end
     end
   end
 
   ## Private
 
-  def self.budget_line_ranking(variable, year, code, kind, area_name, offset)
-    query = {
-      sort: [ { variable.to_sym => { order: 'desc' } } ],
-      query: {
-        filtered: {
-          filter: {
-            bool: {
-              must: [
-                {term: { year: year }},
-                {term: { code: code }},
-                {term: { kind: kind }}
-              ]
-            }
-          }
-        }
-      },
-      from: offset,
-      size: self.per_page,
-    }
-    response = SearchEngine.client.search index: BudgetLine::INDEX, type: area_name, body: query
-    total_elements = response['hits']['total']
-    results = response['hits']['hits'].map{|h| h['_source']}
+  def self.budget_line_ranking(options, offset)
+    
+    results, total_elements = BudgetLine.for_ranking(options.merge(offset: offset, per_page: self.per_page))
 
-    query = {
-      query: {
-        filtered: {
-          filter: {
-            bool: {
-              must: [ {term: { year: year }}, {terms: { ine_code: results.map{|h| h['ine_code']}}}]
-            }
-          }
-        }
-      },
-      size: self.per_page,
-    }
-    response = SearchEngine.client.search index: Population::INDEX, type: Population::TYPE, body: query
-    population_results = response['hits']['hits'].map{|h| h['_source']}
+    places_ids = results.map {|h| h['ine_code']}
+    population_results = Population.for_places(places_ids, options[:year])
 
-    query = {
-      query: {
-        filtered: {
-          filter: {
-            bool: {
-              must: [ {term: { year: year }}, {terms: { ine_code: results.map{|h| h['ine_code']}}}]
-            }
-          }
-        }
-      },
-      size: self.per_page,
-    }
-    response = SearchEngine.client.search index: BudgetTotal::INDEX, type: BudgetTotal::TYPE, body: query
-    total_results = response['hits']['hits'].map{|h| h['_source']}
+    places_ids = results.map{|h| h['ine_code']}
+    total_results = BudgetTotal.for_places(places_ids, options[:year])
 
     return results.map do |h|
       id = h['ine_code']
       Item.new({
         place: INE::Places::Place.find(id),
-        population: population_results.detect{|h| h['ine_code'] == id}['value'],
+        population: population_results.detect{|h| h['ine_code'] == id}.try(:[],'value'),
         amount_per_inhabitant: h['amount_per_inhabitant'],
         amount: h['amount'],
         total: total_results.detect{|h| h['ine_code'] == id}['total_budget']
@@ -193,40 +81,13 @@ class Ranking
     end, total_elements
   end
 
-  def self.population_ranking(variable, year, offset)
-    query = {
-      sort: [ { value: { order: 'desc' } } ],
-      query: {
-        filtered: {
-          filter: {
-            bool: {
-              must: [ {term: { year: year }}, ]
-            }
-          }
-        }
-      },
-      from: offset,
-      size: self.per_page,
-    }
-    response = SearchEngine.client.search index: Population::INDEX, type: Population::TYPE, body: query
-    total_elements = response['hits']['total']
-    results = response['hits']['hits'].map{|h| h['_source']}
-
-    query = {
-      query: {
-        filtered: {
-          filter: {
-            bool: {
-              must: [ {term: { year: year }}, {terms: { ine_code: results.map{|h| h['ine_code']}}}]
-            }
-          }
-        }
-      },
-      size: self.per_page,
-    }
-    response = SearchEngine.client.search index: BudgetTotal::INDEX, type: BudgetTotal::TYPE, body: query
-    total_results = response['hits']['hits'].map{|h| h['_source']}
-
+  def self.population_ranking(variable, year, offset, filters)
+    
+    results, total_elements = Population.for_ranking(year,offset,self.per_page,filters)
+    
+    places_ids = results.map{|h| h['ine_code']}
+    total_results = BudgetTotal.for_places(places_ids, year)
+    
     return results.map do |h|
       id = h['ine_code']
       Item.new({
@@ -239,50 +100,23 @@ class Ranking
     end, total_elements
   end
 
-  def self.total_budget_ranking(variable, year, offset)
+  def self.total_budget_ranking(variable, year, offset, filters)
     variable = if variable == 'amount'
                  'total_budget'
                else
                  'total_budget_per_inhabitant'
                end
-    query = {
-      sort: [ { variable.to_sym => { order: 'desc' } } ],
-      query: {
-        filtered: {
-          filter: {
-            bool: {
-              must: [ {term: { year: year }}, ]
-            }
-          }
-        }
-      },
-      from: offset,
-      size: self.per_page,
-    }
-    response = SearchEngine.client.search index: BudgetTotal::INDEX, type: BudgetTotal::TYPE, body: query
-    results = response['hits']['hits'].map{|h| h['_source']}
-    total_elements = response['hits']['total']
+    
+    results, total_elements = BudgetTotal.for_ranking(year, variable, offset, self.per_page, filters)
 
-    query = {
-      query: {
-        filtered: {
-          filter: {
-            bool: {
-              must: [ {term: { year: year }}, {terms: { ine_code: results.map{|h| h['ine_code']}}}]
-            }
-          }
-        }
-      },
-      size: self.per_page,
-    }
-    response = SearchEngine.client.search index: Population::INDEX, type: Population::TYPE, body: query
-    population_results = response['hits']['hits'].map{|h| h['_source']}
+    places_ids = results.map {|h| h['ine_code']}
+    population_results = Population.for_places(places_ids, year)
 
     return results.map do |h|
       id = h['ine_code']
       Item.new({
         place: INE::Places::Place.find(id),
-        population: population_results.detect{|h| h['ine_code'] == id}['value'],
+        population: population_results.detect{|h| h['ine_code'] == id}.try(:[],'value'),
         amount_per_inhabitant: h['total_budget_per_inhabitant'],
         amount: h['total_budget'],
         total: h['total_budget']

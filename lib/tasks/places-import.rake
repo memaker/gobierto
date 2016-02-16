@@ -2,7 +2,7 @@ namespace :places do
   PLACES_INDEXES = ['data']
   PLACES_TYPES = ['places']
 
-  def create_mapping(index, type)
+  def create_places_mapping(index, type)
     m = SearchEngine.client.indices.get_mapping index: index, type: type
     return unless m.empty?
 
@@ -71,7 +71,7 @@ namespace :places do
 
       PLACES_TYPES.each do |type|
         puts "- Creating #{index} > #{type}"
-        create_mapping(index, type)
+        create_places_mapping(index, type)
       end
     end
   end

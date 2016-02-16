@@ -52,7 +52,12 @@ set_meta_tags description: "Datos de #{kind_literal(@kind).singularize} en #{bud
 <div class="metric_graphs clearfix <%= 'hidden' if action_name == 'feedback' %>">
   <div class="widget_graph show clearfix">
     <div class="col-1-2" id="lines_chart"></div>
-    <div class="col-2-2" id="lines_tooltip"></div>
+    <div class="col-2-2">
+      <div id="lines_tooltip"></div>
+      <div class="help">
+        <%= link_to 'Nota sobre los datos'.html_safe, faq_path(anchor: 'no_data'), title: 'La base de datos que utilizamos no incluye datos para el 100% de los municipios, por lo que las medias están calculadas solo con los datos que existen (que son la gran mayoría). Más información en nuestras preguntas frecuentes', class: 'tipsit' %>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -104,6 +109,7 @@ set_meta_tags description: "Datos de #{kind_literal(@kind).singularize} en #{bud
   <%= render partial: 'places/nested_budget_lines' %>
 
   </table>
+
 </div>
 
 <% end %>
