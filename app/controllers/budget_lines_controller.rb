@@ -1,4 +1,5 @@
 class BudgetLinesController < ApplicationController
+  layout :choose_layout
   before_action :load_params
 
   def show
@@ -27,6 +28,11 @@ class BudgetLinesController < ApplicationController
     @parent_line = BudgetLine.find(options.merge(code: @code))
     render_404 and return if @parent_line.nil?
     @budget_lines = BudgetLine.search(options.merge(parent_code: @code))
+  end
+
+  def choose_layout
+    return 'embedded' if params[:embed].present?
+    return 'application'
   end
 
 end
