@@ -4,7 +4,7 @@ namespace :budgets do
   BUDGETS_INDEXES = [FORECAST_INDEX, EXECUTION_INDEX]
   BUDGETS_TYPES = ['economic', 'functional']
 
-  def create_mapping(index, type)
+  def create_budgets_mapping(index, type)
     m = SearchEngine.client.indices.get_mapping index: index, type: type
     return unless m.empty?
 
@@ -161,7 +161,7 @@ SQL
 
       BUDGETS_TYPES.each do |type|
         puts "- Creating #{index} #{type}"
-        create_mapping(index, type)
+        create_budgets_mapping(index, type)
       end
     end
   end

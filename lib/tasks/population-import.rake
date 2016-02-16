@@ -2,7 +2,7 @@ namespace :population do
   POPULATION_INDEXES = ['data']
   POPULATION_TYPES = ['population']
 
-  def create_mapping(index, type)
+  def create_population_mapping(index, type)
     m = SearchEngine.client.indices.get_mapping index: index, type: type
     return unless m.empty?
 
@@ -78,7 +78,7 @@ namespace :population do
 
       POPULATION_TYPES.each do |type|
         puts "- Creating #{index} > #{type}"
-        create_mapping(index, type)
+        create_population_mapping(index, type)
       end
     end
   end
