@@ -1,5 +1,5 @@
 class BudgetLine < OpenStruct
-  INDEX = 'budgets-forecast'
+  INDEX = 'budgets-forecast-v2'
 
   INCOME = 'I'
   EXPENSE = 'G'
@@ -110,7 +110,7 @@ class BudgetLine < OpenStruct
 
   def self.place_position_in_ranking(options)
     id = %w{ine_code year code kind}.map {|f| options[f.to_sym]}.join('/')
-    
+
     response = budget_line_query(options.merge(to_rank: true))
     buckets = response['hits']['hits'].map{|h| h['_id']}
     position = buckets.index(id) ? buckets.index(id) + 1 : 0;

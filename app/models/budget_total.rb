@@ -1,5 +1,5 @@
 class BudgetTotal
-  INDEX = 'budgets-forecast'
+  INDEX = 'budgets-forecast-v2'
   TYPE = 'total-budget'
   TOTAL_FILTER_MIN = 0
   TOTAL_FILTER_MAX = 5000000000
@@ -59,7 +59,7 @@ class BudgetTotal
       per_inhabitant_filter = options[:filters][:per_inhabitant]
       aarr_filter = options[:filters][:aarr]
     end
-    
+
     if (population_filter && (population_filter[:from].to_i > Population::FILTER_MIN || population_filter[:to].to_i < Population::FILTER_MAX))
       reduced_filter = {population: population_filter}
       reduced_filter.merge!(aarr: aarr_filter) if aarr_filter
@@ -77,7 +77,7 @@ class BudgetTotal
     end
 
     terms << {term: { autonomy_id: aarr_filter }} if aarr_filter
-    
+
     query = {
       sort: [
         { options[:variable].to_sym => { order: 'desc' } }
@@ -96,7 +96,7 @@ class BudgetTotal
     query.merge!(size: options[:per_page]) if options[:per_page].present?
     query.merge!(from: options[:offset]) if options[:offset].present?
     query.merge!(_source: false) if options[:to_rank]
-    
+
     SearchEngine.client.search index: BudgetTotal::INDEX, type: BudgetTotal::TYPE, body: query
   end
 end
