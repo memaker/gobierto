@@ -1,4 +1,5 @@
 class PlacesController < ApplicationController
+  layout :choose_layout
   before_action :get_params
   before_action :solve_income_area_mismatch, except: [:show]
 
@@ -107,6 +108,11 @@ class PlacesController < ApplicationController
 
   def valid_variables
     ['amount','amount_per_inhabitant','population']
+  end
+
+  def choose_layout
+    return 'embedded' if params[:embed].present?
+    return 'application'
   end
 
 end
