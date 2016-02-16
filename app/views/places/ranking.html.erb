@@ -1,5 +1,7 @@
 <% 
-page_title = "Ránking #{@variable == 'population' ? 'Población' : (@code ? budget_line_denomination(@area_name, @code, @kind) : "#{kind_literal(@kind)} área #{area_literal(@area_name).downcase}")}"
+# page_title = "Ránking #{@kind == 'G' ? 'gastos en' : 'ingresos por'} #{@variable == 'population' ? 'Población' : (@code ? budget_line_denomination(@area_name, @code, @kind) : "#{kind_literal(@kind)} área #{area_literal(@area_name).downcase}")}"
+
+page_title = "Ránking #{@kind == 'G' ? 'gastos' : 'ingresos'} #{@variable == 'population' ? 'Población' : (@code ? (@kind == 'G' ? ' en ' : ' por ') : '') + budget_line_denomination(@area_name, @code, @kind)}"
 
 set_meta_tags title: page_title + "en #{@year}" %>
 
