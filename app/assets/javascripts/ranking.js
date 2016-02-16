@@ -7,15 +7,10 @@ $(function () {
 
   if ($('.filters').length > 0) {
 
-    $(window).on('popstate', function(e) {
-      var params = decodeURIComponent(window.location.search);
+    setAARRFilterToParams();
 
-      var aarr_re = /f\[aarr\]=(\d+)/
-      if (aarr_re.test(params)) {
-        $('#filter_per_aarr #aarr').val(aarr_re.exec(window.location.search)[1]);
-      } else {
-        $('#filter_per_aarr #aarr').val('');
-      }
+    $(window).on('popstate', function(e) {
+      setAARRFilterToParams();
 
       $(['population','total', 'per_inhabitant']).each(function(index, filter_name) {
         var the_filter = document.getElementById('filter_' + filter_name);
@@ -27,6 +22,16 @@ $(function () {
       });
       updateRanking(false);
     })
+
+    function setAARRFilterToParams() {
+      var params = decodeURIComponent(window.location.search);
+      var aarr_re = /f\[aarr\]=(\d+)/
+      if (aarr_re.test(params)) {
+        $('#filter_per_aarr #aarr').val(aarr_re.exec(params)[1]);
+      } else {
+        $('#filter_per_aarr #aarr').val('');
+      }
+    }
 
     function getFilterParams(filter_name) {
       var params = decodeURIComponent(window.location.search);

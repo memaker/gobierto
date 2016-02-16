@@ -254,7 +254,7 @@ RSpec.feature "Rankings", type: :feature do
         expect(page).to have_selector('tr:nth-child(9) td', :text => 'Brunete')
       end
 
-      scenario 'with excluding filters' do
+      scenario 'with filters that exclude selected ine_code' do
         params = {
           ine_code: 28026,
           f: {
@@ -266,6 +266,30 @@ RSpec.feature "Rankings", type: :feature do
         visit "#{ranking_url}?#{params.to_query}"
         expect(page).to_not have_selector('tr td', :text => 'Brunete')
       end
+
+      scenario 'shows (and filters by) the values of the budget line, not the total values for the place' do
+
+        bl_ranking_url = "/ranking/2015/G/functional/amount_per_inhabitant/162?ine_code=28079"
+
+        visit bl_ranking_url
+
+        expect(page).to have_selector('tr.selected td.location', :text => 'Madrid')
+        expect(page).to have_selector('tr.selected td.expense_per', :text => '76,11 €')
+        expect(page).to have_selector(".filters[data-ranking-url='#{bl_ranking_url}']")
+        
+        params = {
+          f: {
+            aarr: 13
+          }
+        }
+
+        visit "#{bl_ranking_url}&#{params.to_query}"
+
+        expect(page).to have_selector('tr.selected td.location', :text => 'Madrid')
+        expect(page).to have_selector('tr.selected td.expense_per', :text => '76,11 €')
+        expect(page).to have_selector(".filters[data-ranking-url='#{bl_ranking_url}']")
+      end
+
     end
 
     context 'Income' do
