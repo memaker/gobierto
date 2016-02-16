@@ -55,6 +55,9 @@ $(function () {
       ranking_url += params;
 
       $.ajax(ranking_url, {
+        headers: {          
+                 Accept : "application/json, text/javascript"
+        },
         beforeSend: function() {
           $('.spinner').addClass('show');
           if(push_the_state) {
