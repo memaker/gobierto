@@ -2665,6 +2665,8 @@ header.ranking {
     margin: 0 0 1em 0;
     font-size: 1.3em;
     font-weight: 400;
+    max-height: 2.2em;
+    overflow: hidden;
   }
   a {
     text-decoration: none;
