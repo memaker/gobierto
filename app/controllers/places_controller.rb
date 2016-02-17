@@ -111,6 +111,8 @@ class PlacesController < ApplicationController
   end
 
   def choose_layout
+    response.headers.delete "X-Frame-Options"
+    # response.headers["X-FRAME-OPTIONS"] = "ALLOW-FROM http://some-origin.com"
     return 'embedded' if params[:embed].present?
     return 'application'
   end
