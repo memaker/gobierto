@@ -21,3 +21,6 @@ config/secrets.yml
 public/cache
 public/assets
 **/.DS_Store
+
+# Ruby version
+.ruby-version
