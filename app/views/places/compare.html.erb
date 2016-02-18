@@ -1,10 +1,10 @@
-<% set_meta_tags title: "Compara #{@places.map(&:name).join(' - ')}" %>
+<% title "Compara los presupuestos municipales de #{@places.map(&:name).to_sentence}" %>
 
 <div class="compare">
   <header class="place">
       <h1>
         <%= render partial: 'places/year_switcher' %>
-        Compara
+        Compara los presupuestos municipales de <%= @places.map(&:name).to_sentence %>
       </h1>
       <div>
         <span>
