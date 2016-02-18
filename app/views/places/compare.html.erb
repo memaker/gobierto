@@ -1,11 +1,20 @@
-<% title "Compara los presupuestos municipales de #{@places.map(&:name).to_sentence}" %>
+<%
+  @title = "Compara los presupuestos municipales de #{@places.map(&:name).to_sentence}"
+  title @title
+%>
 
 <div class="compare">
   <header class="place">
       <h1>
         <%= render partial: 'places/year_switcher' %>
-        Compara los presupuestos municipales de <%= @places.map(&:name).to_sentence %>
+        <%= @title %>
       </h1>
+
+      <div class="share_links">
+        <%= link_to '<i class="fa fa-twitter"></i>'.html_safe, "https://twitter.com/home?status=#{u twitter_share(@title || @share_text, request.original_url)}", class: 'small_button popup', data: {rel: 'Twitter'} %>
+        <%= link_to '<i class="fa fa-facebook"></i>'.html_safe, "http://www.facebook.com/sharer/sharer.php?u=#{u request.original_url}", class: 'small_button popup', data: {rel: 'Facebook'} %>
+      </div>
+
       <div>
         <span>
           <div class="switcher kind_switcher">
