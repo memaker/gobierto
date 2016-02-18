@@ -1,4 +1,5 @@
 class BudgetLinesController < ApplicationController
+  layout :choose_layout
   before_action :load_params
 
   def show

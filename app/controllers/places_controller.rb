@@ -1,4 +1,5 @@
 class PlacesController < ApplicationController
+  layout :choose_layout
   before_action :get_params
   before_action :solve_income_area_mismatch, except: [:show]
 

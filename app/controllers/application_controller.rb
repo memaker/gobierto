@@ -22,6 +22,21 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def choose_layout
+    response.headers.delete "X-Frame-Options"
+    # response.headers["X-FRAME-OPTIONS"] = "ALLOW-FROM http://some-origin.com"
+    return 'embedded' if params[:e].present?
+    return 'application'
+  end
+
+  def default_url_options(options={})
+    if params[:e].present?
+      { e: true }
+    else
+      {}
+    end
+  end
+
   protected
 
   def store_subscriptions
