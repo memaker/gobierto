@@ -3,21 +3,32 @@
 <head>
 <script type="text/javascript" src="javascripts/iframeResizer.min.js"></script>
 <style type="text/css">
+  body {
+    background: #CFCFCF;
+  }
   iframe {
-    width:100%;
-    border:none;
+    width: 100%;
+    border: none;
   }
   .container {
-    width:70%;
+    width: 70%;
+    margin: auto;
   }
 </style>
 </head>
 <body>
+
 <p>IFRAME</p>
+
 <div class="container">
+  
+  <!-- start embed -->
   <iframe src="/places/madrid/2014?e=true" scrolling="no"></iframe>
+  <script type="text/javascript">
+    var iframes = iFrameResize( {heightCalculationMethod: 'documentElementOffset'}, 'iframe' );
+  </script>
+  <!-- end embed -->
+
 </div>
-<script type="text/javascript">
-  var iframes = iFrameResize( {heightCalculationMethod: 'documentElementOffset'}, 'iframe' );
-</script>
+
 </body>

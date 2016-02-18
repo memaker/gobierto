@@ -1,0 +1,11 @@
+<script type="text/javascript">
+
+  <% if Rails.env.production? %>
+    ga('create', 'UA-69636046-2', 'auto');
+  <% else %>
+    ga('create', 'UA-69636046-3', 'auto'); // DEV account 
+  <% end %>
+
+  ga('send', 'pageview');
+  
+</script>
