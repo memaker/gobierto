@@ -42,6 +42,7 @@ Rails.application.routes.draw do
 
   # compare
   get 'compare' => 'pages#compare'
+  get 'compare-new' => 'pages#compare-new'
   get '/compare/:slug_list/:year/:kind/:area' => 'places#compare', as: :places_compare
 
   get 'ranking' => 'pages#ranking'
