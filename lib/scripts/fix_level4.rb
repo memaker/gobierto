@@ -1,4 +1,4 @@
-['budgets-forecast','budgets-execution'].each do |index|
+['budgets-forecast-v2','budgets-execution'].each do |index|
   puts index
 
   type = 'economic'
