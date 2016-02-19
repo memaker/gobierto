@@ -48,6 +48,7 @@ group :test do
 end
 
 group :development do
+  gem 'puma'
   gem 'web-console', '~> 2.0'
   gem 'quiet_assets'
   gem 'capistrano'

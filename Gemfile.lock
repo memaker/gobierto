@@ -159,6 +159,7 @@ GEM
     oj (2.14.4)
     pg (0.18.4)
     progressbar (0.21.0)
+    puma (2.16.0)
     quiet_assets (1.1.0)
       railties (>= 3.1, < 5.0)
     rack (1.6.4)
@@ -296,6 +297,7 @@ DEPENDENCIES
   oj
   pg
   progressbar
+  puma
   quiet_assets
   rack-test
   rails (= 4.2.5.1)
