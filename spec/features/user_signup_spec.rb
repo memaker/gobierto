@@ -20,9 +20,12 @@ RSpec.feature 'User signup' do
 
     fill_in 'user_password', with: 'bar123456'
     fill_in 'user_password_confirmation', with: 'bar123456'
-    select 'Madrid', from: 'user_place_id'
+    # By default the first elements of the list are loaded
+    select 'Almería', from: 'user_place_id'
     click_button 'Enviar'
 
     expect(page).to have_content("Datos actualizados correctamente")
+    user = User.find_by email: 'bar@example.com'
+    expect(user.place_id).to eq(4013)
   end
 end

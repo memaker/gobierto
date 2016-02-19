@@ -119,6 +119,12 @@ $(function(){
     }
   });
 
+  $('[data-feedback]').on('click', function(e){
+    e.preventDefault();
+    $('.metric_graphs').hide();
+    $('.budget_line_feedback.hidden').removeClass('hidden');
+  });
+
   // adjust height of sidebar
   // if($(window).width() > 740) {
   if(responsive()) {

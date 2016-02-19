@@ -24,6 +24,7 @@ class UsersController < ApplicationController
         end
       end
       format.js do
+        @form_context = params[:context]
         (created || @user.pending_confirmation?) ? render('created') : render('login')
       end
     end

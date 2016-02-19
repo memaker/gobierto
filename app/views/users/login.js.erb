@@ -1,1 +1,1 @@
-$('#new_user').replaceWith('<%= j(render(partial:'sessions/form', locals: {email: @user.email})) %>');
+$('#<%= @form_context %>').replaceWith('<%= j(render(partial:'sessions/form', locals: {email: @user.email})) %>');

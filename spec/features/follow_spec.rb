@@ -5,7 +5,7 @@ RSpec.feature 'Follow place spec' do
     @user = create_user
   end
 
-  pending 'Logged user follows a place', js: true do
+  scenario 'Logged user follows a place', js: true do
     login_as 'foo@example.com', 'foo123456'
 
     visit '/places/santander/2015'

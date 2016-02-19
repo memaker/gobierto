@@ -94,9 +94,9 @@ RSpec.feature 'User feedback' do
     expect(page).to have_content('Puedes solicitar a tu alcalde que amplie la información sobre esta y otras partidas')
     expect(page).to have_content('El 100.0% de personas han respondido que No')
 
-    expect(page).to have_css('#new_user')
     fill_in 'user_email', with: 'foo@example.com'
     click_button 'Seguir'
+    expect(page).to have_content('Parece que ya tienes cuenta en Gobierto')
     fill_in 'session_password', with: 'foo123456'
     click_button 'Enviar'
   end

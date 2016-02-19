@@ -1,10 +1,11 @@
 <div class="sep"></div>
 
 <% if !logged_in? %>
-  <%= form_for User.new, data: {remote: true} do |f| %>
+  <%= form_for User.new, data: {remote: true}, html: {id: 'new-user-login-share'} do |f| %>
     <p><small>Puedes seguir esta partida para recibir noticias ocasionales sobre su evolución y opiniones:</small></p>
     <%= f.email_field :email, placeholder: 'Tu correo-e' %>
-    <input type="submit" class="button" value="Seguir">
+    <%= hidden_field_tag :context, "new-user-login-share" %>
+    <%= f.submit "Seguir" %>
     <div class="exp">
       <p>No spam, tus opiniones serán siempre privadas <%= link_to 'Más información', '/faq' %></p>
     </div>
