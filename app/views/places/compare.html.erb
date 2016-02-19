@@ -56,22 +56,21 @@
       </div>
   </header>
 
-  <a href="#" class="selected"
+  <a href="#" class="comparison-dimension selected"
     data-line-widget-series="compare"
     data-line-widget-type="per_person"
     data-line-widget-url="<%= lines_chart_api_path('per_person', @compared_level, @places, @year, @kind, params[:parent_code], @area_name) %>">Por Habitante</a>
     |
-    <a href="#"
+  <a href="#" class="comparison-dimension"
     data-line-widget-series="compare"
     data-line-widget-type="total_budget"
     data-line-widget-url="<%= lines_chart_api_path('total_budget', @compared_level, @places, @year, @kind, params[:parent_code], @area_name)%>">Total</a>
 
-
   <div class="metric_graphs clearfix">
-  <div class="widget_graph show clearfix">
-    <div class="col-1-2" id="lines_chart"></div>
-    <div class="col-2-2" id="lines_tooltip"></div>
-  </div>
+    <div class="widget_graph show clearfix">
+      <div class="col-1-2" id="lines_chart"></div>
+      <div class="col-2-2" id="lines_tooltip"></div>
+    </div>
   </div>
 
   <% if @kind == 'G' %>

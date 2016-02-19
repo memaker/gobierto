@@ -635,6 +635,10 @@ table {
     }
   }
 }
+
+.comparison-dimension.selected {
+  text-decoration: none;
+}
 .data_table {
   margin: 0 0 2em 0;
   td {
