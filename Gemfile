@@ -43,7 +43,7 @@ group :test do
   gem 'launchy'
   gem 'email_spec'
   gem 'timecop'
-  gem 'poltergeist'
+  gem 'selenium-webdriver'
   gem 'rack-test', require: "rack/test"
 end
 

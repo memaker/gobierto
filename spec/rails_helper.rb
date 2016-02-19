@@ -1,10 +1,8 @@
-# This file is copied to spec/ when you run 'rails generate rspec:install'
 ENV["RAILS_ENV"] ||= 'test'
 require 'spec_helper'
 require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
 require 'capybara/rspec'
-require 'capybara/poltergeist'
 require 'email_spec'
 require 'rack/test'
 
@@ -22,12 +20,8 @@ RSpec.configure do |config|
   config.include(EmailSpec::Helpers)
   config.include(EmailSpec::Matchers)
 
-  Capybara.register_driver :poltergeist do |app|
-    Capybara::Poltergeist::Driver.new(app, {port: 8888})
-  end
-
-  Capybara.javascript_driver = :poltergeist
-  Capybara.default_max_wait_time = 10
+  Capybara.javascript_driver = :selenium
+  Capybara.default_max_wait_time = 5
 
   config.before(:suite) do
     %x[bundle exec rake assets:precompile]
