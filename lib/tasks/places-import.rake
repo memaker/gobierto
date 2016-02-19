@@ -1,6 +1,6 @@
 namespace :places do
   PLACES_INDEXES = ['data']
-  PLACES_TYPES = ['places']
+  PLACES_TYPES = ['places-v2']
 
   def create_places_mapping(index, type)
     m = SearchEngine.client.indices.get_mapping index: index, type: type
@@ -16,7 +16,8 @@ namespace :places do
           province_id:           { type: 'integer', index: 'not_analyzed' },
           autonomy_id:           { type: 'integer', index: 'not_analyzed' },
           year:                  { type: 'integer', index: 'not_analyzed' },
-          name:                  { type: 'string',  index: 'analyzed' }
+          name:                  { type: 'string',  index: 'analyzed' },
+          slug:                  { type: 'string',  index: 'analyzed' }
         }
       }
     }
@@ -35,7 +36,7 @@ namespace :places do
       data = {
         ine_code: place.id.to_i, province_id: place.province.id.to_i,
         autonomy_id: place.province.autonomous_region.id.to_i, year: 2015,
-        name: place_name
+        name: place_name, slug: place.slug
       }
 
       id = place.id
