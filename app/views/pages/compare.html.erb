@@ -1,45 +1,87 @@
+<div class="pre_home big_compare">
 
-<div class="pre_home">  
-  
-  <div class="about_block">
+  <div class="about_block ">
 
     <h2>Compara municipios</h2>
-    
-    <div class="col-1-2">
+
+    <%= form_tag '#' do %>
+
+      <%= image_tag('illustrations/integra.jpg') %>
+
+      <p class="center">Selecciona varios municipios para comparar sus presupuestos:</p>
       
-      <p><strong>Compara y navega entre las partidas de los municipios que elijas</strong></p>
+      <input type="text" class="search_compare" value="" placeholder="Busca municipio 1" name="place1" />
+      <input type="text" class="search_compare" value="" placeholder="Busca municipio 2" name="place2" />
+      <input type="text" class="search_compare" value="" placeholder="Busca municipio 3" name="place3" />
 
-      <ul>
-        <li>Elige los municipios que desees</li>
-        <li>Compara ingresos y gastos</li>
-        <li>Navega a lo largo de las partidas</li>
-        <li>Comparte la URL de tu comparación</li>
-      </ul>
+      <%= submit_tag "Comparar", disabled: "true" %>
 
-      <p><strong>¿Cómo funciona?</strong></p>
-      <p>Puedes añadir un municipio a tu lista de comparación desde la página del municipio en cuestión. Utiliza el botón "Compara" para añadir y acceder a la comparación. Desde la página de comparación también podrás añadir otros municipios o eliminar los que necesites de la comparación.</p>
+    <% end %>
 
-      
+  </div>
 
-      <p><strong>Algunos ejemplos</strong></p>
+  <div class="examples center">
 
-      <ul>
-        <li><%= link_to 'Coruña + Pontevedra + Lugo + Ferrol', '/compare/coruna-a:pontevedra:lugo:ferrol/2015/G/economic', class: 'button' %></li>
-        <li><%= link_to 'Madrid + Barcelona + Valencia + Sevilla', '/compare/madrid:barcelona:valencia:sevilla/2015/G/economic', class: 'button' %></li>
-        <li><%= link_to 'Palma de Mallorca + Santa Cruz de Tenerife + Las Palmas de Gran Canaria', '/compare/palma-de-mallorca:santa-cruz-de-tenerife:palmas-de-gran-canaria-las/2015/G/economic', class: 'button' %></li>
-      </ul>
+    <p><strong>Algunos ejemplos</strong></p>
 
-    </div>
+    <ul>
+      <li><%= link_to 'Coruña + Pontevedra + Lugo + Ferrol', '/compare/coruna-a:pontevedra:lugo:ferrol/2015/G/economic', class: 'button' %></li>
+      <li><%= link_to 'Madrid + Barcelona + Valencia + Sevilla', '/compare/madrid:barcelona:valencia:sevilla/2015/G/economic', class: 'button' %></li>
+      <li><%= link_to 'Palma de Mallorca + Santa Cruz de Tenerife + Las Palmas de Gran Canaria', '/compare/palma-de-mallorca:santa-cruz-de-tenerife:palmas-de-gran-canaria-las/2015/G/economic', class: 'button' %></li>
+    </ul>
 
-    <div class="col-2-2">
+    <p><%= link_to '¿Cómo funciona?', '', class: 'toggle_div', data: { target: 'how_it_works' } %></strong></p>
 
-      <%# video_tag 'Gobierto_Compare_Demo.mp4', width: "100%", :controls => true %>
+    <div class="how_it_works" style="display: none;">
+
+      <p>Además de usar el buscador en la parte superior de esta página, puedes añadir un municipio a tu lista de comparación desde la página del municipio en cuestión. Utiliza el botón "Compara" para añadir y acceder a la comparación. Desde la página de comparación también podrás añadir otros municipios o eliminar los que necesites de la comparación.</p>
+
       <%= image_tag 'gobierto_compare_demo.gif', width: '100%' %>
 
-      
-
     </div>
+
 
   </div>
 
 </div>
+
+<% content_for(:javascript) do %>
+
+function extractFormParameters($sel){
+  var slugs = [];
+  $sel.serializeArray().forEach(function(e){
+    if(/^place/.test(e.name) && e.value !== ""){
+      slugs.push(e.value);
+    }
+  });
+  return slugs;
+}
+
+var searchOptions = {
+  serviceUrl: '/search',
+  onSelect: function(suggestion) {
+    if(suggestion.data.type == 'Place') {
+      // TODO: same event as search?
+      // ga('send', 'event', 'Place Search', 'Click', 'Search', {nonInteraction: true});
+      // mixpanel.track('Place Search', { 'Place': suggestion.data.slug});
+      $(this).val(suggestion.data.slug);
+      if(extractFormParameters($('form')).length > 1){
+        $('form input:submit').attr('disabled', false);
+      }
+    }
+  },
+  groupBy: 'category'
+};
+
+$('.search_compare').autocomplete($.extend({}, AUTOCOMPLETE_DEFAULTS, searchOptions));
+
+$('form').on('submit', function(e){
+  e.preventDefault();
+  var slugs = extractFormParameters($(this));
+  if(slugs.length > 0) {
+    // window.location.href = '/compare/' + slugs.join(':') + '/2015/G/functional';
+    Turbolinks.visit('/compare/' + slugs.join(':') + '/2015/G/functional');
+  }
+});
+
+<% end %>
