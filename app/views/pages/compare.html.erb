@@ -9,7 +9,7 @@
       <%= image_tag('illustrations/integra.jpg') %>
 
       <p class="center">Selecciona varios municipios para comparar sus presupuestos:</p>
-      
+
       <input type="text" class="search_compare" value="" placeholder="Busca municipio 1" name="place1" />
       <input type="text" class="search_compare" value="" placeholder="Busca municipio 2" name="place2" />
       <input type="text" class="search_compare" value="" placeholder="Busca municipio 3" name="place3" />
@@ -61,9 +61,8 @@ var searchOptions = {
   serviceUrl: '/search',
   onSelect: function(suggestion) {
     if(suggestion.data.type == 'Place') {
-      // TODO: same event as search?
-      // ga('send', 'event', 'Place Search', 'Click', 'Search', {nonInteraction: true});
-      // mixpanel.track('Place Search', { 'Place': suggestion.data.slug});
+      ga('send', 'event', 'Compare Search', 'Click', 'Search', {nonInteraction: true});
+      mixpanel.track('Compare Search', { 'Place': suggestion.data.slug});
       $(this).val(suggestion.data.slug);
       if(extractFormParameters($('form')).length > 1){
         $('form input:submit').attr('disabled', false);
@@ -79,7 +78,6 @@ $('form').on('submit', function(e){
   e.preventDefault();
   var slugs = extractFormParameters($(this));
   if(slugs.length > 0) {
-    // window.location.href = '/compare/' + slugs.join(':') + '/2015/G/functional';
     Turbolinks.visit('/compare/' + slugs.join(':') + '/2015/G/functional');
   }
 });
