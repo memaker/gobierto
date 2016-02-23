@@ -635,6 +635,36 @@ table {
     }
   }
 }
+.big_compare {
+  form {
+    padding: 2em 0;
+    margin-bottom: 5em;
+    input.search_compare {
+      width: 27%;
+      font-size: 1.4em;
+    }
+    input[type=submit] {
+      font-size: 1.4em;
+    }
+    @include screen(740) {
+      input, input.search_compare {
+        width: 100%;
+        margin: 0 0 .5em 0;
+      }
+    }
+  }
+  .examples {
+    font-size: .85em;
+    ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      li {
+        margin: 0 0 1em 0;
+      }
+    }
+  }
+}
 
 .comparison-dimension.selected {
   text-decoration: none;
@@ -2077,6 +2107,13 @@ input[type=submit] {
 input[type=submit]:hover, .button:hover {
   background: darken($color_1, 5%);
   text-decoration: none;
+}
+input[type=submit]:disabled {
+  cursor: initial;
+  opacity: .2;
+}
+input[type=submit]:disabled:hover {
+  background: $color_1;
 }
 .small_button {
   background: $color_1;
