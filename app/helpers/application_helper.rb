@@ -218,9 +218,9 @@ module ApplicationHelper
 
     options = {
       filter_html:     true,
-      hard_wrap:       true, 
+      hard_wrap:       true,
       link_attributes: { rel: 'nofollow', target: "_blank" },
-      space_after_headers: true, 
+      space_after_headers: true,
       fenced_code_blocks: true
     }
 
@@ -234,6 +234,14 @@ module ApplicationHelper
     markdown = Redcarpet::Markdown.new(renderer, extensions)
 
     markdown.render(text).html_safe
+  end
+
+  def class_if(css_class, condition)
+    if condition
+      {class: css_class}
+    else
+      {}
+    end
   end
 
 end
