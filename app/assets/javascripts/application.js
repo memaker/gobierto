@@ -16,7 +16,6 @@
 //= require vendor/jquery.inview
 //= require vendor/jquery.magnific-popup.min
 //= require vendor/nouislider
-//= require vendor/iframeResizer/iframeResizer.contentWindow.min
 //= require vis_treemap
 //= require vis_lineas_tabla
 //= require widget_renderer
