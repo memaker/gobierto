@@ -1,32 +1,5 @@
 <header class="place">
-  <div class="breadcrumb">
-    <%= @place.province.autonomous_region.name %> » <%= @place.province.name %>
-  </div>
-  <h1 title="<%= 'Presupuestos municipales de ' + @place.name %>">
-    <%= render partial: 'places/year_switcher' %>
-    <%= link_to_unless_current @place.name, place_path(@place.slug, @year) %>
-    <% if params[:area] %>
-      » <%= kind_literal(@kind).humanize %> presupuestados
-    <% end %>
-  </h1>
-
-  <div class="share_links">
-    <%= link_to '<i class="fa fa-twitter"></i>'.html_safe, "https://twitter.com/home?status=#{u twitter_share(@title || @share_text, request.original_url)}", class: 'small_button popup', data: {rel: 'Twitter'} %>
-    <%= link_to '<i class="fa fa-facebook"></i>'.html_safe, "http://www.facebook.com/sharer/sharer.php?u=#{u request.original_url}", class: 'small_button popup', data: {rel: 'Facebook'} %>
-  </div>
-
-  <% pending do %>
-  <menu>
-    <ul>
-      <li><%= link_to 'Presupuesto' %></li>
-      <li><%= link_to 'Ejecución' %></li>
-      <li><%= link_to 'Indicadores' %></li>
-      <li><%= link_to 'Rankings' %></li>
-      <li><%= link_to 'Contexto' %></li>
-    </ul>
-  </menu>
-  <% end %>
-
+  
   <div class="tools_cont">
     <div class="tools sticky">
       <% if ['places','budget_lines'].include?(controller_name) %>
@@ -69,6 +42,36 @@
       </div>
     </div>
   </div>
+
+  <div class="breadcrumb">
+    <%= @place.province.autonomous_region.name %> » <%= @place.province.name %>
+  </div>
+
+  <h1 title="<%= 'Presupuestos municipales de ' + @place.name %>">
+    <%= render partial: 'places/year_switcher' %>
+    <%= link_to_unless_current @place.name, place_path(@place.slug, @year) %>
+    <% if params[:area] %>
+      » <%= kind_literal(@kind).humanize %> presupuestados
+    <% end %>
+  </h1>
+
+  <div class="share_links">
+    <%= link_to '<i class="fa fa-twitter"></i>'.html_safe, "https://twitter.com/home?status=#{u twitter_share(@title || @share_text, request.original_url)}", class: 'small_button popup', data: {rel: 'Twitter'} %>
+    <%= link_to '<i class="fa fa-facebook"></i>'.html_safe, "http://www.facebook.com/sharer/sharer.php?u=#{u request.original_url}", class: 'small_button popup', data: {rel: 'Facebook'} %>
+  </div>
+
+  <% pending do %>
+  <menu>
+    <ul>
+      <li><%= link_to 'Presupuesto' %></li>
+      <li><%= link_to 'Ejecución' %></li>
+      <li><%= link_to 'Indicadores' %></li>
+      <li><%= link_to 'Rankings' %></li>
+      <li><%= link_to 'Contexto' %></li>
+    </ul>
+  </menu>
+  <% end %>
+
 </header>
 
 <header class="sticky_top">

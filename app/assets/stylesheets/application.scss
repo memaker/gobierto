@@ -1018,9 +1018,8 @@ header.sub {
  *
  */
 .tools_cont {
-  position: absolute;
-  right: 0;
-  top: 1.5em;
+  position: relative;
+  float: right;
   z-index: 10;
   .is-sticky {
     width: 390px;
@@ -1030,7 +1029,7 @@ header.sub {
 }
 .tools {
   width: 390px;
-  padding-top: .5em;
+  // padding-top: .5em;
   text-align: right; 
 
   @include screen(740) {
