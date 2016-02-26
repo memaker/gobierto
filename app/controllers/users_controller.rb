@@ -4,14 +4,19 @@ class UsersController < ApplicationController
   def new
     redirect_to edit_user_path if logged_in?
 
-    @user = User.new
+    @user = User.new(params.permit(:place_id, :pro))
+    @place_id = params[:place_id]
   end
 
   def create
     @user = User.find_or_initialize_by email: params[:user][:email]
     if @user.new_record?
-      created = true
-      @user.save!
+      @user.attributes = create_user_params
+      if @user.save
+        created = true
+      else
+        render 'new' and return
+      end
     end
     session[:follow] = params[:follow] if params[:follow]
 
@@ -33,8 +38,6 @@ class UsersController < ApplicationController
   def verify
     @user = User.find_by! verification_token: params[:id]
     log_in(@user)
-
-    render 'edit'
   end
 
   def edit
@@ -58,11 +61,11 @@ class UsersController < ApplicationController
   private
 
   def create_user_params
-    params.require(:user).permit(:email)
+    params.require(:user).permit(:first_name, :last_name, :email, :place_id, :pro, :terms_of_service)
   end
 
   def update_user_params
-    params.require(:user).permit(:first_name, :last_name, :email, :password, :password_confirmation, :current_password, :place_id)
+    params.require(:user).permit(:first_name, :last_name, :email, :password, :password_confirmation, :current_password, :place_id, :pro, :terms_of_service)
   end
 
   def load_current_user

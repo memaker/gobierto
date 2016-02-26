@@ -3,14 +3,14 @@ class User < ActiveRecord::Base
 
   has_secure_password validations: false
 
-  attr_accessor :terms_of_service, :remember_token
+  attr_accessor :remember_token
 
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
   validates :email, length: { maximum: 255 }, format: { with: VALID_EMAIL_REGEX }, uniqueness: { case_sensitive: false }
   validates :first_name, length: { maximum: 50 }
   validates :last_name, length: { maximum: 50 }
-  validates :password, length: { minimum: 5 }, presence: true, confirmation: true, unless: Proc.new { |u| u.password.blank? }
-  validates :terms_of_service, acceptance: true
+  validates :password, length: { minimum: 5 }, presence: true, confirmation: true, on: :update
+  validates :terms_of_service, acceptance: { accept: true }, on: :update
   validates :place_id, presence: true, on: :update
 
   has_many :subscriptions, dependent: :destroy

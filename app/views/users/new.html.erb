@@ -1,38 +1,34 @@
 <div class="cont clearfix">
   <%= flush_the_flash %>
+  
+  <% if params[:pro] == 'true' %>
+    <h2>Solicita más información</h2>
+
+    <p>Si eres un profesional de la administración local y estás interesado en reutilizar e implementar herramientas desarrolladas por Gobierto, ponte en contacto con nosotros y te contamos.</p>
+  
+  <% else %>
+    <h2>Pide que tu alcalde añada información en Gobierto Presupuestos Municipales</h2>
+
+    <p>Indícanos cuál es tu municipio y nos encargaremos de hacerle llegar tu petición de más información a sus responsables. Te avisaremos si hay respuesta.</p>
+  <% end %>
 
   <div class="form clearfix">
-
-    <h1>Nuevo usuario</h1>
-
-    <% if @user.errors.any? %>
-      <div id="error_explanation">
-        <div class="alert alert-danger">
-          El formulario tiene <%= pluralize(@user.errors.count, "error") %>.
-        </div>
-        <ul>
-          <% @user.errors.full_messages.each do |msg| %>
-            <li><%= msg %></li>
-          <% end %>
-        </ul>
-      </div>
-    <% end %>
-
+    
+    <%= render 'alerts' %>
     <%= form_for @user do |f| %>
-      <div class="form_item">
-        <div class="form_item_cont">
-          <%= f.label :email, "E-mail" %>
-          <%= f.email_field :email, class: 'i_text' %>
-        </div>
-      </div>
+      <%= render partial: 'basic_fields', locals: { f: f} %>
 
       <div class="form_item full submit_item">
         <div class="form_item_cont clearfix">
+          <div class="conditions">
+            <p>También recibirás novedades sobre Gobierto Presupuestos Municipales de vez en cuando. Podrás dejar de recibir cuando quieras.</p>
+              <label><%= f.check_box :terms_of_service %> He leído el <%= link_to 'Aviso legal', legal_legal_path %> y la <%= link_to 'Política de privacidad', legal_privacy_path %></label>
+          </div>
           <%= hidden_field_tag :back_url, request.referer %>
           <input type="submit" class="submit" value="Enviar">
         </div>
       </div>
-    <% end %>
 
+    <% end %>
   </div>
 </div>

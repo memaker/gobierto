@@ -4,6 +4,7 @@ module Factories
     attrs[:password]  ||= "foo123456"
     attrs[:password_confirmation] ||= attrs[:password]
     attrs[:place_id] ||= 28079
+    attrs[:terms_of_service] ||= true
     User.new(attrs).tap do |u|
       u.save!
       u.clear_verification_token

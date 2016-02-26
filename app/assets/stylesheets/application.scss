@@ -2060,6 +2060,20 @@ form {
       text-align: right;
       padding: 0 10px 0 0;
     }
+    p {
+      font-size: smaller;
+    }
+    label[for=user_pro_false] {
+      width: 75px;
+    }
+    .conditions {
+      margin-bottom: 1em;
+      label {
+        width: auto;
+        text-align: left;
+      }
+
+    }
     .i_text {
       width: 300px;
     }

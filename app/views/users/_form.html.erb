@@ -1,112 +1,49 @@
-<% if @user.errors.any? %>
-  <div id="error_explanation">
-    <div class="alert alert-danger">
-      El formulario tiene <%= pluralize(@user.errors.count, "error") %>.
-    </div>
-    <ul>
-      <% @user.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-    </ul>
-  </div>
-<% end %>
+<div class="form clearfix">
+  
+  <%= render 'alerts' %>
 
-<%= form_for @user do |f| %>
-
-  <% if current_user.pending_confirmation? %>
-    <h1>Venga, ya casi estamos</h1>
-    <p class="highlight">Confirma tus datos para poder seguir las actualizaciones de los municipios que elijas, interactuar con tus representantes públicos, y más. Tus datos y opiniones serán siempre privados.</p>
-  <% else %>
-    <h1>Edita tus datos personales</h1>
-    <p class="highlight">Tus datos personales y opiniones serán siempre privados. Si quieres indícanos tu nombre para personalizar tu página ;) <%= link_to 'Más información', '/faq', target: 'blank' %></p></p>
-  <% end %>
-
-
-  <div class="form_item">
-    <div class="form_item_cont">
-      <%= f.label :first_name, "Nombre" %>
-      <%= f.text_field :first_name, class: 'i_text', autofocus: true, placeholder: '(opcional)'  %>
-    </div>
-  </div>
-
-  <div class="form_item">
-    <div class="form_item_cont">
-      <%= f.label :last_name, "Apellidos" %>
-      <%= f.text_field :last_name, class: 'i_text', placeholder: '(opcional)' %>
-    </div>
-  </div>
-
-  <div class="form_item">
-    <div class="form_item_cont">
-      <%= f.label :email, "E-mail" %>
-      <%= f.email_field :email, class: 'i_text' %>
-    </div>
-  </div>
-
-  <div class="form_item">
-    <div class="form_item_cont">
-      <%= f.label :place_id, "Tu municipio" %>
-      <% if f.object.place_id.blank? %>
-        <%= f.select :place_id, places_for_select, {include_blank: true}, {class: 'select2'} %>
-        <div class="submit_item explanation"><small>(El municipio donde resides. Además de este podrás seguir a otros para recibir sus actualizaciones)</small></div>
-      <% else %>
-        <input type="text" value="<%= INE::Places::Place.find(f.object.place_id).name %>" class="i_text" disabled="true"/>
-        <span style="color:red">*</span> <small><em>si quieres volver a cambiar tu municipio <%= link_to 'contacta con nosotros', about_path(anchor: 'contact') %></em></small>
-      <% end %>
-    </div>
-  </div>
-
-  <div class="form_item">
-    <div class="form_item_cont">
-      <%= f.label :password, "Contraseña" %>
-      <%= f.password_field :password, class: 'i_text', autofocus: true %>
-    </div>
-  </div>
-
-  <div class="form_item">
-    <div class="form_item_cont">
-      <%= f.label :password_confirmation, "Confirma la contraseña" %>
-      <%= f.password_field :password_confirmation, class: 'i_text' %>
-    </div>
-  </div>
-
-  <div class="form_item full submit_item">
-    <div class="form_item_cont clearfix">
-      <div class="conditions">
-        <% if f.object.new_record? %>
-          <label><%= f.check_box :terms_of_service %> Acepto términos y condiciones</label>
-        <% end %>
+  <%= form_for @user do |f| %>
+    <div class="form_item">
+      <div class="form_item_cont">
+        <%= f.label :first_name, "Nombre" %>
+        <%= f.text_field :first_name, class: 'i_text', autofocus: true, placeholder: '(opcional)'  %>
       </div>
-      <%= hidden_field_tag :back_url, request.referer %>
-      <input type="submit" class="submit" value="Enviar">
     </div>
-  </div>
-<% end %>
 
-<% content_for(:javascript) do %>
-  $('.select2').select2({
-    ajax: {
-      url: "/api/places",
-      dataType: 'json',
-      delay: 250,
-      data: function(params) {
-        return {
-          q: params.term
-        };
-      },
-      processResults: function(data) {
-        return {
-          results: $.map(data, function (item) {
-            return {
-              text: item.value,
-              id: item.data.id
-            }
-          })
-        };
-      },
-      cache: true
-    },
-    escapeMarkup: function (markup) { return markup; },
-    minimumInputLength: 3
-  });
-<% end %>
+    <div class="form_item">
+      <div class="form_item_cont">
+        <%= f.label :last_name, "Apellidos" %>
+        <%= f.text_field :last_name, class: 'i_text', placeholder: '(opcional)' %>
+      </div>
+    </div>
+
+    <%= render partial: 'basic_fields', locals: {f:f} %>
+
+    <div class="form_item">
+      <div class="form_item_cont">
+        <%= f.label :password, "Contraseña" %>
+        <%= f.password_field :password, class: 'i_text', autofocus: true %>
+      </div>
+    </div>
+
+    <div class="form_item">
+      <div class="form_item_cont">
+        <%= f.label :password_confirmation, "Confirma la contraseña" %>
+        <%= f.password_field :password_confirmation, class: 'i_text' %>
+      </div>
+    </div>
+
+    <div class="form_item full submit_item">
+      <div class="form_item_cont clearfix">
+        <div class="conditions">
+          <% unless f.object.terms_of_service? %>
+            <p>También recibirás novedades sobre Gobierto Presupuestos Municipales de vez en cuando. Podrás dejar de recibir cuando quieras.</p>
+            <label><%= f.check_box :terms_of_service %> He leído el <%= link_to 'Aviso legal', legal_legal_path %> y la <%= link_to 'Política de privacidad', legal_privacy_path %></label>
+          <% end %>
+        </div>
+        <%= hidden_field_tag :back_url, request.referer %>
+        <input type="submit" class="submit" value="Enviar">
+      </div>
+    </div>
+  <% end %>
+</div>
