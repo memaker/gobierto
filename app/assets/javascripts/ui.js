@@ -143,29 +143,26 @@ $(function(){
     mixpanel.track('Year Selection', { 'Year Selected': e.target.innerHTML});
   });
 
-  $('.modal_widget').click(function(e) {
-    var eventLabel = $(this).attr('id');
-    ga('send', 'event', 'Header Tools', 'Click', eventLabel, {nonInteraction: true});
-    mixpanel.track('Header Tools', { 'Modal': eventLabel, 'Action': 'Click'});
-  });
-
   $('.modal_widget').hover(function(e) {
-    e.preventDefault();
+    // e.preventDefault();
     $(this).find('.inner').velocity("fadeIn", { duration: 50 });
     var eventLabel = $(this).attr('id');
     ga('send', 'event', 'Header Tools', 'Hover', eventLabel, {nonInteraction: true});
     mixpanel.track('Header Tools', { 'Modal': eventLabel, 'Action': 'Hover'});
-
   }, function(e) {
     $(this).find('.inner').velocity("fadeOut", { duration: 50 });
   });
 
   // TODO: can we remove it? It is causing trouble on the follow form
   $('.modal_widget').click(function(e) {
+    var eventLabel = $(this).attr('id');
+    ga('send', 'event', 'Header Tools', 'Click', eventLabel, {nonInteraction: true});
+    mixpanel.track('Header Tools', { 'Modal': eventLabel, 'Action': 'Click'});
     if($('.modal_widget .inner').css('display') == 'none') {
       e.preventDefault();
       $(this).find('.inner').velocity("fadeIn", { duration: 50 });
     }
+    console.log('clickin');
   });
 
   $('#follow_link').click(function(e) {
