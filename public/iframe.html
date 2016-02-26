@@ -24,9 +24,11 @@
   
   <!-- start embed -->
   <script type="text/javascript" src="javascripts/iframeResizer.min.js"></script>
-  <iframe src="/places/madrid/2014?e=true" scrolling="no" style="border: 0; padding: 0; margin: 0; width: 100%;"></iframe>
+  <iframe src="https://presupuestos.gobierto.es/places/madrid/2014?e=true" scrolling="no" style="border: 0; padding: 0; margin: 0; width: 100%;"></iframe>
+  <!--iframe src="http://localhost:3000/places/madrid/2014?e=true" scrolling="no" style="border: 0; padding: 0; margin: 0; width: 100%;"></iframe-->
   <script type="text/javascript">
-    var iframes = iFrameResize( {heightCalculationMethod: 'documentElementOffset'}, 'iframe' );
+    document.domain = 'localhost';
+    var iframes = iFrameResize( {heightCalculationMethod: 'documentElementOffset', checkOrigin: false}, 'iframe' );
   </script>
   <!-- end embed -->
 
