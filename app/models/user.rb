@@ -9,7 +9,7 @@ class User < ActiveRecord::Base
   validates :email, length: { maximum: 255 }, format: { with: VALID_EMAIL_REGEX }, uniqueness: { case_sensitive: false }
   validates :first_name, length: { maximum: 50 }
   validates :last_name, length: { maximum: 50 }
-  validates :password, length: { minimum: 5 }, presence: true, confirmation: true, on: :update
+  validates :password, length: { minimum: 5 }, presence: true, confirmation: true, on: :update, if: Proc.new{|u| u.pending_confirmation? }
   validates :terms_of_service, acceptance: { accept: true }, on: :update
   validates :place_id, presence: true, on: :update
 
