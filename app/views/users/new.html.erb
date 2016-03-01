@@ -4,12 +4,12 @@
   <% if params[:pro] == 'true' %>
     <h2>Solicita más información</h2>
 
-    <p>Si eres un profesional de la administración local y estás interesado en reutilizar e implementar herramientas desarrolladas por Gobierto, ponte en contacto con nosotros y te contamos.</p>
+    <p>Si eres un profesional de la administración local y estás interesado en reutilizar e implementar herramientas desarrolladas por Gobierto, ponte en contacto con nosotros y te contamos. Si ya tienes cuenta en Gobierto, <%= link_to 'entra aquí', login_path %></p>
   
   <% else %>
     <h2>Pide que tu alcalde añada información en Gobierto Presupuestos Municipales</h2>
 
-    <p>Indícanos cuál es tu municipio y nos encargaremos de hacerle llegar tu petición de más información a sus responsables. Te avisaremos si hay respuesta.</p>
+    <p>Indícanos cuál es tu municipio y nos encargaremos de hacerle llegar tu petición de más información a sus responsables. Te avisaremos si hay respuesta. Si ya tienes cuenta en Gobierto, <%= link_to 'entra aquí', login_path %></p>
   <% end %>
 
   <div class="form clearfix">

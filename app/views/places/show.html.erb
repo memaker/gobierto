@@ -116,7 +116,9 @@
 
 </div>
 
-<%= render 'places/cta_block' %>
+<% unless logged_in? %>
+  <%= render 'places/cta_block' %>
+<% end %>
 
 <script type="text/html" id="widget-template">
   <div class="label">{{title}}</div>
