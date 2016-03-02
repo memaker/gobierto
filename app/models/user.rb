@@ -18,6 +18,7 @@ class User < ActiveRecord::Base
   before_validation :sanitize_parameters
   before_create :set_verification_token
   after_create :send_verification_email
+  after_save :to_mailchimp
 
   scope :sorted, -> { order(id: :desc) }
 
@@ -47,6 +48,10 @@ class User < ActiveRecord::Base
     end
   end
 
+  def in_mailchimp?
+    Mailchimp.is_member?(self)
+  end
+
   private
 
   def set_verification_token
@@ -63,5 +68,8 @@ class User < ActiveRecord::Base
     UserMailer.verification_notification(self).deliver_now
   end
 
+  def to_mailchimp
+    UpdateOrCreateInMailchimpJob.perform_later(self) if Rails.env.production?
+  end
 
 end

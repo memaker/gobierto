@@ -10,6 +10,7 @@ require "action_view/railtie"
 require "sprockets/railtie"
 require "ostruct"
 require "pp"
+require "digest"
 
 Bundler.require(*Rails.groups)
 
@@ -41,5 +42,7 @@ module RailsTemplate
     config.action_controller.page_cache_directory = "#{Rails.root.to_s}/public/cache"
 
     config.action_mailer.default_url_options = { host: 'gobierto.es', protocol: 'https' }
+
+    config.active_job.queue_adapter = :delayed_job
   end
 end

@@ -15,6 +15,8 @@ gem 'ruby-px', require: 'pc-axis/dataset'
 gem 'kaminari', git: 'git@github.com:amatsuda/kaminari.git'
 gem 'geocoder'
 gem 'responders'
+gem 'delayed_job_active_record'
+gem 'daemons'
 
 # Frontend
 gem 'jquery-rails'

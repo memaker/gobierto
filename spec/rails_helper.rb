@@ -23,6 +23,8 @@ RSpec.configure do |config|
   Capybara.javascript_driver = :selenium
   Capybara.default_max_wait_time = 5
 
+  Delayed::Worker.delay_jobs = false
+
   config.before(:suite) do
     %x[bundle exec rake assets:precompile]
 
