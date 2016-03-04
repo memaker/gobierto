@@ -20,15 +20,22 @@
 
 <div class="form_item">
   <div class="form_item_cont">
-    <%= f.label :pro_true, "Profesional" %>
-    <%= f.radio_button :pro, true %>
-    <%= f.label :pro_false, "Ciudadano" %>
-    <%= f.radio_button :pro, false %>
+    <label>Eres:</label>
+
+    <div class="radio_option">
+      <%= f.radio_button :pro, false %> <%= f.label :pro_false, "Ciudadano" %>
+    </div>
+    <div class="radio_option">
+      <%= f.radio_button :pro, true %> <%= f.label :pro_true, "Profesional de la administración local" %>
+    </div>
+  
+    
   </div>
 </div>
 
 <% content_for(:javascript) do %>
   $('.select2').select2({
+    width: '300px',
     ajax: {
       url: "/api/places",
       dataType: 'json',
