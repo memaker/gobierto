@@ -120,6 +120,67 @@
   <%= render 'places/cta_block' %>
 <% end %>
 
+
+<div class="featured_budget_line">
+
+  <h3 class="lite">Partidas destacadas</h3>
+
+  <div class="cont clearfix">
+
+    <div class="main">
+      
+      <header>
+        ¿Cuánto se gasta Madrid en...
+        <h2>Limpieza viaria?</h2>
+      </header>
+
+      <div class="main_metrics clearfix">
+
+        <div class="metric" data-graph-show="1" title="Gasto total de esta partida en este año">
+          <div class="label">Gasto por habitante</div>
+          <div class="main">128,4M€</div>
+          <div class="secondary">
+            <div class="percentage_change up">3,23%</div>
+            <div class="ranking"><strong>#12</strong>/8.234</div>
+          </div>
+        </div>
+
+        <div class="metric" data-graph-show="1" title="Gasto total de esta partida en este año">
+          <div class="label">Gasto total</div>
+          <div class="main">128,4M€</div>
+          <div class="secondary">
+            <div class="percentage_change up">3,23%</div>
+            <div class="ranking"><strong>#12</strong>/8.234</div>
+          </div>
+        </div>
+
+        <div class="metric" data-graph-show="1" title="Gasto total de esta partida en este año">
+          <div class="label">Porcentaje sobre el total</div>
+          <div class="main">0,79%</div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="act">
+
+      <header>
+        <div>¿Entiendes de qué va esta partida?</div>
+        <div>¿Te parece mucho, poco?</div>
+      </header>
+
+      <%= link_to 'Levanta la mano: opina', '', class: 'button user' %>
+
+    </div>
+
+  </div>
+
+  <%= link_to 'Enséñame otra', '', class: 'show_me_another' %>
+
+</div>
+
+
 <script type="text/html" id="widget-template">
   <div class="label">{{title}}</div>
   <div class="main">{{value}}</div>

@@ -1012,6 +1012,68 @@ header.sub {
     font-size: 1.3em;
   }
 }
+.featured_budget_line {
+  margin: 2em 0 3em 0;
+  .main {
+    width: 65%;
+    float: left;
+  }
+  .act {
+    width: 32%;
+    float: right;
+  }
+  .cont {
+    background: $color_3_soft;
+    padding: 2.5em 3em 1.75em;
+  }
+  header {
+    color: #666;
+    font-weight: 200;
+    font-size: 1.4em;
+    h2 {
+      font-size: 1.4em;
+      margin: .35em 0 1em 0;
+    }
+  }
+  .main_metrics {
+    .metric {
+      background: #FFF;
+      margin-right: 2.2%;
+      width: 30%;
+      min-width: 165px;
+    }
+    .metric:last-child {
+      float: left;
+    }
+  }
+  .act {
+    position: relative;
+    header {
+      font-size: 1.2em;
+    }
+    .button {
+      padding: 1.45em 3em;
+      margin: 0 0 2em 0;
+      position: absolute;
+      top: 90px;
+    }
+  }
+  .show_me_another {
+    display: block;
+    text-align: center;
+    background: lighten($color_3_soft, 2%);
+    padding: 1em;
+    margin: 0 0 2em 0;
+    color: darken($color_3_soft, 40%);
+    font-weight: 200;
+    text-transform: uppercase;
+  }
+  .show_me_another:hover {
+    background: darken($color_3_soft, 5%);
+  }
+}
+
+
 
 /*
  * Place Tools
@@ -2149,8 +2211,12 @@ input[type=submit]:disabled:hover {
     text-transform: uppercase;
   }
 }
-
-
+.button.user {
+  background: $color_logo_yellow;
+}
+.button.user:hover {
+  background: darken($color_logo_yellow, 10%);
+}
 
 /*
  * Flash messages
@@ -2779,6 +2845,19 @@ header.ranking {
 }
 .ranking_list:nth-child(2) {
   
+}
+
+
+
+/*
+ * Headings
+ *
+ */ 
+h3.lite {
+  margin: 0;
+  font-style: italic;
+  font-weight: 200;
+  color: darken($color_3_soft, 20%);
 }
 
 
