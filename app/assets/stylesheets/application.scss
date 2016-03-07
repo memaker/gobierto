@@ -1028,6 +1028,16 @@ header.sub {
     padding-top: .5em;
   }
 }
+@include screen(740) {
+  .sticky-wrapper {
+    border: 1px solid red;
+    visibility: hidden;
+  }
+  .sticky-wrapper.is-sticky {
+    border: 1px solid green;
+    visibility: visible;
+  }
+}
 .tools {
   width: 390px;
   // padding-top: .5em;
@@ -1333,6 +1343,13 @@ header.sub {
     .qty {
       float: right;
     }
+    @include screen(500) {
+      .qty {
+        float: none;
+        font-size: 1.2em;
+        padding: .25em 0;  
+      }
+    }
     .form_filters {
       margin: 0 0 0 1.5em;
       float: none;
@@ -1451,7 +1468,7 @@ a.list_view_more {
       font-size: 1.1em;  
       border-bottom: 1px solid #DFDFDF;
       @include screen(740) {
-        font-size: 1em;
+        font-size: .9em;
         line-height: 1.2em;
       }
     }
@@ -1464,6 +1481,7 @@ a.list_view_more {
       background: none;
       border-bottom: 4px solid $separator;
       color: $text_soft;
+      line-height: 1.1em;
     }
     .fa {
       padding: 0 .5em 0 0;
@@ -1472,10 +1490,6 @@ a.list_view_more {
     td {
       padding-top: 8px;
       padding-bottom: 7px;
-      @include screen(740) {
-        font-size: 1em;
-        line-height: 1.2em;
-      }
     }
     // tr:nth-child(2) td {
     //   padding-top: 20px;
@@ -1504,6 +1518,11 @@ a.list_view_more {
     td.bar_cont {
       width: 98px;
       padding: 0 0 0 10px;
+    }
+    @include screen(500) {
+      .bar_cont {
+        display: none;  
+      }
     }
     tr:hover td tr td {
       background: initial;

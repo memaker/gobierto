@@ -103,7 +103,7 @@ set_meta_tags description: "Datos de #{kind_literal(@kind).singularize} en #{bud
       <th class="right "><%= kind_literal(@kind, false) %> total</th>
       <th class="right "><%= kind_literal(@kind, false) %> por hab.</th>
       <th class="right ">% s/ total</th>
-      <th></th>
+      <th class="bar_cont"></th>
     </tr>
 
     <%= render partial: 'places/nested_budget_lines' %>
