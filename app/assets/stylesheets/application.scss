@@ -215,6 +215,7 @@ header.global {
   padding: 2em 0 0 0;
   @include screen(740) {
     margin: 0;
+    padding: 0;
   }
 }
 
@@ -1207,12 +1208,6 @@ header.sub {
     min-height: 66px;
     @include transition;
 
-    @include screen(740) {
-      width: 100%;
-      float: none;
-      margin: 0 0 3% 0;
-    }
-    
     .label {
       font-weight: 600;
       opacity: .7;
@@ -1236,6 +1231,25 @@ header.sub {
       right: 1em;
       line-height: 1em;
       opacity: .7;
+    }
+  }
+  @include screen(501, 740) {
+    .metric {
+      width: 24%;
+      margin: 0 1.25% 3% 0;  
+    }
+    .metric:nth-last-child(2) {
+      float: right;
+      margin: 0;
+    }
+  }
+  @include screen(500) {
+    .metric {
+      width: 50%;
+      margin: 0;  
+    }
+    .metric.selected::after {
+      border: 0;
     }
   }
   @include screen(740) {
@@ -1340,6 +1354,7 @@ header.sub {
 
 .item_description {
   font-size: .8em;
+  line-height: 1.3em;
   margin: 2em 0;
 
   h3 {
@@ -1436,7 +1451,7 @@ a.list_view_more {
       font-size: 1.1em;  
       border-bottom: 1px solid #DFDFDF;
       @include screen(740) {
-        font-size: .8em;
+        font-size: 1em;
         line-height: 1.2em;
       }
     }
@@ -1458,7 +1473,7 @@ a.list_view_more {
       padding-top: 8px;
       padding-bottom: 7px;
       @include screen(740) {
-        font-size: .8em;
+        font-size: 1em;
         line-height: 1.2em;
       }
     }
@@ -1507,7 +1522,9 @@ a.list_view_more {
           padding: 10px 20px;
           td.bar_cont {
             width: 80px;
-            
+          }
+          @include screen(740) {
+            margin: 0;
           }
         }
         tr.child_group {
@@ -1684,6 +1701,10 @@ a.list_view_more {
   }
 
   @include screen(740) {
+
+    table td {
+      padding: .25em;
+    }
     .col-1-2, .col-2-2 {
       width: 100%;
       float: none;
