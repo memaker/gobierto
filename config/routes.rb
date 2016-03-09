@@ -10,8 +10,8 @@ Rails.application.routes.draw do
   get 'about' => 'pages#about'
   get 'pro' => 'pages#pro'
   get 'request_access' => 'pages#request_access'
-  get 'contact_pro' => 'pages#contact_pro'
-  get 'contact_citizen' => 'pages#contact_citizen'
+  get 'contact_pro' => redirect('/users/new')
+  get 'contact_citizen' => redirect('/users/new')
   get 'faq' => 'pages#faq'
   get 'legal/cookies' => 'pages#legal_cookies'
   get 'legal/legal' => 'pages#legal_legal'

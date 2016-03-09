@@ -69,7 +69,7 @@ class UsersController < ApplicationController
   end
 
   def load_current_user
-    render_404 and return unless logged_in?
+    redirect_to login_path and return unless logged_in?
 
     @user = current_user
   end

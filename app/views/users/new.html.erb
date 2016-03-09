@@ -1,11 +1,13 @@
+<% title("Alta usuario")  %>
+
 <div class="cont clearfix">
   <%= flush_the_flash %>
-  
+
   <% if params[:pro] == 'true' %>
     <h2>Solicita más información</h2>
 
     <p>Si eres un profesional de la administración local y estás interesado en reutilizar e implementar herramientas desarrolladas por Gobierto, ponte en contacto con nosotros y te contamos. Si ya tienes cuenta en Gobierto, <%= link_to 'entra aquí', login_path %></p>
-  
+
   <% else %>
     <h2>Pide que tu alcalde añada información en Gobierto Presupuestos Municipales</h2>
 
@@ -13,7 +15,7 @@
   <% end %>
 
   <div class="form clearfix">
-    
+
     <%= render 'alerts' %>
     <%= form_for @user do |f| %>
       <%= render partial: 'basic_fields', locals: { f: f} %>
@@ -22,7 +24,7 @@
         <div class="form_item_cont clearfix">
           <div class="conditions">
             <p>También recibirás novedades sobre Gobierto Presupuestos Municipales de vez en cuando. Podrás dejar de recibir cuando quieras.</p>
-              <label><%= f.check_box :terms_of_service %> He leído el <%= link_to 'Aviso legal', legal_legal_path %> y la <%= link_to 'Política de privacidad', legal_privacy_path %></label>
+              <label><%= f.check_box :terms_of_service %> He leído el <%= link_to 'Aviso legal', legal_legal_path, target: 'blank' %> y la <%= link_to 'Política de privacidad', legal_privacy_path, target: 'blank' %></label>
           </div>
           <%= hidden_field_tag :back_url, request.referer %>
           <input type="submit" class="submit" value="Enviar">
@@ -31,4 +33,6 @@
 
     <% end %>
   </div>
+
+  <p>¿Ya tienes una cuenta en Gobierto? <%= link_to "Haz login", login_path %></p>
 </div>
