@@ -23,6 +23,7 @@
 //= require compare
 //= require ui
 //= require ranking
+//= require analytics
 
 SPARKLINES_DEFAULTS = {
   width: 60,

@@ -1,6 +1,7 @@
+
 <% set_meta_tags title: 'Acerca de ' %>
 
-  <div class="pre_home">
+  <div class="pre_home" data-analytics-track="Page_About">
 
     <h1><%= image_tag('LogoGobierto.png', width: '180') %> <span>Presupuestos Municipales</span></h1>
     <h2>Consulta, analiza y compara los presupuestos municipales de España</h2>
@@ -56,8 +57,8 @@
           <li><strong>Simplifica la elaboración de tu documento de presupuestos</strong> Crea el informe con tus presupuestos, visualizaciones y contextualización de forma automática</li>
         </ul>
 
-        <p><%= link_to 'Conoce más sobre los servicios que te puede proporcionar Gobierto para ayudarte con tu presencia web', pro_path, class: 'button' %></p>
-
+        <p><%= link_to 'Conoce los servicios que Gobierto te ofrece. Descarga nuestra guía "Conectando con tus vecinos"', new_user_path(pro: true), class: 'button' %></p>
+        
       </div>
 
     </div>

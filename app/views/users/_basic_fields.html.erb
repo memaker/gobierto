@@ -23,13 +23,22 @@
     <label>Eres:</label>
 
     <div class="radio_option">
-      <%= f.radio_button :pro, false %> <%= f.label :pro_false, "Ciudadano" %>
+      <%= f.radio_button :pro, false, :"data-user-type" => 'Citizen' %> <%= f.label :pro_false, "Ciudadano" %>
     </div>
     <div class="radio_option">
-      <%= f.radio_button :pro, true %> <%= f.label :pro_true, "Profesional de la administración local" %>
+      <%= f.radio_button :pro, true, :"data-user-type" => 'Professional' %> <%= f.label :pro_true, "Profesional de la administración local" %>
     </div>
   </div>
 </div>
+
+<% unless f.object.id %>
+  <div class="form_item">
+    <div class="form_item_cont">
+      <label>Teléfono</label>
+      <%= telephone_field :lead, :phone, class: 'i_text' %>
+    </div>
+  </div>
+<% end %>
 
 <% content_for(:javascript) do %>
   $('.select2').select2({
