@@ -1,5 +1,4 @@
 <div class="form clearfix">
-  
   <%= render 'alerts' %>
 
   <%= form_for @user do |f| %>
@@ -38,7 +37,7 @@
         <div class="conditions">
           <% unless f.object.terms_of_service? %>
             <p>También recibirás novedades sobre Gobierto Presupuestos Municipales de vez en cuando. Podrás dejar de recibir cuando quieras.</p>
-            <label><%= f.check_box :terms_of_service %> He leído el <%= link_to 'Aviso legal', legal_legal_path %> y la <%= link_to 'Política de privacidad', legal_privacy_path %></label>
+            <label><%= f.check_box :terms_of_service %> He leído el <%= link_to 'Aviso legal', legal_legal_path, target: 'blank' %> y la <%= link_to 'Política de privacidad', legal_privacy_path, target: 'blank' %></label>
           <% end %>
         </div>
         <%= hidden_field_tag :back_url, request.referer %>

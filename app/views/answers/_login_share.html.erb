@@ -1,7 +1,7 @@
 <div class="sep"></div>
 
 <% if !logged_in? %>
-  <%= form_for User.new, data: {remote: true}, html: {id: 'new-user-login-share'} do |f| %>
+  <%= form_for User.new, url: identify_users_path, data: {remote: true}, html: {id: 'new-user-login-share'} do |f| %>
     <p><small>Puedes seguir esta partida para recibir noticias ocasionales sobre su evolución y opiniones:</small></p>
     <%= f.email_field :email, placeholder: 'Tu correo-e' %>
     <%= hidden_field_tag :context, "new-user-login-share" %>

@@ -23,6 +23,9 @@ Rails.application.routes.draw do
   post 'sessions'  => 'sessions#create'
   delete 'logout' => 'sessions#destroy', as: :logout
   resources :users, only: [:new, :create] do
+    collection do
+      post 'identify'
+    end
     member do
       get 'verify'
     end
