@@ -36,6 +36,8 @@ $(function () {
   //assumes the places cookie is set
   function updateListAndCompare(place, parentCode){
     var comparison = Cookies.get('comparison');
+    if (comparison === undefined)
+      comparison = [];
 
     if (comparison.indexOf(place) === -1)
       comparison.unshift(place);
@@ -61,6 +63,7 @@ $(function () {
   function compare(parentCode) {
     var comparison = Cookies.get('comparison');
     var compare_url = compareUrl(comparison);
+
     if (parentCode !== null && parentCode !== undefined) {
       compare_url += "?parent_code=" + parentCode;
     }
