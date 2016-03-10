@@ -2762,6 +2762,7 @@ header.ranking {
   float: left;
   box-sizing: border-box;
   margin-bottom: 2em;
+  min-height: 240px;
 
   @include screen(740) {
     width: 100%;
