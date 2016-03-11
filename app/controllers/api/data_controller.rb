@@ -9,7 +9,7 @@ class Api::DataController < ApplicationController
     total_budget_data = total_budget_data(year, 'total_budget')
     total_budget_data_previous_year = total_budget_data(year - 1, 'total_budget', false)
     position = total_budget_data[:position].to_i
-    sign = sign(total_budget_data[:value] - total_budget_data_previous_year[:value])
+    sign = sign(total_budget_data[:value], total_budget_data_previous_year[:value])
 
     respond_to do |format|
       format.json do
@@ -31,7 +31,7 @@ class Api::DataController < ApplicationController
     population_data = Population.ranking_hash_for(params[:ine_code].to_i,year)
     population_data_previous_year = Population.ranking_hash_for(params[:ine_code].to_i,year - 1)
     position = population_data[:position]
-    sign = sign(population_data[:value] - population_data_previous_year[:value])
+    sign = sign(population_data[:value], population_data_previous_year[:value])
 
     respond_to do |format|
       format.json do
@@ -53,7 +53,7 @@ class Api::DataController < ApplicationController
     total_budget_data = total_budget_data(year, 'total_budget_per_inhabitant')
     total_budget_data_previous_year = total_budget_data(year - 1, 'total_budget_per_inhabitant', false)
     position = total_budget_data[:position].to_i
-    sign = sign(total_budget_data[:value] - total_budget_data_previous_year[:value])
+    sign = sign(total_budget_data[:value], total_budget_data_previous_year[:value])
 
     respond_to do |format|
       format.json do
@@ -95,7 +95,7 @@ class Api::DataController < ApplicationController
     budget_data = budget_data(@year, 'amount')
     budget_data_previous_year = budget_data(@year - 1, 'amount', false)
     position = budget_data[:position].to_i
-    sign = sign(budget_data[:value] - budget_data_previous_year[:value])
+    sign = sign(budget_data[:value], budget_data_previous_year[:value])
 
     respond_to do |format|
       format.json do
@@ -122,7 +122,7 @@ class Api::DataController < ApplicationController
 
     budget_data = budget_data_executed(@year, 'amount')
     budget_data_previous_year = budget_data_executed(@year - 1, 'amount')
-    sign = sign(budget_data[:value] - budget_data_previous_year[:value])
+    sign = sign(budget_data[:value], budget_data_previous_year[:value])
 
     respond_to do |format|
       format.json do
@@ -147,7 +147,7 @@ class Api::DataController < ApplicationController
     budget_data = budget_data(@year, 'amount_per_inhabitant')
     budget_data_previous_year = budget_data(@year - 1, 'amount_per_inhabitant', false)
     position = budget_data[:position].to_i
-    sign = sign(budget_data[:value] - budget_data_previous_year[:value])
+    sign = sign(budget_data[:value], budget_data_previous_year[:value])
 
     respond_to do |format|
       format.json do
@@ -239,7 +239,7 @@ class Api::DataController < ApplicationController
     total_budget_data_planned = total_budget_data(year, 'total_budget', false)
     total_budget_data_executed = total_budget_data_executed(year, 'total_budget')
     diff = total_budget_data_executed[:value] - total_budget_data_planned[:value] rescue "n/a"
-    sign = sign(diff)
+    sign = sign(total_budget_data_executed[:value], total_budget_data_planned[:value])
     diff = format_currency(diff) if diff.is_a?(Float)
 
     respond_to do |format|

@@ -17,7 +17,14 @@ class PlacesController < ApplicationController
       format.html
       format.js
     end
+  end
 
+  def explore_execution
+    render_404 and return if @place.nil?
+
+    @top_possitive_difference_income, @top_negative_difference_income = BudgetLine.top_differences(ine_code: @place.id, year: @year, kind: BudgetLine::INCOME, type: 'economic')
+    @top_possitive_difference_expending_economic, @top_negative_difference_expending_economic = BudgetLine.top_differences(ine_code: @place.id, year: @year, kind: BudgetLine::EXPENSE, type: 'economic')
+    @top_possitive_difference_expending_functional, @top_negative_difference_expending_functional = BudgetLine.top_differences(ine_code: @place.id, year: @year, kind: BudgetLine::EXPENSE, type: 'functional')
   end
 
   def budget
@@ -71,7 +78,7 @@ class PlacesController < ApplicationController
 
     @compared_level = params[:code] ? (params[:code].include?('-') ? params[:code].split('-').first.length : params[:code].length) : 0
     @ranking_items = Ranking.query({year: @year, variable: @variable, page: @page, code: @code, kind: @kind, area_name: @area_name, filters: @filters})
-    
+
     respond_to do |format|
       format.html
       format.js

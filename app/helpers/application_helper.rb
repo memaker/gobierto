@@ -26,12 +26,23 @@ module ApplicationHelper
     end
   end
 
-  def sign(diff)
-    return 'sign-neutral' if diff == 'n/a'
-    diff > 0 ? 'sign-up' : 'sign-down'
+  def sign(v1, v2 = nil)
+    return 'sign-neutral' if v1.blank? || v2.blank?
+    diff = v1 - v2
+    if diff > 0
+      'sign-up'
+    elsif diff < 0
+      'sign-down'
+    else
+      'sign-neutral'
+    end
+  rescue
+    'sign-neutral'
   end
 
   def format_currency(n)
+    return nil if n.blank?
+
     if n > 1_000_000
       "#{helpers.number_with_precision(n.to_f / 1_000_000.to_f, precision: 0, strip_insignificant_zeros: true)} M€"
     else

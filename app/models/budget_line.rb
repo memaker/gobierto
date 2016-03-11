@@ -191,6 +191,45 @@ class BudgetLine < OpenStruct
     return search(options)['hits'].length > 0
   end
 
+  def self.top_differences(options)
+    terms = [{term: { kind: options[:kind] }}, {term: { year: options[:year] }}]
+    terms << {term: { ine_code: options[:ine_code] }} if options[:ine_code].present?
+    terms << {term: { code: options[:code] }} if options[:code].present?
+
+    query = {
+      sort: [
+        { code: { order: 'asc' } }
+      ],
+      query: {
+        filtered: {
+          filter: {
+            bool: {
+              must: terms
+            }
+          }
+        }
+      },
+      size: 10_000
+    }
+
+    response = SearchEngine.client.search index: INDEX, type: (options[:type] || 'economic'), body: query
+
+    planned_results = response['hits']['hits'].map{ |h| h['_source'] }
+
+    response = SearchEngine.client.search index: INDEX_EXECUTED, type: (options[:type] || 'economic'), body: query
+
+    executed_results = response['hits']['hits'].map{ |h| h['_source'] }
+
+    results = {}
+    planned_results.each do |p|
+      if e = executed_results.detect{|e| e['code'] == p['code']}
+        results[p['code']] = [p['amount'], e['amount'], ((e['amount'].to_f - p['amount'].to_f)/p['amount'].to_f) * 100]
+      end
+    end
+
+    return results.sort{ |b, a| a[1][2] <=> b[1][2] }[0..15], results.sort{ |a, b| a[1][2] <=> b[1][2] }[0..15]
+  end
+
   def to_param
     {place_id: place_id, year: year, code: code, area_name: area_name, kind: kind}
   end
