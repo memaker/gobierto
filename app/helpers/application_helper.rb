@@ -26,6 +26,11 @@ module ApplicationHelper
     end
   end
 
+  def sign(diff)
+    return 'sign-neutral' if diff == 'n/a'
+    diff > 0 ? 'sign-up' : 'sign-down'
+  end
+
   def format_currency(n)
     if n > 1_000_000
       "#{helpers.number_with_precision(n.to_f / 1_000_000.to_f, precision: 0, strip_insignificant_zeros: true)} M€"

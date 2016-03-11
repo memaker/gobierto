@@ -1,5 +1,6 @@
 class BudgetLine < OpenStruct
   INDEX = 'budgets-forecast-v2'
+  INDEX_EXECUTED = 'budgets-execution-v2'
 
   INCOME = 'I'
   EXPENSE = 'G'

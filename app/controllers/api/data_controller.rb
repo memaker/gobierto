@@ -1,19 +1,21 @@
 class Api::DataController < ApplicationController
   include ApplicationHelper
 
-  caches_page :total_budget, :population, :total_budget_per_inhabitant, :lines, :budget,
-              :budget_per_inhabitant, :budget_percentage_over_total, :budget_percentage_over_province
+  caches_page :total_budget, :total_budget_execution, :population, :total_budget_per_inhabitant, :lines,
+              :budget, :budget_execution, :budget_per_inhabitant, :budget_percentage_over_total
 
   def total_budget
     year = params[:year].to_i
     total_budget_data = total_budget_data(year, 'total_budget')
     total_budget_data_previous_year = total_budget_data(year - 1, 'total_budget', false)
     position = total_budget_data[:position].to_i
+    sign = sign(total_budget_data[:value] - total_budget_data_previous_year[:value])
 
     respond_to do |format|
       format.json do
         render json: {
           title: 'Gasto total',
+          sign: sign,
           value: format_currency(total_budget_data[:value]),
           delta_percentage: helpers.number_with_precision(delta_percentage(total_budget_data[:value], total_budget_data_previous_year[:value]), precision: 2),
           ranking_position: position,
@@ -27,14 +29,17 @@ class Api::DataController < ApplicationController
   def population
     year = params[:year].to_i
     population_data = Population.ranking_hash_for(params[:ine_code].to_i,year)
+    population_data_previous_year = Population.ranking_hash_for(params[:ine_code].to_i,year - 1)
     position = population_data[:position]
+    sign = sign(population_data[:value] - population_data_previous_year[:value])
 
     respond_to do |format|
       format.json do
         render json: {
           title: 'Habitantes',
+          sign: sign,
           value: helpers.number_with_delimiter(population_data[:value], precision: 0, strip_insignificant_zeros: true),
-          delta_percentage: helpers.number_with_precision(delta_percentage(population_data[:value], population_data[:value]), precision: 2),
+          delta_percentage: helpers.number_with_precision(delta_percentage(population_data[:value], population_data_previous_year[:value]), precision: 2),
           ranking_position: position,
           ranking_total_elements: helpers.number_with_precision(population_data[:total_elements], precision: 0),
           ranking_url: population_ranking_path(year, page: Ranking.page_from_position(position), ine_code: params[:ine_code])
@@ -48,11 +53,13 @@ class Api::DataController < ApplicationController
     total_budget_data = total_budget_data(year, 'total_budget_per_inhabitant')
     total_budget_data_previous_year = total_budget_data(year - 1, 'total_budget_per_inhabitant', false)
     position = total_budget_data[:position].to_i
+    sign = sign(total_budget_data[:value] - total_budget_data_previous_year[:value])
 
     respond_to do |format|
       format.json do
         render json: {
           title: 'Gasto por habitante',
+          sign: sign,
           value: helpers.number_to_currency(total_budget_data[:value], precision: 0, strip_insignificant_zeros: true),
           delta_percentage: helpers.number_with_precision(delta_percentage(total_budget_data[:value], total_budget_data_previous_year[:value]), precision: 2),
           ranking_position: position,
@@ -88,16 +95,42 @@ class Api::DataController < ApplicationController
     budget_data = budget_data(@year, 'amount')
     budget_data_previous_year = budget_data(@year - 1, 'amount', false)
     position = budget_data[:position].to_i
+    sign = sign(budget_data[:value] - budget_data_previous_year[:value])
 
     respond_to do |format|
       format.json do
         render json: {
           title: @category_name,
+          sign: sign,
           value: format_currency(budget_data[:value]),
           delta_percentage: helpers.number_with_precision(delta_percentage(budget_data[:value], budget_data_previous_year[:value]), precision: 2),
           ranking_position: position,
           ranking_total_elements: helpers.number_with_precision(budget_data[:total_elements], precision: 0),
           ranking_url: places_ranking_path(@year,@kind,@area,'amount',@code.parameterize,page: Ranking.page_from_position(position), ine_code: params[:ine_code])
+        }.to_json
+      end
+    end
+  end
+
+  def budget_execution
+    @year = params[:year].to_i
+    @area = params[:area]
+    @kind = params[:kind]
+    @code = code_from_params(params[:code])
+
+    @category_name = @kind == 'G' ? 'Gasto ejecutado vs Presupuestado' : 'Ingreso ejecutado vs Presupuestado'
+
+    budget_data = budget_data_executed(@year, 'amount')
+    budget_data_previous_year = budget_data_executed(@year - 1, 'amount')
+    sign = sign(budget_data[:value] - budget_data_previous_year[:value])
+
+    respond_to do |format|
+      format.json do
+        render json: {
+          title: @category_name,
+          sign: sign,
+          value: format_currency(budget_data[:value]),
+          delta_percentage: helpers.number_with_precision(delta_percentage(budget_data[:value], budget_data_previous_year[:value]), precision: 2),
         }.to_json
       end
     end
@@ -114,10 +147,12 @@ class Api::DataController < ApplicationController
     budget_data = budget_data(@year, 'amount_per_inhabitant')
     budget_data_previous_year = budget_data(@year - 1, 'amount_per_inhabitant', false)
     position = budget_data[:position].to_i
+    sign = sign(budget_data[:value] - budget_data_previous_year[:value])
 
     respond_to do |format|
       format.json do
         render json: {
+          sign: sign,
           title: "#{@category_name} por habitante",
           value: format_currency(budget_data[:value]),
           delta_percentage: helpers.number_with_precision(delta_percentage(budget_data[:value], budget_data_previous_year[:value]), precision: 2),
@@ -151,62 +186,8 @@ class Api::DataController < ApplicationController
       format.json do
         render json: {
           title: "Porcentaje sobre el total",
-          value: "#{helpers.number_with_precision(percentage, precision: 2, strip_insignificant_zeros: true)}%"
-        }.to_json
-      end
-    end
-  end
-
-  def budget_percentage_over_province
-    @year = params[:year].to_i
-    @area = params[:area]
-    @kind = params[:kind]
-    @code = code_from_params(params[:code])
-    @place = INE::Places::Place.find(params[:ine_code])
-
-    begin
-      result = SearchEngine.client.get index: BudgetLine::INDEX, type: @area, id: [params[:ine_code],@year,@code,@kind].join('/')
-      amount = result['_source']['amount_per_inhabitant'].to_f
-    rescue Elasticsearch::Transport::Transport::Errors::NotFound
-      amount = 0
-    end
-
-    query = {
-      query: {
-        filtered: {
-          filter: {
-            bool: {
-              must: [
-                {term: { province_id: @place.province_id }},
-                {term: { code: @code }},
-                {term: { year: @year }},
-                {term: { kind: @kind }}
-              ]
-            }
-          }
-        }
-      },
-      size: 10_000,
-      "aggs": {
-        "budget_sum": {
-          "sum": {
-            "field": "amount_per_inhabitant"
-          }
-        }
-      }
-    }
-
-
-    response = SearchEngine.client.search index: BudgetLine::INDEX, type: @type, body: query
-    mean = response['aggregations']['budget_sum']['value'] / response['hits']['hits'].length
-
-    percentage = ((amount.to_f - mean.to_f)/mean.to_f) * 100
-
-    respond_to do |format|
-      format.json do
-        render json: {
-          title: "Dif. con media provincial",
-          value: "#{helpers.number_with_precision(percentage, precision: 2, strip_insignificant_zeros: true)}%"
+          value: "#{helpers.number_with_precision(percentage, precision: 2, strip_insignificant_zeros: true)}%",
+          sign: sign(percentage)
         }.to_json
       end
     end
@@ -218,7 +199,7 @@ class Api::DataController < ApplicationController
     @kind = params[:kind]
     @var = params[:variable]
     @code = params[:code]
-    
+
     offset = 0
     max_results = 5
 
@@ -230,12 +211,12 @@ class Api::DataController < ApplicationController
                                                         code: @code,
                                                         variable: @variable,
                                                         offset: 0,
-                                                        per_page: 5})      
+                                                        per_page: 5})
     else
       @variable = (@var == 'amount') ? 'total_budget' : 'total_budget_per_inhabitant'
       results, total_elements = BudgetTotal.for_ranking(@year, @variable, offset, max_results)
     end
-    
+
     top = results.first
     title = ranking_title(@variable, @year, @kind, @code, @area)
     respond_to do |format|
@@ -248,6 +229,26 @@ class Api::DataController < ApplicationController
           ranking_url: places_ranking_url(@year, @kind, @area, @var, @code),
           twitter_share: ERB::Util.url_encode(twitter_share(title, places_ranking_url(@year, @kind, @area, @var, @code))),
           top_5: results.map {|r| { place_name: place_name(r['ine_code'])}}
+        }.to_json
+      end
+    end
+  end
+
+  def total_budget_execution
+    year = params[:year].to_i
+    total_budget_data_planned = total_budget_data(year, 'total_budget', false)
+    total_budget_data_executed = total_budget_data_executed(year, 'total_budget')
+    diff = total_budget_data_executed[:value] - total_budget_data_planned[:value] rescue "n/a"
+    sign = sign(diff)
+    diff = format_currency(diff) if diff.is_a?(Float)
+
+    respond_to do |format|
+      format.json do
+        render json: {
+          title: 'Ejecución vs Presupuestado',
+          sign: sign,
+          delta_percentage: helpers.number_with_precision(delta_percentage(total_budget_data_executed[:value], total_budget_data_planned[:value]), precision: 2),
+          value: diff
         }.to_json
       end
     end
@@ -311,6 +312,22 @@ class Api::DataController < ApplicationController
     }
   end
 
+  def budget_data_executed(year, field)
+    id = "#{params[:ine_code]}/#{year}/#{@code}/#{@kind}"
+
+    begin
+      value = SearchEngine.client.get index: BudgetLine::INDEX_EXECUTED, type: @area, id: id
+      value = value['_source'][field]
+    rescue Elasticsearch::Transport::Transport::Errors::NotFound
+      value = nil
+    end
+
+    return {
+      value: value
+    }
+  end
+
+
   def total_budget_data(year, field, ranking = true)
     query = {
       sort: [
@@ -356,8 +373,24 @@ class Api::DataController < ApplicationController
     }
   end
 
+  def total_budget_data_executed(year, field)
+    id = "#{params[:ine_code]}/#{year}"
+
+    begin
+      value = SearchEngine.client.get index: BudgetTotal::INDEX_EXECUTED, type: BudgetTotal::TYPE, id: id
+      value = value['_source'][field]
+    rescue Elasticsearch::Transport::Transport::Errors::NotFound
+      value = nil
+    end
+
+    return {
+      value: value
+    }
+  end
+
   def delta_percentage(value, old_value)
-     ((value.to_f - old_value.to_f)/old_value.to_f) * 100
+    return "n/a" if value.nil? || old_value.nil?
+    ((value.to_f - old_value.to_f)/old_value.to_f) * 100
   end
 
   def get_places(ine_codes)
