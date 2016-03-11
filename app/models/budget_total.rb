@@ -1,5 +1,6 @@
 class BudgetTotal
   INDEX = 'budgets-forecast-v2'
+  INDEX_EXECUTED = 'budgets-execution-v2'
   TYPE = 'total-budget'
   TOTAL_FILTER_MIN = 0
   TOTAL_FILTER_MAX = 5000000000
