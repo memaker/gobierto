@@ -57,7 +57,7 @@ class BudgetLine < OpenStruct
       per_inhabitant_filter = options[:filters][:per_inhabitant]
       aarr_filter = options[:filters][:aarr]
     end
-
+    
     if (population_filter && (population_filter[:from].to_i > Population::FILTER_MIN || population_filter[:to].to_i < Population::FILTER_MAX))
       reduced_filter = {population: population_filter}
       reduced_filter.merge!(aarr: aarr_filter) if aarr_filter
@@ -74,7 +74,7 @@ class BudgetLine < OpenStruct
       terms << {range: { amount_per_inhabitant: { gte: per_inhabitant_filter[:from].to_i, lte: per_inhabitant_filter[:to].to_i} }}
     end
 
-    terms << {term: { autonomy_id: aarr_filter }} if aarr_filter
+    terms << {term: { autonomy_id: aarr_filter }}  unless aarr_filter.blank?
 
     query = {
       sort: [ { options[:variable].to_sym => { order: 'desc' } } ],

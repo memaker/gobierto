@@ -77,7 +77,7 @@ class BudgetTotal
       terms << {range: { total_budget_per_inhabitant: { gte: per_inhabitant_filter[:from].to_i, lte: per_inhabitant_filter[:to].to_i} }}
     end
 
-    terms << {term: { autonomy_id: aarr_filter }} if aarr_filter
+    terms << {term: { autonomy_id: aarr_filter }} unless aarr_filter.blank?
 
     query = {
       sort: [

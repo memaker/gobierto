@@ -361,7 +361,7 @@ header.global {
   
   ul {
     display: none;
-    @include box-shadow();
+    @include box-shadow(2px, 2px, 9px);
     border: 1px solid darken($separator, 10%);
     @include border-radius(6px);
     position: absolute;
@@ -390,7 +390,7 @@ header.global {
     background: $separator;
   }
 }
-.kind_switcher {
+.kind_switcher, .aarr_switcher {
   position: relative;
   padding: 0;  
   border: none;
@@ -636,16 +636,20 @@ table {
     }
   }
 }
-.big_compare {
+.big_compare, .home_section {
   form {
     padding: 2em 0;
     margin-bottom: 5em;
+    text-align: center;
     input.search_compare {
-      width: 27%;
+      width: 23%;
       font-size: 1.4em;
     }
     input[type=submit] {
-      font-size: 1.4em;
+      font-size: 1em;
+      padding-top: 8px;
+      padding-bottom: 9px;
+      margin-left: 10px;
     }
     @include screen(740) {
       input, input.search_compare {
@@ -656,6 +660,7 @@ table {
   }
   .examples {
     font-size: .85em;
+    text-align: center;
     ul {
       list-style-type: none;
       margin: 0;
@@ -667,9 +672,82 @@ table {
   }
 }
 
+.ranking_cards_carousel {
+  width: 100%;
+  .nav {
+    min-height:220px;
+    display: inline-block;
+    vertical-align: top;
+    width:15%;
+
+    @include screen(1000) {
+        width: 8%;
+    }
+    
+    a {
+      font-size:150px;
+      line-height: 1px;
+      text-decoration: none;
+      color:#d8d8d8;
+      margin-top:.7em;
+      display: inline-block;
+
+      @include screen(1000) {
+        font-size: 55px;
+        margin-top: 2em;  
+      }
+    }
+  }
+
+  .the_content {
+    overflow: hidden;
+    position: relative;
+    min-height:245px;
+    min-width: 300px;
+    max-width: 480px;
+    width:50%;
+    text-align: center;
+    display: inline-block;
+  }
+
+  .ranking_card {
+    float:none;
+    min-width: 300px;
+    width:100%;
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+    position: absolute;
+  }
+
+  .nav.left_side {
+    text-align: right;
+    a {
+      margin-right:25%;
+      @include screen(1000) {
+        margin-right: 5%;
+      }
+    }
+  }
+
+  .nav.right_side {
+    text-align: left;
+    margin-right: auto;
+    a {
+      margin-left:25%;
+      @include screen(1000) {
+        margin-left: 5%;
+      }
+    }
+  }
+
+
+}
+
 .comparison-dimension.selected {
   text-decoration: none;
 }
+
 .data_table {
   margin: 0 0 2em 0;
   td {
@@ -2466,6 +2544,55 @@ footer {
   }
 
 }
+
+.home_section {
+  padding-bottom:3em;
+  h2.section_heading { 
+    font-size: 1.5em;
+    padding-top: 45px;
+    margin-bottom:10px;
+    border-top: solid 1px #979797; }
+
+  p.center {
+    font-weight: normal;
+    font-size: smaller;
+  }
+
+  #explore_prompt {
+    margin-top:50px;
+    margin-bottom:20px;
+    color:#999;
+    font-size: 20px;
+
+    .kind_switcher, .aarr_switcher {
+      margin: 0 7px;
+      > a {
+        font-weight: bold;
+        text-decoration: underline;
+        .fa {color:#999;opacity: 1}
+      }
+      ul li{
+        min-width: 75px;
+        text-align: left;
+        a {
+          color:#999;
+          /*font-weight: bold;*/
+        }
+      }
+    }
+  }
+
+  .examples li {
+    list-style-type: none;
+    display: inline-block;
+  }
+
+  form {
+    padding-top:1em;
+    margin-bottom: 1em;
+  }
+}
+
 .about_citizens {
   h3, h2 {
     color: $color_logo_yellow;  
@@ -2754,6 +2881,7 @@ header.ranking {
 
 }
 .ranking_card {
+  text-align: left;
   background: $color_1_soft;
   @include transition;
   padding: 1.5em;
@@ -2827,7 +2955,7 @@ header.ranking {
   cursor: pointer;
   background: darken($color_1_soft, 10%);
 }
-.ranking_card:nth-child(2n) {
+.ranking_list .ranking_card:nth-child(2n) {
   float: right;
 }
 .ranking_list:nth-child(2) {
