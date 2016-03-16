@@ -646,7 +646,10 @@ table {
       font-size: 1.4em;
     }
     input[type=submit] {
-      font-size: 1.4em;
+      font-size: 1em;
+      padding-top: 8px;
+      padding-bottom: 9px;
+      margin-left: 10px;
     }
     @include screen(740) {
       input, input.search_compare {
@@ -697,8 +700,11 @@ table {
   }
 
   .the_content {
-    min-height:220px;
+    overflow: hidden;
+    position: relative;
+    min-height:245px;
     min-width: 300px;
+    max-width: 480px;
     width:50%;
     text-align: center;
     display: inline-block;
@@ -711,6 +717,7 @@ table {
     max-width: 480px;
     margin-left: auto;
     margin-right: auto;
+    position: absolute;
   }
 
   .nav.left_side {
@@ -2555,6 +2562,7 @@ footer {
     margin-top:50px;
     margin-bottom:20px;
     color:#999;
+    font-size: 20px;
 
     .kind_switcher, .aarr_switcher {
       margin: 0 7px;

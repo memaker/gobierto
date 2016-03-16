@@ -162,7 +162,7 @@ $(function(){
       action = action.replace(kind_re, 'I/economic/');
     }
     else if (value == 'G') {
-      action = action.replace(kind_re, 'G/functional');
+      action = action.replace(kind_re, 'G/functional/');
     }
     else {
       $('input#f_aarr[type=hidden]').val(value);
