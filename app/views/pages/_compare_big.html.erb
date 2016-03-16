@@ -53,7 +53,9 @@ var searchOptions = {
       ga('send', 'event', 'Compare Search', 'Click', 'Search', {nonInteraction: true});
       mixpanel.track('Compare Search', { 'Place': suggestion.data.slug});
       $(this).val(suggestion.data.slug);
-      if(extractFormParameters($('form')).length > 1){
+      $(this).nextAll('input[type!=hidden]').first().focus();
+
+      if(extractFormParameters($('form')).length > 1) {
         $('form input:submit').attr('disabled', false);
       }
     }

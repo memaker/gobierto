@@ -60,7 +60,8 @@ var AUTOCOMPLETE_DEFAULTS = {
   preserveInput: true,
   autoSelectFirst: true,
   triggerSelectOnValidInput: false,
-  preventBadQueries: false
+  preventBadQueries: false,
+  tabDisabled: true
 };
 
 
