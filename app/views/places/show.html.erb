@@ -118,8 +118,32 @@
       </table>
     </div>
   </div>
-
 </div>
+
+<% if current_user_admin? %>
+  <strong style="color:red">Admin only</strong>
+  <table>
+    <thead>
+      <tr style="font-weight:bold">
+        <td colspan="2">¿Qué ingresos tiene tu ayuntamiento?</td>
+        <td colspan="2">¿En qué se los gasta?</td>
+      </tr>
+    </thead>
+    <% total_budget = @income_lines['aggregations']['total_budget']['value'] %>
+    <!-- <%= total_budget %> -->
+    <% income_entries, expense_entries = BudgetLine.top_values({year: @year, ine_code: @place.id}) %>
+    <tbody>
+      <% 0.upto(income_entries.length - 1) do |i| %>
+        <tr>
+          <td><%= budget_line_denomination 'economic', income_entries[i]['code'], BudgetLine::INCOME %></td>
+          <td><%= percentage_of_total income_entries[i]['amount'], total_budget %>%</td>
+          <td><%= budget_line_denomination 'functional', expense_entries[i]['code'], BudgetLine::EXPENSE %></td>
+          <td><%= percentage_of_total expense_entries[i]['amount'], total_budget %>%</td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>
 
 <% unless logged_in? %>
   <%= render 'places/cta_block' %>

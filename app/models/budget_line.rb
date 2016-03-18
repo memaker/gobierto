@@ -57,7 +57,7 @@ class BudgetLine < OpenStruct
       per_inhabitant_filter = options[:filters][:per_inhabitant]
       aarr_filter = options[:filters][:aarr]
     end
-    
+
     if (population_filter && (population_filter[:from].to_i > Population::FILTER_MIN || population_filter[:to].to_i < Population::FILTER_MAX))
       reduced_filter = {population: population_filter}
       reduced_filter.merge!(aarr: aarr_filter) if aarr_filter
@@ -228,6 +228,56 @@ class BudgetLine < OpenStruct
     end
 
     return results.sort{ |b, a| a[1][2] <=> b[1][2] }[0..15], results.sort{ |a, b| a[1][2] <=> b[1][2] }[0..15]
+  end
+
+  def self.top_values(options)
+    terms = [{term: { kind: BudgetLine::INCOME }}, {term: { year: options[:year] }}, {term: { level: 3 }}]
+    terms << {term: { ine_code: options[:ine_code] }}
+
+    query = {
+      sort: [
+        { amount: { order: 'desc' } }
+      ],
+      query: {
+        filtered: {
+          filter: {
+            bool: {
+              must: terms
+            }
+          }
+        }
+      },
+      size: 5
+    }
+
+    response = SearchEngine.client.search index: INDEX, type: 'economic', body: query
+
+    income_entries = response['hits']['hits'].map{ |h| h['_source'] }
+
+    terms = [{term: { kind: BudgetLine::EXPENSE }}, {term: { year: options[:year] }}, {term: { level: 3 }}]
+    terms << {term: { ine_code: options[:ine_code] }}
+
+    query = {
+      sort: [
+        { amount: { order: 'desc' } }
+      ],
+      query: {
+        filtered: {
+          filter: {
+            bool: {
+              must: terms
+            }
+          }
+        }
+      },
+      size: 5
+    }
+
+    response = SearchEngine.client.search index: INDEX, type: 'functional', body: query
+
+    expense_entries = response['hits']['hits'].map{ |h| h['_source'] }
+
+    return income_entries, expense_entries
   end
 
   def to_param
