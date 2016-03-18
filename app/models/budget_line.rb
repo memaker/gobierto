@@ -1,5 +1,6 @@
 class BudgetLine < OpenStruct
   INDEX = 'budgets-forecast-v2'
+  INDEX_EXECUTED = 'budgets-execution-v2'
 
   INCOME = 'I'
   EXPENSE = 'G'
@@ -73,7 +74,7 @@ class BudgetLine < OpenStruct
       terms << {range: { amount_per_inhabitant: { gte: per_inhabitant_filter[:from].to_i, lte: per_inhabitant_filter[:to].to_i} }}
     end
 
-    terms << {term: { autonomy_id: aarr_filter }} if aarr_filter
+    terms << {term: { autonomy_id: aarr_filter }}  unless aarr_filter.blank?
 
     query = {
       sort: [ { options[:variable].to_sym => { order: 'desc' } } ],
@@ -188,6 +189,95 @@ class BudgetLine < OpenStruct
     options.merge! budget_line.slice('ine_code','kind','year').symbolize_keys
 
     return search(options)['hits'].length > 0
+  end
+
+  def self.top_differences(options)
+    terms = [{term: { kind: options[:kind] }}, {term: { year: options[:year] }}]
+    terms << {term: { ine_code: options[:ine_code] }} if options[:ine_code].present?
+    terms << {term: { code: options[:code] }} if options[:code].present?
+
+    query = {
+      sort: [
+        { code: { order: 'asc' } }
+      ],
+      query: {
+        filtered: {
+          filter: {
+            bool: {
+              must: terms
+            }
+          }
+        }
+      },
+      size: 10_000
+    }
+
+    response = SearchEngine.client.search index: INDEX, type: (options[:type] || 'economic'), body: query
+
+    planned_results = response['hits']['hits'].map{ |h| h['_source'] }
+
+    response = SearchEngine.client.search index: INDEX_EXECUTED, type: (options[:type] || 'economic'), body: query
+
+    executed_results = response['hits']['hits'].map{ |h| h['_source'] }
+
+    results = {}
+    planned_results.each do |p|
+      if e = executed_results.detect{|e| e['code'] == p['code']}
+        results[p['code']] = [p['amount'], e['amount'], ((e['amount'].to_f - p['amount'].to_f)/p['amount'].to_f) * 100]
+      end
+    end
+
+    return results.sort{ |b, a| a[1][2] <=> b[1][2] }[0..15], results.sort{ |a, b| a[1][2] <=> b[1][2] }[0..15]
+  end
+
+  def self.top_values(options)
+    terms = [{term: { kind: BudgetLine::INCOME }}, {term: { year: options[:year] }}, {term: { level: 3 }}]
+    terms << {term: { ine_code: options[:ine_code] }}
+
+    query = {
+      sort: [
+        { amount: { order: 'desc' } }
+      ],
+      query: {
+        filtered: {
+          filter: {
+            bool: {
+              must: terms
+            }
+          }
+        }
+      },
+      size: 5
+    }
+
+    response = SearchEngine.client.search index: INDEX, type: 'economic', body: query
+
+    income_entries = response['hits']['hits'].map{ |h| h['_source'] }
+
+    terms = [{term: { kind: BudgetLine::EXPENSE }}, {term: { year: options[:year] }}, {term: { level: 3 }}]
+    terms << {term: { ine_code: options[:ine_code] }}
+
+    query = {
+      sort: [
+        { amount: { order: 'desc' } }
+      ],
+      query: {
+        filtered: {
+          filter: {
+            bool: {
+              must: terms
+            }
+          }
+        }
+      },
+      size: 5
+    }
+
+    response = SearchEngine.client.search index: INDEX, type: 'functional', body: query
+
+    expense_entries = response['hits']['hits'].map{ |h| h['_source'] }
+
+    return income_entries, expense_entries
   end
 
   def to_param

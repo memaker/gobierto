@@ -83,7 +83,7 @@ class Population
       terms << {range: { value: { gte: population_filter[:from].to_i, lte: population_filter[:to].to_i} }}
     end
 
-    terms << {term: { autonomy_id: aarr_filter }} if aarr_filter
+    terms << {term: { autonomy_id: aarr_filter }} unless aarr_filter.blank?
 
     query = {
       sort: [

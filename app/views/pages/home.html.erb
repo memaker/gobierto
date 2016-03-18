@@ -13,58 +13,144 @@
 
     <span class="" id="suggested_location"></span>
 
-    <%= link_to 'Santander', '/places/santander/2015' %>, <%= link_to 'Talaván', '/places/talavan/2015'  %>, <%= link_to 'Órgiva', '/places/orgiva/2015'  %>, <%= link_to 'Zaragoza', '/places/zaragoza/2015'  %>.</p>
+    <%= link_to 'Santander', '/places/santander/2015' %>, <%= link_to 'Talaván', '/places/talavan/2015'  %>, <%= link_to 'Órgiva', '/places/orgiva/2015'  %>, <%= link_to 'Zaragoza', '/places/zaragoza/2015'  %>.
+  </p>
 
-  <div class="clearfix">
+  <div class="home_section">
+    <%= render partial: 'compare_big' %>
+  </div>
 
-    <div class="col-1-3 about_block about_citizens">
+  <div class="home_section">
+    <h2 class="section_heading">Explora los Rankings</h2>
+    
+    <%= form_tag places_ranking_path('2015','G','functional','amount'), method: 'GET' do %>
+      <%= image_tag('illustrations/analitica.jpg') %>
+      <%= hidden_field_tag 'f[aarr]' %>
+      <div id="explore_prompt">
+      Explora el Ranking de 
+        <div id="home_kind_switcher" class="switcher kind_switcher">
+          <%= link_to "Gastos <i class='fa fa-angle-down'></i>".html_safe, '#', data: {value: 'G'}, class: 'selected' %>
+          <ul>
+            <li><%= link_to 'Gastos', '#', data: {value: 'G'} %></li>
+            <li><%= link_to 'Ingresos', '#', data: {value: 'I'} %></li>
+          </ul>
+        </div>
+        para municipios de 
+        <div id="home_aarr_switcher"  class="switcher aarr_switcher">
+          <%= link_to "Toda España <i class='fa fa-angle-down'></i>".html_safe, '#', data: {value: ''}, class: 'selected'  %>
+          <ul>
+            <% [['Toda España','']].concat(aarr_for_select).each do |ar| %>
+              <li><%= link_to ar[0], '#', data: { value: ar[1] } %></li>
+            <% end %>
+          </ul>
+        </div>
+        <%= submit_tag "Explorar" %>
+      </div>
+    
+      
+    <% end %>
 
-      <h3>Para ciudadanos</h3>
+    <p id="ranking_examples">Algunos ejemplos por partidas</p>
 
-      <ul>
-        <li><strong>Entiende el destino de tus impuestos</strong> Consulta cómo invierte tu municipio el dinero de tus impuestos</li>
-        <li><strong>Comprende la estructura de tu municipio</strong> Obtén perspectiva de todos los gastos a los que  se hace frente en tu pueblo o ciudad</li>
-        <li><strong>Contextualiza la información</strong> Compara los gastos de tu municipio con otros similares</li>
-      </ul>
+    <div class="ranking_cards_carousel">
+      <div class="nav left_side"><a href='#' class='prev'>&lt;</a></div>
+      <div class="the_content">
+      <% [ '/2015/I/economic/amount/344.json',
+          '/2015/G/functional/amount_per_inhabitant/336.json',
+          '/2015/G/functional/amount/342.json',
+          '/2015/G/functional/amount_per_inhabitant/165.json',
+          '/2015/G/functional/amount/162.json',
+          '/2015/G/functional/amount_per_inhabitant/44.json',
+          '/2015/I/economic/amount/313.json',
+          '/2015/G/functional/amount_per_inhabitant/171.json' ].each_with_index do |data_url,i| %>
 
-    </div>
-
-    <div class="col-2-3 about_block about_journos">
-
-      <h3>Para periodistas</h3>
-
-      <ul>
-        <li><strong>Descubre historias</strong> Bucea con facilidad en los gastos y su evolución para destapar historias </li>
-        <li><strong>Complementa tu información local</strong> Genera visualizaciones para tus piezas aportando mayor contexto a tus piezas</li>
-        <li><strong>Haz seguimiento</strong> Realiza un seguimiento de los gastos por municipio, región o tipo de gasto</li>
-        <li><strong>Aporta contexto</strong> Contribuye con tu información a contextualizar los presupuestos</li>
-      </ul>
-
-    </div>
-
-    <div class="col-3-3 about_block about_municipalities">
-
-      <h3>Para municipios</h3>
-
-      <ul>
-        <li><strong>Mejora tu eficiencia</strong> Analiza tus presupuestos y conoce como te comparas con municipios similares</li>
-        <li><strong>Mejora la información que ofreces</strong> Añade comentarios e información sobre los proyectos y las inversiones para facilitar la compresión a tus vecinos</li>
-        <li><strong>Completa tu web de forma sencilla</strong> Incluye una versión personalizada en tu propia web</li>
-        <li><strong>Simplifica la elaboración de tu documento de presupuestos</strong> Crea el informe con tus presupuestos, visualizaciones y contextualización de forma automática</li>
-      </ul>
-
+            <div class="ranking_card clearfix"
+                data-widget-type="ranking_<%= i %>"
+                data-widget-template="#widget-template" 
+                data-widget-data-url="/api/data/widget/ranking<%= data_url %>">
+            </div>
+      <% end %>
+  
+      </div>
+      <div class="nav right_side"><a href='#' class='next'>&gt;</a></div>
+      
     </div>
 
   </div>
 
-  <div class="more_info center">
-    <%= link_to 'Más información', about_path, class: 'button' %>
+</div>  
+
+<div class="clearfix">
+
+  <div class="col-1-3 about_block about_citizens">
+
+    <h3>Para ciudadanos</h3>
+
+    <ul>
+      <li><strong>Entiende el destino de tus impuestos</strong> Consulta cómo invierte tu municipio el dinero de tus impuestos</li>
+      <li><strong>Comprende la estructura de tu municipio</strong> Obtén perspectiva de todos los gastos a los que  se hace frente en tu pueblo o ciudad</li>
+      <li><strong>Contextualiza la información</strong> Compara los gastos de tu municipio con otros similares</li>
+    </ul>
+
+  </div>
+
+  <div class="col-2-3 about_block about_journos">
+
+    <h3>Para periodistas</h3>
+
+    <ul>
+      <li><strong>Descubre historias</strong> Bucea con facilidad en los gastos y su evolución para destapar historias </li>
+      <li><strong>Complementa tu información local</strong> Genera visualizaciones para tus piezas aportando mayor contexto a tus piezas</li>
+      <li><strong>Haz seguimiento</strong> Realiza un seguimiento de los gastos por municipio, región o tipo de gasto</li>
+      <li><strong>Aporta contexto</strong> Contribuye con tu información a contextualizar los presupuestos</li>
+    </ul>
+
+  </div>
+
+  <div class="col-3-3 about_block about_municipalities">
+
+    <h3>Para municipios</h3>
+
+    <ul>
+      <li><strong>Mejora tu eficiencia</strong> Analiza tus presupuestos y conoce como te comparas con municipios similares</li>
+      <li><strong>Mejora la información que ofreces</strong> Añade comentarios e información sobre los proyectos y las inversiones para facilitar la compresión a tus vecinos</li>
+      <li><strong>Completa tu web de forma sencilla</strong> Incluye una versión personalizada en tu propia web</li>
+      <li><strong>Simplifica la elaboración de tu documento de presupuestos</strong> Crea el informe con tus presupuestos, visualizaciones y contextualización de forma automática</li>
+    </ul>
+
   </div>
 
 </div>
 
+<div class="more_info center">
+  <%= link_to 'Más información', about_path, class: 'button' %>
+</div>
+
+<%= render partial: 'pages/ranking_card_template' %>
+
+<% content_for :javascript do %>
+  
+  $('[data-widget-type]:first').siblings().hide();
+  $('a.next').click(function(e) {
+    e.preventDefault();
+    var current_widget = $('[data-widget-type]:visible');
+    var next_widget = (current_widget.next().length > 0) ? current_widget.next() : current_widget.siblings().first();
+    
+    current_widget.velocity('transition.slideLeftLongOut');
+    next_widget.velocity('transition.slideRightLongIn');
+  })
+
+  $('a.prev').click(function(e) {
+    e.preventDefault();
+    var current_widget = $('[data-widget-type]:visible');
+    var prev_widget = (current_widget.prev().length > 0) ? current_widget.prev() : current_widget.siblings().last();
+    
+    current_widget.velocity('transition.slideRightLongOut');
+    prev_widget.velocity('transition.slideLeftLongIn');
+  })
+
+<% end %>
+
 <script type="text/javascript">
-$(function(){
-  $.ajax('/geocoder');
-});
+$.ajax('/geocoder');
 </script>

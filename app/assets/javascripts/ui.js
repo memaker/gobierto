@@ -138,9 +138,38 @@ $(function(){
     $(this).find('ul').hide();
   });
 
-  $('.switcher').click(function(e){
+  $('.year_switcher').click(function(e){
     ga('send', 'event', 'Year Selection', 'Click', 'ChangeYear', {nonInteraction: true});
     mixpanel.track('Year Selection', { 'Year Selected': e.target.innerHTML});
+  });
+
+  $('.home_section .switcher').click(function(e){
+    e.preventDefault();
+    var tgt = $(e.target);
+    var value = tgt.data('value');
+    var switcher = tgt.parents('.switcher');
+    var selected = switcher.find('a.selected');
+    selected.data('value', value);
+    selected.html(tgt.text() + " <i class='fa fa-angle-down'></i>");
+    switcher.find('ul').hide();
+    
+    var form = tgt.parents('form');
+    var action = form.attr('action');
+    console.log(value);
+    var kind_re = /[GI]\/.*\//;
+
+    if (value == 'I') {
+      action = action.replace(kind_re, 'I/economic/');
+    }
+    else if (value == 'G') {
+      action = action.replace(kind_re, 'G/functional/');
+    }
+    else {
+      $('input#f_aarr[type=hidden]').val(value);
+    }
+    
+    form.attr('action',action);
+
   });
 
   $('.modal_widget').hover(function(e) {
@@ -330,6 +359,7 @@ $(function(){
     );
 
   });
+
 
   /*
    * Google Analytics Events

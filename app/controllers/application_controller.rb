@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
   rescue_from ActionController::RoutingError, with: :render_404
   rescue_from ActionController::UnknownFormat, with: :render_404
 
-  helper_method :code_from_params
+  helper_method :code_from_params, :helpers
 
   def render_404
     render file: "public/404", status: 404, layout: false, handlers: [:erb], formats: [:html]

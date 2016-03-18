@@ -215,6 +215,7 @@ header.global {
   padding: 2em 0 0 0;
   @include screen(740) {
     margin: 0;
+    padding: 0;
   }
 }
 
@@ -360,7 +361,7 @@ header.global {
   
   ul {
     display: none;
-    @include box-shadow();
+    @include box-shadow(2px, 2px, 9px);
     border: 1px solid darken($separator, 10%);
     @include border-radius(6px);
     position: absolute;
@@ -389,7 +390,7 @@ header.global {
     background: $separator;
   }
 }
-.kind_switcher {
+.kind_switcher, .aarr_switcher {
   position: relative;
   padding: 0;  
   border: none;
@@ -635,12 +636,13 @@ table {
     }
   }
 }
-.big_compare {
+.big_compare, .home_section {
   form {
     padding: 2em 0;
     margin-bottom: 5em;
+    text-align: center;
     input.search_compare {
-      width: 27%;
+      width: 23%;
       font-size: 1.4em;
     }
     input[type=submit] {
@@ -655,6 +657,7 @@ table {
   }
   .examples {
     font-size: .85em;
+    text-align: center;
     ul {
       list-style-type: none;
       margin: 0;
@@ -666,9 +669,82 @@ table {
   }
 }
 
+.ranking_cards_carousel {
+  width: 100%;
+  .nav {
+    min-height:220px;
+    display: inline-block;
+    vertical-align: top;
+    width:15%;
+
+    @include screen(1000) {
+        width: 8%;
+    }
+    
+    a {
+      font-size:150px;
+      line-height: 1px;
+      text-decoration: none;
+      color:#d8d8d8;
+      margin-top:.7em;
+      display: inline-block;
+
+      @include screen(1000) {
+        font-size: 55px;
+        margin-top: 2em;  
+      }
+    }
+  }
+
+  .the_content {
+    overflow: hidden;
+    position: relative;
+    min-height:245px;
+    min-width: 300px;
+    max-width: 480px;
+    width:50%;
+    text-align: center;
+    display: inline-block;
+  }
+
+  .ranking_card {
+    float:none;
+    min-width: 300px;
+    width:100%;
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+    position: absolute;
+  }
+
+  .nav.left_side {
+    text-align: right;
+    a {
+      margin-right:25%;
+      @include screen(1000) {
+        margin-right: 5%;
+      }
+    }
+  }
+
+  .nav.right_side {
+    text-align: left;
+    margin-right: auto;
+    a {
+      margin-left:25%;
+      @include screen(1000) {
+        margin-left: 5%;
+      }
+    }
+  }
+
+
+}
+
 .comparison-dimension.selected {
   text-decoration: none;
 }
+
 .data_table {
   margin: 0 0 2em 0;
   td {
@@ -1089,6 +1165,16 @@ header.sub {
     padding-top: .5em;
   }
 }
+@include screen(740) {
+  .sticky-wrapper {
+    border: 1px solid red;
+    visibility: hidden;
+  }
+  .sticky-wrapper.is-sticky {
+    border: 1px solid green;
+    visibility: visible;
+  }
+}
 .tools {
   width: 390px;
   // padding-top: .5em;
@@ -1269,12 +1355,6 @@ header.sub {
     min-height: 66px;
     @include transition;
 
-    @include screen(740) {
-      width: 100%;
-      float: none;
-      margin: 0 0 3% 0;
-    }
-    
     .label {
       font-weight: 600;
       opacity: .7;
@@ -1298,6 +1378,25 @@ header.sub {
       right: 1em;
       line-height: 1em;
       opacity: .7;
+    }
+  }
+  @include screen(501, 740) {
+    .metric {
+      width: 24%;
+      margin: 0 1.25% 3% 0;  
+    }
+    .metric:nth-last-child(2) {
+      float: right;
+      margin: 0;
+    }
+  }
+  @include screen(500) {
+    .metric {
+      width: 50%;
+      margin: 0;  
+    }
+    .metric.selected::after {
+      border: 0;
     }
   }
   @include screen(740) {
@@ -1381,6 +1480,13 @@ header.sub {
     .qty {
       float: right;
     }
+    @include screen(500) {
+      .qty {
+        float: none;
+        font-size: 1.2em;
+        padding: .25em 0;  
+      }
+    }
     .form_filters {
       margin: 0 0 0 1.5em;
       float: none;
@@ -1402,6 +1508,7 @@ header.sub {
 
 .item_description {
   font-size: .8em;
+  line-height: 1.3em;
   margin: 2em 0;
 
   h3 {
@@ -1498,7 +1605,7 @@ a.list_view_more {
       font-size: 1.1em;  
       border-bottom: 1px solid #DFDFDF;
       @include screen(740) {
-        font-size: .8em;
+        font-size: .9em;
         line-height: 1.2em;
       }
     }
@@ -1511,6 +1618,7 @@ a.list_view_more {
       background: none;
       border-bottom: 4px solid $separator;
       color: $text_soft;
+      line-height: 1.1em;
     }
     .fa {
       padding: 0 .5em 0 0;
@@ -1519,10 +1627,6 @@ a.list_view_more {
     td {
       padding-top: 8px;
       padding-bottom: 7px;
-      @include screen(740) {
-        font-size: .8em;
-        line-height: 1.2em;
-      }
     }
     // tr:nth-child(2) td {
     //   padding-top: 20px;
@@ -1552,6 +1656,11 @@ a.list_view_more {
       width: 98px;
       padding: 0 0 0 10px;
     }
+    @include screen(500) {
+      .bar_cont {
+        display: none;  
+      }
+    }
     tr:hover td tr td {
       background: initial;
     }
@@ -1569,7 +1678,9 @@ a.list_view_more {
           padding: 10px 20px;
           td.bar_cont {
             width: 80px;
-            
+          }
+          @include screen(740) {
+            margin: 0;
           }
         }
         tr.child_group {
@@ -1746,6 +1857,10 @@ a.list_view_more {
   }
 
   @include screen(740) {
+
+    table td {
+      padding: .25em;
+    }
     .col-1-2, .col-2-2 {
       width: 100%;
       float: none;
@@ -2140,6 +2255,18 @@ form {
       width: 300px;
     }
 
+    .radio_option {
+      display: inline-block;
+      border: 1px solid #DFDFDF;
+      @include border-radius(6px);
+      padding: .65em 1em;
+      
+      label {
+        display: inline;
+        width: initial;
+        text-align: left;
+      }
+    }
   }
 }
 .submit_item {
@@ -2480,6 +2607,62 @@ footer {
   }
 
 }
+
+.home_section {
+  padding-bottom:3em;
+  h2.section_heading { 
+    font-size: 1.5em;
+    padding-top: 45px;
+    margin-bottom:10px;
+    border-top: solid 1px #979797; }
+
+  p.center {
+    font-weight: normal;
+    font-size: smaller;
+  }
+
+  #explore_prompt {
+    margin-top:50px;
+    margin-bottom:20px;
+    color:#999;
+    font-size: 20px;
+
+    input[type=submit] {
+      font-size:1em;
+      padding-top: 8px;
+      padding-bottom: 9px;
+      margin-left: 10px;
+    }
+
+    .kind_switcher, .aarr_switcher {
+      margin: 0 7px;
+      > a {
+        font-weight: bold;
+        text-decoration: underline;
+        .fa {color:#999;opacity: 1}
+      }
+      ul li{
+        min-width: 75px;
+        text-align: left;
+        a {
+          color:#999;
+          /*font-weight: bold;*/
+        }
+      }
+    }
+  }
+
+  .examples li {
+    list-style-type: none;
+    display: inline-block;
+  }
+
+  form {
+    padding-top:1em;
+    margin-bottom: 1em;
+  }
+}
+
 .about_citizens {
   h3, h2 {
     color: $color_logo_yellow;  
@@ -2768,6 +2951,7 @@ header.ranking {
 
 }
 .ranking_card {
+  text-align: left;
   background: $color_1_soft;
   @include transition;
   padding: 1.5em;
@@ -2776,6 +2960,7 @@ header.ranking {
   float: left;
   box-sizing: border-box;
   margin-bottom: 2em;
+  min-height: 240px;
 
   @include screen(740) {
     width: 100%;
@@ -2840,7 +3025,7 @@ header.ranking {
   cursor: pointer;
   background: darken($color_1_soft, 10%);
 }
-.ranking_card:nth-child(2n) {
+.ranking_list .ranking_card:nth-child(2n) {
   float: right;
 }
 .ranking_list:nth-child(2) {
@@ -2897,7 +3082,21 @@ nav.pagination {
     }
   }
 }
+.download_guide {
+  border: 1px solid #CCC;
+  padding: 1em;
+  margin: 0 0 2em 0;
+  border-radius: 6px;
 
+  i.fa {
+    float: left;
+    padding: .45em 1em 1em .5em;
+    color: $color_logo_blue;
+    font-size: 3.5em;
+    width: calc(210px - 3em);
+    margin: 0;
+  }
+}
 
 html.turbolinks-progress-bar::before {
   background-color: $color_logo_yellow !important;
@@ -2951,4 +3150,15 @@ html.turbolinks-progress-bar::before {
 /* content animate out */
 .mfp-fade.mfp-wrap.mfp-removing .mfp-content {
   opacity: 0;
+}
+
+
+.select2-container .select2-selection--single {
+  height: initial;
+  padding: .45em;
+  min-height: 42px;
+}
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+  top: 10px;
+  right: 8px;
 }

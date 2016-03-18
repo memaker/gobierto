@@ -2,7 +2,7 @@ module SessionsManagement
   extend ActiveSupport::Concern
 
   included do
-    helper_method :current_user, :logged_in?, :current_user?
+    helper_method :current_user, :logged_in?, :current_user?, :current_user_admin?
   end
 
   def logged_in?
@@ -29,6 +29,10 @@ module SessionsManagement
     unless logged_in?
       redirect_to login_path and return false
     end
+  end
+
+  def current_user_admin?
+    logged_in? && current_user.admin?
   end
 
   private

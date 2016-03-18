@@ -1,5 +1,6 @@
 class BudgetTotal
   INDEX = 'budgets-forecast-v2'
+  INDEX_EXECUTED = 'budgets-execution-v2'
   TYPE = 'total-budget'
   TOTAL_FILTER_MIN = 0
   TOTAL_FILTER_MAX = 5000000000
@@ -76,7 +77,7 @@ class BudgetTotal
       terms << {range: { total_budget_per_inhabitant: { gte: per_inhabitant_filter[:from].to_i, lte: per_inhabitant_filter[:to].to_i} }}
     end
 
-    terms << {term: { autonomy_id: aarr_filter }} if aarr_filter
+    terms << {term: { autonomy_id: aarr_filter }} unless aarr_filter.blank?
 
     query = {
       sort: [

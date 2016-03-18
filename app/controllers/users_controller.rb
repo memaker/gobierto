@@ -9,6 +9,15 @@ class UsersController < ApplicationController
   end
 
   def create
+    @user = User.new create_user_params
+    if @user.save
+      redirect_to root_path, notice: 'Por favor, confirma tu email'
+    else
+      render 'new'
+    end
+  end
+
+  def identify
     @user = User.find_or_initialize_by email: params[:user][:email]
     if @user.new_record?
       @user.attributes = create_user_params
@@ -69,7 +78,7 @@ class UsersController < ApplicationController
   end
 
   def load_current_user
-    render_404 and return unless logged_in?
+    redirect_to login_path and return unless logged_in?
 
     @user = current_user
   end

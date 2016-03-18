@@ -5,7 +5,7 @@
   <th class="right "><%= kind_literal(BudgetLine::EXPENSE, false) %> total</th>
   <th class="right "><%= kind_literal(BudgetLine::EXPENSE, false) %> por hab.</th>
   <th class="right ">% s/ total</th>
-  <th></th>
+  <th class="bar_cont"></th>
 </tr>
 <%= render partial: 'places/budget_lines',
            collection: @expense_lines['hits'],

@@ -83,3 +83,55 @@
   - year:                  { type: 'integer', index: 'not_analyzed' },
   - name:                  { type: 'string',  index: 'analyzed', analyzer: 'spanish' }
 ```
+
+## Load the data
+
+
+### Load planned data
+
+```
+# Load budgets
+bin/rake budgets:import['budgets-planned','budgets-forecast-v2','economic',2015] && 
+bin/rake budgets:import['budgets-planned','budgets-forecast-v2','economic',2014] &&
+bin/rake budgets:import['budgets-planned','budgets-forecast-v2','economic',2013] &&
+bin/rake budgets:import['budgets-planned','budgets-forecast-v2','economic',2012] &&
+bin/rake budgets:import['budgets-planned','budgets-forecast-v2','economic',2011] &&
+bin/rake budgets:import['budgets-planned','budgets-forecast-v2','economic',2010] &&
+bin/rake budgets:import['budgets-planned','budgets-forecast-v2','functional',2015] && 
+bin/rake budgets:import['budgets-planned','budgets-forecast-v2','functional',2014] &&
+bin/rake budgets:import['budgets-planned','budgets-forecast-v2','functional',2013] &&
+bin/rake budgets:import['budgets-planned','budgets-forecast-v2','functional',2012] &&
+bin/rake budgets:import['budgets-planned','budgets-forecast-v2','functional',2011] &&
+bin/rake budgets:import['budgets-planned','budgets-forecast-v2','functional',2010]
+
+# Load total aggregations
+bin/rake total_budget:import['budgets-forecast-v2',2015] && 
+bin/rake total_budget:import['budgets-forecast-v2',2014] &&
+bin/rake total_budget:import['budgets-forecast-v2',2013] &&
+bin/rake total_budget:import['budgets-forecast-v2',2012] &&
+bin/rake total_budget:import['budgets-forecast-v2',2011] &&
+bin/rake total_budget:import['budgets-forecast-v2',2010]
+```
+
+### Load executed data
+
+```
+# Load budgets
+bin/rake budgets:import['budgets-executed','budgets-execution-v2','economic',2014] &&
+bin/rake budgets:import['budgets-executed','budgets-execution-v2','economic',2013] &&
+bin/rake budgets:import['budgets-executed','budgets-execution-v2','economic',2012] &&
+bin/rake budgets:import['budgets-executed','budgets-execution-v2','economic',2011] &&
+bin/rake budgets:import['budgets-executed','budgets-execution-v2','economic',2010] &&
+bin/rake budgets:import['budgets-executed','budgets-execution-v2','functional',2014] &&
+bin/rake budgets:import['budgets-executed','budgets-execution-v2','functional',2013] &&
+bin/rake budgets:import['budgets-executed','budgets-execution-v2','functional',2012] &&
+bin/rake budgets:import['budgets-executed','budgets-execution-v2','functional',2011] &&
+bin/rake budgets:import['budgets-executed','budgets-execution-v2','functional',2010]
+
+# Load total aggregations
+bin/rake total_budget:import['budgets-execution-v2',2014] &&
+bin/rake total_budget:import['budgets-execution-v2',2013] &&
+bin/rake total_budget:import['budgets-execution-v2',2012] &&
+bin/rake total_budget:import['budgets-execution-v2',2011] &&
+bin/rake total_budget:import['budgets-execution-v2',2010]
+```

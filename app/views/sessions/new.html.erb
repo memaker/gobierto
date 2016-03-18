@@ -3,8 +3,10 @@
 
   <div class="form clearfix">
 
-    <h1>Iniciar sesión</h1>
+    <h1><%= title "Iniciar sesión" %></h1>
 
     <%= render partial: 'form', locals: {email: ''} %>
+
+    <p>¿No tienes cuenta todavía? <%= link_to 'Regístrate', new_user_path %></p>
   </div>
 </div>

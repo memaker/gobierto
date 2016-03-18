@@ -3,6 +3,7 @@
 //= require jquery_ujs
 //= require turbolinks
 //= require vendor/velocity.min
+//= require vendor/velocity.ui.min
 //= require vendor/jquery.sticky
 //= require vendor/tipsy
 //= require vendor/accounting.min
@@ -23,6 +24,7 @@
 //= require compare
 //= require ui
 //= require ranking
+//= require analytics
 
 SPARKLINES_DEFAULTS = {
   width: 60,
@@ -58,5 +60,15 @@ var AUTOCOMPLETE_DEFAULTS = {
   preserveInput: true,
   autoSelectFirst: true,
   triggerSelectOnValidInput: false,
-  preventBadQueries: false
+  preventBadQueries: false,
+  tabDisabled: true
 };
+
+
+$.Velocity.RegisterEffect("transition.slideLeftLongOut", { defaultDuration: 500, calls: [[ { opacity: [ 0, 1 ], translateX: -500, translateZ: 0 } ]],reset: { translateX: 0 }})
+
+$.Velocity.RegisterEffect("transition.slideLeftLongIn", { defaultDuration: 500, calls: [[ { opacity: [ 1, 0 ], translateX: [0,-500], translateZ: 0 } ]]})
+
+$.Velocity.RegisterEffect("transition.slideRightLongOut", { defaultDuration: 500, calls: [[ { opacity: [ 0, 1 ], translateX: 500, translateZ: 0 } ]],reset: { translateX: 0 }})
+
+$.Velocity.RegisterEffect("transition.slideRightLongIn", { defaultDuration: 500, calls: [[ { opacity: [ 1, 0 ], translateX: [0,500], translateZ: 0 } ]]})
