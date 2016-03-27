@@ -119,7 +119,7 @@ $(function(){
     }
   });
 
-  $('[data-feedback]').on('click', function(e){
+  $(document).on('click', '[data-feedback]', function(e){
     e.preventDefault();
     $('.metric_graphs').hide();
     $('.budget_line_feedback.hidden').removeClass('hidden');
@@ -152,7 +152,7 @@ $(function(){
     selected.data('value', value);
     selected.html(tgt.text() + " <i class='fa fa-angle-down'></i>");
     switcher.find('ul').hide();
-    
+
     var form = tgt.parents('form');
     var action = form.attr('action');
     console.log(value);
@@ -167,7 +167,7 @@ $(function(){
     else {
       $('input#f_aarr[type=hidden]').val(value);
     }
-    
+
     form.attr('action',action);
 
   });
@@ -223,14 +223,14 @@ $(function(){
     $(this).find('.add_location ').velocity("fadeOut", { duration: 100 });
   });
 
-  window.widgets = [];
   $('[data-widget-type]').each(function(){
-    window.widgets.push(new WidgetRenderer({
-      id: $(this).data('widget-type'), url: $(this).data('widget-data-url'), template: $(this).data('widget-template')
-    }));
-  });
-
-  window.widgets.forEach(function(widget){
+    if($(this).data('widget-id') === undefined){
+      $(this).attr('data-widget-id', Math.random().toString(36).substring(7));
+    }
+    var widget = new WidgetRenderer({
+      id: $(this).data('widget-id'), type: $(this).data('widget-type'),
+      url: $(this).data('widget-data-url'), template: $(this).data('widget-template')
+    });
     widget.render();
   });
 

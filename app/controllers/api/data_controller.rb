@@ -292,7 +292,7 @@ class Api::DataController < ApplicationController
     if ranking
       response = SearchEngine.client.search index: BudgetLine::INDEX, type: @area, body: query
       buckets = response['hits']['hits'].map{|h| h['_id']}
-      position = buckets.index(id) + 1
+      position = buckets.index(id) + 1 rescue 0
     else
       buckets = []
       position = 0
