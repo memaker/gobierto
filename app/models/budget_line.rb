@@ -14,6 +14,11 @@ class BudgetLine < OpenStruct
     terms << {term: { parent_code: options[:parent_code] }} if options[:parent_code].present?
     terms << {term: { level: options[:level] }} if options[:level].present?
     terms << {term: { code: options[:code] }} if options[:code].present?
+    if options[:range_hash].present?
+      options[:range_hash].each_key do |range_key|
+        terms << {range: { range_key => options[:range_hash][range_key] }}
+      end 
+    end
 
     query = {
       sort: [

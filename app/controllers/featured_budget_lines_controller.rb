@@ -2,28 +2,18 @@ class FeaturedBudgetLinesController < ApplicationController
   def show
     @place = INE::Places::Place.find_by_slug(params[:id])
     @year = params[:year]
-
     @area_name = 'functional'
-    klass = FunctionalArea
+    
     @kind = BudgetLine::EXPENSE
-
-    sample = klass.all_items[@kind].keys.select{|k| k.length == 3}
-    @code = nil
-    times = 10
-    i = 0
-    while @code.nil? || times < 10
-      i+=1
-      @code = sample.sample
-      budget_line = BudgetLine.search({
+    results = BudgetLine.search({
         kind: @kind, year: @year, ine_code: @place.id,
-        code: @code
-      })
-      if budget_line.present?
-        break
-      else
-        @code = nil
-      end
-    end
+        type: @area_name, range_hash: {
+          level: {ge: 3}, 
+          amount_per_inhabitant: { gt: 0 }
+        }
+    })['hits']
+    
+    @code = results.sample['code']
 
     respond_to do |format|
       format.js
