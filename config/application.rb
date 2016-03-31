@@ -34,10 +34,10 @@ module RailsTemplate
     # Set the default host name for emails
     # config.action_mailer.default_url_options = { host: '' }
 
-    config.action_dispatch.default_headers.merge!({
-      'Access-Control-Allow-Origin' => '*',
-      'Access-Control-Request-Method' => '*'
-    })
+    # config.action_dispatch.default_headers.merge!({
+    #   'Access-Control-Allow-Origin' => '*',
+    #   'Access-Control-Request-Method' => '*'
+    # })
 
     config.action_controller.page_cache_directory = "#{Rails.root.to_s}/public/cache"
 
