@@ -47,7 +47,7 @@ Rails.application.routes.draw do
   resources :featured_budget_lines, only: [:show]
 
   # compare
-  get 'compare' => 'pages#compare'
+  get 'compare' => 'pages#compare', as: :compare
   get 'compare-new' => 'pages#compare-new'
   get '/compare/:slug_list/:year/:kind/:area' => 'places#compare', as: :places_compare
 

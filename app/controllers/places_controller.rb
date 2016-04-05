@@ -47,6 +47,8 @@ class PlacesController < ApplicationController
   # /places/compare/:slug_list/:year/:kind/:area
   def compare
     @places = get_places params[:slug_list]
+    redirect_to compare_path if @places.empty?
+
     @totals = BudgetTotal.for @places.map(&:id), @year
     @population = Population.for @places.map(&:id), @year
 
