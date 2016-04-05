@@ -15,6 +15,9 @@ class GeocoderController < ApplicationController
         end
       end
     end
+    respond_to do |format|
+      format.js
+    end
   end
 
   private
