@@ -12,7 +12,7 @@ class Ranking
   end
 
   def self.page_from_position(position)
-    return 1 if position < 1
+    return 1 if position.nil? || position < 1
     (position.to_f / self.per_page.to_f).ceil
   end
 
@@ -60,7 +60,7 @@ class Ranking
   ## Private
 
   def self.budget_line_ranking(options, offset)
-    
+
     results, total_elements = BudgetLine.for_ranking(options.merge(offset: offset, per_page: self.per_page))
 
     places_ids = results.map {|h| h['ine_code']}
@@ -82,12 +82,12 @@ class Ranking
   end
 
   def self.population_ranking(variable, year, offset, filters)
-    
+
     results, total_elements = Population.for_ranking(year,offset,self.per_page,filters)
-    
+
     places_ids = results.map{|h| h['ine_code']}
     total_results = BudgetTotal.for_places(places_ids, year)
-    
+
     return results.map do |h|
       id = h['ine_code']
       Item.new({
@@ -106,7 +106,7 @@ class Ranking
                else
                  'total_budget_per_inhabitant'
                end
-    
+
     results, total_elements = BudgetTotal.for_ranking(year, variable, offset, self.per_page, filters)
 
     places_ids = results.map {|h| h['ine_code']}
