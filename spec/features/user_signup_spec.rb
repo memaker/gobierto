@@ -33,14 +33,12 @@ RSpec.feature 'User signup' do
   scenario "Signup and verify via 'Eres responsable de este municipio?'" do
     visit 'places/madrid/2015'
 
-    within('.pro_user') do
+    within :css, '.pro_user' do
       click_link "Solicita información"
     end
 
-    expect(page).to have_content "Solicita más información"
-    
     expect(page).to have_select "Tu municipio", :selected => 'Madrid'
-    expect(page).to have_checked_field "Profesional"
+    expect(page).to have_checked_field "Profesional de la administración local"
     expect(page).to have_unchecked_field "He leído el Aviso legal y la Política de privacidad"
 
     fill_in 'E-mail', with: 'jorge@example.com'
@@ -78,7 +76,7 @@ RSpec.feature 'User signup' do
     end
 
     expect(page).to have_content "Pide que tu alcalde añada información"
-    
+
     expect(page).to have_select "Tu municipio", :selected => 'Santander'
     expect(page).to have_checked_field "Ciudadano"
     expect(page).to have_unchecked_field "He leído el Aviso legal y la Política de privacidad"
