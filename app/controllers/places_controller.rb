@@ -110,7 +110,7 @@ class PlacesController < ApplicationController
   end
 
   def get_places(slug_list)
-    slug_list.split(':').map {|slug| INE::Places::Place.find_by_slug slug}
+    slug_list.split(':').map {|slug| INE::Places::Place.find_by_slug slug}.compact
   end
 
   def valid_variables
