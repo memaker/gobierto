@@ -4,14 +4,14 @@ var VisLineasJ = Class.extend({
   init: function(divId, tableID, measure, series) {
     this.container = divId;
     this.tableContainer = tableID;
-    
+
     // Chart dimensions
     this.containerWidth = null;
     this.tableWidth = null;
     this.margin = {top: 30, right: 60, bottom: 20, left: 20};
     this.width = null;
     this.height = null;
-    
+
     // Variable: valid values are total_budget and total_budget_per_inhabitant
     // TODO: check what to do with percentage
     this.measure = measure;
@@ -66,17 +66,17 @@ var VisLineasJ = Class.extend({
     this.darkGrey = '#554E41';
     this.blue = '#2A8998';
     this.meanColorRange = ['#F4D06F', '#F8B419', '#DA980A', '#2A8998'];
-    this.comparatorColorRange = ['#2A8998', '#F8B419', '#b82e2e', '#66aa00', '#dd4477', 
+    this.comparatorColorRange = ['#2A8998', '#F8B419', '#b82e2e', '#66aa00', '#dd4477',
                                   '#636363', '#273F8E', '#e6550d', '#990099', '#06670C'];
-                                    // azul main, amarillo main, rojo g scale, verde g, verde, violeta, 
+                                    // azul main, amarillo main, rojo g scale, verde g, verde, violeta,
                                     // gris
-    
+
     this.niceCategory = null;
   },
 
   render: function(urlData) {
     $(this.container).html('');
-    $(this.tableContainer).html(''); 
+    $(this.tableContainer).html('');
 
     // Chart dimensions
     this.containerWidth = parseInt(d3.select(this.container).style('width'), 10);
@@ -117,10 +117,10 @@ var VisLineasJ = Class.extend({
     // Load the data
     d3.json(urlData, function(error, jsonData){
       if (error) throw error;
-      
+
       this.data = jsonData;
 
-      this.data.budgets[this.measure].forEach(function(d) { 
+      this.data.budgets[this.measure].forEach(function(d) {
         d.values.forEach(function(v) {
           v.date = this.parseDate(v.date);
           v.name = d.name;
@@ -128,7 +128,7 @@ var VisLineasJ = Class.extend({
       }.bind(this));
 
       // TODO
-      //this.data.budgets.percentage.forEach(function(d) { 
+      //this.data.budgets.percentage.forEach(function(d) {
         //d.values.forEach(function(v) {
           //v.date = this.parseDate(v.date);
           //v.name = d.name;
@@ -147,12 +147,12 @@ var VisLineasJ = Class.extend({
       // Get all the years
       var years = [];
 
-      this.dataChart.map(function(d) { 
-        d.values.map(function(v) { 
+      this.dataChart.map(function(d) {
+        d.values.map(function(v) {
           if (years.map(Number).indexOf(+v.date) == -1) {
             years.push(v.date)
-          } 
-        }); 
+          }
+        });
       });
 
       // Sort them
@@ -160,14 +160,14 @@ var VisLineasJ = Class.extend({
 
       // Create a values object for every municipality for every year
       this.dataChart.map(function(d) {
-        
+
         if (d.values.length != years.length) {
           years.forEach(function(year) {
 
             // If the year does not exist
             // Push a new object
-            var aux = d.values.filter(function(v) { 
-              return v.date == year; 
+            var aux = d.values.filter(function(v) {
+              return v.date == year;
             });
 
             if (aux.length == 0) {
@@ -180,23 +180,23 @@ var VisLineasJ = Class.extend({
               d.values.push(obj)
             }
           });
-        }    
+        }
       });
 
 
-      this.dataDomain = [d3.min(this.dataChart.map(function(d) { return d3.min(d.values.map(function(v) { return v.value; })); })), 
+      this.dataDomain = [d3.min(this.dataChart.map(function(d) { return d3.min(d.values.map(function(v) { return v.value; })); })),
               d3.max(this.dataChart.map(function(d) { return d3.max(d.values.map(function(v) { return v.value; })); }))];
 
       if (this.dataDomain[0] > 100000) {
-        var min = Math.floor((this.dataDomain[0] * .1)/10000.0) * 10000
+        var min = Math.floor((this.dataDomain[0] * .1)/10000.0) * 10000;
       } else {
-        var min = Math.floor((this.dataDomain[0] * .1)/100.0) * 100
+        var min = Math.floor((this.dataDomain[0] * .1)/100.0) * 100;
       }
 
       if (this.dataDomain[1] > 100000) {
-        var max = Math.floor((this.dataDomain[1] * 1.2)/10000.0) * 10000
+        var max = Math.floor((this.dataDomain[1] * 1.2)/10000.0) * 10000;
       } else {
-        var max = Math.ceil((this.dataDomain[1] * 1.2)/100.0) * 100
+        var max = Math.ceil(this.dataDomain[1] * 1.2);
       }
 
       // Set the scales
@@ -208,16 +208,16 @@ var VisLineasJ = Class.extend({
         // .domain([this.dataDomain[0] * .3, this.dataDomain[1] * 1.2])
         .domain([min, max])
         .range([this.height, this.margin.top]);
-      
+
       this.colorScale
         .range(this.series == 'means' ? this.meanColorRange : this.comparatorColorRange)
         .domain(this.dataChart.map(function(d) { return d.name; }));
-      
 
-      // Define the axis 
+
+      // Define the axis
       this.xAxis
           .scale(this.xScale)
-          .orient("bottom");  
+          .orient("bottom");
 
       this.yAxis
           .scale(this.yScale)
@@ -233,7 +233,7 @@ var VisLineasJ = Class.extend({
         .x(function(d) { return this.xScale(d.date); }.bind(this))
         .y(function(d) { return this.yScale(d.value); }.bind(this));
 
-      
+
       // --> DRAW THE AXIS
       this.svgLines.append("g")
           .attr("class", "x axis")
@@ -275,7 +275,7 @@ var VisLineasJ = Class.extend({
             .style('stroke', this.darkGrey);
 
 
-      // --> DRAW THE LINES  
+      // --> DRAW THE LINES
       this.chart = this.svgLines.append('g')
           .attr('class', 'evolution_chart');
 
@@ -288,7 +288,7 @@ var VisLineasJ = Class.extend({
           .attr('class', function(d) { return 'evolution_line ' + this._normalize(d.name); }.bind(this))
           .attr('d', function(d) { return this.line(d.values.filter(function(v) { return v.value != null; })); }.bind(this))
           .style('stroke', function(d) { return this.colorScale(d.name); }.bind(this))
-          .style('stroke-width', function(d, i) { 
+          .style('stroke-width', function(d, i) {
             if (this.series == 'means') {
               return i == 3 ? this.heavyLine : this.lightLine;
             } else {
@@ -313,9 +313,9 @@ var VisLineasJ = Class.extend({
           .attr('r', this.radius)
           .style('fill', function(d) { return this.colorScale(d.name); }.bind(this))
         .on('mouseover', this._mouseover.bind(this))
-        .on('mouseout', this._mouseout.bind(this)); 
-      
-      
+        .on('mouseout', this._mouseout.bind(this));
+
+
       // --> ADD THE CHART TITLE
       this.svgLines.append('text')
           .attr('class', 'chart_title')
@@ -328,7 +328,7 @@ var VisLineasJ = Class.extend({
           .text(this.dataTitle)
           .style('fill', this.darkGrey)
           .style('font-size', '1.2em');
-      
+
 
 
       // --> DRAW THE 'TABLE'
@@ -362,14 +362,14 @@ var VisLineasJ = Class.extend({
           .enter()
         .append("th")
           .attr('title', function(column) { return column; })
-          .attr('class', function(column) { 
+          .attr('class', function(column) {
             if (column == 'dif') {
               return 'right per_change'
             } else if (column == 'value') {
               return 'right year_header'
             }
           }.bind(this))
-          .text(function(column) { 
+          .text(function(column) {
             if (column == 'dif') {
               return 'Cambio sobre año anterior'
             } else if (column == 'value') {
@@ -382,7 +382,7 @@ var VisLineasJ = Class.extend({
       thead.select('.year_header')
           .style('font-size', '14px')
 
-      
+
       // create a row for each object in the data
       var rows = tbody.selectAll("tr")
           .data(this.series == 'means' ? this.dataChart.reverse() : this.dataChart)
@@ -396,10 +396,10 @@ var VisLineasJ = Class.extend({
       // create a cell in each row for each column
       var cells = rows.selectAll("td")
           .data(function(row) {
-             
-            var dataChartFiltered = row.values.filter(function(v) { 
+
+            var dataChartFiltered = row.values.filter(function(v) {
                     return v.date.getFullYear() == this.dataYear.getFullYear();
-                  }.bind(this))           
+                  }.bind(this))
 
             dataChartFiltered.map(function(d) { return colors[d.name] != undefined ? d['color']= 'le le-' + colors[d.name] : d['color'] = 'le le-place'; });
 
@@ -422,8 +422,8 @@ var VisLineasJ = Class.extend({
                   var value = dataChartFiltered[0][column]
                   var classed = this._normalize(dataChartFiltered[0].name)
                 }
-                return {column: column, 
-                        value: value, 
+                return {column: column,
+                        value: value,
                         name: dataChartFiltered[0].name,
                         classed: classed
                       };
@@ -438,14 +438,14 @@ var VisLineasJ = Class.extend({
 
 
           // Replace bullets colors
-          
+
           var bulletsColors = this.colorScale.range();
 
           d3.selectAll('.le').forEach(function(v) {
-            v.forEach(function(d,i) { 
+            v.forEach(function(d,i) {
               d3.select(v[i])
                 .style('background', this.series == 'means' ? bulletsColors[(bulletsColors.length - 1) - i] : bulletsColors[i])
-            }.bind(this)); 
+            }.bind(this));
           }.bind(this));
 
     }.bind(this)); // end load data
@@ -460,7 +460,7 @@ var VisLineasJ = Class.extend({
   //   this.kind = this.data.kind;
   //   this.dataYear = this.parseDate(this.data.year);
 
-  //   this.dataDomain = [d3.min(this.dataChart.map(function(d) { return d3.min(d.values.map(function(v) { return v.value; })); })), 
+  //   this.dataDomain = [d3.min(this.dataChart.map(function(d) { return d3.min(d.values.map(function(v) { return v.value; })); })),
   //             d3.max(this.dataChart.map(function(d) { return d3.max(d.values.map(function(v) { return v.value; })); }))];
 
   //   // Update the scales
@@ -475,7 +475,7 @@ var VisLineasJ = Class.extend({
 
   //   // Update the axis
   //   this.xAxis.scale(this.xScale);
- 
+
   //   this.yAxis
   //       .scale(this.yScale)
   //       .tickValues(this._tickValues(this.yScale))
@@ -485,14 +485,14 @@ var VisLineasJ = Class.extend({
   //     .transition()
   //     .duration(this.duration)
   //     .delay(this.duration/2)
-  //     .ease("sin-in-out") 
+  //     .ease("sin-in-out")
   //     .call(this.xAxis);
 
   //   this.svgLines.select(".y.axis")
   //     .transition()
   //     .duration(this.duration)
   //     .delay(this.duration/2)
-  //     .ease("sin-in-out") 
+  //     .ease("sin-in-out")
   //     .call(this.yAxis);
 
   //   // Change ticks color
@@ -519,15 +519,15 @@ var VisLineasJ = Class.extend({
   //       .duration(this.duration)
   //       .attr('cx', function(d) { return this.xScale(d.date); }.bind(this))
   //       .attr('cy', function(d) { return this.yScale(d.value); }.bind(this));
-    
+
   //   // Update table figures
   //   this.svgTable.selectAll('.legend_value')
   //       .data(this.dataChart)
-  //       .text(function(d) { 
-  //         var dataChartFiltered = d.values.filter(function(v) { 
+  //       .text(function(d) {
+  //         var dataChartFiltered = d.values.filter(function(v) {
   //           return v.date.getFullYear() == this.dataYear.getFullYear();
   //         }.bind(this));
-  //         return this.formatPercent(dataChartFiltered[0].value) + this._units(); 
+  //         return this.formatPercent(dataChartFiltered[0].value) + this._units();
   //       }.bind(this))
   //       .transition()
   //         .duration(this.duration/4)
@@ -541,11 +541,11 @@ var VisLineasJ = Class.extend({
 
   //    this.svgTable.selectAll('.legend_dif')
   //       .data(this.dataChart)
-  //       .text(function(d) { 
-  //         var dataChartFiltered = d.values.filter(function(v) { 
+  //       .text(function(d) {
+  //         var dataChartFiltered = d.values.filter(function(v) {
   //           return v.date.getFullYear() == this.dataYear.getFullYear();
   //         }.bind(this));
-  //         return dataChartFiltered[0].dif > 0 ? '+' + this.formatPercent(dataChartFiltered[0].dif) + this._units() : this.formatPercent(dataChartFiltered[0].dif) + this._units(); 
+  //         return dataChartFiltered[0].dif > 0 ? '+' + this.formatPercent(dataChartFiltered[0].dif) + this._units() : this.formatPercent(dataChartFiltered[0].dif) + this._units();
   //       }.bind(this))
   //       .transition()
   //         .duration(this.duration/4)
@@ -570,9 +570,9 @@ var VisLineasJ = Class.extend({
         selectedData = d3.select(selected).data()[0],
         selectedCx = d3.select(selected).attr('cx'),
         selectedCy = d3.select(selected).attr('cy');
-  
-    var dataChartFiltered = this.dataChart.map(function(d, i) { 
-      return d.values.filter(function(v) { 
+
+    var dataChartFiltered = this.dataChart.map(function(d, i) {
+      return d.values.filter(function(v) {
         return v.date.getFullYear() == selectedData.date.getFullYear();
       })[0];
     });
@@ -589,27 +589,27 @@ var VisLineasJ = Class.extend({
           .transition()
             .duration(this.duration)
             .style('opacity', 1);
-    
+
         // Values
         d3.selectAll('.value')
           .transition()
             .duration(this.duration / 2)
             .style('opacity', 0)
-          .text(function(d) { 
+          .text(function(d) {
               var newValue = dataChartFiltered.filter(function(value) { return value.name == d.name; })
               d.value = newValue[0].value
-              return d.value != null ? accounting.formatMoney(d.value) : '-- €'; 
+              return d.value != null ? accounting.formatMoney(d.value) : '-- €';
             })
           .transition()
             .duration(this.duration)
             .style('opacity', 1);
-        
+
         // Difs
         d3.selectAll('.dif')
           .transition()
             .duration(this.duration / 2)
             .style('opacity', 0)
-          .text(function(d) { 
+          .text(function(d) {
             var newValue = dataChartFiltered.filter(function(dif) { return dif.name == d.name; })
             d.dif = newValue[0].dif
             if (d.dif != null) {
@@ -617,7 +617,7 @@ var VisLineasJ = Class.extend({
             } else {
               return '--%'
             }
-             
+
             })
           .transition()
             .duration(this.duration)
@@ -647,7 +647,7 @@ var VisLineasJ = Class.extend({
       .transition()
       .duration(this.duration)
       .style('opacity', this.opacityLow);
-    
+
 
   },
 
@@ -680,7 +680,7 @@ var VisLineasJ = Class.extend({
 
   _mouseoverTable: function () {
     var classed = d3.event.target.classList[d3.event.target.classList.length - 1]
-          
+
     this.svgLines.selectAll('.dot_line')
       .filter(function(d) { return this._normalize(d.name) != classed; }.bind(this))
       .transition()
@@ -698,7 +698,7 @@ var VisLineasJ = Class.extend({
 
   _mouseoutTable: function () {
     var classed = d3.event.target.classList[d3.event.target.classList.length - 1]
-             
+
     this.svgLines.selectAll('.dot_line')
       .transition()
       .duration(this.duration)
@@ -720,13 +720,13 @@ var VisLineasJ = Class.extend({
   },
 
   _normalize: (function() {
-    var from = "ÃÀÁÄÂÈÉËÊÌÍÏÎÒÓÖÔÙÚÜÛãàáäâèéëêìíïîòóöôùúüûÑñÇç ", 
+    var from = "ÃÀÁÄÂÈÉËÊÌÍÏÎÒÓÖÔÙÚÜÛãàáäâèéëêìíïîòóöôùúüûÑñÇç ",
         to   = "AAAAAEEEEIIIIOOOOUUUUaaaaaeeeeiiiioooouuuunncc_",
         mapping = {};
-   
+
     for(var i = 0, j = from.length; i < j; i++ )
         mapping[ from.charAt( i ) ] = to.charAt( i );
-   
+
     return function( str ) {
         var ret = [];
         for( var i = 0, j = str.length; i < j; i++ ) {
@@ -735,10 +735,10 @@ var VisLineasJ = Class.extend({
                 ret.push( mapping[ c ] );
             else
                 ret.push( c );
-        }      
+        }
         return ret.join( '' ).toLowerCase();
     }
- 
+
   })()
 
 }); // End object
