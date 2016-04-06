@@ -33,7 +33,7 @@
   </div>
 
   <div class="metric"
-    data-widget-template="#widget-template-no-ranking"
+    data-widget-template="#widget-template-execution"
     data-widget-type="total_budget_execution"
     data-widget-data-url="<%= api_data_total_budget_execution_path(ine_code: @place.id, year: @year, format: :json) %>">
   </div>
@@ -161,12 +161,9 @@
   </div>
 </script>
 
-<script type="text/html" id="widget-template-no-ranking">
+<script type="text/html" id="widget-template-execution">
   <div class="label">{{title}}</div>
-  <div class="main {{sign}}">{{delta_percentage}} %</div>
-  <div class="secondary">
-    <div class="percentage_change up {{sign}}">{{value}}</div>
-  </div>
+  <div class="main {{sign}}">{{delta_percentage}} % ({{value}})</div>
 </script>
 
 <% content_for :javascript do %>

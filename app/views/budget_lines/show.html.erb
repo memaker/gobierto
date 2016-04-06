@@ -40,7 +40,7 @@ set_meta_tags description: "Datos de #{kind_literal(@kind).singularize} en #{bud
   </div>
 
   <div class="metric"
-    data-widget-template="#widget-template-no-ranking"
+    data-widget-template="#widget-template-execution"
     data-widget-type="total_budget_execution"
     data-widget-data-url="<%= api_data_budget_execution_path(ine_code: @place.id, year: @year, kind: @kind, code: @code.parameterize, area: @area_name, format: :json) %>">
   </div>
@@ -98,12 +98,9 @@ set_meta_tags description: "Datos de #{kind_literal(@kind).singularize} en #{bud
   </div>
 </script>
 
-<script type="text/html" id="widget-template-no-ranking">
+<script type="text/html" id="widget-template-execution">
   <div class="label">{{title}}</div>
-  <div class="main {{sign}}">{{delta_percentage}} %</div>
-  <div class="secondary">
-    <div class="percentage_change up {{sign}}">{{value}}</div>
-  </div>
+  <div class="main {{sign}}">{{delta_percentage}} % ({{value}})</div>
 </script>
 
 <div class="item_description">

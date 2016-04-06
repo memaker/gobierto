@@ -118,7 +118,7 @@ class Api::DataController < ApplicationController
     @kind = params[:kind]
     @code = code_from_params(params[:code])
 
-    @category_name = @kind == 'G' ? 'Gasto ejecutado vs Presupuestado' : 'Ingreso ejecutado vs Presupuestado'
+    @category_name = @kind == 'G' ? 'Gasto ejecutado vs presupuestado' : 'Ingreso ejecutado vs presupuestado'
 
     budget_data = budget_data_executed(@year, 'amount')
     budget_data_previous_year = budget_data_executed(@year - 1, 'amount')
