@@ -194,7 +194,7 @@ $(function(){
 
   $('#follow_link').click(function(e) {
     e.preventDefault();
-    $('#user_email').focus();
+    $('#gobierto_budgets_user_email').focus();
   });
 
   $('.modal_widget li').hover(function(e) {

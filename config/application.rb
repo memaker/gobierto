@@ -44,4 +44,5 @@ module RailsTemplate
   end
 end
 
-require Rails.root.join 'app', 'models', 'search_engine_configuration'
+require Rails.root.join('app', 'models', 'gobierto_budgets')
+require Rails.root.join('app', 'models', 'gobierto_budgets', 'search_engine_configuration')

@@ -1,0 +1,16 @@
+$('[data-featured-budget-line]').html('<%= j(render('gobierto_budgets/featured_budget_lines/show')) %>');
+
+// TODO: refactor. This is duplicated in ui.js, and should be extracted to a component
+var widgets = [];
+$('[data-widget-type]').each(function(){
+  if($(this).data('widget-id') === undefined){
+    $(this).attr('data-widget-id', Math.random().toString(36).substring(7));
+  }
+  var widget = new WidgetRenderer({
+    id: $(this).data('widget-id'), type: $(this).data('widget-type'),
+    url: $(this).data('widget-data-url'), template: $(this).data('widget-template')
+  });
+
+  widget.render();
+});
+

@@ -38,8 +38,8 @@
 
 <div class="top-claim">
   <p>
-    <%= link_to 'Descarga la Guía de Comunicación para Municipios', new_user_path(pro: true) %>
-    <span class="f_right"><%= link_to 'English', en_path %></span>
+    <%= link_to 'Descarga la Guía de Comunicación para Municipios', new_gobierto_budgets_user_path(pro: true) %>
+    <span class="f_right"><%= link_to 'English', gobierto_budgets_en_path %></span>
   </p>
 </div>
 
@@ -62,9 +62,9 @@
       <menu>
         <ul>
           <li><%= link_to 'Municipios', root_path, class_if('selected', current_page?(root_path))  %></li>
-          <li><%= link_to 'Compara', compare_path , class_if('selected', current_page?(compare_path) || action_name == 'compare')%></li>
-          <li><%= link_to 'Rankings', ranking_path , class_if('selected', current_page?(ranking_path) || action_name == 'ranking')%></li>
-          <li><%= link_to 'Servicios', about_path(anchor: 'municipalities') , class_if('selected', current_page?(about_path))%></li>
+          <li><%= link_to 'Compara', gobierto_budgets_compare_path , class_if('selected', current_page?(gobierto_budgets_compare_path) || action_name == 'compare')%></li>
+          <li><%= link_to 'Rankings', gobierto_budgets_ranking_path , class_if('selected', current_page?(gobierto_budgets_ranking_path) || action_name == 'ranking')%></li>
+          <li><%= link_to 'Servicios', gobierto_budgets_about_path(anchor: 'municipalities') , class_if('selected', current_page?(gobierto_budgets_about_path))%></li>
         </ul>
       </menu>
 
@@ -72,10 +72,10 @@
       <div class="links_list personal_links">
         <p>Hola <strong><%= current_user.full_name %></strong></p>
         <% if current_user.place_id %>
-          <p>Tu municipio: <%= link_to INE::Places::Place.find(current_user.place_id).name, place_path(INE::Places::Place.find(current_user.place_id), year: 2015) %></p>
+          <p>Tu municipio: <%= link_to INE::Places::Place.find(current_user.place_id).name, gobierto_budgets_place_path(INE::Places::Place.find(current_user.place_id), year: 2015) %></p>
         <% end %>
-        <p><%= link_to 'Editar datos personales', edit_user_path %></p>
-        <p><%= link_to 'Cerrar sesión', logout_path, method: :delete, class: 'logout' %></p>
+        <p><%= link_to 'Editar datos personales', edit_gobierto_budgets_user_path %></p>
+        <p><%= link_to 'Cerrar sesión', gobierto_budgets_logout_path, method: :delete, class: 'logout' %></p>
       </div>
       <% end %>
 
@@ -121,16 +121,16 @@
 
   <menu>
     <ul>
-      <li><%= link_to 'Acerca de', about_path %></li>
-      <li><%= link_to 'Preguntas frecuentes', faq_path %></li>
-      <li><%= link_to 'Metodología y Fuentes', about_path(anchor: 'method') %></li>
-      <li><%= link_to 'Contacto', about_path(anchor: 'contact') %></li>
+      <li><%= link_to 'Acerca de', gobierto_budgets_about_path %></li>
+      <li><%= link_to 'Preguntas frecuentes', gobierto_budgets_faq_path %></li>
+      <li><%= link_to 'Metodología y Fuentes', gobierto_budgets_about_path(anchor: 'method') %></li>
+      <li><%= link_to 'Contacto', gobierto_budgets_about_path(anchor: 'contact') %></li>
     </ul>
 
     <ul class="legal">
-      <li><%= link_to 'Aviso legal', legal_legal_path %></li>
-      <li><%= link_to 'Política de privacidad', legal_privacy_path %></li>
-      <li><%= link_to 'Política de cookies', legal_cookies_path %></li>
+      <li><%= link_to 'Aviso legal', gobierto_budgets_legal_legal_path %></li>
+      <li><%= link_to 'Política de privacidad', gobierto_budgets_legal_privacy_path %></li>
+      <li><%= link_to 'Política de cookies', gobierto_budgets_legal_cookies_path %></li>
   </menu>
 
   <a href="https://mixpanel.com/f/partner"><img src="//cdn.mxpnl.com/site_media/images/partner/badge_light.png" alt="Mobile Analytics" /></a>
@@ -139,10 +139,10 @@
 
 
 <script type="text/javascript">
-  
+
     'use strict';
     <%= yield :javascript %>
-  
+
 </script>
 
 <%= render 'layouts/analytics_footer' %>

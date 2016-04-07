@@ -12,7 +12,7 @@ $(function () {
 
     // var name = $('#lead_form').find('input[name="lead_name"]').val();
     // var surname = $('#lead_form').find('input[name="lead_surname"]').val();
-    var email = $('#user_email').val();
+    var email = $('#gobierto_budgets_user_email').val();
     var phone = $('#lead_phone').val();
     var place = $('#select2-user_place_id-container').text();
     var user_type = $('input[data-user-type]:checked').attr('data-user-type');
@@ -22,7 +22,7 @@ $(function () {
     console.log('Place: ' + place);
     console.log('Phone: ' + phone);
     console.log('User Type: ' + user_type);
-    
+
     mixpanel.identify(email);
     mixpanel.people.set({
       // "$first_name": name,
@@ -34,20 +34,20 @@ $(function () {
       "User Type": [user_type],
       "Place": [place]
     });
-    
+
   });
 
   // Track user when she verifies or edits account
   $('.edit_user .submit').click(function(e) {
     // e.preventDefault();
-    
+
     // $('#user_email').val()
     // $('#select2-user_place_id-container').val()
     // $('input[data-user-type]:checked').attr('data-user-type');
 
-    var name = $('#user_first_name').val();
-    var surname = $('#user_last_name').val();
-    var email = $('#user_email').val();
+    var name = $('#gobierto_budgets_user_first_name').val();
+    var surname = $('#gobierto_budgets_user_last_name').val();
+    var email = $('#gobierto_budgets_user_email').val();
     var place = $('#select2-user_place_id-container').text();
     var user_type = $('input[data-user-type]:checked').attr('data-user-type');
     // console.log('Name: ' + name);
@@ -55,7 +55,7 @@ $(function () {
     console.log('Email: ' + email);
     console.log('Place: ' + place);
     console.log('User Type: ' + user_type);
-    
+
     mixpanel.identify(email);
     mixpanel.people.set({
       "$first_name": name,
@@ -67,7 +67,7 @@ $(function () {
       "User Type": [user_type],
       "Place": [place]
     });
-    
+
   });
 
 
