@@ -238,7 +238,7 @@ class Api::DataController < ApplicationController
     year = params[:year].to_i
     total_budget_data_planned = total_budget_data(year, 'total_budget', false)
     total_budget_data_executed = total_budget_data_executed(year, 'total_budget')
-    diff = total_budget_data_executed[:value] - total_budget_data_planned[:value] rescue "n/a"
+    diff = total_budget_data_executed[:value] - total_budget_data_planned[:value] rescue ""
     sign = sign(total_budget_data_executed[:value], total_budget_data_planned[:value])
     diff = format_currency(diff) if diff.is_a?(Float)
 
@@ -389,7 +389,7 @@ class Api::DataController < ApplicationController
   end
 
   def delta_percentage(value, old_value)
-    return "n/a" if value.nil? || old_value.nil?
+    return "" if value.nil? || old_value.nil?
     ((value.to_f - old_value.to_f)/old_value.to_f) * 100
   end
 

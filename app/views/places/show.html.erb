@@ -163,7 +163,12 @@
 
 <script type="text/html" id="widget-template-execution">
   <div class="label">{{title}}</div>
+  {{#delta_percentage}}
   <div class="main {{sign}}">{{delta_percentage}} % ({{value}})</div>
+  {{/delta_percentage}}
+  {{^delta_percentage}}
+  <div class="main {{sign}}">No disponible</div>
+  {{/delta_percentage}}
 </script>
 
 <% content_for :javascript do %>
