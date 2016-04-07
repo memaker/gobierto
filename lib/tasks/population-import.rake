@@ -1,6 +1,6 @@
 namespace :population do
-  POPULATION_INDEXES = ['data']
-  POPULATION_TYPES = ['population']
+  POPULATION_INDEXES = [SearchEngineConfiguration::Data.index]
+  POPULATION_TYPES = [SearchEngineConfiguration::Data.type_population]
 
   def create_population_mapping(index, type)
     m = SearchEngine.client.indices.get_mapping index: index, type: type

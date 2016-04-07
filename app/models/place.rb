@@ -1,7 +1,4 @@
 class Place
-  INDEX = 'data'
-  TYPE = 'places-v2'
-
   def self.search(query)
     return [] if query.blank? || query.length < 3
 
@@ -17,7 +14,7 @@ class Place
       size: 25
     }
 
-    response = SearchEngine.client.search index: 'data', type: 'places-v2', body: query
+    response = SearchEngine.client.search index: SearchEngineConfiguration::Data.index, type: SearchEngineConfiguration::Data.type_places, body: query
 
     response['hits']['hits'].map{|h| h['_source'] }.map do |place|
       ine_place = INE::Places::Place.find(place['ine_code'])

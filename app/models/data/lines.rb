@@ -278,7 +278,7 @@ class Data::Lines
 
   def type
     if @code.nil?
-      BudgetTotal::TYPE
+      SearchEngineConfiguration::TotalBudget.type
     else
       @area
     end

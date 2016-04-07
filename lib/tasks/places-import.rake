@@ -1,6 +1,6 @@
 namespace :places do
-  PLACES_INDEXES = ['data']
-  PLACES_TYPES = ['places-v2']
+  PLACES_INDEXES = [SearchEngineConfiguration::Data.index]
+  PLACES_TYPES = [SearchEngineConfiguration::Data.type_places]
 
   def create_places_mapping(index, type)
     m = SearchEngine.client.indices.get_mapping index: index, type: type

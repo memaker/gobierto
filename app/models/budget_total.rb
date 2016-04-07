@@ -1,7 +1,4 @@
 class BudgetTotal
-  INDEX = 'budgets-forecast-v2'
-  INDEX_EXECUTED = 'budgets-execution-v2'
-  TYPE = 'total-budget'
   TOTAL_FILTER_MIN = 0
   TOTAL_FILTER_MAX = 5000000000
   PER_INHABITANT_FILTER_MIN = 0
@@ -10,7 +7,7 @@ class BudgetTotal
   def self.for(ine_code, year)
     return for_places(ine_code, year) if ine_code.is_a?(Array)
 
-    result = SearchEngine.client.get index: BudgetTotal::INDEX, type: BudgetTotal::TYPE, id: [ine_code, year].join('/')
+    result = SearchEngine.client.get index: SearchEngineConfiguration::TotalBudget.index_forecast, type: SearchEngineConfiguration::TotalBudget.type, id: [ine_code, year].join('/')
     result['_source']['total_budget'].to_f
   end
 
@@ -31,7 +28,7 @@ class BudgetTotal
       size: 10000
     }
 
-    response = SearchEngine.client.search index: INDEX, type: TYPE, body: query
+    response = SearchEngine.client.search index: SearchEngineConfiguration::TotalBudget.index_forecast, type: SearchEngineConfiguration::TotalBudget.type, body: query
     return response['hits']['hits'].map{ |h| h['_source'] }
   end
 
@@ -98,6 +95,6 @@ class BudgetTotal
     query.merge!(from: options[:offset]) if options[:offset].present?
     query.merge!(_source: false) if options[:to_rank]
 
-    SearchEngine.client.search index: BudgetTotal::INDEX, type: BudgetTotal::TYPE, body: query
+    SearchEngine.client.search index: SearchEngineConfiguration::TotalBudget.index_forecast, type: SearchEngineConfiguration::TotalBudget.type, body: query
   end
 end

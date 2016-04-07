@@ -1,14 +1,11 @@
 namespace :budget_categories do
-  BUDGET_CATEGORIES_INDEX = 'budget-categories'
-  BUDGET_CATEGORIES_TYPE = 'categories'
-
   def create_categories_mapping
-    m = SearchEngine.client.indices.get_mapping index: BUDGET_CATEGORIES_INDEX, type: BUDGET_CATEGORIES_TYPE
+    m = SearchEngine.client.indices.get_mapping index: SearchEngineConfiguration::BudgetCategories.index, type: SearchEngineConfiguration::BudgetCategories.type
     return unless m.empty?
 
     # document id: `<area_name>/<code>/<kind>`. Example: `economic/G`
-    SearchEngine.client.indices.put_mapping index: BUDGET_CATEGORIES_INDEX, type: BUDGET_CATEGORIES_TYPE, body: {
-      BUDGET_CATEGORIES_TYPE.to_sym => {
+    SearchEngine.client.indices.put_mapping index: SearchEngineConfiguration::BudgetCategories.index, type: SearchEngineConfiguration::BudgetCategories.type, body: {
+      SearchEngineConfiguration::BudgetCategories.type.to_sym => {
         properties: {
           area:                  { type: 'string', index: 'not_analyzed'  },
           code:                  { type: 'string', index: 'not_analyzed'  },
@@ -58,7 +55,7 @@ namespace :budget_categories do
       }
 
       id = ['economic',row['cdcta'],row['tipreig']].join('/')
-      SearchEngine.client.index index: BUDGET_CATEGORIES_INDEX, type: BUDGET_CATEGORIES_TYPE, id: id, body: query
+      SearchEngine.client.index index: SearchEngineConfiguration::BudgetCategories.index, type: SearchEngineConfiguration::BudgetCategories.type, id: id, body: query
     end
   end
 
@@ -87,23 +84,23 @@ namespace :budget_categories do
 
       id = ['functional',row['cdfgr'],'G'].join('/')
 
-      SearchEngine.client.index index: BUDGET_CATEGORIES_INDEX, type: BUDGET_CATEGORIES_TYPE, id: id,  body: query
+      SearchEngine.client.index index: SearchEngineConfiguration::BudgetCategories.index, type: SearchEngineConfiguration::BudgetCategories.type, id: id,  body: query
     end
   end
 
   desc 'Reset ElasticSearch'
   task :reset => :environment do
-    if SearchEngine.client.indices.exists? index: BUDGET_CATEGORIES_INDEX
-      puts "- Deleting #{BUDGET_CATEGORIES_INDEX}..."
-      SearchEngine.client.indices.delete index: BUDGET_CATEGORIES_INDEX
+    if SearchEngine.client.indices.exists? index: SearchEngineConfiguration::BudgetCategories.index
+      puts "- Deleting #{SearchEngineConfiguration::BudgetCategories.index}..."
+      SearchEngine.client.indices.delete index: SearchEngineConfiguration::BudgetCategories.index
     end
   end
 
   desc 'Create mappings'
   task :create => :environment do
-    unless SearchEngine.client.indices.exists? index: BUDGET_CATEGORIES_INDEX
-      puts "- Creating index #{BUDGET_CATEGORIES_INDEX}"
-      SearchEngine.client.indices.create index: BUDGET_CATEGORIES_INDEX, body: {
+    unless SearchEngine.client.indices.exists? index: SearchEngineConfiguration::BudgetCategories.index
+      puts "- Creating index #{SearchEngineConfiguration::BudgetCategories.index}"
+      SearchEngine.client.indices.create index: SearchEngineConfiguration::BudgetCategories.index, body: {
         settings: {
           # Allow 100_000 results per query
           index: { max_result_window: 100_000 }
@@ -111,7 +108,7 @@ namespace :budget_categories do
       }
     end
 
-    puts "- Creating #{BUDGET_CATEGORIES_INDEX} #{BUDGET_CATEGORIES_TYPE}"
+    puts "- Creating #{SearchEngineConfiguration::BudgetCategories.index} #{SearchEngineConfiguration::BudgetCategories.type}"
     create_categories_mapping
   end
 

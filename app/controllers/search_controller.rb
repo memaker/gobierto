@@ -58,7 +58,7 @@ class SearchController < ApplicationController
       size: 10_000
     }
 
-    response = SearchEngine.client.search index: BudgetLine::INDEX, type: area, body: query
+    response = SearchEngine.client.search index: SearchEngineConfiguration::BudgetLine.index_forecast, type: area, body: query
     response['hits']['hits'].map{|h| h['_source']['code'] }
   end
 end

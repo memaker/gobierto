@@ -31,9 +31,6 @@ module RailsTemplate
                                 controller_specs: false, request_specs: false
     end
 
-    # Set the default host name for emails
-    # config.action_mailer.default_url_options = { host: '' }
-
     config.action_dispatch.default_headers.merge!({
       'Access-Control-Allow-Origin' => '*',
       'Access-Control-Request-Method' => '*'
@@ -46,3 +43,5 @@ module RailsTemplate
     config.active_job.queue_adapter = :delayed_job
   end
 end
+
+require Rails.root.join 'app', 'models', 'search_engine_configuration'

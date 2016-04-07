@@ -1,8 +1,5 @@
 namespace :total_budget do
-  FORECAST_INDEX = 'budgets-forecast-v2'
-  EXECUTION_INDEX = 'budgets-execution-v2'
-  TOTAL_BUDGET_INDEXES = [FORECAST_INDEX, EXECUTION_INDEX]
-  TOTAL_BUDGET_TYPES = ['total-budget']
+  TOTAL_BUDGET_INDEXES = [SearchEngineConfiguration::TotalBudget.index_forecast, SearchEngineConfiguration::TotalBudget.index_executed]
 
   def create_total_budget_mapping(index, type)
     m = SearchEngine.client.indices.get_mapping index: index, type: type
@@ -72,7 +69,7 @@ namespace :total_budget do
       }
 
       id = [place.id,year].join("/")
-      SearchEngine.client.index index: index, type: TOTAL_BUDGET_TYPES.first, id: id, body: data
+      SearchEngine.client.index index: index, type: SearchEngineConfiguration::TotalBudget.type, id: id, body: data
     end
 
     pbar.finish
@@ -101,10 +98,8 @@ namespace :total_budget do
         }
       end
 
-      TOTAL_BUDGET_TYPES.each do |type|
-        puts "- Creating #{index} > #{type}"
-        create_total_budget_mapping(index, type)
-      end
+      puts "- Creating #{index} > #{SearchEngineConfiguration::TotalBudget.type}"
+      create_total_budget_mapping(index, SearchEngineConfiguration::TotalBudget.type)
     end
   end
 

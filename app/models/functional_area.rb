@@ -1,7 +1,4 @@
 class FunctionalArea
-  INDEX = 'budget-categories'
-  TYPE = 'categories'
-
   EXPENSE = 'G'
 
   def self.all_items
@@ -24,7 +21,7 @@ class FunctionalArea
         },
         size: 10_000
       }
-      response = SearchEngine.client.search index: INDEX, type: TYPE, body: query
+      response = SearchEngine.client.search index: SearchEngineConfiguration::BudgetCategories.index, type: SearchEngineConfiguration::BudgetCategories.type, body: query
 
       response['hits']['hits'].each do |h|
         source = h['_source']

@@ -171,10 +171,10 @@ class Api::DataController < ApplicationController
     @code = code_from_params(params[:code])
 
     begin
-      result = SearchEngine.client.get index: BudgetLine::INDEX, type: @area, id: [params[:ine_code],@year,@code,@kind].join('/')
+      result = SearchEngine.client.get index: SearchEngineConfiguration::BudgetLine.index_forecast, type: @area, id: [params[:ine_code],@year,@code,@kind].join('/')
       amount = result['_source']['amount'].to_f
 
-      result = SearchEngine.client.get index: BudgetTotal::INDEX, type: BudgetTotal::TYPE, id: [params[:ine_code], @year].join('/')
+      result = SearchEngine.client.get index: SearchEngineConfiguration::TotalBudget.index_forecast, type: SearchEngineConfiguration::TotalBudget.type, id: [params[:ine_code], @year].join('/')
       total_amount = result['_source']['total_budget'].to_f
 
       percentage = (amount.to_f * 100)/total_amount
@@ -290,7 +290,7 @@ class Api::DataController < ApplicationController
     id = "#{params[:ine_code]}/#{year}/#{@code}/#{@kind}"
 
     if ranking
-      response = SearchEngine.client.search index: BudgetLine::INDEX, type: @area, body: query
+      response = SearchEngine.client.search index: SearchEngineConfiguration::BudgetLine.index_forecast, type: @area, body: query
       buckets = response['hits']['hits'].map{|h| h['_id']}
       position = buckets.index(id) + 1 rescue 0
     else
@@ -299,7 +299,7 @@ class Api::DataController < ApplicationController
     end
 
     begin
-      value = SearchEngine.client.get index: BudgetLine::INDEX, type: @area, id: id
+      value = SearchEngine.client.get index: SearchEngineConfiguration::BudgetLine.index_forecast, type: @area, id: id
       value = value['_source'][field]
     rescue Elasticsearch::Transport::Transport::Errors::NotFound
       value = 0
@@ -316,7 +316,7 @@ class Api::DataController < ApplicationController
     id = "#{params[:ine_code]}/#{year}/#{@code}/#{@kind}"
 
     begin
-      value = SearchEngine.client.get index: BudgetLine::INDEX_EXECUTED, type: @area, id: id
+      value = SearchEngine.client.get index: SearchEngineConfiguration::BudgetLine.index_executed, type: @area, id: id
       value = value['_source'][field]
     rescue Elasticsearch::Transport::Transport::Errors::NotFound
       value = nil
@@ -351,7 +351,7 @@ class Api::DataController < ApplicationController
     id = "#{params[:ine_code]}/#{year}"
 
     if ranking
-      response = SearchEngine.client.search index: BudgetTotal::INDEX, type: BudgetTotal::TYPE, body: query
+      response = SearchEngine.client.search index: SearchEngineConfiguration::TotalBudget.index_forecast, type: SearchEngineConfiguration::TotalBudget.type, body: query
       buckets = response['hits']['hits'].map{|h| h['_id']}
       position = buckets.index(id) + 1 rescue 0
     else
@@ -360,7 +360,7 @@ class Api::DataController < ApplicationController
     end
 
     begin
-      value = SearchEngine.client.get index: BudgetTotal::INDEX, type: BudgetTotal::TYPE, id: id
+      value = SearchEngine.client.get index: SearchEngineConfiguration::TotalBudget.index_forecast, type: SearchEngineConfiguration::TotalBudget.type, id: id
       value = value['_source'][field]
     rescue Elasticsearch::Transport::Transport::Errors::NotFound
       value = 0
@@ -377,7 +377,7 @@ class Api::DataController < ApplicationController
     id = "#{params[:ine_code]}/#{year}"
 
     begin
-      value = SearchEngine.client.get index: BudgetTotal::INDEX_EXECUTED, type: BudgetTotal::TYPE, id: id
+      value = SearchEngine.client.get index: SearchEngineConfiguration::TotalBudget.index_executed, type: SearchEngineConfiguration::TotalBudget.type, id: id
       value = value['_source'][field]
     rescue Elasticsearch::Transport::Transport::Errors::NotFound
       value = nil

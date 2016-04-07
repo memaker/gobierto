@@ -1,6 +1,4 @@
 class Population
-  INDEX = 'data'
-  TYPE = 'population'
   FILTER_MIN = 0
   FILTER_MAX = 5000000
 
@@ -63,17 +61,17 @@ class Population
 
     if total_filter || per_inhabitant_filter
       budget_filters = {}
-      
+
       if (total_filter && (total_filter[:from].to_i > BudgetTotal::TOTAL_FILTER_MIN || total_filter[:to].to_i < BudgetTotal::TOTAL_FILTER_MAX))
         budget_filters[:total] = total_filter
       end
-      
+
       if (per_inhabitant_filter && (per_inhabitant_filter[:from].to_i > BudgetTotal::PER_INHABITANT_FILTER_MIN || per_inhabitant_filter[:to].to_i < BudgetTotal::PER_INHABITANT_FILTER_MAX))
         budget_filters[:per_inhabitant] = per_inhabitant_filter
       end
 
       budget_filters.merge!(aarr: aarr_filter) if aarr_filter
-      
+
       results,total_elements = BudgetTotal.for_ranking(options[:year], 'total_budget', 0, nil, budget_filters)
       ine_codes = results.map{|p| p['ine_code']}
       terms << [{terms: { ine_code: ine_codes }}] if ine_codes.any?
@@ -105,7 +103,7 @@ class Population
     query.merge!(from: options[:offset]) if options[:offset].present?
     query.merge!(_source: false) if options[:to_rank]
 
-    SearchEngine.client.search index: Population::INDEX, type: Population::TYPE, body: query
+    SearchEngine.client.search index: SearchEngineConfiguration::Data.index, type: SearchEngineConfiguration::Data.type_population, body: query
   end
 
   def self.population_query_results(options)

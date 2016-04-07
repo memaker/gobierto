@@ -1,7 +1,4 @@
 class BudgetLine < OpenStruct
-  INDEX = 'budgets-forecast-v2'
-  INDEX_EXECUTED = 'budgets-execution-v2'
-
   INCOME = 'I'
   EXPENSE = 'G'
 
@@ -17,7 +14,7 @@ class BudgetLine < OpenStruct
     if options[:range_hash].present?
       options[:range_hash].each_key do |range_key|
         terms << {range: { range_key => options[:range_hash][range_key] }}
-      end 
+      end
     end
 
     query = {
@@ -40,7 +37,7 @@ class BudgetLine < OpenStruct
       size: 10_000
     }
 
-    response = SearchEngine.client.search index: INDEX, type: (options[:type] || 'economic'), body: query
+    response = SearchEngine.client.search index: SearchEngineConfiguration::BudgetLine.index_forecast, type: (options[:type] || 'economic'), body: query
 
     return {
       'hits' => response['hits']['hits'].map{ |h| h['_source'] },
@@ -99,7 +96,7 @@ class BudgetLine < OpenStruct
     query.merge!(from: options[:offset]) if options[:offset].present?
     query.merge!(_source: false) if options[:to_rank]
 
-    SearchEngine.client.search index: BudgetLine::INDEX, type: options[:area_name], body: query
+    SearchEngine.client.search index: SearchEngineConfiguration::BudgetLine.index_forecast, type: options[:area_name], body: query
   end
 
   def self.find(options)
@@ -149,7 +146,7 @@ class BudgetLine < OpenStruct
       size: 10_000
     }
 
-    response = SearchEngine.client.search index: INDEX, type: options[:type] , body: query
+    response = SearchEngine.client.search index: SearchEngineConfiguration::BudgetLine.index_forecast, type: options[:type] , body: query
     response['hits']['hits'].map{ |h| h['_source'] }
   end
 
@@ -183,7 +180,7 @@ class BudgetLine < OpenStruct
       size: 10_000
     }
 
-    response = SearchEngine.client.search index: INDEX, type: options[:type] , body: query
+    response = SearchEngine.client.search index: SearchEngineConfiguration::BudgetLine.index_forecast, type: options[:type] , body: query
     response['hits']['hits'].map{ |h| h['_source'] }
   end
 
@@ -217,11 +214,11 @@ class BudgetLine < OpenStruct
       size: 10_000
     }
 
-    response = SearchEngine.client.search index: INDEX, type: (options[:type] || 'economic'), body: query
+    response = SearchEngine.client.search index: SearchEngineConfiguration::BudgetLine.index_forecast, type: (options[:type] || 'economic'), body: query
 
     planned_results = response['hits']['hits'].map{ |h| h['_source'] }
 
-    response = SearchEngine.client.search index: INDEX_EXECUTED, type: (options[:type] || 'economic'), body: query
+    response = SearchEngine.client.search index: SearchEngineConfiguration::BudgetLine.index_executed, type: (options[:type] || 'economic'), body: query
 
     executed_results = response['hits']['hits'].map{ |h| h['_source'] }
 
@@ -255,7 +252,7 @@ class BudgetLine < OpenStruct
       size: 5
     }
 
-    response = SearchEngine.client.search index: INDEX, type: 'economic', body: query
+    response = SearchEngine.client.search index: SearchEngineConfiguration::BudgetLine.index_forecast, type: 'economic', body: query
 
     income_entries = response['hits']['hits'].map{ |h| h['_source'] }
 
@@ -278,7 +275,7 @@ class BudgetLine < OpenStruct
       size: 5
     }
 
-    response = SearchEngine.client.search index: INDEX, type: 'functional', body: query
+    response = SearchEngine.client.search index: SearchEngineConfiguration::BudgetLine.index_forecast, type: 'functional', body: query
 
     expense_entries = response['hits']['hits'].map{ |h| h['_source'] }
 

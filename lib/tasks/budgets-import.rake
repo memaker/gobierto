@@ -1,7 +1,5 @@
 namespace :budgets do
-  FORECAST_INDEX = 'budgets-forecast-v2'
-  EXECUTION_INDEX = 'budgets-execution-v2'
-  BUDGETS_INDEXES = [FORECAST_INDEX, EXECUTION_INDEX]
+  BUDGETS_INDEXES = [SearchEngineConfiguration::BudgetLine.index_forecast, SearchEngineConfiguration::BudgetLine.index_executed]
   BUDGETS_TYPES = ['economic', 'functional']
 
   def create_budgets_mapping(index, type)
@@ -104,9 +102,9 @@ SQL
         population: pop
       }
 
-      amount_column = if index == FORECAST_INDEX
+      amount_column = if index == SearchEngineConfiguration::BudgetLine.index_forecast
                         'importe'
-                      elsif index == EXECUTION_INDEX
+                      elsif index == SearchEngineConfiguration::BudgetLine.index_executed
                         'importer'
                       end
 
