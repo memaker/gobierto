@@ -70,7 +70,7 @@ module GobiertoBudgets
     end
 
     def to_mailchimp
-      UpdateOrCreateInMailchimpJob.perform_later(self) if Rails.env.production?
+      ::UpdateOrCreateInMailchimpJob.perform_later(self) if Rails.env.production?
     end
 
   end
