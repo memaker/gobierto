@@ -17,6 +17,7 @@ gem 'geocoder'
 gem 'responders'
 gem 'delayed_job_active_record'
 gem 'daemons'
+gem 'insights_snitcher', path: '../insights_snitcher'
 
 # Frontend
 gem 'jquery-rails'
