@@ -1,0 +1,13 @@
+<h1><%= @place.name %></h1>
+
+<h3>Ingresos</h3>
+<%= render partial: 'explore_execution_table', locals: {data: @top_possitive_difference_income, kind: GobiertoBudgets::BudgetLine::INCOME, area: 'economic'} %>
+<%= render partial: 'explore_execution_table', locals: {data: @top_negative_difference_income, kind: GobiertoBudgets::BudgetLine::INCOME, area: 'economic'} %>
+
+<h3>Gastos económico</h3>
+<%= render partial: 'explore_execution_table', locals: {data: @top_possitive_difference_expending_economic, kind: GobiertoBudgets::BudgetLine::EXPENSE, area: 'economic'} %>
+<%= render partial: 'explore_execution_table', locals: {data: @top_negative_difference_expending_economic, kind: GobiertoBudgets::BudgetLine::EXPENSE, area: 'economic'} %>
+
+<h3>Gastos funcional</h3>
+<%= render partial: 'explore_execution_table', locals: {data: @top_possitive_difference_expending_functional, kind: GobiertoBudgets::BudgetLine::EXPENSE, area: 'functional'} %>
+<%= render partial: 'explore_execution_table', locals: {data: @top_negative_difference_expending_functional, kind: GobiertoBudgets::BudgetLine::EXPENSE, area: 'functional'} %>

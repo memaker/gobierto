@@ -5,7 +5,7 @@ module Factories
     attrs[:password_confirmation] ||= attrs[:password]
     attrs[:place_id] ||= 28079
     attrs[:terms_of_service] ||= true
-    User.new(attrs).tap do |u|
+    GobiertoBudgets::User.new(attrs).tap do |u|
       u.save!
       u.clear_verification_token
       u.save!

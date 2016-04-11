@@ -12,7 +12,7 @@ RSpec.feature 'User feedback' do
 
     expect(page).to have_content('Puedes solicitar a tu alcalde que amplie la información sobre esta y otras partidas')
 
-    fill_in 'user_email', with: 'bar@example.com'
+    fill_in 'gobierto_budgets_user_email', with: 'bar@example.com'
     click_button 'Seguir'
 
     expect(page).to have_content('Comprueba tu correo')
@@ -29,7 +29,7 @@ RSpec.feature 'User feedback' do
     expect(page).to have_content('0% APROPIADO')
     expect(page).to have_content('0% MUCHO')
 
-    fill_in 'user_email', with: 'bar@example.com'
+    fill_in 'gobierto_budgets_user_email', with: 'bar@example.com'
     click_button 'Seguir'
 
     expect(page).to have_content('Comprueba tu correo')
@@ -49,15 +49,15 @@ RSpec.feature 'User feedback' do
     expect(page).to have_content('0% MUCHO')
 
     expect(page).to_not have_css('#new_user')
-    expect(Answer.last.user_id).to eq(@user.id)
+    expect(GobiertoBudgets::Answer.last.user_id).to eq(@user.id)
   end
 
   scenario 'Logged user visits budget line with her feedback', js: true do
     place = INE::Places::Place.find_by_slug 'santander'
 
-    Answer.create answer_text: 'Sí', question_id: 1, user_id: @user.id, place_id: place.id, year: 2015, code: 1, area_name: 'economic', kind: 'G'
-    Answer.create answer_text: 'Apropiado', question_id: 2, user_id: @user.id, place_id: place.id, year: 2015, code: 1, area_name: 'economic', kind: 'G'
-    Answer.create answer_text: 'Apropiado', question_id: 2, user_id: @user.id, place_id: place.id, year: 2014, code: 1, area_name: 'economic', kind: 'G'
+    GobiertoBudgets::Answer.create answer_text: 'Sí', question_id: 1, user_id: @user.id, place_id: place.id, year: 2015, code: 1, area_name: 'economic', kind: 'G'
+    GobiertoBudgets::Answer.create answer_text: 'Apropiado', question_id: 2, user_id: @user.id, place_id: place.id, year: 2015, code: 1, area_name: 'economic', kind: 'G'
+    GobiertoBudgets::Answer.create answer_text: 'Apropiado', question_id: 2, user_id: @user.id, place_id: place.id, year: 2014, code: 1, area_name: 'economic', kind: 'G'
 
     login_as 'foo@example.com', 'foo123456'
 
@@ -83,7 +83,7 @@ RSpec.feature 'User feedback' do
     expect(page).to have_content('El 100.0% de personas han respondido que No')
 
     expect(page).to_not have_css('#new_user')
-    expect(Answer.last.user_id).to eq(@user.id)
+    expect(GobiertoBudgets::Answer.last.user_id).to eq(@user.id)
   end
 
   scenario 'Anonymous user logs in when giving feedback', js: true do
@@ -94,7 +94,7 @@ RSpec.feature 'User feedback' do
     expect(page).to have_content('Puedes solicitar a tu alcalde que amplie la información sobre esta y otras partidas')
     expect(page).to have_content('El 100.0% de personas han respondido que No')
 
-    fill_in 'user_email', with: 'foo@example.com'
+    fill_in 'gobierto_budgets_user_email', with: 'foo@example.com'
     click_button 'Seguir'
     expect(page).to have_content('Parece que ya tienes cuenta en Gobierto')
     fill_in 'session_password', with: 'foo123456'

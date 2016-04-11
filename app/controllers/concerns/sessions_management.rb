@@ -11,9 +11,9 @@ module SessionsManagement
 
   def current_user
     @current_user ||= if (user_id = session[:user_id])
-      User.find_by(id: user_id)
+      GobiertoBudgets::User.find_by(id: user_id)
     elsif (user_id = cookies.signed[:user_id])
-      user = User.find_by(id: user_id)
+      user = GobiertoBudgets::User.find_by(id: user_id)
       if user && user.authenticated?(cookies[:remember_token])
         log_in user
         user
@@ -27,7 +27,7 @@ module SessionsManagement
 
   def logged_in_user
     unless logged_in?
-      redirect_to login_path and return false
+      redirect_to gobierto_budgets_login_path and return false
     end
   end
 
