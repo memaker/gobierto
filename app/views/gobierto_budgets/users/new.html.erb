@@ -11,9 +11,10 @@
 
     <div class="download_guide">
 
-      <i class="fa fa-file-text-o"></i>
+      <i class="fa fa-file-text-o fa-lg"></i>
 
-      <p><strong>Gobierto te ayuda a conectar mejor con tus vecinos</strong>. Gobierto crea herramientas de bajo coste para mejorar tu comunicación y mejorar la percepción de tus vecinos sobre tu actividad. Regístrate para descargar la guía, o si ya tienes cuenta <%= link_to 'haz login', gobierto_budgets_login_path %></p>
+      <p><strong>Gobierto te ayuda a conectar mejor con tus vecinos</strong>. Gobierto crea herramientas de bajo coste para mejorar tu comunicación y mejorar
+        la percepción de tus vecinos sobre tu actividad. Regístrate para descargar la guía, o si ya tienes cuenta <%= link_to 'haz login', gobierto_budgets_login_path %></p>
 
     </div>
 
@@ -26,6 +27,7 @@
   <div class="form clearfix">
 
     <%= render 'alerts' %>
+
     <%= form_for @user do |f| %>
       <%= render partial: 'basic_fields', locals: { f: f} %>
 
@@ -44,4 +46,5 @@
   </div>
 
   <p>¿Ya tienes una cuenta en Gobierto? <%= link_to "Haz login", gobierto_budgets_login_path %></p>
+
 </div>
