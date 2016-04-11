@@ -36,12 +36,14 @@
 
 <body <%= data_attributes %>>
 
-<div class="top-claim">
-  <p>
-    <%= link_to 'Descarga la Guía de Comunicación para Municipios', new_gobierto_budgets_user_path(pro: true) %>
-    <span class="f_right"><%= link_to 'English', gobierto_budgets_en_path %></span>
-  </p>
-</div>
+<% unless logged_in? %>
+  <div class="top-claim">
+    <p>
+      <%= link_to 'Descarga la Guía de Comunicación para Municipios', new_gobierto_budgets_user_path(pro: true) %>
+      <span class="f_right"><%= link_to 'English', gobierto_budgets_en_path %></span>
+    </p>
+  </div>
+<% end %>
 
 <div class="container">
 
@@ -131,6 +133,7 @@
       <li><%= link_to 'Aviso legal', gobierto_budgets_legal_legal_path %></li>
       <li><%= link_to 'Política de privacidad', gobierto_budgets_legal_privacy_path %></li>
       <li><%= link_to 'Política de cookies', gobierto_budgets_legal_cookies_path %></li>
+    </ul>
   </menu>
 
   <a href="https://mixpanel.com/f/partner"><img src="//cdn.mxpnl.com/site_media/images/partner/badge_light.png" alt="Mobile Analytics" /></a>
