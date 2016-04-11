@@ -1,0 +1,65 @@
+<header class="main_h module_home">
+  <div class="cont clearfix">
+
+    <%= render 'layouts/admin_header' %>
+
+  </div>
+</header>
+
+<div class="cont clearfix">
+  <div class="main">
+
+    <%= form_for [:admin, @user], class: 'compact' do |f| %>
+
+      <%= flush_the_flash(@user) %>
+
+      <div class="form_item" >
+        <%= f.label :email do %>
+          <span class="label"><%= User.human_attribute_name :email %></span>
+          <%= f.email_field :email %>
+        <% end %>
+      </div>
+
+      <div class="form_item half">
+        <%= f.label :first_name do %>
+          <span class="label"><%= User.human_attribute_name :first_name %></span>
+          <%= f.text_field :first_name %>
+        <% end %>
+      </div>
+
+      <div class="form_item half last">
+        <%= f.label :last_name do %>
+          <span class="label"><%= User.human_attribute_name :last_name %></span>
+          <%= f.text_field :last_name %>
+        <% end %>
+      </div>
+
+      <div class="form_item half">
+        <%= f.label :password do %>
+          <span class="label"><%= User.human_attribute_name :password %></span>
+          <%= f.password_field :password %>
+        <% end %>
+      </div>
+
+      <div class="form_item half last">
+        <%= f.label :password_confirmation do %>
+          <span class="label"><%= User.human_attribute_name :password_confirmation %></span>
+          <%= f.password_field :password_confirmation %>
+        <% end %>
+      </div>
+
+      <div class="form_item">
+        <%= f.label :document_number do %>
+          <span class="label"><%= f.object.document_type %></span>
+          <%= f.text_field :document_number %>
+        <% end %>
+      </div>
+
+      <div class="form_item submit">
+        <input type="submit" value="<%= t('actions.send') %>">
+      </div>
+    <% end %>
+
+  </div>
+
+</div>

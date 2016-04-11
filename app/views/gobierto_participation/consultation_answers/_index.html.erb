@@ -1,0 +1,45 @@
+<div class="comments">
+  <%= flush_the_flash @answer %>
+
+  <% if @consultation.open_answers? %>
+
+    <h3><%= t('gobierto_participation.answers_count', count: @consultation.answers.count) %></h3>
+
+    <% @consultation.answers.sorted.each do |answer| %>
+      <div class="comment answer" id="<%= answer.anchor %>">
+
+        <div class="meta">
+          <span class="user"><%= t('gobierto_participation.answer_sent_by') %> <%= answer.user.full_name %></span>
+          <span class="date"><%= link_to time_ago_in_words(answer.created_at), '#' + answer.anchor %></span>
+        </div>
+
+        <div class="body">
+          <%= markdown(answer.answer) %>
+
+          <% if answer.comment.present? %>
+            <div class="argument">
+              <h4><%= GobiertoParticipation::ConsultationAnswer.human_attribute_name(:comment) %></h4>
+
+              <%= markdown(answer.comment) %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+
+  <% else %>
+
+    <h3><%= t('gobierto_participation.response_count', count: @consultation.answers.count) %></h3>
+
+    <div class="form_item options">
+      <% @consultation.options.each do |option| %>
+        <div class="option">
+          <span class="percentage" title="Porcenaje de votos de esta opción"><%= option.percentage %></span>
+          <span aria-hidden="true" class="percentage_indicator" style="width: <%= option.percentage %>"></span>
+          <span class="title"><%= option.option %></span>
+        </div>
+      <% end %>
+    </div>
+
+  <% end %>
+</div>

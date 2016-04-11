@@ -1,5 +1,5 @@
 module GobiertoBudgets
-    class SearchController < ApplicationController
+    class SearchController < GobiertoBudgets::ApplicationController
 
     def index
       respond_to do |format|

@@ -1,0 +1,38 @@
+<header class="main_h">
+  <div class="cont clearfix">
+
+    <%= render 'layouts/participation_header' %>
+
+    <h1><%= t('gobierto_participation.ideas') %></h1>
+    <div class="section_description">
+      <%= t('gobierto_participation.ideas_description') %>
+    </div>
+
+  </div>
+</header>
+
+<div class="cont clearfix">
+  <div class="main">
+
+    <div class="section">
+
+      <%= flush_the_flash %>
+
+      <h3><%= title t('gobierto_participation.latest_ideas') %></h3>
+
+      <ul>
+        <% @ideas.each do |idea| %>
+          <li>
+            <%= link_to idea.title, gobierto_participation_idea_path(idea), title: idea.title %>
+
+            <span><%= t('gobierto_participation.sent_by') %> <strong><%= idea.user.full_name %></strong></span>
+          </li>
+        <% end %>
+      </ul>
+
+    </div>
+  </div>
+
+  <%= render 'gobierto_participation/ideas/sidebar' %>
+
+</div>

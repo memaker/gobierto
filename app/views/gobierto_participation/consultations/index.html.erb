@@ -1,0 +1,40 @@
+<header class="main_h">
+  <div class="cont clearfix">
+
+    <%= render 'layouts/participation_header' %>
+
+    <h1><%= title t('gobierto_participation.consultations') %></h1>
+  </div>
+</header>
+
+<div class="cont clearfix">
+  <div class="main">
+
+    <div class="section">
+
+      <%= flush_the_flash %>
+
+      <h3><%= t('gobierto_participation.latest_consultations') %></h3>
+
+      <ul>
+        <% @consultations.each do |consultation| %>
+          <li>
+            <%= link_to consultation.title, gobierto_participation_consultation_path(consultation), title: consultation.title %>
+            <% if consultation.open_until? %>
+              <% if consultation.open? %>
+                <span><%= t('gobierto_participation.voting_until') %> <strong><%= time_until_in_words consultation.open_until %></strong></span>
+              <% else %>
+                <span><%= t('gobierto_participation.voting_closed') %> <strong><%= time_ago_in_words consultation.open_until %></strong></span>
+              <% end %>
+            <% end %>
+          </li>
+        <% end %>
+      </ul>
+
+    </div>
+
+  </div>
+
+  <%= render 'gobierto_participation/consultations/sidebar' %>
+
+</div>

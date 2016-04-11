@@ -1,5 +1,5 @@
 module GobiertoBudgets
-  class BudgetLinesController < ApplicationController
+  class BudgetLinesController < GobiertoBudgets::ApplicationController
     layout :choose_layout
     before_action :load_params
 

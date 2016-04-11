@@ -1,0 +1,11 @@
+<div class="page">
+  <i class="fa fa-file-o"></i>
+  <%= page.title %>
+  <div class="admin_actions">
+    <%= link_to "<i class='fa fa-edit'></i>".html_safe, edit_admin_gobierto_cms_page_path(page), title: t('actions.edit') %>
+    <%= link_to "<i class='fa fa-trash'></i>".html_safe, admin_gobierto_cms_page_path(page), method: :delete, title: t('actions.delete'), data: {confirm: t('actions.confirm') } %>
+    <%= link_to "<i class='fa fa-mail-forward'></i>".html_safe, gobierto_cms_page_path(page), title: t('actions.see_page') %>
+  </div>
+
+</div>
+

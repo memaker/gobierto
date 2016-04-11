@@ -1,0 +1,48 @@
+<%= flush_the_flash @answer %>
+
+<% if @consultation.open_answers? %>
+
+  <%= form_for [@consultation, @answer], url: gobierto_participation_consultation_consultation_answers_path(@consultation) do |f| %>
+    <div class="form_item">
+      <%= f.label :answer do %>
+        <span class="label"><%= @consultation.title %></span>
+        <%= f.text_field :answer %>
+      <% end %>
+    </div>
+
+    <div class="form_item">
+      <%= f.label :comment do %>
+        <% # TODO: review %>
+        <span class="label"><%= t('gobierto_participation.argue_answer') %></span>
+        <%= f.text_area :comment %>
+      <% end %>
+    </div>
+
+    <div class="form_item submit">
+      <input type="submit" value="<%= t('actions.send') %>">
+
+      <div class="submit_note">
+        <%= t('gobierto_participation.answer_sent_by') %> <div class="user"><%= current_user.full_name %></div>
+        <div class="note"><%= t('gobierto_participation.answer_note') %></div>
+      </div>
+
+    </div>
+  <% end %>
+
+<% else %>
+
+  <%= form_for [@consultation, @answer], url: gobierto_participation_consultation_consultation_answers_path(@consultation), class: 'survey' do |f| %>
+    <% @consultation.options.each do |option| %>
+      <div class="form_item options">
+        <%= f.label "consultation_option_id_#{option.id}" do %>
+          <%= f.radio_button :consultation_option_id, option.id %> <%= option.option %>
+        <% end %>
+      </div>
+    <% end %>
+
+    <div class="form_item submit">
+      <input type="submit" value="<%= t('actions.send') %>">
+    </div>
+  <% end %>
+
+<% end %>

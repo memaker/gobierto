@@ -1,0 +1,28 @@
+<header class="main_h ">
+  <div class="cont clearfix">
+
+    <%= render 'layouts/admin_header' %>
+
+  </div>
+</header>
+
+<div class="cont clearfix">
+  <div class="main">
+
+    <%= flush_the_flash %>
+
+    <ul>
+      <% for activity in @activities %>
+        <%= render_activity(activity, layout: :admin_activity) if activity.trackable.present? %>
+      <% end %>
+    </ul>
+
+    <%= paginate @activities %>
+
+  </div>
+
+
+  <div class="sidebar">
+    sidebar notes
+  </div>
+</div>

@@ -4,7 +4,7 @@ gem 'rails', '4.2.6'
 gem 'pg'
 gem 'sass-rails', '~> 5.0.0'
 gem 'uglifier', '>= 1.3.0'
-gem 'redcarpet'
+gem 'redcarpet', require: true
 gem 'bcrypt'
 gem 'rollbar'
 gem 'meta-tags'
@@ -17,6 +17,20 @@ gem 'geocoder'
 gem 'responders'
 gem 'delayed_job_active_record'
 gem 'daemons'
+gem 'config'
+
+# Gobify
+# gem 'apartment'
+gem 'friendly_id'
+gem 'acts_as_list'
+gem 'paranoia', '~> 2.0'
+gem 'cocoon'
+gem 'route_translator'
+gem 'public_activity', git: 'git@github.com:chaps-io/public_activity.git'
+gem 'acts_as_tree'
+gem 'paperclip'
+gem 'aws-sdk-v1'
+
 
 # Frontend
 gem 'jquery-rails'

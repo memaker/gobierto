@@ -1,0 +1,13 @@
+<div class="file" data-id="<%= attachment.id %>">
+  <div class="ic">
+    <i class="fa fa-file-pdf-o"></i>
+    <%= link_to attachment.attachment_file_name, attachment.attachment.url, target: 'blank' %>
+    <span class="soft"><%= l attachment.created_at, format: '%H.%M %d %b %Y' %> · <%= number_to_human_size(attachment.attachment_file_size) %></span>
+  </div>
+
+  <% if controller_name == 'attachments' || action_name == 'edit' %>
+    <div class="delete-attachment">
+      <%= link_to '<i class="fa fa-remove"></i>'.html_safe, admin_gobierto_cms_attachment_path(attachment), remote: true, method: :delete, data: { confirm: t('actions.confirm') } %>
+    </div>
+  <% end %>
+</div>

@@ -1,0 +1,5 @@
+<% if activity.trackable %>
+<li>
+  Página <%= link_to activity.trackable.title, gobierto_cms_page_path(activity.trackable) %> creada
+</li>
+<% end %>

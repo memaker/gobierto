@@ -1,0 +1,157 @@
+<header class="main_h module_home">
+  <div class="bg_img"></div>
+  <div class="cont clearfix">
+
+    <h1><strong><%= @site.location_name %></strong> Participa</h1>
+    <div class="section_description">
+      Participa y ayuda en la toma de decisiones del <%= t('layout.council_of', name: @site.location_name) %>.
+    </div>
+
+    <menu class="module_nav">
+      <%= link_to t('gobierto_participation.consultations'), gobierto_participation_consultations_path, title: t('gobierto_participation.consultations') %>
+      <%= link_to t('gobierto_participation.ideas'), gobierto_participation_ideas_path, title: t('gobierto_participation.ideas') %>
+      <% pending do %>
+        <%= link_to 'Peticiones', 'participation_petitions' %>
+        <%= link_to 'Reportes', 'participation_reports' %>
+      <% end %>
+    </menu>
+
+  </div>
+</header>
+
+<div class="section home_section clearfix">
+  <div class="cont clearfix">
+
+    <header>
+      <h2><%= link_to t('gobierto_participation.consultations'), gobierto_participation_consultations_path %></h2>
+      <div class="section_description">
+        <%= t('gobierto_participation.consultations_description') %>
+      </div>
+    </header>
+
+    <div class="content">
+
+      <ul>
+        <% @consultations.each do |consultation| %>
+        <li>
+          <%= link_to consultation.title, gobierto_participation_consultation_path(consultation), title: consultation.title %>
+          <% if consultation.open_until? %>
+            <% if consultation.open? %>
+              <span><%= t('gobierto_participation.voting_until') %> <strong><%= time_until_in_words consultation.open_until %></strong></span>
+            <% else %>
+              <span><%= t('gobierto_participation.voting_closed') %> <strong><%= time_ago_in_words consultation.open_until %></strong></span>
+            <% end %>
+          <% end %>
+        </li>
+        <% end %>
+      </ul>
+
+      <div class="view_all">
+        <%= link_to 'Ver todas', gobierto_participation_consultations_path %>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+
+<div class="section home_section clearfix">
+  <div class="cont clearfix">
+
+    <header>
+      <h2><%= link_to t('gobierto_participation.ideas'), gobierto_participation_ideas_path %></h2>
+      <div class="section_description">
+        <%= t('gobierto_participation.ideas_description') %>
+      </div>
+    </header>
+
+    <div class="content">
+
+      <ul>
+        <% @ideas.each do |idea| %>
+          <li>
+            <%= link_to idea.title, gobierto_participation_idea_path(idea), title: idea.title %>
+
+            <span><%= t('gobierto_participation.sent_by') %> <strong><%= idea.user.full_name %></strong></span>
+          </li>
+        <% end %>
+      </ul>
+
+      <div class="view_all">
+        <%= link_to 'Ver todas', gobierto_participation_ideas_path %>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+
+<% pending do %>
+
+  <div class="section">
+
+    <h2><%= link_to 'Peticiones', 'participation_petitions' %></h2>
+    <div class="section_description">
+      ¿Hay algo concreto que deseas cambiar? Orgánizate con tus vecinos y exige
+    </div>
+
+    <ul>
+      <li>
+        <%= link_to '¿Qué vamos a hacer para esta Navidad?' %>
+        <span>Enviado por <strong>María del Pilar</strong></span> <span class="supporters">25 apoyos</span>
+      </li>
+      <li>
+        <%= link_to 'Actividades los fines de semana para los chavales' %>
+        <span>Enviado por <strong>Juan</strong></span> <span class="supporters">12 apoyos</span>
+      </li>
+      <li>
+        <%= link_to 'Espacio para asociaciones' %>
+        <span>Enviado por <strong>Justina</strong></span> <span class="supporters">1 apoyo</span>
+      </li>
+      <li>
+        <%= link_to 'Facilitar las gestiones en el Ayuntamiento' %>
+        <span>Envaido por  <strong>Manoli</strong></span>
+      </li>
+    </ul>
+
+    <div class="view_all">
+      <%= link_to 'Ver todas' %>
+    </div>
+
+  </div>
+
+  <div class="section">
+
+    <h2><%= link_to 'Reportes', 'participation_reports' %></h2>
+    <div class="section_description">
+      ¿Algo en la calle se ha “roto” o necesita reparación? ¡Avísanos!
+    </div>
+
+    <ul>
+      <li>
+        <%= link_to '¿Qué vamos a hacer para esta Navidad?' %>
+        <span>Enviado por <strong>María del Pilar</strong></span> <span class="supporters">1 confirmación</span>
+      </li>
+      <li>
+        <%= link_to 'Actividades los fines de semana para los chavales' %>
+        <span>Enviado por <strong>Juan</strong></span> <span class="supporters">23 confirmaciones</span>
+      </li>
+      <li>
+        <%= link_to 'Espacio para asociaciones' %>
+        <span>Enviado por <strong>Justina</strong></span> <span class="supporters">12 confirmaciones</span>
+      </li>
+      <li>
+        <%= link_to 'Facilitar las gestiones en el Ayuntamiento' %>
+        <span>Envaido por  <strong>Manoli</strong></span>
+      </li>
+    </ul>
+
+    <div class="view_all">
+      <%= link_to 'Ver todas' %>
+    </div>
+
+  </div>
+
+<% end %>

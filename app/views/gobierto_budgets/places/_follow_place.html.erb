@@ -10,7 +10,7 @@
 
   <div class="inner widget_follow budget_line_feedback" id="user_signup">
     <p>Puedes guardar <%= @place.name %> como favorito para recibir actualizaciones de datos y nueva información sobre este presupuesto.</p>
-    <%= form_for GobiertoBudgets::User.new, url: identify_gobierto_budgets_users_path, data: {remote: true}, html: {id: 'new-user-follow'} do |f| %>
+    <%= form_for User.new, url: identify_users_path, data: {remote: true}, html: {id: 'new-user-follow'} do |f| %>
       <%= f.email_field :email, placeholder: 'Tu correo-e' %>
       <%= hidden_field_tag :follow, @place.id %>
       <%= hidden_field_tag :context, "new-user-follow" %>

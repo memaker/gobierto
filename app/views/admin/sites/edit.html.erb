@@ -1,0 +1,87 @@
+<header class="main_h ">
+  <div class="cont clearfix">
+    <%= render 'layouts/admin_header' %>
+  </div>
+</header>
+
+<div class="cont clearfix">
+  <div class="main">
+
+    <%= form_for [:admin, @site] do |f| %>
+
+      <%= flush_the_flash @site %>
+
+      <!--
+        https://github.com/PopulateTools/gobify/issues/12
+
+        Logo - ToDo: sizes accepted
+        Colors - ToDo: define with Diego
+        Google Analytics ID - Or a JSON to have multiple IDs in just one field?
+      -->
+
+      <div class="form_item half">
+        <%= f.label :location_name do %>
+          <span class="label"><%= Site.human_attribute_name :location_name %></span>
+          <%= f.text_field :location_name %>
+        <% end %>
+      </div>
+
+      <div class="form_item half last">
+        <%= f.label :institution_type do %>
+          <span class="label"><%= Site.human_attribute_name :institution_type %></span>
+          <%= f.text_field :institution_type %>
+        <% end %>
+      </div>
+
+      <div class="form_item half">
+        <%= f.label :name do %>
+          <span class="label"><%= Site.human_attribute_name :name %></span>
+          <%= f.text_field :name %>
+        <% end %>
+      </div>
+
+      <div class="form_item half last">
+        <%= f.label :subdomain do %>
+          <span class="label"><%= Site.human_attribute_name :subdomain %></span>
+          <%= f.text_field :subdomain, disabled: true %>
+        <% end %>
+      </div>
+
+      <div class="form_item half">
+        <%= f.label :institution_url do %>
+          <span class="label"><%= Site.human_attribute_name :institution_url %></span>
+          <%= f.text_field :institution_url %>
+        <% end %>
+      </div>
+
+      <div class="form_item half last">
+        <%= f.label :institution_email do %>
+          <span class="label"><%= Site.human_attribute_name :institution_email %></span>
+          <%= f.email_field :institution_email %>
+        <% end %>
+      </div>
+
+      <div class="form_item half">
+        <%= f.label :institution_document_number do %>
+          <span class="label"><%= Site.human_attribute_name :institution_document_number %></span>
+          <%= f.text_field :institution_document_number %>
+        <% end %>
+      </div>
+
+      <div class="form_item half last">
+        <%= f.label :institution_address do %>
+          <span class="label"><%= Site.human_attribute_name :institution_address %></span>
+          <%= f.text_field :institution_address %>
+        <% end %>
+      </div>
+
+      <div class="form_item submit">
+        <input type="submit" value="<%= t('actions.send') %>">
+      </div>
+    <% end %>
+  </div>
+
+  <div class="sidebar">
+    sidebar notes
+  </div>
+</div>

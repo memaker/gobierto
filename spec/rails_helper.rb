@@ -22,6 +22,7 @@ RSpec.configure do |config|
 
   Capybara.javascript_driver = :selenium
   Capybara.default_max_wait_time = 5
+  Capybara.server_port = 31337
 
   Delayed::Worker.delay_jobs = false
 

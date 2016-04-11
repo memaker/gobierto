@@ -20,6 +20,7 @@ module RailsTemplate
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.{rb,yml}').to_s]
     config.i18n.default_locale = :es
+    config.i18n.available_locales = [:es, :en]
 
     config.active_record.raise_in_transactional_callbacks = true
 
@@ -41,6 +42,14 @@ module RailsTemplate
     config.action_mailer.default_url_options = { host: 'gobierto.es', protocol: 'https' }
 
     config.active_job.queue_adapter = :delayed_job
+
+    # Autoloading
+    config.autoload_paths += [
+      "#{config.root}/lib",
+      "#{config.root}/lib/validators",
+      "#{config.root}/lib/constraints"
+    ]
+
   end
 end
 

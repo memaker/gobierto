@@ -1,0 +1,7 @@
+<div class="form_item survey_option nested-fields">
+  <%= f.label :option do %>
+    <%= link_to_remove_association '<i class="fa fa-minus-square"></i>'.html_safe, f, class: 'remove_option', title: t('gobierto_participation.remove_option') %>
+    <span class="position"></span> <%= f.text_field :option %>
+  <% end %>
+</div>
+

@@ -1,0 +1,53 @@
+<header class="main_h ">
+  <div class="cont clearfix">
+
+    <%= render 'layouts/admin_header' %>
+
+  </div>
+</header>
+
+<div class="cont clearfix">
+
+  <%= flush_the_flash %>
+
+  <strong><%= t('admin.registered_users', count: User.regular.count) %></strong>
+
+  <table class="dynatable">
+    <thead>
+      <tr>
+        <th><%= t('admin.user_name') %></th>
+        <th><%= t('admin.user_email') %></th>
+        <th><%= t('admin.user_signed_up_date') %></th>
+        <th><%= t('admin.user_last_activity') %></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @users.find_each do |user| %>
+        <tr data-id="<%= user.id %>">
+          <td>
+            <% if user.deleted? %>
+              <s><%= user.full_name %></s>
+            <% else %>
+              <%= user.full_name %>
+              <%= ' (pendiente de confirmación)' if user.pending_confirmation? %>
+            <% end %>
+          </td>
+          <td><%= user.email %></td>
+          <td><%= l(user.created_at, format: :short) %></td>
+          <td><%= time_ago_in_words user.updated_at %></td>
+          <td class="actions">
+            <%= link_to '<i class="fa fa-pencil-square-o"></i>'.html_safe, edit_admin_user_path(user), class: 'tipsit', title: t('admin.users_edit') %>
+            <%= link_to '<i class="fa fa-sign-in"></i>'.html_safe, impersonate_admin_users_path(user), method: :post, class: 'tipsit', title: t('admin.users_impersonate') %>
+            <% if user.deleted? %>
+              <%= link_to '<i class="fa fa-undo"></i>'.html_safe, restore_admin_users_path(user), method: :post, data: {confirm: t('actions.confirm')}, class: 'tipsit', title: t('admin.users_restore') %>
+            <% else %>
+              <%= link_to '<i class="fa fa-times"></i>'.html_safe, admin_user_path(user), method: :delete, data: {confirm: t('actions.confirm')}, class: 'tipsit', title: t('admin.users_soft_delete') %>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+</div>

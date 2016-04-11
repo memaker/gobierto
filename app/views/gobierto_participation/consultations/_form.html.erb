@@ -1,0 +1,63 @@
+<%= flush_the_flash @consultation %>
+
+<%= form_for @consultation, path: gobierto_participation_consultations_path, id: 'consultation_open' do |f| %>
+
+  <div class="create_item_options clearfix">
+    <div class="col-1-2 option" data-consultation-type="open">
+      <%= f.label :kind, value: 'open_answers' do %>
+        <%= f.radio_button :kind, 'open_answers' %>
+        <h2><%= t('gobierto_participation.open_answers_consultation') %></h2>
+        <p><%= t('gobierto_participation.open_answers_consultation_desc') %></p>
+      <% end %>
+    </div>
+
+    <div class="col-2-2 option" data-consultation-type="closed">
+      <%= f.label :kind, value: 'closed_answers' do %>
+        <%= f.radio_button :kind, 'closed_answers' %>
+        <h2><%= t('gobierto_participation.closed_answers_consultation') %></h2>
+        <p><%= t('gobierto_participation.closed_answers_consultation_desc') %></p>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="form_item">
+    <%= f.label :title do %>
+      <span class="label"><%= GobiertoParticipation::Consultation.human_attribute_name :title %></span>
+      <%= f.text_field :title %>
+    <% end %>
+  </div>
+
+  <div class="form_item">
+    <%= f.label :description do %>
+      <span class="label"><%= GobiertoParticipation::Consultation.human_attribute_name :body %></span>
+      <%= f.text_area :body %>
+    <% end %>
+  </div>
+
+  <div data-rel="closed-answers-only">
+    <h3><%= t('gobierto_participation.options') %></h3>
+
+    <%= f.fields_for :options do |options_form| %>
+      <%= render 'option_fields', f: options_form %>
+    <% end %>
+
+    <div class="form_item survey_option new_option">
+      <label>
+        <%= link_to_add_association %Q{<i class="fa fa-plus-square"></i> #{t('gobierto_participation.add_option')}}.html_safe, f, :options, {"data-association-insertion-node" => ".new_option"} %>
+      </label>
+    </div>
+  </div>
+
+  <div class="form_item">
+    <%= f.label :open_until do %>
+      <span class="label"><%= t('gobierto_participation.consultation_open_until') %> <span><%= t('gobierto_participation.consultation_limit_date') %></span></span>
+      <%= f.date_field :open_until_date, class: 'datepicker' %>
+      <%= f.time_field :open_until_time, class: 'timepicker' %>
+    <% end %>
+  </div>
+
+  <div class="form_item submit">
+    <input type="submit" value="<%= f.object.new_record? ? t('actions.create') : t('actions.update') %>">
+  </div>
+<% end %>
+

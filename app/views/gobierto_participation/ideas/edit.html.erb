@@ -1,0 +1,28 @@
+<header class="main_h">
+  <div class="cont clearfix">
+
+    <%= render 'layouts/participation_header' %>
+
+    <h1><%= title t('gobierto_participation.edit_idea_cta') %></h1>
+  </div>
+</header>
+
+<div class="cont clearfix">
+  <div class="main">
+
+    <div class="notice">
+      <ul>
+        <li><%= t('gobierto_participation.idea_desc_p1', name: @site.location_name) %></li>
+        <% pending do %>
+          <li>Recuerda que tienes espacios específicos para realizar una <%= link_to 'petición concreta', 'participation_petitions' %> o <%= link_to 'reportar un problema', 'participation_reports' %>.</li>
+        <% end %>
+      </ul>
+    </div>
+
+    <%= render 'form' %>
+
+  </div>
+
+  <%= render 'sidebar' %>
+
+</div>

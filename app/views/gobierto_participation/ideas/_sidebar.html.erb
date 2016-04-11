@@ -1,0 +1,20 @@
+<div class="sidebar">
+
+  <% pending do %>
+    <div class="block follow">
+      <%= link_to 'Seguir', '' %>
+      <div class="cue">
+        Enteráte cuando haya novedades
+      </div>
+    </div>
+  <% end %>
+
+  <div class="block act">
+    <%= link_to_or_identify_user t('gobierto_participation.send_your_idea'), new_gobierto_participation_idea_path, title: t('gobierto_participation.send_your_idea') %>
+
+    <div class="cue">
+      <%= t('gobierto_participation.contribute_with_ideas', name: @site.location_name) %>
+    </div>
+  </div>
+
+</div>

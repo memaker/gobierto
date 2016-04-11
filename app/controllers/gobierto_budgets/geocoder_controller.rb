@@ -1,5 +1,7 @@
 module GobiertoBudgets
-  class GeocoderController < ApplicationController
+  class GeocoderController < GobiertoBudgets::ApplicationController
+    layout false
+
     def index
       if result = request.location
         loc1 = [result.latitude, result.longitude]

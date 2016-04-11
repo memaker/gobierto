@@ -1,0 +1,53 @@
+<header class="main_h">
+  <div class="cont clearfix">
+
+    <%= render 'layouts/participation_header' %>
+
+    <h1><%= title @consultation.title %></h1>
+    <div class="meta">
+      <span class="user"><%= t('gobierto_participation.consultation_sent_by', name: @consultation.user.full_name) %></span>
+      <span class="date"><%= time_ago_in_words @consultation.created_at %></span>
+    </div>
+
+  </div>
+</header>
+
+<div class="cont clearfix">
+  <div class="consultation main">
+
+    <div class="body">
+
+      <h3>La consulta</h3>
+
+      <%= markdown(@consultation.body) %>
+
+      <% if @consultation.open? && @consultation.open_until? %>
+        <div class="votes_until"><span><%= t('gobierto_participation.voting_until') %> <strong><%= time_until_in_words @consultation.open_until %></strong></span></div>
+      <% end %>
+
+    </div>
+
+    <% if @consultation.closed? %>
+
+      <%= render 'gobierto_participation/consultation_answers/index' %>
+
+    <% else %>
+
+      <% if logged_in? %>
+        <% if current_user.admin? || current_user.answered_consultation?(@consultation) %>
+          <%= render 'gobierto_participation/consultation_answers/index' %>
+        <% else %>
+          <%= render 'gobierto_participation/consultation_answers/form' %>
+        <% end %>
+      <% else %>
+        <div class="big_notice">
+          <%= link_to t('layout.login_or_signup'), '', :data => { :menu => 'account'} %> <%= t('gobierto_participation.to_take_part') %>
+        </div>
+      <% end %>
+    <% end %>
+
+  </div>
+
+  <%= render 'gobierto_participation/consultations/sidebar' %>
+
+</div>

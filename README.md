@@ -1,5 +1,19 @@
 # Gobierto budget comparator
 
+## Setup subdomain
+
+The application server should be queried through the top-level domain `.gobierto.dev`.
+
+To configure this host in your computer:
+
+```
+$ cd .pow
+$ ln -s DIRECTORY/gobierto-budgets-comparator gobierto
+```
+
+Then just run `rails s` as usual, but type in the browser http://presupuestos.gobierto.dev/
+
+
 ## Elastic Search schema
 
 ### Budget categories

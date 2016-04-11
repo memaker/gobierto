@@ -1,0 +1,61 @@
+<header class="main_h">
+  <div class="cont clearfix">
+
+    <menu class="module_nav breadcrumb">
+      <%= gobierto_cms_pages_breadcrumb %>
+    </menu>
+
+    <h1><%= title @page.title %></h1>
+
+  </div>
+</header>
+
+<div class="cont clearfix">
+
+  <div class="main">
+
+    <div class="body">
+      <%= markdown @page.body %>
+    </div>
+
+  </div>
+
+  <div class="sidebar">
+
+    <% pending do %>
+      <div class="block follow">
+        <%= link_to 'Seguir', '' %>
+        <div class="cue">
+          Enteráte cuando haya novedades
+        </div>
+      </div>
+    <% end %>
+
+    <% if @page.children.any? %>
+      <div class="block children">
+        <h4><%= t('gobierto_cms.children_pages') %></h4>
+
+        <ul>
+        <% @page.children.each do |page| %>
+          <li><%= link_to page.title, page, title: page.title %></li>
+        <% end %>
+        </ul>
+
+      </div>
+    <% end %>
+
+    <% if @page.attachments.any? %>
+    <div class="files_attached">
+      <header>
+        <h4><i class="fa fa-paperclip"></i> <%= t('gobierto_cms.attachments') %></h4>
+      </header>
+
+      <div id="files">
+        <% @page.attachments.each do |attachment| %>
+          <%= render partial: 'admin/gobierto_cms/attachments/attachment', locals: {attachment: attachment} %>
+        <% end %>
+      </div>
+    </div>
+    <% end %>
+  </div>
+</div>

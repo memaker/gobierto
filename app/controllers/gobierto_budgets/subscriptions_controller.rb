@@ -1,5 +1,5 @@
 module GobiertoBudgets
-  class SubscriptionsController < ApplicationController
+  class SubscriptionsController < GobiertoBudgets::ApplicationController
     respond_to :js
 
     def create

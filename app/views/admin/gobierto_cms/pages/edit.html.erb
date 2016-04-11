@@ -1,0 +1,24 @@
+<header class="main_h ">
+  <div class="cont clearfix">
+    <%= render 'layouts/admin_header' %>
+  </div>
+</header>
+
+<div class="cont clearfix">
+  <div class="main">
+    <%= flush_the_flash @page %>
+
+    <h2><%= t('gobierto_cms.edit_page', title: @page.title) %></h2>
+
+    <%= render'form' %>
+
+  </div>
+
+  <div class="sidebar">
+    <%= render 'attachments' %>
+
+    <div class="tips small">
+      <%= render 'markdown_help' %>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,27 @@
+<% if logged_in? %>
+
+  <%= flush_comments_flash @comment %>
+
+  <%= form_for [@idea, @comment], url: gobierto_participation_idea_comments_path(@idea, anchor: 'comments_flash') do |f| %>
+    <div class="form_item">
+      <%= f.label :body do %>
+        <span class="label"><%= t('gobierto_participation.cta_comment') %></span>
+        <%= f.text_area :body %>
+      <% end %>
+    </div>
+
+    <div class="form_item submit">
+      <%= f.submit t('actions.send') %>
+
+      <div class="submit_note">
+        <%= t('gobierto_participation.comment_sent_by') %> <div class="user"><%= current_user.full_name %></div>
+        <div class="note"><%= t('gobierto_participation.comments_note') %></div>
+      </div>
+
+    </div>
+  <% end %>
+<% else %>
+  <div class="big_notice">
+    <%= link_to t('layout.login_or_signup'), '', :data => { :menu => 'account'} %> <%= t('gobierto_participation.to_take_part') %>
+  </div>
+<% end %>

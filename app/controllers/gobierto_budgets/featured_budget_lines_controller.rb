@@ -1,5 +1,5 @@
 module GobiertoBudgets
-  class FeaturedBudgetLinesController < ApplicationController
+  class FeaturedBudgetLinesController < GobiertoBudgets::ApplicationController
     def show
       @place = INE::Places::Place.find_by_slug(params[:id])
       @year = params[:year]

@@ -1,0 +1,20 @@
+<div class="files_attached m-h2-1fm">
+  <header>
+    <h4><i class="fa fa-paperclip"></i> <%= t('gobierto_cms.attachments') %></h4>
+    <%= link_to t('gobierto_cms.attach_file'), '#', class: 'submit_mini', id: 'toggle-fileupload' %>
+  </header>
+
+  <div class="fap fileupload-container">
+    <input id="fileupload" type="file" name="attachments[]" data-url="<%= admin_gobierto_cms_attachments_path %>" multiple>
+  </div>
+
+  <div id="progress" class="fap">
+    <%= t('gobierto_cms.uploading') %>
+  </div>
+
+  <div id="files">
+    <% @page.attachments.each do |attachment| %>
+      <%= render partial: 'admin/gobierto_cms/attachments/attachment', locals: {attachment: attachment} %>
+    <% end %>
+  </div>
+</div>

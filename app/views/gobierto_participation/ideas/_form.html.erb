@@ -1,0 +1,27 @@
+<%= flush_the_flash @idea %>
+
+<%= form_for @idea do |f| %>
+  <div class="form_item">
+    <%= f.label :title do %>
+      <span class="label"><%= t('gobierto_participation.idea_title') %></span>
+      <%= f.text_field :title %>
+    <% end %>
+  </div>
+
+  <div class="form_item">
+    <%= f.label :body do %>
+      <span class="label"><%= GobiertoParticipation::Idea.human_attribute_name(:body) %></span>
+      <%= f.text_area :body %>
+    <% end %>
+  </div>
+
+  <div class="form_item submit">
+    <input type="submit" value="<%= f.object.new_record? ? t('actions.create') : t('actions.update') %>">
+
+    <div class="submit_note">
+      <%= t('gobierto_participation.idea_sent_by_no_name') %>
+      <div class="user"><%= current_user.full_name %></div>
+      <div class="note"><%= t('gobierto_participation.idea_note') %></div>
+    </div>
+  </div>
+<% end %>

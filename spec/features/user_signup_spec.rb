@@ -1,12 +1,16 @@
 require 'rails_helper'
 
 RSpec.feature 'User signup' do
+  before do
+    switch_to_subdomain 'presupuestos'
+  end
+
   scenario "Signup via 'levanta la mano' and account confirmation", js: true do
     visit '/budget_lines/santander/2015/1/G/economic'
     click_link 'Levanta la mano'
     click_link 'No'
 
-    fill_in 'gobierto_budgets_user_email', with: 'bar@example.com'
+    fill_in 'user_email', with: 'bar@example.com'
     click_button 'Seguir'
 
     expect(page).to have_content('Comprueba tu correo')
@@ -18,15 +22,15 @@ RSpec.feature 'User signup' do
 
     expect(page).to have_content("Venga, ya casi estamos")
 
-    fill_in 'gobierto_budgets_user_password', with: 'bar123456'
-    fill_in 'gobierto_budgets_user_password_confirmation', with: 'bar123456'
+    fill_in 'user_password', with: 'bar123456'
+    fill_in 'user_password_confirmation', with: 'bar123456'
     check 'He leído el Aviso legal y la Política de privacidad'
     # By default the first elements of the list are loaded
-    select 'Almería', from: 'gobierto_budgets_user_place_id'
+    select 'Almería', from: 'user_place_id'
     click_button 'Enviar'
 
     expect(page).to have_content("Datos actualizados correctamente")
-    user = GobiertoBudgets::User.find_by email: 'bar@example.com'
+    user = User.find_by email: 'bar@example.com'
     expect(user.place_id).to eq(4013)
   end
 
@@ -48,7 +52,7 @@ RSpec.feature 'User signup' do
 
     expect(page).to have_content("Por favor, confirma tu email")
 
-    user = GobiertoBudgets::User.find_by email: 'jorge@example.com'
+    user = User.find_by email: 'jorge@example.com'
     expect(user.place_id).to eq(28079)
     expect(user.pro).to be true
     expect(user.terms_of_service).to be true
@@ -61,8 +65,8 @@ RSpec.feature 'User signup' do
     expect(page).to have_content "Venga, ya casi estamos"
     expect(page).not_to have_unchecked_field "He leído el Aviso legal y la Política de privacidad"
 
-    fill_in 'gobierto_budgets_user_password', with: 'bar123456'
-    fill_in 'gobierto_budgets_user_password_confirmation', with: 'bar123456'
+    fill_in 'user_password', with: 'bar123456'
+    fill_in 'user_password_confirmation', with: 'bar123456'
 
     click_button 'Enviar'
     expect(page).to have_content "Datos actualizados correctamente"
@@ -88,7 +92,7 @@ RSpec.feature 'User signup' do
 
     expect(page).to have_content("Por favor, confirma tu email")
 
-    user = GobiertoBudgets::User.find_by email: 'jorge@example.com'
+    user = User.find_by email: 'jorge@example.com'
     expect(user.place_id).to eq(39075)
     expect(user.pro).to be false
     expect(user.terms_of_service).to be false
@@ -104,8 +108,8 @@ RSpec.feature 'User signup' do
     click_button 'Enviar'
     expect(page).to have_content "No se han podido actualizar los datos"
 
-    fill_in 'gobierto_budgets_user_password', with: 'bar123456'
-    fill_in 'gobierto_budgets_user_password_confirmation', with: 'bar123456'
+    fill_in 'user_password', with: 'bar123456'
+    fill_in 'user_password_confirmation', with: 'bar123456'
 
     check 'He leído el Aviso legal y la Política de privacidad'
     click_button 'Enviar'

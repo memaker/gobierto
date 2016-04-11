@@ -1,9 +1,12 @@
 require 'rails_helper'
 
 RSpec.feature 'User update' do
+  before do
+    switch_to_subdomain 'presupuestos'
+  end
 
   scenario 'user does not need to enter his password to update rest of his details' do
-    user = create_user first_name: 'Marcus', email: 'marcus_aurelius@example.com', 
+    user = create_user first_name: 'Marcus', email: 'marcus_aurelius@example.com',
             password: 'emperor_61', password_confirmation: 'emperor_61'
     visit '/login'
 

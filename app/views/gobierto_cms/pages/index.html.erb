@@ -1,0 +1,27 @@
+<header class="main_h">
+  <div class="cont clearfix">
+    <h1><%= link_to title(t('gobierto_cms.information')), gobierto_cms_root_path %></h1>
+  </div>
+</header>
+
+<div class="cont clearfix">
+  <div class="main">
+    <div class="section">
+
+      <%= flush_the_flash %>
+
+      <ul>
+        <% @pages.each do |page| %>
+          <li>
+            <%= link_to page.title, page, title: page %>
+            <span> </span>
+          </li>
+        <% end %>
+      </ul>
+
+    </div>
+  </div>
+
+  <div class="sidebar">
+  </div>
+</div>

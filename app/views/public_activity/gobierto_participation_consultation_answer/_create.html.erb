@@ -1,0 +1,3 @@
+<li>
+  <%= activity.owner.full_name %> ha añadido una propuesta en <%= link_to activity.recipient.title, polymorphic_url(activity.recipient, anchor: activity.trackable.anchor) %>
+</li>

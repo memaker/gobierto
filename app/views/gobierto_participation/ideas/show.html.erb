@@ -1,0 +1,51 @@
+<header class="main_h">
+  <div class="cont clearfix">
+
+    <%= render 'layouts/participation_header' %>
+
+    <h1><%= title @idea.title %></h1>
+    <div class="meta">
+      <span class="user"><%= t('gobierto_participation.idea_sent_by', name: @idea.user.full_name) %></span>
+      <span class="date"><%= time_ago_in_words @idea.created_at %></span>
+    </div>
+
+  </div>
+</header>
+
+<div class="cont clearfix">
+  <div class="main">
+
+    <%= flush_the_flash @idea %>
+
+    <div class="body">
+      <h3>La idea</h3>
+
+      <%= markdown @idea.body %>
+    </div>
+
+    <div class="comments">
+
+      <h3><%= t('gobierto_participation.comments_count', count: @idea.comments.count) %> <%= t('gobierto_participation.add_yours', count: @idea.comments.count) %></h3>
+
+      <% @idea.comments.sorted.each do |comment| %>
+        <div class="comment" id="<%= comment.anchor %>">
+
+          <div class="meta">
+            <span class="user"><%= t('gobierto_participation.sent_by') %> <%= comment.user.full_name %></span>
+            <span class="date"><%= link_to time_ago_in_words(comment.created_at), '#' + comment.anchor %></span>
+          </div>
+
+          <div class="body">
+            <%= markdown(comment.body) %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+    <%= render 'gobierto_participation/comments/form' %>
+
+  </div>
+
+  <%= render 'gobierto_participation/ideas/sidebar' %>
+
+</div>

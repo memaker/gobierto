@@ -1,0 +1,2 @@
+module GobiertoParticipation::ConsultationsHelper
+end

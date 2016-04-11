@@ -1,25 +1,22 @@
 module GobiertoBudgets
   module ApplicationHelper
 
-    def flush_the_flash
-      output = ""
-
-      if flash[:alert] || flash[:notice] || flash[:message]
-        content_tag(:div, id: 'flash', class: "#{flash[:notice] || flash[:message] ? 'notice' : 'error'}") do
-          if flash[:notice] || flash[:alert]
-            output += content_tag(:p) do
-              (flash[:notice] || flash[:alert]).html_safe
-            end
-          end
-
-          if flash[:message]
-            output += flash[:message].html_safe
-          end
-
-          output.html_safe
-        end
-      end
-    end
+    # def flush_the_flash
+    #   output = ""
+    #   if flash[:alert] || flash[:notice] || flash[:message]
+    #     content_tag(:div, id: 'flash', class: "#{flash[:notice] || flash[:message] ? 'notice' : 'error'}") do
+    #       if flash[:notice] || flash[:alert]
+    #         output += content_tag(:p) do
+    #           (flash[:notice] || flash[:alert]).html_safe
+    #         end
+    #       end
+    #       if flash[:message]
+    #         output += flash[:message].html_safe
+    #       end
+    #       output.html_safe
+    #     end
+    #   end
+    # end
 
     def pending(&block)
       if controller_name == 'sandbox'

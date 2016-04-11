@@ -1,0 +1,21 @@
+<div class="sidebar">
+
+  <% pending do %>
+    <div class="block follow">
+      <%= link_to 'Seguir', '' %>
+      <div class="cue">
+        Enteráte cuando haya novedades
+      </div>
+    </div>
+  <% end %>
+
+  <% if logged_in? && current_user.admin? %>
+    <div class="block act">
+      <%= link_to 'Crear nueva consulta', new_gobierto_participation_consultation_path %>
+      <div class="cue">
+        Añade una encuesta o una consulta abierta para que los vecinos opinen
+      </div>
+    </div>
+  <% end %>
+
+</div>

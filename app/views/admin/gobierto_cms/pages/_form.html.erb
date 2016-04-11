@@ -1,0 +1,27 @@
+<%= form_for [:admin, @page] do |f| %>
+  <div class="form_item">
+    <%= f.label :title do %>
+      <span class="label"><%= GobiertoCms::Page.human_attribute_name :title %></span>
+      <%= f.text_field :title %>
+    <% end %>
+  </div>
+
+  <div class="form_item long_text">
+    <%= f.label :body do %>
+      <span class="label"><%= GobiertoCms::Page.human_attribute_name :body %></span>
+      <%= f.text_area :body %>
+    <% end %>
+  </div>
+
+  <div class="form_item long_text">
+    <%= f.label :parent_id do %>
+      <span class="label"><%= GobiertoCms::Page.human_attribute_name :parent_id %></span>
+      <%= f.select :parent_id, options_for_select(parent_pages(f.object), f.object.parent_id) %>
+    <% end %>
+  </div>
+
+  <div class="form_item submit">
+    <%= f.hidden_field :attachments_ids %>
+    <input type="submit" value="<%= t('actions.send') %>">
+  </div>
+<% end %>
