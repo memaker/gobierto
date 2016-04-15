@@ -22,6 +22,7 @@ module GobiertoBudgets
       def self.index; 'data' end
       def self.type_population; 'population' end
       def self.type_places; 'places-v2' end
+      def self.type_debt; 'debt' end
     end
 
   end

@@ -4,7 +4,7 @@ module GobiertoBudgets
       include GobiertoBudgets::ApplicationHelper
 
       caches_page :total_budget, :total_budget_execution, :population, :total_budget_per_inhabitant, :lines,
-                  :budget, :budget_execution, :budget_per_inhabitant, :budget_percentage_over_total
+                  :budget, :budget_execution, :budget_per_inhabitant, :budget_percentage_over_total, :debt
 
       def total_budget
         year = params[:year].to_i
@@ -251,6 +251,31 @@ module GobiertoBudgets
               sign: sign,
               delta_percentage: helpers.number_with_precision(delta_percentage(total_budget_data_executed[:value], total_budget_data_planned[:value]), precision: 2),
               value: diff
+            }.to_json
+          end
+        end
+      end
+
+      def debt
+        year = params[:year].to_i - 1
+
+        id = "#{params[:ine_code]}/#{year}"
+
+        begin
+          value = GobiertoBudgets::SearchEngine.client.get index: GobiertoBudgets::SearchEngineConfiguration::Data.index,
+            type: GobiertoBudgets::SearchEngineConfiguration::Data.type_debt, id: id
+          debt = value['_source']['value'] * 1000
+        rescue Elasticsearch::Transport::Transport::Errors::NotFound
+          debt = nil
+        end
+
+        respond_to do |format|
+          format.json do
+            render json: {
+              title: 'Deuda viva',
+              sign: nil,
+              delta_percentage: nil,
+              value: helpers.number_to_currency(debt, precision: 0, strip_insignificant_zeros: true)
             }.to_json
           end
         end

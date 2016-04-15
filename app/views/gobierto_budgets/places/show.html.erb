@@ -38,7 +38,11 @@
     data-widget-data-url="<%= gobierto_budgets_api_data_total_budget_execution_path(ine_code: @place.id, year: @year, format: :json) %>">
   </div>
 
-  <div class="metric"></div>
+  <div class="metric"
+    data-widget-template="#widget-template-debt"
+    data-widget-type="debt"
+    data-widget-data-url="<%= gobierto_budgets_api_data_debt_path(ine_code: @place.id, year: @year, format: :json) %>">
+  </div>
 </div>
 
 <div class="metric_graphs clearfix">
@@ -169,6 +173,16 @@
   {{^delta_percentage}}
   <div class="main {{sign}}">No disponible</div>
   {{/delta_percentage}}
+</script>
+
+<script type="text/html" id="widget-template-debt">
+  <div class="label">{{title}}</div>
+  {{#value}}
+  <div class="main {{sign}}">{{value}}</div>
+  {{/value}}
+  {{^value}}
+  <div class="main {{sign}}">No disponible</div>
+  {{/value}}
 </script>
 
 <% content_for :javascript do %>

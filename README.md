@@ -98,6 +98,22 @@ Then just run `rails s` as usual, but type in the browser http://presupuestos.go
   - name:                  { type: 'string',  index: 'analyzed', analyzer: 'spanish' }
 ```
 
+### Debt data
+
+- indexes: `data`
+- types: `debt`
+- document id: `<ine_code>/<year>`. Example: `28079/2014`
+- schema:
+
+```
+  - ine_code:              { type: 'integer', index: 'not_analyzed' },
+  - province_id:           { type: 'integer', index: 'not_analyzed' },
+  - autonomy_id:           { type: 'integer', index: 'not_analyzed' },
+  - year:                  { type: 'integer', index: 'not_analyzed' },
+  - value:                 { type: 'double', index: 'not_analyzed' }
+```
+
+
 ## Load the data
 
 
