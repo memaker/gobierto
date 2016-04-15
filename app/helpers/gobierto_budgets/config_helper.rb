@@ -1,13 +1,5 @@
 module GobiertoBudgets::ConfigHelper
 
-  def site_url
-    'presupuestos.gobierto.es'
-  end
-
-  def site_name
-    'Gobierto Presupuestos Municipales'
-  end
-
   def legal_owner_name
     'Populate Tools SL'
   end

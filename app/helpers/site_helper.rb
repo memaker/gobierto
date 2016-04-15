@@ -1,11 +1,19 @@
 module SiteHelper
 
   def site_name
-    @site.institution_type + ' de ' + @site.location_name
+    if @site
+      @site.institution_type + ' de ' + @site.location_name
+    else
+      'Gobierto Presupuestos Municipales'
+    end
   end
 
   def site_url
-    @site.host
+    if @site
+      @site.host
+    else
+      'presupuestos.gobierto.es'
+    end
   end
 
 end
