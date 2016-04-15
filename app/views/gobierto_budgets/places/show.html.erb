@@ -183,6 +183,9 @@
   {{^value}}
   <div class="main {{sign}}">No disponible</div>
   {{/value}}
+  <div class="secondary">
+    <div class="percentage_change up {{sign}}">{{delta_percentage}}%</div>
+  </div>
 </script>
 
 <% content_for :javascript do %>

@@ -259,29 +259,34 @@ module GobiertoBudgets
       def debt
         year = params[:year].to_i
 
-        id = "#{params[:ine_code]}/#{year}"
-
-        begin
-          value = GobiertoBudgets::SearchEngine.client.get index: GobiertoBudgets::SearchEngineConfiguration::Data.index,
-            type: GobiertoBudgets::SearchEngineConfiguration::Data.type_debt, id: id
-          debt = value['_source']['value'] * 1000
-        rescue Elasticsearch::Transport::Transport::Errors::NotFound
-          debt = nil
-        end
+        debt_year = get_debt(year, params[:ine_code])
+        debt_previous_year = get_debt(year - 1, params[:ine_code])
+        sign = sign(debt_year, debt_previous_year)
 
         respond_to do |format|
           format.json do
             render json: {
               title: 'Deuda viva',
               sign: nil,
-              delta_percentage: nil,
-              value: helpers.number_to_currency(debt, precision: 0, strip_insignificant_zeros: true)
+              delta_percentage: helpers.number_with_precision(delta_percentage(debt_previous_year, debt_year), precision: 2),
+              value: helpers.number_to_currency(debt_year, precision: 0, strip_insignificant_zeros: true)
             }.to_json
           end
         end
       end
 
       private
+
+      def get_debt(year, ine_code)
+        id = "#{ine_code}/#{year}"
+
+        begin
+          value = GobiertoBudgets::SearchEngine.client.get index: GobiertoBudgets::SearchEngineConfiguration::Data.index,
+            type: GobiertoBudgets::SearchEngineConfiguration::Data.type_debt, id: id
+          value['_source']['value'] * 1000
+        rescue Elasticsearch::Transport::Transport::Errors::NotFound
+        end
+      end
 
       def ranking_title(variable, year, kind, code, area_name)
         title = ["Top"]
