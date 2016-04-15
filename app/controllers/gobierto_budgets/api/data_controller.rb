@@ -257,7 +257,7 @@ module GobiertoBudgets
       end
 
       def debt
-        year = params[:year].to_i - 1
+        year = params[:year].to_i
 
         id = "#{params[:ine_code]}/#{year}"
 
