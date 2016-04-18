@@ -134,15 +134,16 @@
       </tr>
     </thead>
     <% total_budget = @income_lines['aggregations']['total_budget']['value'] %>
-    <!-- <%= total_budget %> -->
     <% income_entries, expense_entries = GobiertoBudgets::BudgetLine.top_values({year: @year, ine_code: @place.id}) %>
     <tbody>
       <% 0.upto(income_entries.length - 1) do |i| %>
         <tr>
           <td><%= budget_line_denomination 'economic', income_entries[i]['code'], GobiertoBudgets::BudgetLine::INCOME %></td>
           <td><%= percentage_of_total income_entries[i]['amount'], total_budget %>%</td>
-          <td><%= budget_line_denomination 'functional', expense_entries[i]['code'], GobiertoBudgets::BudgetLine::EXPENSE %></td>
-          <td><%= percentage_of_total expense_entries[i]['amount'], total_budget %>%</td>
+          <% if expense_entries.any? %>
+            <td><%= budget_line_denomination 'functional', expense_entries[i]['code'], GobiertoBudgets::BudgetLine::EXPENSE %></td>
+            <td><%= percentage_of_total expense_entries[i]['amount'], total_budget %>%</td>
+          <% end %>
         </tr>
       <% end %>
     </tbody>
