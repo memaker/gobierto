@@ -266,7 +266,7 @@ module GobiertoBudgets
         respond_to do |format|
           format.json do
             render json: {
-              title: 'Deuda viva',
+              title: "Deuda viva #{'(dato 2014)' if year == 2015}",
               sign: nil,
               delta_percentage: helpers.number_with_precision(delta_percentage(debt_previous_year, debt_year), precision: 2),
               value: helpers.number_to_currency(debt_year, precision: 0, strip_insignificant_zeros: true)
