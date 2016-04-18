@@ -33,11 +33,11 @@
           <td class="r_pos"><%= GobiertoBudgets::Ranking.position(i, @page) %>.</td>
           <td class="location"><%= link_to ranking_item.place.name, gobierto_budgets_place_path(ranking_item.place.slug, @year) %> (<%= ranking_item.place.province.name %>)</td>
           <td class="population"><%= number_with_precision ranking_item.population, precision: 0, delimiter: '.' %></td>
-          <td class="expense_per"><%= number_to_currency ranking_item.amount_per_inhabitant %></td>
+          <td class="expense_per"><%= number_to_currency ranking_item.amount_per_inhabitant, strip_insignificant_zeros: true %></td>
           <% pending do %>
             <td class="relative_pos tipsit" title="98%"><div class="relative"><span style="left:98%"></span></div></td>
           <% end %>
-          <td class="expense"><%= number_to_currency ranking_item.amount %></td>
+          <td class="expense"><%= number_to_currency ranking_item.amount, strip_insignificant_zeros: true %></td>
           <% if @variable != 'population' && @code.present? %>
             <td class="percentage"><%= percentage_of_total(ranking_item.amount, ranking_item.total) %>%</td>
           <% end %>
