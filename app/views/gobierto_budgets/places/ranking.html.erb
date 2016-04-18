@@ -38,8 +38,8 @@ set_meta_tags title: page_title + "en #{@year}" %>
         <div class="switcher kind_switcher">
           <%= link_to "#{kind_literal(@kind).capitalize} #{'por habitante' if @variable == 'amount_per_inhabitant'} <i class='fa fa-angle-down'></i>".html_safe, '', class: 'current' %>
           <ul>
-            <li><%= link_to kind_literal(@kind).capitalize, gobierto_budgets_places_ranking_path(@year, @kind, @area_name, @variable, ine_code: params[:ine_code]) %></li>
-            <li><%= link_to kind_literal(other_kind(@kind)).capitalize, gobierto_budgets_places_ranking_path(@year, other_kind(@kind), @area_name, @variable, ine_code: params[:ine_code]) %></li>
+            <li><%= link_to kind_literal(@kind).capitalize, gobierto_budgets_places_ranking_path(@year, @kind, @area_name, @variable, ine_code: params[:ine_code], f: params[:f]) %></li>
+            <li><%= link_to kind_literal(other_kind(@kind)).capitalize, gobierto_budgets_places_ranking_path(@year, other_kind(@kind), @area_name, @variable, ine_code: params[:ine_code], f: params[:f]) %></li>
           </ul>
         </div>
 
