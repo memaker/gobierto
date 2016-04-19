@@ -124,7 +124,7 @@ module GobiertoBudgets
 
         budget_data = budget_data_executed(@year, 'amount')
         budget_data_previous_year = budget_data_executed(@year - 1, 'amount')
-        sign = sign(budget_data[:value], budget_data_previous_year[:value])
+        sign = sign(budget_data_previous_year[:value], budget_data[:value])
 
         respond_to do |format|
           format.json do
@@ -132,7 +132,7 @@ module GobiertoBudgets
               title: @category_name,
               sign: sign,
               value: format_currency(budget_data[:value]),
-              delta_percentage: helpers.number_with_precision(delta_percentage(budget_data[:value], budget_data_previous_year[:value]), precision: 2),
+              delta_percentage: helpers.number_with_precision(delta_percentage(budget_data_previous_year[:value], budget_data[:value]), precision: 2),
             }.to_json
           end
         end
