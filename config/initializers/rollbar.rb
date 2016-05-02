@@ -9,9 +9,9 @@ Rollbar.configure do |config|
   end
 
   config.exception_level_filters.merge!({
-    'ActionController::InvalidCrossOriginRequest': 'ignore',
-    'ActionController::RoutingError': 'ignore',
-    'ActionController::UnknownFormat': 'ignore'
+    'ActionController::InvalidCrossOriginRequest' => 'ignore',
+    'ActionController::RoutingError' => 'ignore',
+    'ActionController::UnknownFormat' => 'ignore'
   })
 
 end
