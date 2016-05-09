@@ -8,7 +8,7 @@ gem 'redcarpet', require: true
 gem 'bcrypt'
 gem 'rollbar'
 gem 'meta-tags'
-gem 'ine-places', require: 'ine/places/places'
+gem 'ine-places'
 gem 'actionpack-page_caching'
 gem 'progressbar'
 gem 'ruby-px', require: 'pc-axis/dataset'
