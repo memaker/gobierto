@@ -25,6 +25,7 @@
 //= require gobierto_budgets/ui
 //= require gobierto_budgets/ranking
 //= require gobierto_budgets/analytics
+//= require gobierto_budgets/vendor/iframeResizer/iframeResizer.contentWindow.min
 
 SPARKLINES_DEFAULTS = {
   width: 60,
