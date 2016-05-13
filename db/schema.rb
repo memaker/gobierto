@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160414140259) do
+ActiveRecord::Schema.define(version: 20160513142327) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -188,7 +188,7 @@ ActiveRecord::Schema.define(version: 20160414140259) do
     t.string   "external_id"
     t.string   "name"
     t.string   "domain"
-    t.text     "configuration"
+    t.text     "configuration_data"
     t.string   "location_name"
     t.string   "location_type"
     t.string   "institution_url"

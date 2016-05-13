@@ -5,6 +5,10 @@ class Site < ActiveRecord::Base
   #has_many :gobierto_cms_pages, class_name: GobiertoCms::Page
   #has_many :gobierto_cms_attachments, class_name: GobiertoCms::Attachment
 
+  serialize :configuration_data
+
+  before_save :store_configuration
+
   validates :name, presence: true, uniqueness: true
   validates :location_name, presence: true
   validates :institution_url, presence: true
@@ -22,6 +26,18 @@ class Site < ActiveRecord::Base
   end
 
   def subdomain
-    domain.split('.').first
+    if domain.present? and domain.include?('.')
+      domain.split('.').first
+    end
+  end
+
+  def configuration
+    @configuration ||= SiteConfiguration.new(read_attribute(:configuration_data))
+  end
+
+  private
+
+  def store_configuration
+    self.configuration_data = self.configuration.to_h
   end
 end
