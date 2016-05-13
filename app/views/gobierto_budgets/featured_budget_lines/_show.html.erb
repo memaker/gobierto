@@ -4,7 +4,7 @@
   <div class="main">
     <header>
       ¿Cuánto se gasta <%= @place.name %> en...
-      <h2><%= budget_line_denomination(@area_name, @code, @kind) %>?</h2>
+      <h2><%= link_to budget_line_denomination(@area_name, @code, @kind), gobierto_budgets_budget_line_path(@place.slug, @year, @code.parameterize, @kind, @area_name) %>?</h2>
     </header>
 
     <div class="main_metrics clearfix">
