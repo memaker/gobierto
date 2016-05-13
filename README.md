@@ -1,4 +1,4 @@
-# Gobierto budget comparator
+# Gobierto
 
 ## Setup subdomain
 
@@ -8,11 +8,10 @@ To configure this host in your computer:
 
 ```
 $ cd .pow
-$ ln -s DIRECTORY/gobierto-budgets-comparator gobierto
+$ ln -s DIRECTORY/gobierto gobierto
 ```
 
 Then just run `rails s` as usual, but type in the browser http://presupuestos.gobierto.dev/
-
 
 ## Elastic Search schema
 
