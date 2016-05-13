@@ -275,7 +275,7 @@ module GobiertoBudgets
       end
 
       def index
-        'budgets-forecast'
+        SearchEngineConfiguration::TotalBudget.index_forecast
       end
 
       def type
