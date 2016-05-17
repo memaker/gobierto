@@ -3,7 +3,7 @@ class MetaWelcomeController < ApplicationController
     if Site.budgets_domain?(domain)
       render "gobierto_budgets/pages/home", layout: 'gobierto_budgets_application'
     else
-      redirect_to gobierto_participation_root_path
+      redirect_to gobierto_sites_root_path
     end
   end
 end

@@ -43,9 +43,10 @@ Rails.application.routes.draw do
   end
 
   localized do
-    # TODO : Add Gobierto Sites namespace
     namespace :gobierto_sites, path: '/site', module: 'gobierto_sites' do
       constraints GobiertoSiteConstraint.new do
+        root to: 'sites#show'
+
         # legal
         get 'privacy' => 'pages#privacy'
         get 'legal' => 'pages#legal'
@@ -67,7 +68,6 @@ Rails.application.routes.draw do
       end
     end
 
-    # TODO: add constraint dynamic subdomain based on the Site model
     namespace :gobierto_cms, path: '/pages', module: 'gobierto_cms' do
       constraints GobiertoSiteConstraint.new do
         root to: 'pages#index'

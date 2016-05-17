@@ -1,7 +1,5 @@
 module GobiertoSites
-  class PagesController < ApplicationController
-    layout 'gobierto_site_application'
-
+  class PagesController < GobiertoSites::ApplicationController
     def privacy
     end
 
