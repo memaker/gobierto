@@ -10,7 +10,7 @@ module SiteHelper
 
   def site_url
     if @site
-      @site.host
+      @site.domain
     else
       'presupuestos.gobierto.es'
     end
