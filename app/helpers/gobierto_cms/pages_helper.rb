@@ -13,7 +13,7 @@ module GobiertoCms::PagesHelper
   def parent_pages(current_page)
     pages = [["Pagina raiz", nil]]
 
-    GobiertoCms::Page.walk_tree do |page, level|
+    @site.gobierto_cms_pages.walk_tree do |page, level|
       next if page == current_page
       pages << ["#{'-'*level} #{page.title}", page.id]
     end

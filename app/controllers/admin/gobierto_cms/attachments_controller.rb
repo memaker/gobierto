@@ -37,7 +37,7 @@ class Admin::GobiertoCms::AttachmentsController < ApplicationController
   private
 
   def load_page
-    @page = GobiertoCms::Page.find(params[:page_id]) if params[:page_id]
+    @page = @site.gobierto_cms_pages.find(params[:page_id]) if params[:page_id]
   end
 
 end

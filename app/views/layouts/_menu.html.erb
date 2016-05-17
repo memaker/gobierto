@@ -60,7 +60,7 @@
         <h2><%= link_to t('gobierto_cms.information'), main_app.gobierto_cms_root_path %></h2>
 
         <ul>
-          <% GobiertoCms::Page.root.sorted.each do |page| %>
+          <% @site.gobierto_cms_pages.root.sorted.each do |page| %>
             <li><%= link_to page.title, page, title: page.title %></li>
           <% end %>
         </ul>

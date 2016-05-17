@@ -3,16 +3,16 @@ class Admin::GobiertoCms::PagesController < ApplicationController
   before_action :load_page, only: [:edit, :update, :destroy]
 
   def index
-    @pages = GobiertoCms::Page.root.sorted
+    @pages = @site.gobierto_cms_pages.root.sorted
     admin_add_link new_admin_gobierto_cms_page_path
   end
 
   def new
-    @page = GobiertoCms::Page.new
+    @page = @site.gobierto_cms_pages.new
   end
 
   def create
-    @page = GobiertoCms::Page.new page_params
+    @page = @site.gobierto_cms_pages.new page_params
     @page.site = @site
     if @page.save
       track_create_page_activity
@@ -46,7 +46,7 @@ class Admin::GobiertoCms::PagesController < ApplicationController
       position +=1
       next if v[:parent_id] == "none"
 
-      if page = GobiertoCms::Page.find_by(id: v[:item_id])
+      if page = @site.gobierto_cms_pages.find_by(id: v[:item_id])
         page.update_column(:position, position)
       end
     end
@@ -64,7 +64,7 @@ class Admin::GobiertoCms::PagesController < ApplicationController
   private
 
   def load_page
-    @page = GobiertoCms::Page.friendly.find(params[:id])
+    @page = @site.gobierto_cms_pages.friendly.find(params[:id])
   end
 
   def page_params

@@ -37,7 +37,7 @@ RSpec.feature 'Admin actions' do
     expect(page.find('#user_email').value).to eq('carmena@example.com')
   end
 
-  scenario 'Complete an user signup from the list of users' do
+  pending 'Complete an user signup from the list of users' do
     visit '/participacion'
 
     fill_in 'user_email', with: 'fernando@example.com'
@@ -102,7 +102,7 @@ RSpec.feature 'Admin actions' do
     expect(page).to have_content('mariadelpilar@example.com')
   end
 
-  scenario 'Soft delete an user' do
+  pending 'Soft delete an user' do
     u1 = create_user first_name: 'María Del Pilar', email: 'mariadelpilar@example.com'
 
     visit '/'

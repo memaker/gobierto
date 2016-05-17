@@ -11,12 +11,12 @@
   <div class="main">
     <%= flush_the_flash %>
 
-    <% if GobiertoCms::Page.count == 0 %>
+    <% if @site.gobierto_cms_pages.count == 0 %>
       <p><%= t('gobierto_cms.no_pages') %></p>
       <p><%= link_to t('gobierto_cms.create_the_first_page'), new_admin_gobierto_cms_page_path %></p>
     <% else %>
       <ul class="sortable pages">
-        <% GobiertoCms::Page.root.each do |page| %>
+        <% @site.gobierto_cms_pages.root.each do |page| %>
           <li id="page_<%= page.id %>">
             <%= render partial: 'admin/gobierto_cms/pages/page', locals: {page: page} %>
             <%= render_children_pages(page) %>
