@@ -3,7 +3,7 @@ module GobiertoParticipation
     before_action :logged_in_user, only: [:create]
 
     def create
-      @consultation = GobiertoParticipation::Consultation.friendly.find(params[:consultation_id])
+      @consultation = @site.gobierto_participation_consultations.friendly.find(params[:consultation_id])
       @answer = @consultation.answers.new answer_params
       @answer.user = current_user
       @answer.site = @site

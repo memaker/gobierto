@@ -1,2 +1,0 @@
-module GobiertoParticipation::CommentsHelper
-end

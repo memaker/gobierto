@@ -6,7 +6,7 @@ module GobiertoParticipation
 
     # TODO: add pagination
     def index
-      @consultations = GobiertoParticipation::Consultation.sorted.includes(:user)
+      @consultations = @site.gobierto_participation_consultations.sorted.includes(:user)
 
       admin_add_link new_gobierto_participation_consultation_path
     end
@@ -68,7 +68,7 @@ module GobiertoParticipation
     end
 
     def load_consultation
-      @consultation = GobiertoParticipation::Consultation.friendly.find params[:id]
+      @consultation = @site.gobierto_participation_consultations.friendly.find params[:id]
     end
 
     def track_create_consultation_activity

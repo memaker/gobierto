@@ -3,6 +3,8 @@ class Site < ActiveRecord::Base
   RESERVED_SUBDOMAINS = %W(presupuestos)
 
   has_many :gobierto_cms_pages, class_name: GobiertoCms::Page
+  has_many :gobierto_participation_ideas, class_name: GobiertoParticipation::Idea
+  has_many :gobierto_participation_consultations, class_name: GobiertoParticipation::Consultation
 
   serialize :configuration_data
 

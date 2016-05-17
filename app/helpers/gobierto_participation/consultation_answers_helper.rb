@@ -1,2 +1,0 @@
-module GobiertoParticipation::ConsultationAnswersHelper
-end

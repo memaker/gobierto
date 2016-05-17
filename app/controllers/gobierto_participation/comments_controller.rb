@@ -1,7 +1,7 @@
 module GobiertoParticipation
   class CommentsController < GobiertoParticipation::ApplicationController
     def create
-      @idea = GobiertoParticipation::Idea.friendly.find(params[:idea_id])
+      @idea = @site.gobierto_participation_ideas.friendly.find(params[:idea_id])
       @comment = @idea.comments.new comment_params
       @comment.site = @site
       @comment.user = current_user

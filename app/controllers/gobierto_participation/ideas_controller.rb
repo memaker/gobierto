@@ -6,11 +6,11 @@ module GobiertoParticipation
 
     # TODO: add pagination
     def index
-      @ideas = GobiertoParticipation::Idea.sorted.includes(:user)
+      @ideas = @site.gobierto_participation_ideas.sorted.includes(:user)
     end
 
     def show
-      @idea = GobiertoParticipation::Idea.friendly.find(params[:id])
+      @idea = @site.gobierto_participation_ideas.friendly.find(params[:id])
       @comment = @idea.comments.new
 
       admin_edit_link edit_gobierto_participation_idea_path(@idea)
@@ -18,7 +18,7 @@ module GobiertoParticipation
     end
 
     def new
-      @idea = GobiertoParticipation::Idea.new
+      @idea = @site.gobierto_participation_ideas.new
     end
 
     def create
@@ -63,7 +63,7 @@ module GobiertoParticipation
     end
 
     def load_idea
-      @idea = GobiertoParticipation::Idea.friendly.find(params[:id])
+      @idea = @site.gobierto_participation_ideas.friendly.find(params[:id])
     end
 
     def track_create_idea_activity
