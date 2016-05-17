@@ -27,7 +27,7 @@ namespace :gobierto_budgets do
     def import_population(file_path, year)
       pbar = ProgressBar.new("population-#{year}", INE::Places::Place.all.length)
 
-      dataset = PCAxis::Dataset.new file_path
+      dataset = RubyPx::Dataset.new file_path
       population_data = dataset.data('edad (año a año)' => 'Total', 'sexo' => 'Ambos sexos')
       places_codes = dataset.dimension('municipios').map{|k| k.split('-').first.to_i }
       population_data = Hash[places_codes.zip(population_data)]
@@ -84,7 +84,7 @@ namespace :gobierto_budgets do
       end
     end
 
-    desc "Import population from PCAxis file into ElasticSearch. Example rake population:import[2014,'db/data/population/2014.px']"
+    desc "Import population from pc-axis file into ElasticSearch. Example rake population:import[2014,'db/data/population/2014.px']"
     task :import, [:year, :file_path] => :environment do |t, args|
       if m = args[:year].match(/\A\d{4}\z/)
         year = m[0].to_i

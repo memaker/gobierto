@@ -79,7 +79,7 @@ namespace :gobierto_budgets do
       create_debt_mapping(INDEX, TYPE)
     end
 
-    desc "Import debt from PCAxis file into ElasticSearch. Example rake gobierto_budgets:debt:import[2014,'db/data/deb/debt-2014.csv']"
+    desc "Import debt from pc-axis file into ElasticSearch. Example rake gobierto_budgets:debt:import[2014,'db/data/deb/debt-2014.csv']"
     task :import, [:year, :file_path] => :environment do |t, args|
       if m = args[:year].match(/\A\d{4}\z/)
         year = m[0].to_i
