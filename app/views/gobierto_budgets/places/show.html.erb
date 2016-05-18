@@ -157,37 +157,11 @@
   <%= render partial: 'gobierto_budgets/places/cta_block' %>
 <% end %>
 
-<script type="text/html" id="widget-template">
-  <div class="label">{{title}}</div>
-  <div class="main {{sign}}">{{value}}</div>
-  <div class="secondary">
-    <div class="percentage_change up {{sign}}">{{delta_percentage}}%</div>
-    <div class="ranking"><a href="{{ranking_url}}"><strong>#{{ranking_position}}</strong>/{{ranking_total_elements}}</a></div>
-  </div>
-</script>
+<%= render partial: 'shared/widget_template' %>
 
-<script type="text/html" id="widget-template-execution">
-  <div class="label">{{title}}</div>
-  {{#delta_percentage}}
-  <div class="main {{sign}}">{{delta_percentage}} % ({{value}})</div>
-  {{/delta_percentage}}
-  {{^delta_percentage}}
-  <div class="main {{sign}}">No disponible</div>
-  {{/delta_percentage}}
-</script>
+<%= render partial: 'shared/widget_template_execution' %>
 
-<script type="text/html" id="widget-template-debt">
-  <div class="label">{{title}}</div>
-  {{#value}}
-  <div class="main {{sign}}">{{value}}</div>
-  {{/value}}
-  {{^value}}
-  <div class="main {{sign}}">No disponible</div>
-  {{/value}}
-  <div class="secondary">
-    <div class="percentage_change up {{sign}}">{{delta_percentage}}%</div>
-  </div>
-</script>
+<%= render partial: 'shared/widget_template_debt' %>
 
 <% content_for :javascript do %>
   var $featured = $('[data-featured-budget-line]');

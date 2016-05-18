@@ -47,10 +47,12 @@ Rails.application.routes.draw do
       constraints GobiertoSiteConstraint.new do
         root to: 'sites#show'
 
-        # legal
+        # legal pages (TODO: we should merge them)
         get 'privacy' => 'pages#privacy'
         get 'legal' => 'pages#legal'
         get 'cookie_warning' => 'pages#cookie_warning'
+
+        get 'budgets(/:year)' => 'budgets#index', as: :budgets
       end
     end
 

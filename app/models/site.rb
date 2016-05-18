@@ -16,6 +16,10 @@ class Site < ActiveRecord::Base
 
   validates :domain, presence: true, uniqueness: true, domain: true
 
+  def self.budgets_host
+    @budgets_host ||= "presupuestos." + Settings.gobierto_host
+  end
+
   def self.reserved_domain?(domain)
     RESERVED_SUBDOMAINS.map do |subdomain|
       "#{subdomain}." + Settings.gobierto_host
@@ -23,13 +27,17 @@ class Site < ActiveRecord::Base
   end
 
   def self.budgets_domain?(domain)
-    domain == "presupuestos." + Settings.gobierto_host
+    domain == budgets_host
   end
 
   def subdomain
     if domain.present? and domain.include?('.')
       domain.split('.').first
     end
+  end
+
+  def place
+    @place ||= INE::Places::Place.find self.external_id
   end
 
   def configuration

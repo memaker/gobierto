@@ -18,7 +18,7 @@
         <% end %>
       <% end %>
       <% if @site.gobierto_budgets_enabled? %>
-        <li><%= link_to 'Presupuestos', '#' %></li>
+        <li><%= link_to 'Presupuestos', gobierto_sites_budgets_path %></li>
       <% end %>
       <% if @site.gobierto_participation_enabled? %>
         <li><%= link_to 'Participación', gobierto_participation_root_path %></li>

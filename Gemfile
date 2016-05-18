@@ -20,7 +20,6 @@ gem 'daemons'
 gem 'config'
 
 # Gobify
-# gem 'apartment'
 gem 'friendly_id'
 gem 'acts_as_list'
 gem 'paranoia', '~> 2.0'
@@ -39,6 +38,8 @@ gem 'bourbon'
 gem 'turbolinks'
 gem 'therubyracer'
 gem 'cookies_eu'
+gem 'flight-for-rails'
+
 
 # Elastic search
 gem 'elasticsearch'

@@ -1,0 +1,12 @@
+<script type="text/html" id="widget-template-debt">
+  <div class="label">{{title}}</div>
+  {{#value}}
+  <div class="main {{sign}}">{{value}}</div>
+  {{/value}}
+  {{^value}}
+  <div class="main {{sign}}">No disponible</div>
+  {{/value}}
+  <div class="secondary">
+    <div class="percentage_change up {{sign}}">{{delta_percentage}}%</div>
+  </div>
+</script>
