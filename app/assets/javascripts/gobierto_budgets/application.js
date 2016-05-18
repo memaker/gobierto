@@ -9,7 +9,8 @@
 //= require gobierto_budgets/vendor/accounting.min
 //= require gobierto_budgets/vendor/jquery.autocomplete
 //= require gobierto_budgets/vendor/js.cookie
-//= require gobierto_budgets/vendor/mustache.min
+//= require mustache.min
+//= require flight-for-rails
 //= require gobierto_budgets/vendor/d3.v3.min
 //= require gobierto_budgets/vendor/d3-legend.min
 //= require gobierto_budgets/vendor/select2.min
@@ -19,13 +20,13 @@
 //= require gobierto_budgets/vendor/nouislider
 //= require gobierto_budgets/vis_treemap
 //= require gobierto_budgets/vis_lineas_tabla
-//= require gobierto_budgets/widget_renderer
 //= require gobierto_budgets/history
 //= require gobierto_budgets/compare
 //= require gobierto_budgets/ui
 //= require gobierto_budgets/ranking
 //= require gobierto_budgets/analytics
 //= require gobierto_budgets/vendor/iframeResizer/iframeResizer.contentWindow.min
+//= require_directory ../components/
 
 SPARKLINES_DEFAULTS = {
   width: 60,

@@ -223,17 +223,6 @@ $(function(){
     $(this).find('.add_location ').velocity("fadeOut", { duration: 100 });
   });
 
-  $('[data-widget-type]').each(function(){
-    if($(this).data('widget-id') === undefined){
-      $(this).attr('data-widget-id', Math.random().toString(36).substring(7));
-    }
-    var widget = new WidgetRenderer({
-      id: $(this).data('widget-id'), type: $(this).data('widget-type'),
-      url: $(this).data('widget-data-url'), template: $(this).data('widget-template')
-    });
-    widget.render();
-  });
-
   function parent_treemap_url(parent_url) {
     var pattern = /parent_code=\d+/;
     parent_url = parent_url.replace(pattern, function(match) {
