@@ -36,6 +36,14 @@ class Site < ActiveRecord::Base
     @configuration ||= SiteConfiguration.new(read_attribute(:configuration_data))
   end
 
+  def gobierto_budgets_enabled?
+    configuration.modules && configuration.modules.include?('GobiertoBudgets')
+  end
+
+  def gobierto_participation_enabled?
+    configuration.modules && configuration.modules.include?('GobiertoParticipation')
+  end
+
   private
 
   def store_configuration

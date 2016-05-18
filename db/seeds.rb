@@ -4,13 +4,22 @@ place = INE::Places::Place.find_by_slug 'orgiva'
 site = Site.create! name: 'Órgiva Participa', domain: 'orgiva.gobierto.dev', location_name: 'Órgiva', location_type: place.class.name,
   external_id: place.id, institution_url: 'http://orgiva.es', institution_type: 'Ayuntamiento'
 
-site.gobierto_cms_pages.create! title: 'Sobre el ayuntamiento', body: 'Sobre el ayuntamiento body'
+site.configuration.links = ['http://orgiva.es']
+site.configuration.logo = 'http://www.aytoorgiva.org/web/sites/all/themes/aytoorgiva_COPSEG/logo.png'
+site.configuration.modules = ['GobiertoParticipation', 'GobiertoBudgets']
+site.save!
 
+site.gobierto_cms_pages.create! title: 'Sobre el ayuntamiento', body: 'Sobre el ayuntamiento body'
 
 ## Burjassot
 place = INE::Places::Place.find_by_slug 'burjassot'
 
 site = Site.create! name: 'Burjassot Transparente', domain: 'gobierto.burjassot.dev', location_name: 'Burjassot', location_type: place.class.name,
   external_id: place.id, institution_url: 'http://burjassot.es', institution_type: 'Ayuntamiento'
+
+site.configuration.links = ['http://burjassot.es']
+site.configuration.logo = 'http://www.burjassot.org/wp-content/themes/ajuntament/images/_logo-burjassot.jpg'
+site.configuration.modules = ['GobiertoParticipation']
+site.save!
 
 site.gobierto_cms_pages.create! title: 'Sobre el ayuntamiento', body: 'Sobre el ayuntamiento body'

@@ -1,3 +1,3 @@
 class GobiertoCms::ApplicationController < ApplicationController
-  layout 'gobierto_site_application'
+  layout 'gobierto_participation_application'
 end

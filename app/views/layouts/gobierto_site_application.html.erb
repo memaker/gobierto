@@ -10,78 +10,36 @@
 <body>
 
 <header class="meta">
-  <div class="cont">
-    <div class="site_title"><%= link_to @site.name, root_path %> <span>|</span></div>
-    <div class="organization"><%= link_to t('layout.council_of', name: @site.location_name), @site.institution_url, target: :blank %></div>
-    <div class="user_tools">
-      <% if logged_in? %>
-        <%= link_to current_user_name, '', :data => { :menu => 'account'}  %>
-      <% else %>
-        <%= link_to t('layout.login_or_signup'), '', :data => { :menu => 'account'} %>
+  <div>
+    <ul>
+      <% if @site.configuration.links.any? %>
+        <% @site.configuration.links.each do |link| %>
+          <li><%= link_to link, link, target: '_blank' %></li>
+        <% end %>
       <% end %>
-    </div>
+      <% if @site.gobierto_budgets_enabled? %>
+        <li><%= link_to 'Presupuestos', '#' %></li>
+      <% end %>
+      <% if @site.gobierto_participation_enabled? %>
+        <li><%= link_to 'Participación', gobierto_participation_root_path %></li>
+      <% end %>
+    </ul>
   </div>
 
-  <div class="resp h_menu">
-    <%= link_to '<i class="fa fa-bars"></i>'.html_safe, '', :data => { :menu => 'sections'} %>
-  </div>
+  <% if @site.configuration.logo %>
+    <%= image_tag @site.configuration.logo %>
+  <% end %>
+
+  <h1>
+    <%= @site.name %> / Sección
+  </h1>
 </header>
-
-<%= render 'layouts/menu' %>
 
 <div class="desktop-c">
 
   <div class="container">
     <%= yield %>
   </div>
-
-  <footer>
-    <div class="cont">
-
-      <p class="f_txt">Una iniciativa de <%= t('layout.council_of', name: @site.location_name) %></p>
-
-      <div class="clearfix">
-        <div class="col-1-3">
-          <ul>
-            <li><%= link_to t('gobierto_participation.consultations'), gobierto_participation_consultations_path, title: t('gobierto_participation.consultations') %></li>
-            <li><%= link_to t('gobierto_participation.ideas'), gobierto_participation_ideas_path, title: t('gobierto_participation.ideas') %></li>
-          </ul>
-        </div>
-
-        <div class="col-2-3"> </div>
-
-        <div class="col-3-3"> </div>
-      </div>
-
-      <div class="legal">
-        <%= link_to t('legal.privacy_policy_title'), gobierto_sites_privacy_path, title: t('legal.privacy_policy_title') %>
-        <%= link_to t('legal.legal_title'), gobierto_sites_legal_path, title: t('legal.legal_title') %>
-        <%= link_to t('legal.cookie_warning_title'), gobierto_sites_cookie_warning_path, title: t('legal.cookie_warning_title') %>
-      </div>
-    </div>
-
-    <div class="gobierto_ref">
-      <%= link_to image_tag('GobiertoFooter@2x.png', size: '401x18'), 'http://gobierto.es', target: 'blank' %>
-    </div>
-
-  </footer>
-
-</div>
-
-
-
-<% if Rails.env.production? %>
-<%= render 'cookies_eu/consent_banner', link: cookie_warning_path %>
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-  ga('create', 'UA-69636046-1', 'auto');
-  ga('send', 'pageview');
-</script>
-<% end %>
 
 </body>
 </html>

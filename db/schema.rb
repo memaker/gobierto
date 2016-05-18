@@ -218,15 +218,15 @@ ActiveRecord::Schema.define(version: 20160513142327) do
     t.string   "remember_digest"
     t.string   "password_reset_token"
     t.integer  "place_id"
+    t.string   "document_type"
+    t.string   "document_number"
     t.datetime "created_at",                           null: false
     t.datetime "updated_at",                           null: false
+    t.datetime "deleted_at"
     t.string   "verification_token"
     t.boolean  "pro",                  default: false
     t.boolean  "terms_of_service",     default: false
     t.boolean  "admin",                default: false
-    t.datetime "deleted_at"
-    t.string   "document_type"
-    t.string   "document_number"
   end
 
   add_index "users", ["deleted_at"], name: "index_users_on_deleted_at", using: :btree
