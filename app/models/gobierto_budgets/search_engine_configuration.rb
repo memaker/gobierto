@@ -9,7 +9,7 @@ module GobiertoBudgets
     class BudgetLine
       def self.index_forecast; 'budgets-forecast-v2' end
       def self.index_executed; 'budgets-execution-v2' end
-      # TODO: add the type
+      # TODO: add the types economic and functional
     end
 
     class TotalBudget
