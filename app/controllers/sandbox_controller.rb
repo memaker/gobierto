@@ -1,6 +1,7 @@
 class SandboxController < ApplicationController
   before_action :set_working_variables 
-  
+  layout 'gobierto_site_application'
+
   def index
     @templates = Dir.glob(Rails.root.join('app/views/sandbox/*.html.erb').to_s).map do |filename|
       filename = File.basename(filename, File.extname(filename))

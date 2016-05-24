@@ -9,37 +9,63 @@
 </head>
 <body>
 
-<header class="meta">
-  <div>
-    <ul>
-      <% if @site.configuration.links.any? %>
-        <% @site.configuration.links.each do |link| %>
-          <li><%= link_to link, link, target: '_blank' %></li>
+<div class="">
+
+  <header class="meta color_main">
+    
+    <div class="client_links">
+      <div class="column">
+        <ul>
+          <% if @site.configuration.links.any? %>
+            <% @site.configuration.links.each do |link| %>
+              <li><%= link_to link, link, target: '_blank' %></li>
+            <% end %>
+          <% end %>
+          <% if @site.gobierto_budgets_enabled? %>
+            <li><%= link_to 'Presupuestos', gobierto_sites_budgets_path %></li>
+          <% end %>
+          <% if @site.gobierto_participation_enabled? %>
+            <li><%= link_to 'Participación', gobierto_participation_root_path %></li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+
+    <div class="site_header">
+      <div class="column">
+        <% if @site.configuration.logo %>
+          <div class="logo"><%= image_tag @site.configuration.logo %></div>
         <% end %>
-      <% end %>
-      <% if @site.gobierto_budgets_enabled? %>
-        <li><%= link_to 'Presupuestos', gobierto_sites_budgets_path %></li>
-      <% end %>
-      <% if @site.gobierto_participation_enabled? %>
-        <li><%= link_to 'Participación', gobierto_participation_root_path %></li>
-      <% end %>
-    </ul>
-  </div>
+        <div class="site_title">
+          <strong><%= @site.name %></strong> / Sección
+        </div>
+      </div>
+    </div>
 
-  <% if @site.configuration.logo %>
-    <%= image_tag @site.configuration.logo %>
-  <% end %>
+    <menu class="sub_sections">
+      <div class="column">
+      <ul>
+        <li><%= link_to 'Resumen', '', class: 'selected' %></li>
+        <li><%= link_to 'Presupuesto', '' %></li>
+        <li><%= link_to 'Ejecución', '' %></li>
+        <li><%= link_to 'Consultas', '' %></li>
+        <li><%= link_to 'Historias', '' %></li>
+        <li><%= link_to 'Rankings', '' %></li>
+      </ul>
+      </div>
+    </menu>
 
-  <h1>
-    <%= @site.name %> / Sección
-  </h1>
-</header>
-
-<div class="desktop-c">
+  </header>
 
   <div class="container">
-    <%= yield %>
+  
+    <div class="column">
+      <%= yield %>
+    </div>
+
   </div>
+
+</div>
 
 </body>
 </html>
