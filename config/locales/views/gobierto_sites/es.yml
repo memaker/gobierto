@@ -1,0 +1,5 @@
+es:
+  gobierto_sites:
+    budgets:
+      index:
+        in_year: "En %{year}..."

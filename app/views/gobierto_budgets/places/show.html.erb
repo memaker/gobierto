@@ -139,10 +139,10 @@
       <% 0.upto(income_entries.length - 1) do |i| %>
         <tr>
           <td><%= budget_line_denomination 'economic', income_entries[i]['code'], GobiertoBudgets::BudgetLine::INCOME %></td>
-          <td><%= percentage_of_total income_entries[i]['amount'], total_budget %>%</td>
+          <td><%= percentage_of_total income_entries[i]['amount'], total_budget %></td>
           <% if expense_entries.any? %>
             <td><%= budget_line_denomination 'functional', expense_entries[i]['code'], GobiertoBudgets::BudgetLine::EXPENSE %></td>
-            <td><%= percentage_of_total expense_entries[i]['amount'], total_budget %>%</td>
+            <td><%= percentage_of_total expense_entries[i]['amount'], total_budget %></td>
           <% end %>
         </tr>
       <% end %>
@@ -150,7 +150,7 @@
   </table>
 <% end %>
 
-<div class="featured_budget_line" data-featured-budget-line="<%= [@place.slug, @year].join('/') %>">
+<div class="featured_budget_line" data-featured-budget-line="<%= gobierto_budgets_featured_budget_line_url(@place.slug, year: @year, host: Site.budgets_host) %>">
 </div>
 
 <% unless logged_in? %>
@@ -162,13 +162,3 @@
 <%= render partial: 'shared/widget_template_execution' %>
 
 <%= render partial: 'shared/widget_template_debt' %>
-
-<% content_for :javascript do %>
-  var $featured = $('[data-featured-budget-line]');
-  if($featured.length){
-    var params = $featured.data('featured-budget-line');
-    var slug = params.split('/')[0];
-    var year = params.split('/')[1];
-    $.ajax('/featured_budget_lines/' + slug + '?year=' + year);
-  }
-<% end %>

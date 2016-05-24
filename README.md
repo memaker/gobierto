@@ -146,7 +146,8 @@ bin/rake gobierto_budgets:population:import[2015,'db/data/population/2015.px'] &
 bin/rake gobierto_budgets:population:import[2014,'db/data/population/2014.px'] &&
 bin/rake gobierto_budgets:population:import[2013,'db/data/population/2013.px'] &&
 bin/rake gobierto_budgets:population:import[2012,'db/data/population/2012.px'] &&
-bin/rake gobierto_budgets:population:import[2011,'db/data/population/2011.px']
+bin/rake gobierto_budgets:population:import[2011,'db/data/population/2011.px'] &&
+bin/rake gobierto_budgets:population:import[2010,'db/data/population/2011.px']
 
 # Load budgets
 bin/rake gobierto_budgets:budgets:import['budgets-planned','budgets-forecast-v2','economic',2015] &&

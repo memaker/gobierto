@@ -7,7 +7,7 @@ module GobiertoBudgets
     def show
       render_404 and return if @place.nil?
       if @year.nil?
-        redirect_to gobierto_budgets_place_path(@place, 2015) and return
+        redirect_to gobierto_budgets_place_path(@place, GobiertoBudgets::SearchEngineConfiguration::Year.last) and return
       end
 
       @income_lines = GobiertoBudgets::BudgetLine.search(ine_code: @place.id, level: 1, year: @year, kind: GobiertoBudgets::BudgetLine::INCOME, type: 'economic')

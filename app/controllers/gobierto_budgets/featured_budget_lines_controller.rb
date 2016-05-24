@@ -16,10 +16,10 @@ module GobiertoBudgets
 
       @code = results.sample['code'] if results.any?
 
-      respond_to do |format|
-        format.js do
-          @code.present? ? render('show') : render(nothing: true)
-        end
+      if @code.present?
+        render 'show', layout: false
+      else
+        render head: :success
       end
     end
   end
