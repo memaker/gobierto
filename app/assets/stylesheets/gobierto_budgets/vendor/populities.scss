@@ -3,7 +3,7 @@
   * CSS and JS utilities by Populate
   *
   * https://github.com/PopulateTools/populities
-  * Version: 0.1 
+  * Version: 0.3
   * 
   * TODO: Create and index, document...
   * 
@@ -24,6 +24,7 @@
   width: 48%;
   float: left;
   margin: 0 4% 0 0;
+  text-align: center;
 }
 .col-2-2 {
   float: right; 
@@ -63,9 +64,81 @@
 .fixed {
   position: fixed;
 }
-.invisible {
-  visibility: hidden;
+.soft {
+  opacity: .5;
 }
+
+
+
+.p_1 {
+  padding: 1em;
+}
+.p_2 {
+  padding: 2em;
+}
+.p_3 {
+  padding: 3em;
+}
+.p_4 {
+  padding: 4em;
+}
+.m_1 {
+  margin: 1em;
+}
+.m_2 {
+  margin: 2em;
+}
+.m_3 {
+  margin: 3em;
+}
+.m_4 {
+  margin: 4em;
+}
+.p_h_1 {
+  padding: 0 1em;
+  box-sizing: border-box;  
+}
+.p_h_2 {
+  padding: 0 2em;
+  box-sizing: border-box;  
+}
+.p_h_3 {
+  padding: 0 3em;
+  box-sizing: border-box;  
+}
+.p_h_4 {
+  padding: 0 4em;
+  box-sizing: border-box;  
+}
+.p_v_1 {
+  padding: 1em 0;
+  box-sizing: border-box;  
+}
+.p_v_2 {
+  padding: 2em 0;
+  box-sizing: border-box;  
+}
+.p_v_3 {
+  padding: 3em 0;
+  box-sizing: border-box;  
+}
+.p_v_4 {
+  padding: 4em 0;
+  box-sizing: border-box;  
+}
+.m_v_1 {
+  margin: 1em 0;
+}
+.m_v_2 {
+  margin: 2em 0;
+}
+.m_v_3 {
+  margin: 3em 0;
+}
+.m_v_4 {
+  margin: 4em 0;
+}
+
 
 
 /*
