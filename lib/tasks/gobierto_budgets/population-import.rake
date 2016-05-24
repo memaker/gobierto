@@ -18,7 +18,7 @@ namespace :gobierto_budgets do
             province_id:           { type: 'integer', index: 'not_analyzed' },
             autonomy_id:           { type: 'integer', index: 'not_analyzed' },
             year:                  { type: 'integer', index: 'not_analyzed' },
-            value:                 { type: 'integer', index: 'not_analyzed' }
+            value:                 { type: 'double', index: 'not_analyzed' }
           }
         }
       }
