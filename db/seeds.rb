@@ -23,3 +23,18 @@ site.configuration.modules = ['GobiertoParticipation']
 site.save!
 
 site.gobierto_cms_pages.create! title: 'Sobre el ayuntamiento', body: 'Sobre el ayuntamiento body'
+
+## Santander
+place = INE::Places::Place.find_by_slug 'santander'
+
+site = Site.create! name: 'Santander Participa', domain: 'santander.gobierto.dev', location_name: 'Santander', location_type: place.class.name,
+  external_id: place.id, institution_url: 'http://santander.es', institution_type: 'Ayuntamiento'
+
+site.configuration.links = ['http://santander.es']
+site.configuration.logo = 'http://santander.es/sites/default/themes/custom/ayuntamiento/img/logo-ayto-santander.png'
+site.configuration.modules = ['GobiertoParticipation', 'GobiertoBudgets']
+site.save!
+
+site.gobierto_cms_pages.create! title: 'Sobre el ayuntamiento', body: 'Sobre el ayuntamiento body'
+
+

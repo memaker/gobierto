@@ -13,7 +13,7 @@ class GobiertoSites::BudgetsController < GobiertoSites::ApplicationController
 
   def load_year
     if params[:year].nil?
-      redirect_to gobierto_sites_budgets_path(Date.today.year - 1) and return false
+      redirect_to gobierto_sites_budgets_path(GobiertoBudgets::SearchEngineConfiguration::Year.last)
     else
       @year = params[:year]
     end

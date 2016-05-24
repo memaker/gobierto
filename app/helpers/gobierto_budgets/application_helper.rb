@@ -53,7 +53,7 @@ module GobiertoBudgets
     end
 
     def percentage_of_total(value, total)
-      number_with_precision((value.to_f / total.to_f) * 100, precision: 2)
+      number_with_precision((value.to_f / total.to_f) * 100, precision: 2) + '%'
     end
 
     def area_class(area, kind)

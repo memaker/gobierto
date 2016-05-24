@@ -1,5 +1,5 @@
 class SandboxController < ApplicationController
-  before_action :set_working_variables 
+  before_action :set_working_variables
   layout 'gobierto_site_application'
 
   def index
@@ -18,18 +18,19 @@ class SandboxController < ApplicationController
       else
         render "sandbox/#{params[:template]}"
       end
-      
+
     elsif lookup_context.exists?("sandbox/#{params[:template]}/index")
       render "sandbox/#{params[:template]}/index"
     else
       render :action => "index"
     end
   end
-  
+
   private
+
   def set_working_variables
     Struct.new('Place', :slug, :name)
     @place = Struct::Place.new('madrid', 'Madrid')
-    @year = 2015
+    @year = GobiertoBudgets::SearchEngineConfiguration::Year.last
   end
 end

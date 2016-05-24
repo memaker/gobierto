@@ -39,7 +39,7 @@
           <% end %>
           <td class="expense"><%= number_to_currency ranking_item.amount, strip_insignificant_zeros: true %></td>
           <% if @variable != 'population' && @code.present? %>
-            <td class="percentage"><%= percentage_of_total(ranking_item.amount, ranking_item.total) %>%</td>
+            <td class="percentage"><%= percentage_of_total(ranking_item.amount, ranking_item.total) %></td>
           <% end %>
           <% pending do %>
             <td class="relative_pos tipsit" title="50%"><div class="relative"><span style="left:50%"></span></div></td>

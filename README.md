@@ -119,6 +119,27 @@ Then just run `rails s` as usual, but type in the browser http://presupuestos.go
 ### Load planned data
 
 ```
+# Load categories
+bin/rake gobierto_budgets:budget_categories:import['budgets-planned']
+
+# Load places
+bin/rake gobierto_budgets:places:import
+
+# Load debt
+bin/rake gobierto_budgets:debt:import[2014,'db/data/debt/debt-2014.csv'] &&
+bin/rake gobierto_budgets:debt:import[2013,'db/data/debt/debt-2013.csv'] &&
+bin/rake gobierto_budgets:debt:import[2012,'db/data/debt/debt-2012.csv'] &&
+bin/rake gobierto_budgets:debt:import[2011,'db/data/debt/debt-2011.csv'] &&
+bin/rake gobierto_budgets:debt:import[2010,'db/data/debt/debt-2010.csv']
+
+# Load population
+bin/rake gobierto_budgets:population:import[2015,'db/data/population/2015.px'] &&
+bin/rake gobierto_budgets:population:import[2014,'db/data/population/2014.px'] &&
+bin/rake gobierto_budgets:population:import[2013,'db/data/population/2013.px'] &&
+bin/rake gobierto_budgets:population:import[2012,'db/data/population/2012.px'] &&
+bin/rake gobierto_budgets:population:import[2011,'db/data/population/2011.px'] &&
+bin/rake gobierto_budgets:population:import[2010,'db/data/population/2011.px']
+
 # Load budgets
 bin/rake gobierto_budgets:budgets:import['budgets-planned','budgets-forecast-v2','economic',2015] &&
 bin/rake gobierto_budgets:budgets:import['budgets-planned','budgets-forecast-v2','economic',2014] &&

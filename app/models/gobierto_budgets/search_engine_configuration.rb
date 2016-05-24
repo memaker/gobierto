@@ -1,5 +1,8 @@
 module GobiertoBudgets
   class SearchEngineConfiguration
+    class Year
+      def self.last; 2015 end
+    end
 
     class BudgetCategories
       def self.index; 'budget-categories' end

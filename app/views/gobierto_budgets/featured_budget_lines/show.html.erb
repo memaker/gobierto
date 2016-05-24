@@ -4,7 +4,7 @@
   <div class="main">
     <header>
       ¿Cuánto se gasta <%= @place.name %> en...
-      <h2><%= link_to budget_line_denomination(@area_name, @code, @kind), gobierto_budgets_budget_line_path(@place.slug, @year, @code.parameterize, @kind, @area_name) %>?</h2>
+      <h2><%= link_to budget_line_denomination(@area_name, @code, @kind), gobierto_budgets_budget_line_url(@place.slug, @year, @code.parameterize, @kind, @area_name, host: Site.budgets_host) %>?</h2>
     </header>
 
     <div class="main_metrics clearfix">
@@ -38,12 +38,10 @@
   </div>
 </div>
 
-<%= link_to 'Enséñame otra', gobierto_budgets_featured_budget_line_path(id: @place.slug, year: @year), class: 'show_me_another', remote: true %>
+<%= link_to 'Enséñame otra', '#', class: 'show_me_another', data: { 'featured-budget-line-load-more' => true } %>
 
 <%= render partial: 'gobierto_budgets/budget_lines/feedback' %>
 
 <%= render partial: 'shared/widget_template' %>
 
 <%= render partial: 'shared/widget_template_lite' %>
-
-
