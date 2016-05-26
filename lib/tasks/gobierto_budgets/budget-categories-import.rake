@@ -54,7 +54,7 @@ namespace :gobierto_budgets do
         query = {
           area: 'economic',
           code: code,
-          name: code.length == 1 ? first_level_dict[row['tipreig']][code] : row['nombre'],
+          name: code.length == 1 ? first_level_dict[row['tipreig']][code] : row['nombre'].tr('.',''),
           parent_code: parent_code,
           level: level,
           kind: row['tipreig']
@@ -87,7 +87,7 @@ namespace :gobierto_budgets do
         query = {
           area: 'functional',
           code: code,
-          name: code.length == 1 ? first_level_dict[code] : row['nombre'],
+          name: code.length == 1 ? first_level_dict[code] : row['nombre'].tr('.',''),
           parent_code: parent_code,
           level: level,
           kind: 'G'
