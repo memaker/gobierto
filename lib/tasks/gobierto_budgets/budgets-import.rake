@@ -72,12 +72,12 @@ SQL
         db.execute(sql).each do |row|
           code = row['code']
           level = row['code'].length
+          parent_code = row['code'][0..-2]
           if code.include?('.')
             code = code.tr('.','-')
             level = 4
             parent_code = code.split('-').first
           end
-          parent_code = row['code'][0..-2]
           data = base_data.merge({
             amount: row['amount'].to_f.round(2), code: code,
             level: level, kind: 'G',

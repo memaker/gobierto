@@ -27,7 +27,7 @@ namespace :gobierto_budgets do
     def import_categories(db_name)
       db = create_db_connection(db_name)
 
-      (2010..2014).to_a.reverse.each do |year|
+      (2010..2015).to_a.reverse.each do |year|
         import_economic_categories(db, year)
         import_functional_categories(db, year)
       end
@@ -43,8 +43,13 @@ namespace :gobierto_budgets do
       sql = %Q{SELECT * from "#{table_name}"}
       db.execute(sql).each do |row|
         code = row['cdcta']
-        level = code.include?('.') ? code.split('.').first.length + 1 : code.length
-        parent_code = code.include?('.') ? code.split('.').first : code[0..-2]
+        level = row['cdcta'].length
+        parent_code = row['cdcta'][0..-2]
+        if code.include?('.')
+          code = code.tr('.','-')
+          level = 4
+          parent_code = code.split('-').first
+        end
 
         query = {
           area: 'economic',
@@ -55,7 +60,7 @@ namespace :gobierto_budgets do
           kind: row['tipreig']
         }
 
-        id = ['economic',row['cdcta'],row['tipreig']].join('/')
+        id = ['economic',code,row['tipreig']].join('/')
         GobiertoBudgets::SearchEngine.client.index index: GobiertoBudgets::SearchEngineConfiguration::BudgetCategories.index, type: GobiertoBudgets::SearchEngineConfiguration::BudgetCategories.type, id: id, body: query
       end
     end
@@ -71,8 +76,13 @@ namespace :gobierto_budgets do
       sql = %Q{select * from "#{table_name}"}
       db.execute(sql).each do |row|
         code = row['cdfgr']
-        level = code.include?('.') ? code.split('.').first.length + 1 : code.length
-        parent_code = code.include?('.') ? code.split('.').first : code[0..-2]
+        level = row['cdfgr'].length
+        parent_code = row['cdfgr'][0..-2]
+        if code.include?('.')
+          code = code.tr('.','-')
+          level = 4
+          parent_code = code.split('-').first
+        end
 
         query = {
           area: 'functional',
@@ -83,7 +93,7 @@ namespace :gobierto_budgets do
           kind: 'G'
         }
 
-        id = ['functional',row['cdfgr'],'G'].join('/')
+        id = ['functional',code,'G'].join('/')
 
         GobiertoBudgets::SearchEngine.client.index index: GobiertoBudgets::SearchEngineConfiguration::BudgetCategories.index, type: GobiertoBudgets::SearchEngineConfiguration::BudgetCategories.type, id: id,  body: query
       end
