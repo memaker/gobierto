@@ -9,63 +9,79 @@
 </head>
 <body>
 
-<div class="">
-
-  <header class="meta color_main">
-    
-    <div class="client_links">
-      <div class="column">
-        <ul>
-          <% if @site.configuration.links.any? %>
-            <% @site.configuration.links.each do |link| %>
-              <li><%= link_to link, link, target: '_blank' %></li>
-            <% end %>
-          <% end %>
-          <% if @site.gobierto_budgets_enabled? %>
-            <li><%= link_to 'Presupuestos', gobierto_sites_budgets_path %></li>
-          <% end %>
-          <% if @site.gobierto_participation_enabled? %>
-            <li><%= link_to 'Participación', gobierto_participation_root_path %></li>
-          <% end %>
-        </ul>
-      </div>
-    </div>
-
-    <div class="site_header">
-      <div class="column">
-        <% if @site.configuration.logo %>
-          <div class="logo"><%= image_tag @site.configuration.logo %></div>
-        <% end %>
-        <div class="site_title">
-          <strong><%= @site.name %></strong> / Sección
-        </div>
-      </div>
-    </div>
-
-    <menu class="sub_sections">
-      <div class="column">
-      <ul>
-        <li><%= link_to 'Resumen', '', class: 'selected' %></li>
-        <li><%= link_to 'Presupuesto', '' %></li>
-        <li><%= link_to 'Ejecución', '' %></li>
-        <li><%= link_to 'Consultas', '' %></li>
-        <li><%= link_to 'Historias', '' %></li>
-        <li><%= link_to 'Rankings', '' %></li>
-      </ul>
-      </div>
-    </menu>
-
-  </header>
-
-  <div class="container">
+<header class="meta color_main">
   
+  <div class="client_links">
     <div class="column">
-      <%= yield %>
+      <ul>
+        <% if @site.configuration.links.any? %>
+          <% @site.configuration.links.each do |link| %>
+            <li><%= link_to link, link, target: '_blank' %></li>
+          <% end %>
+        <% end %>
+        <% if @site.gobierto_budgets_enabled? %>
+          <li><%= link_to 'Presupuestos', gobierto_sites_budgets_path %></li>
+        <% end %>
+        <% if @site.gobierto_participation_enabled? %>
+          <li><%= link_to 'Participación', gobierto_participation_root_path %></li>
+        <% end %>
+      </ul>
     </div>
-
   </div>
 
+  <div class="site_header">
+    <div class="column">
+      <% if @site.configuration.logo %>
+        <div class="logo"><%= image_tag @site.configuration.logo %></div>
+      <% end %>
+      <div class="site_title">
+        <strong><%= link_to @site.name, '/sandbox/1605/' %></strong> / <%= link_to 'Presupuestos', '/sandbox/1605/index' %>
+      </div>
+    </div>
+  </div>
+
+  <menu class="sub_sections">
+    <div class="column">
+    <ul>
+      <li><%= link_to 'Resumen', '/sandbox/1605/index', class: 'active' %></li>
+      <li><%= link_to 'Presupuesto', '/sandbox/1605/budget' %></li>
+      <li><%= link_to 'Ejecución', '' %></li>
+      <li><%= link_to 'Consultas', '' %></li>
+      <li><%= link_to 'Historias', '' %></li>
+      <li><%= link_to 'Rankings', '' %></li>
+    </ul>
+    </div>
+  </menu>
+
+</header>
+
+<div class="container">
+  
+  <%= yield %>
+
 </div>
+
+<footer>
+  
+  <div class="column">
+    <div class="separator"></div>
+    <ul>
+      <% if @site.configuration.links.any? %>
+        <% @site.configuration.links.each do |link| %>
+          <li><%= link_to link, link, target: '_blank' %></li>
+        <% end %>
+      <% end %>
+      <% if @site.gobierto_budgets_enabled? %>
+        <li><%= link_to 'Presupuestos', gobierto_sites_budgets_path %></li>
+      <% end %>
+      <% if @site.gobierto_participation_enabled? %>
+        <li><%= link_to 'Participación', gobierto_participation_root_path %></li>
+      <% end %>
+    </ul>
+  </div>
+
+</footer>
+
 
 </body>
 </html>
