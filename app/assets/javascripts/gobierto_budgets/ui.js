@@ -271,6 +271,9 @@ $(function(){
     window.expenseTreemap.render($('#expense-treemap').data('functional-url'));
   }
 
+  // There's an equivalent code in components/vis_line but it uses the class
+  // active instead of selected. Using the class active should allow us to remove
+  // this code
   if($('#lines_chart').length > 0){
     var $widget = $('[data-line-widget-url].selected');
     var visLineasJ = new VisLineasJ('#lines_chart', '#lines_tooltip', $widget.data('line-widget-type'), $widget.data('line-widget-series'));

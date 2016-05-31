@@ -8,6 +8,7 @@
 @import "gobierto_sites/vendor/pure-grids-responsive-min";
 @import "gobierto_sites/vendor/tipsy";
 @import "gobierto_sites/vendor/populities";
+@import "gobierto_budgets/treemap";
 
 @import url("https://fonts.googleapis.com/css?family=Work+Sans:200,400,700,600|Source+Sans+Pro:200,400,700,600");
 @import "//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css";        
@@ -31,6 +32,14 @@ $color_facebook: #3A589A;
 $color_twitter: #00ABEF;
 $color_link: #276D97;
 $color_headers: #676767;
+
+/* visualizations */
+$color_vis_place: #E9AD00;
+$color_vis_province: #A479F4;
+$color_vis_com: #AAC44B;
+$color_vis_country: #008998;
+
+@import "gobierto_sites/vis_lineas_tabla";
 
 .color_main {
 	background: $color_main;

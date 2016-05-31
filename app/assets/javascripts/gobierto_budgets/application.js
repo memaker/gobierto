@@ -2,21 +2,23 @@
 //= require jquery.turbolinks
 //= require jquery_ujs
 //= require turbolinks
-//= require gobierto_budgets/vendor/velocity.min
-//= require gobierto_budgets/vendor/velocity.ui.min
-//= require gobierto_budgets/vendor/jquery.sticky
-//= require gobierto_budgets/vendor/tipsy
-//= require gobierto_budgets/vendor/accounting.min
+//= require velocity.min
+//= require velocity.ui.min
+//= require velocity_config
+//= require jquery.sticky
+//= require tipsy
+//= require accounting.min
+//= require accounting-settings
 //= require gobierto_budgets/vendor/jquery.autocomplete
 //= require gobierto_budgets/vendor/js.cookie
 //= require mustache.min
 //= require flight-for-rails
-//= require gobierto_budgets/vendor/d3.v3.min
-//= require gobierto_budgets/vendor/d3-legend.min
+//= require d3.v3.min
+//= require d3-legend.min
 //= require gobierto_budgets/vendor/select2.min
-//= require gobierto_budgets/vendor/klass
+//= require klass
 //= require gobierto_budgets/vendor/jquery.inview
-//= require gobierto_budgets/vendor/jquery.magnific-popup.min
+//= require jquery.magnific-popup.min
 //= require gobierto_budgets/vendor/nouislider
 //= require gobierto_budgets/vis_treemap
 //= require gobierto_budgets/vis_lineas_tabla
@@ -28,31 +30,6 @@
 //= require gobierto_budgets/vendor/iframeResizer/iframeResizer.contentWindow.min
 //= require_directory ../components/
 
-SPARKLINES_DEFAULTS = {
-  width: 60,
-  numberDigitGroupSep: '.',
-  numberDecimalMark: ',',
-  lineColor: '#0063EE',
-  spotColor: '',
-  spotRadius: 0,
-  fillColor: false,
-  tagValuesAttribute: 'data-sparkvalues'
-}
-
-accounting.settings = {
-  currency: {
-    symbol: "€",    // default currency symbol is '$'
-    format: "%v %s", // controls output: %s = symbol, %v = value/number (can be object: see below)
-    decimal: ",",   // decimal point separator
-    thousand:  ".",  // thousands separator
-    precision: 2    // decimal places
-  },
-  number: {
-    precision: 2,  // default precision on numbers is 0
-    decimal: ",",   // decimal point separator
-    thousand: ".",  // thousands separator
-  }
-}
 
 var AUTOCOMPLETE_DEFAULTS = {
   dataType: 'json',
@@ -65,12 +42,3 @@ var AUTOCOMPLETE_DEFAULTS = {
   preventBadQueries: false,
   tabDisabled: true
 };
-
-
-$.Velocity.RegisterEffect("transition.slideLeftLongOut", { defaultDuration: 500, calls: [[ { opacity: [ 0, 1 ], translateX: -500, translateZ: 0 } ]],reset: { translateX: 0 }})
-
-$.Velocity.RegisterEffect("transition.slideLeftLongIn", { defaultDuration: 500, calls: [[ { opacity: [ 1, 0 ], translateX: [0,-500], translateZ: 0 } ]]})
-
-$.Velocity.RegisterEffect("transition.slideRightLongOut", { defaultDuration: 500, calls: [[ { opacity: [ 0, 1 ], translateX: 500, translateZ: 0 } ]],reset: { translateX: 0 }})
-
-$.Velocity.RegisterEffect("transition.slideRightLongIn", { defaultDuration: 500, calls: [[ { opacity: [ 1, 0 ], translateX: [0,500], translateZ: 0 } ]]})
