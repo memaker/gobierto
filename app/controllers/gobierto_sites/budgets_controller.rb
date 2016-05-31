@@ -2,6 +2,10 @@ class GobiertoSites::BudgetsController < GobiertoSites::ApplicationController
   before_action :load_place, :load_year
 
   def index
+    @kind = GobiertoBudgets::BudgetLine::EXPENSE
+    @area_name = GobiertoBudgets::BudgetLine::FUNCTIONAL
+
+    @place_budget_lines = GobiertoBudgets::BudgetLine.where(place: @place, level: 1, year: @year, kind: @kind, area_name: @area_name).all
   end
 
   private

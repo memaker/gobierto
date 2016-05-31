@@ -1,0 +1,33 @@
+<p class="m_2"></p>
+
+<div class="filter m_2">
+  <% if kind == GobiertoBudgets::BudgetLine::EXPENSE %>
+    <%= link_to 'En qué se gasta', gobierto_sites_budget_lines_path(year: @year, kind: GobiertoBudgets::BudgetLine::EXPENSE, area_name: GobiertoBudgets::BudgetLine::FUNCTIONAL), data: {remote: true}, class: class_if('active', area_name == GobiertoBudgets::BudgetLine::FUNCTIONAL) %>
+    <%= link_to 'Para qué se gasta', gobierto_sites_budget_lines_path(year: @year, kind: GobiertoBudgets::BudgetLine::EXPENSE, area_name: GobiertoBudgets::BudgetLine::ECONOMIC), data: {remote: true}, class: class_if('active', area_name == GobiertoBudgets::BudgetLine::ECONOMIC) %>
+  <% else %>
+    <%= link_to 'En qué se ingresa', '#', class:'active' %>
+  <% end %>
+  <%= link_to '?', '', class:'help tipsit', title:'El presupuesto organiza los gastos en dos categorías. Consulta nuestra guía' %>
+</div>
+
+<div class="table_cont_round">
+  <table>
+    <tr>
+      <th class="budget_line"><span>Partida</span></th>
+      <th class="qty">Importe</th>
+      <th class="qty">Por habitante</th>
+      <th class="qty">%</th>
+      <th class="qty"></th>
+    </tr>
+
+    <% place_budget_lines.each do |budget_line| %>
+      <tr>
+        <td><%= link_to budget_line.name, '#' %></td>
+        <td class="qty"><%= number_to_currency budget_line.amount, precision: 0 %></td>
+        <td class="qty"><%= number_to_currency budget_line.amount_per_inhabitant, precision: 0 %></td>
+        <td class="qty"><%= number_with_precision(budget_line.percentage_of_total * 100, precision: 2) + '%' %></td>
+        <td class="bar"><div class="bar" style="width:<%= budget_line.percentage_of_total * 100 %>%"></div></td>
+      </tr>
+    <% end %>
+  </table>
+</div>

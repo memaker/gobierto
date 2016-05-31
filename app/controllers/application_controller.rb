@@ -43,7 +43,7 @@ class ApplicationController < ActionController::Base
 
   def load_site
     unless Site.reserved_domain?(domain)
-      @site = Site.find_by domain: domain
+      @site = request.env['gobierto_site']
     end
   end
 

@@ -24,8 +24,16 @@ class BudgetLinePresenter
   end
 
   def percentage_of_total
-    total = @attributes[:total] || GobiertoBudgets::BudgetTotal.for(@attributes[:ine_code], @attributes[:year])
+    total = total || GobiertoBudgets::BudgetTotal.for(@attributes[:ine_code], @attributes[:year])
     amount.to_f / total.to_f
+  end
+
+  def total
+    @attributes[:total]
+  end
+
+  def total_per_inhabitant
+    @attributes[:total_budget_per_inhabitant]
   end
 
 end

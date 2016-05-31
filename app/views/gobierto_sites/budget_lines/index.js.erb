@@ -1,0 +1,3 @@
+$('[data-budget-lines]').html('<%=j render partial: 'gobierto_sites/budget_lines/index', locals: { place_budget_lines: @place_budget_lines, kind: @kind, area_name: @area_name } %>');
+$('[data-budget-lines-tab]').parent().removeClass('active');
+$('[data-budget-lines-tab="<%= @kind %>"]').parent().addClass('active');

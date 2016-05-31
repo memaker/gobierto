@@ -2,6 +2,61 @@ module GobiertoBudgets
   class BudgetLine < OpenStruct
     INCOME = 'I'
     EXPENSE = 'G'
+    ECONOMIC = 'economic'
+    FUNCTIONAL = 'functional'
+
+    @sort_attribute ||= 'code'
+    @sort_order ||= 'asc'
+
+    def self.where(conditions)
+      @conditions = conditions
+      self
+    end
+
+    def self.all
+      terms = [
+        {term: { kind: @conditions[:kind] }},
+        {term: { year: @conditions[:year] }},
+        {term: { level: @conditions[:level] }},
+        {term: { ine_code: @conditions[:place].id }}
+      ]
+
+      query = {
+        sort: [
+          { @sort_attribute => { order: @sort_order } }
+        ],
+        query: {
+          filtered: {
+            filter: {
+              bool: {
+                must: terms
+              }
+            }
+          }
+        },
+        aggs: {
+          total_budget: { sum: { field: 'amount' } },
+          total_budget_per_inhabitant: { sum: { field: 'amount_per_inhabitant' } },
+        },
+        size: 10_000
+      }
+
+      if @conditions[:area_name] == GobiertoBudgets::BudgetLine::ECONOMIC
+        area = GobiertoBudgets::EconomicArea
+      else
+        area = GobiertoBudgets::FunctionalArea
+      end
+
+      response = GobiertoBudgets::SearchEngine.client.search index: GobiertoBudgets::SearchEngineConfiguration::BudgetLine.index_forecast,
+                                                             type: @conditions[:area_name], body: query
+
+      response['hits']['hits'].map{ |h| h['_source'] }.map do |row|
+        BudgetLinePresenter.new(row.merge({
+          kind: @conditions[:kind], area: area, total: response['aggregations']['total_budget'],
+          total_budget_per_inhabitant: response['aggregations']['total_budget_per_inhabitant']
+        }))
+      end
+    end
 
     def self.search(options)
 

@@ -22,4 +22,12 @@ module SiteHelper
     url
   end
 
+  def class_if(class_name, condition)
+    if condition
+      class_name
+    else
+      ''
+    end
+  end
+
 end
