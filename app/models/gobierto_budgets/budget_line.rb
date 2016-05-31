@@ -13,6 +13,42 @@ module GobiertoBudgets
       self
     end
 
+    def self.first
+      terms = [
+        {term: { kind: @conditions[:kind] }},
+        {term: { year: @conditions[:year] }},
+        {term: { code: @conditions[:code] }},
+        {term: { ine_code: @conditions[:place].id }}
+      ]
+
+      query = {
+        sort: [
+          { @sort_attribute => { order: @sort_order } }
+        ],
+        query: {
+          filtered: {
+            filter: {
+              bool: {
+                must: terms
+              }
+            }
+          }
+        },
+        size: 10_000
+      }
+
+      if @conditions[:area_name] == GobiertoBudgets::BudgetLine::ECONOMIC
+        area = GobiertoBudgets::EconomicArea
+      else
+        area = GobiertoBudgets::FunctionalArea
+      end
+
+      response = GobiertoBudgets::SearchEngine.client.search index: GobiertoBudgets::SearchEngineConfiguration::BudgetLine.index_forecast,
+                                                             type: @conditions[:area_name], body: query
+
+      BudgetLinePresenter.new response['hits']['hits'].first['_source'].merge({kind: @conditions[:kind], area: area})
+    end
+
     def self.all
       terms = [
         {term: { kind: @conditions[:kind] }},
@@ -240,13 +276,12 @@ module GobiertoBudgets
       response['hits']['hits'].map{ |h| h['_source'] }
     end
 
-    def self.has_children?(budget_line, area)
-      options = { parent_code: budget_line['code'],
-                  level: budget_line['level'].to_i + 1,
-                  type: area }
-      options.merge! budget_line.slice('ine_code','kind','year').symbolize_keys
+    def self.has_children?(options)
+      options.symbolize_keys!
+      conditions = { parent_code: options[:code], level: options[:level].to_i + 1, type: options[:area] }
+      conditions.merge! options.slice(:ine_code,:kind,:year)
 
-      return search(options)['hits'].length > 0
+      return search(conditions)['hits'].length > 0
     end
 
     def self.top_differences(options)

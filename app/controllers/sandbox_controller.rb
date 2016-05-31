@@ -29,8 +29,8 @@ class SandboxController < ApplicationController
   private
 
   def set_working_variables
-    Struct.new('Place', :slug, :name)
-    @place = Struct::Place.new('madrid', 'Madrid')
+    @site ||= Site.first
+    @place = @site.place
     @year = GobiertoBudgets::SearchEngineConfiguration::Year.last
   end
 end

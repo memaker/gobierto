@@ -35,7 +35,7 @@
         <div class="logo"><%= image_tag @site.configuration.logo %></div>
       <% end %>
       <div class="site_title">
-        <strong><%= link_to @site.name, '/sandbox/1605/' %></strong> / <%= link_to 'Presupuestos', '/sandbox/1605/index' %>
+        <strong><%= link_to @site.name, gobierto_sites_root_path %></strong> / <%= link_to 'Presupuestos', gobierto_sites_budgets_path %>
       </div>
     </div>
   </div>
@@ -43,12 +43,14 @@
   <menu class="sub_sections">
     <div class="column">
     <ul>
-      <li><%= link_to 'Resumen', '/sandbox/1605/index', class: 'active' %></li>
-      <li><%= link_to 'Presupuesto', '/sandbox/1605/budget' %></li>
-      <li><%= link_to 'Ejecución', '' %></li>
-      <li><%= link_to 'Consultas', '' %></li>
-      <li><%= link_to 'Historias', '' %></li>
-      <li><%= link_to 'Rankings', '' %></li>
+      <li><%= link_to 'Resumen', gobierto_sites_budgets_path, class: class_if('active', controller_name == 'budgets') %></li>
+      <li><%= link_to 'Presupuesto', gobierto_sites_budget_lines_path(year: @year, kind: GobiertoBudgets::BudgetLine::EXPENSE, area_name: GobiertoBudgets::BudgetLine::FUNCTIONAL, level: 1), class: class_if('active', controller_name == 'budget_lines') %></li>
+      <% pending do %>
+        <li><%= link_to 'Ejecución', '' %></li>
+        <li><%= link_to 'Consultas', '' %></li>
+        <li><%= link_to 'Historias', '' %></li>
+        <li><%= link_to 'Rankings', '' %></li>
+      <% end %>
     </ul>
     </div>
   </menu>

@@ -36,4 +36,12 @@ class BudgetLinePresenter
     @attributes[:total_budget_per_inhabitant]
   end
 
+  def code
+    @attributes[:code]
+  end
+
+  def level
+    @attributes[:level]
+  end
+
 end
