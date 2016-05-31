@@ -53,7 +53,8 @@ Rails.application.routes.draw do
         get 'cookie_warning' => 'pages#cookie_warning'
 
         get 'budgets(/:year)' => 'budgets#index', as: :budgets
-        resources :budget_lines, only: [:index, :show]
+        resources :budget_lines, only: [:index]
+        get ':id/:year/:area_name/:kind' => 'budget_lines#show', as: :budget_line
       end
     end
 

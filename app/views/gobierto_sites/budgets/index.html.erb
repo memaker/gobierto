@@ -48,7 +48,7 @@
       <table>
         <% GobiertoBudgets::TopBudgetLine.limit(5).where(year: @year, place: @site.place, kind: GobiertoBudgets::BudgetLine::INCOME).all.each do |budget_line| %>
           <tr>
-            <td><%= link_to budget_line.name, '#' %></td>
+            <td><%= link_to budget_line.name, gobierto_sites_budget_line_path(budget_line.to_param) %></td>
             <td class="qty"><%= number_with_precision(budget_line.percentage_of_total * 100, precision: 2) + '%' %></td>
           </tr>
         <% end %>
@@ -65,7 +65,7 @@
       <table>
         <% GobiertoBudgets::TopBudgetLine.limit(5).where(year: @year, place: @site.place, kind: GobiertoBudgets::BudgetLine::EXPENSE).all.each do |budget_line| %>
           <tr>
-            <td><%= link_to budget_line.name, '#' %></td>
+            <td><%= link_to budget_line.name, gobierto_sites_budget_line_path(budget_line.to_param) %></td>
             <td class="qty"><%= number_with_precision(budget_line.percentage_of_total * 100, precision: 2) + '%' %></td>
           </tr>
         <% end %>

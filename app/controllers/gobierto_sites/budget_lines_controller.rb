@@ -14,6 +14,7 @@ class GobiertoSites::BudgetLinesController < GobiertoSites::ApplicationControlle
     @budget_line = GobiertoBudgets::BudgetLine.where(code: @code, place: @place, year: @year, kind: @kind, area_name: @area_name).first
 
     respond_to do |format|
+      format.html
       format.js
     end
   end

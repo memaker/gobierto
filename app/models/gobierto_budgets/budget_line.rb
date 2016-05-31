@@ -46,7 +46,7 @@ module GobiertoBudgets
       response = GobiertoBudgets::SearchEngine.client.search index: GobiertoBudgets::SearchEngineConfiguration::BudgetLine.index_forecast,
                                                              type: @conditions[:area_name], body: query
 
-      BudgetLinePresenter.new response['hits']['hits'].first['_source'].merge({kind: @conditions[:kind], area: area})
+      BudgetLinePresenter.new response['hits']['hits'].first['_source'].merge({kind: @conditions[:kind], area_name: @conditions[:area_name], area: area})
     end
 
     def self.all
@@ -88,7 +88,7 @@ module GobiertoBudgets
 
       response['hits']['hits'].map{ |h| h['_source'] }.map do |row|
         BudgetLinePresenter.new(row.merge({
-          kind: @conditions[:kind], area: area, total: response['aggregations']['total_budget'],
+          kind: @conditions[:kind], area_name: @conditions[:area_name], area: area, total: response['aggregations']['total_budget'],
           total_budget_per_inhabitant: response['aggregations']['total_budget_per_inhabitant']
         }))
       end

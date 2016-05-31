@@ -5,6 +5,7 @@ class BudgetLinePresenter
   # "kind"=>"G", "amount_per_inhabitant"=>76.11, "parent_code"=>"16"}
   # Merged with:
   #   - area
+  #   - area_name
   #   - kind
   #   - total
   def initialize(attributes)
@@ -42,6 +43,14 @@ class BudgetLinePresenter
 
   def level
     @attributes[:level]
+  end
+
+  def to_param
+    {
+      id: code, year: @attributes[:year],
+      kind: @attributes[:kind],
+      area_name: @attributes[:area_name]
+    }
   end
 
 end
