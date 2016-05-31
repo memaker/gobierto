@@ -10,13 +10,13 @@
 <body>
 
 <header class="meta color_main">
-  
+
   <div class="client_links">
     <div class="column">
       <ul>
         <% if @site.configuration.links.any? %>
           <% @site.configuration.links.each do |link| %>
-            <li><%= link_to link, link, target: '_blank' %></li>
+            <li><%= link_to url_host(link), link, target: '_blank' %></li>
           <% end %>
         <% end %>
         <% if @site.gobierto_budgets_enabled? %>
@@ -56,19 +56,19 @@
 </header>
 
 <div class="container">
-  
+
   <%= yield %>
 
 </div>
 
 <footer>
-  
+
   <div class="column">
     <div class="separator"></div>
     <ul>
       <% if @site.configuration.links.any? %>
         <% @site.configuration.links.each do |link| %>
-          <li><%= link_to link, link, target: '_blank' %></li>
+          <li><%= link_to url_host(link), link, target: '_blank' %></li>
         <% end %>
       <% end %>
       <% if @site.gobierto_budgets_enabled? %>
@@ -81,7 +81,6 @@
   </div>
 
 </footer>
-
 
 </body>
 </html>

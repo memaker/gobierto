@@ -16,4 +16,10 @@ module SiteHelper
     end
   end
 
+  def url_host(url)
+    URI.parse(url).host
+  rescue
+    url
+  end
+
 end
