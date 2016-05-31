@@ -2,7 +2,7 @@ module GobiertoBudgets
   class FeaturedBudgetLinesController < GobiertoBudgets::ApplicationController
     def show
       @place = INE::Places::Place.find_by_slug(params[:id])
-      @year = params[:year]
+      @year = params[:year].to_i
       @area_name = 'functional'
 
       @kind = GobiertoBudgets::BudgetLine::EXPENSE
@@ -17,10 +17,16 @@ module GobiertoBudgets
       @code = results.sample['code'] if results.any?
 
       if @code.present?
-        render 'show', layout: false
+        render pick_template, layout: false
       else
         render head: :success
       end
+    end
+
+    private
+
+    def pick_template
+      params[:template] || 'show'
     end
   end
 end

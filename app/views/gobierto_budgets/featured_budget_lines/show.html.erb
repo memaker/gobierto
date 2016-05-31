@@ -9,13 +9,13 @@
 
     <div class="main_metrics clearfix">
       <div class="metric tipsit" data-widget-template="#widget-template"
-                                 title="<%= kind_literal(@kind, false).humanize %> total de esta partida en este año por habitante"
+                                 title="<%= kind_literal(@kind, false).humanize %> por habitante"
                                  data-widget-type="per_person"
                                  data-widget-data-url="<%= gobierto_budgets_api_data_budget_per_inhabitant_path(ine_code: @place.id, year: @year, kind: @kind, code: @code.parameterize, area: @area_name, format: :json) %>">
       </div>
 
       <div class="metric tipsit" data-widget-template="#widget-template"
-                                 title="<%= kind_literal(@kind, false).humanize %> total de esta partida en este año"
+                                 title="<%= kind_literal(@kind, false).humanize %>"
                                  data-widget-type="budget"
                                  data-widget-data-url="<%= gobierto_budgets_api_data_budget_path(ine_code: @place.id, year: @year, kind: @kind, code: @code.parameterize, area: @area_name, format: :json) %>">
       </div>
