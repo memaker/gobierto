@@ -9,6 +9,7 @@
 @import "gobierto_sites/vendor/tipsy";
 @import "gobierto_sites/vendor/populities";
 @import "gobierto_budgets/treemap";
+@import "gobierto_sites/vendor/magnific-popup";
 
 @import url("https://fonts.googleapis.com/css?family=Work+Sans:200,400,700,600|Source+Sans+Pro:200,400,700,600");
 @import "//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css";        
@@ -27,6 +28,7 @@ $color_main_negative: #FFF;
 $color_separator: #D6D6D6;
 $color_neutral_soft: #F5F4F4;
 $color_highlight: #F1F4BE;
+$color_meta_text: #A5A5A5;
 
 $color_facebook: #3A589A;
 $color_twitter: #00ABEF;
@@ -789,4 +791,43 @@ a.soft_cta:hover {
 }
 
 
+/*
+ * Modals
+ *
+ */
+.modal {
+  position: relative;
+  background: #FFF;
+  padding: 3em 4em 4em;
+  width: auto;
+  max-width: 750px;
+  margin: 20px auto;
+  @include border-radius(5px);
 
+  &#read_later {
+    input[type=submit], .button {
+      padding: 0 1em;
+    }
+  }
+  color: $color_headers;
+
+  input[type=text], input[type=email] {
+    border: 1px solid $color_meta_text;
+  }
+  input[type=email] {
+    width: 50%;
+  }
+  input[type=email].short {
+    width: 32%;
+  }
+  h2 {
+    margin: 0 0 .15em 0;
+    font-size: 2em;
+  }
+  .disclaimer {
+    font-size: .8em;
+    text-align: center;
+    margin: 2em 0;
+    opacity: .6;
+  }
+}

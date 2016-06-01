@@ -135,14 +135,16 @@
 <div class="column">
   <div class="budget_line">
 
-    <header>
+    <header data-share>
       <h1><%= @budget_line.name %></h1>
-      <div class="social_links_container">
+
+      <div class="social_links_container" data-share-text="En @gobierto: <%= @area_name == GobiertoBudgets::BudgetLine::EXPENSE ? 'Gasto' : 'Ingreso' %> municipal de <%= @site.place.name %> en <%= @budget_line.name %> para el <%= @year %>">
         <a href="#" class="social_share twitter" data-share-network="twitter" data-track-event="Social Share|Click Twitter|XXX"><i class="fa fa-twitter"></i></a>
         <a href="#" class="social_share facebook" data-share-network="facebook" data-track-event="Social Share|Click Facebook|XXX"><i class="fa fa-facebook"></i></a>
-        <a href="#" class="social_share code" data-share-network="code" data-track-event="Social Share|Click Facebook|XXX"><i class="fa fa-code"></i></a>
+        <a href="#embed-graph-code" class="code open_modal"><i class="fa fa-code"></i></a>
       </div>
 
+      <%= render partial: 'shared/embed' %>
     </header>
 
     <div class="separator"></div>

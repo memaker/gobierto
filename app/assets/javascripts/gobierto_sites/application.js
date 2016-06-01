@@ -56,7 +56,13 @@ $(function(){
     $('[data-level=' + level + ']').velocity("fadeIn", { duration: 250 });
   });
 
+  $('.open_modal').magnificPopup({
+    type: 'inline',
+    removalDelay: 300,
+    mainClass: 'mfp-fade'
+  });
 
-
-
+  $('.close_modal').click(function(e) {
+    $.magnificPopup.close();
+  });
 });
