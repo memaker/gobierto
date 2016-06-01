@@ -21,6 +21,10 @@ $font_text: 'Source Sans Pro';
  * Colors
  *
  */
+
+$color_1: #00909E;
+$color_1_soft: #EFF8F9;
+$color_1_dark: #00909E;
 $color_text: #767168;
 $color_main: #00909E;
 $color_secondary: #F0F0F0;
@@ -34,6 +38,8 @@ $color_facebook: #3A589A;
 $color_twitter: #00ABEF;
 $color_link: #276D97;
 $color_headers: #676767;
+
+$separator: #F0F0F0;
 
 /* visualizations */
 $color_vis_place: #E9AD00;
@@ -831,3 +837,35 @@ a.soft_cta:hover {
     opacity: .6;
   }
 }
+
+/*
+ * Autocomplete
+ *
+ */
+.autocomplete-suggestions { 
+  border: 1px solid #999; 
+  font-size: 12px;
+  background: #FFF; 
+  cursor: default; 
+  overflow: auto; 
+  -webkit-box-shadow: 1px 4px 3px rgba(50, 50, 50, 0.64); 
+  -moz-box-shadow: 1px 4px 3px rgba(50, 50, 50, 0.64); 
+  box-shadow: 1px 4px 3px rgba(50, 50, 50, 0.64); 
+}
+.autocomplete-suggestion { padding: 2px 10px; white-space: nowrap; overflow: hidden; }
+.autocomplete-no-suggestion { padding: 2px 10px;}
+.autocomplete-selected { background: $color_1; color: #FFF; }
+.autocomplete-suggestions strong { font-weight: bold; color: #000; }
+.autocomplete-group { }
+.autocomplete-group strong { 
+  font-weight: bold; 
+  font-size: 14px; 
+  color: #999; 
+  background: $separator;
+  padding: 2px 10px;
+  text-transform: uppercase;
+  display: block; 
+  border-bottom: 1px solid $separator; 
+}
+
+

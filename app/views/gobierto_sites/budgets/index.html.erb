@@ -168,10 +168,7 @@
 
         <h3>Busca una partida específica</h3>
 
-        <form>
-          <input type="text">
-          <button>Buscar</button>
-        </form>
+        <input type="text" placeholder="Busca partida..." autofocus="true" data-autocomplete="<%= gobierto_budgets_search_all_categories_url(@place.slug, @year, host: Site.budgets_host, format: :json) %>">
 
         <div class="small m_v_3">
           <p>Ejemplos:</p>

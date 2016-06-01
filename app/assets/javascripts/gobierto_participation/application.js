@@ -32,12 +32,6 @@
 //= require gobierto_participation/vendor/jquery.fileupload
 //= require gobierto_participation/vendor/jquery.sticky
 
-// require gobierto_participation/vendor/colorbrewer
-// require gobierto_participation/vendor/d3.min
-// require gobierto_participation/vendor/klass
-// require gobierto_participation/vendor/tipsy
-// require gobierto_participation/vendor/accounting.min
-
 //= require gobierto_participation/ui
 //= require gobierto_participation/menu
 //= require_tree .

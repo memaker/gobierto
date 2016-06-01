@@ -10,7 +10,9 @@
 //= require d3.v3.min
 //= require d3-legend.min
 //= require accounting.min
-//= require accounting-settings
+//= require accounting_settings
+//= require jquery.autocomplete
+//= require autocomplete_settings
 //= require klass
 
 //= require gobierto_budgets/vis_treemap
@@ -65,4 +67,17 @@ $(function(){
   $('.close_modal').click(function(e) {
     $.magnificPopup.close();
   });
+
+  var $autocomplete = $('[data-autocomplete]');
+
+  var searchOptions = {
+    serviceUrl: $autocomplete.data('autocomplete'),
+    onSelect: function(suggestion) {
+      Turbolinks.visit(suggestion.data.url);
+    },
+    groupBy: 'category'
+  };
+
+  $autocomplete.autocomplete($.extend({}, AUTOCOMPLETE_DEFAULTS, searchOptions));
+
 });

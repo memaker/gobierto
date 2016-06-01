@@ -4,12 +4,13 @@
 //= require turbolinks
 //= require velocity.min
 //= require velocity.ui.min
-//= require velocity_config
+//= require velocity_settings
 //= require jquery.sticky
 //= require tipsy
 //= require accounting.min
-//= require accounting-settings
-//= require gobierto_budgets/vendor/jquery.autocomplete
+//= require accounting_settings
+//= require jquery.autocomplete
+//= require autocomplete_settings
 //= require gobierto_budgets/vendor/js.cookie
 //= require mustache.min
 //= require flight-for-rails
@@ -31,14 +32,3 @@
 //= require_directory ../components/
 
 
-var AUTOCOMPLETE_DEFAULTS = {
-  dataType: 'json',
-  minChars: 3,
-  showNoSuggestionNotice: true,
-  noSuggestionNotice: 'Lo sentimos, pero no hay resultados.',
-  preserveInput: true,
-  autoSelectFirst: true,
-  triggerSelectOnValidInput: false,
-  preventBadQueries: false,
-  tabDisabled: true
-};
