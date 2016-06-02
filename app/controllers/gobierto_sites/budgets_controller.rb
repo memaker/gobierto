@@ -8,8 +8,10 @@ class GobiertoSites::BudgetsController < GobiertoSites::ApplicationController
     @site_stats = SiteStats.new site: @site, year: @year
 
     @top_income_budget_lines = GobiertoBudgets::TopBudgetLine.limit(5).where(year: @year, place: @site.place, kind: GobiertoBudgets::BudgetLine::INCOME).all
-    @top_expense_budget_lines = GobiertoBudgets::TopBudgetLine.limit(5).where(year: @year, place: @site.place, kind: GobiertoBudgets::BudgetLine::INCOME).all
+    @top_expense_budget_lines = GobiertoBudgets::TopBudgetLine.limit(5).where(year: @year, place: @site.place, kind: GobiertoBudgets::BudgetLine::EXPENSE).all
     @place_budget_lines = GobiertoBudgets::BudgetLine.where(place: @place, level: 1, year: @year, kind: @kind, area_name: @area_name).all
+
+    @sample_budget_lines = (@top_income_budget_lines + @top_expense_budget_lines).sample(3)
   end
 
   private

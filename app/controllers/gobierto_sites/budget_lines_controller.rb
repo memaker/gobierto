@@ -3,6 +3,7 @@ class GobiertoSites::BudgetLinesController < GobiertoSites::ApplicationControlle
 
   def index
     @place_budget_lines = GobiertoBudgets::BudgetLine.where(place: @place, level: @level, year: @year, kind: @kind, area_name: @area_name).all
+    @sample_budget_lines = GobiertoBudgets::TopBudgetLine.limit(20).where(year: @year, place: @site.place, kind: @kind).all.sample(3)
 
     respond_to do |format|
       format.html

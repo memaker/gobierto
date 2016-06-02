@@ -173,9 +173,9 @@
         <div class="small m_v_3">
           <p>Ejemplos:</p>
           <ul>
-            <li><%= link_to 'Servicio de recogida de basuras', 'budget_line' %></li>
-            <li><%= link_to 'Servicios deportivos', 'budget_line' %></li>
-            <li><%= link_to 'Promoción cultural', 'budget_line' %></li>
+            <% @sample_budget_lines.each do |budget_line| %>
+              <li><%= link_to budget_line.name, gobierto_sites_budget_line_path(budget_line.to_param) %></li>
+            <% end %>
           </ul>
 
         </div>
