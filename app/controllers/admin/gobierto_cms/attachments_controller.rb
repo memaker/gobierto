@@ -1,4 +1,4 @@
-class Admin::GobiertoCms::AttachmentsController < ApplicationController
+class Admin::GobiertoCms::AttachmentsController < Admin::ApplicationController
   before_action :admin_user
   before_action :load_page, except: :page
 

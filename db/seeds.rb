@@ -37,4 +37,9 @@ site.save!
 
 site.gobierto_cms_pages.create! title: 'Sobre el ayuntamiento', body: 'Sobre el ayuntamiento body'
 
-
+## Create Admin
+u = User.new email: 'admin@example.com', password: 'admin123', password_confirmation: 'admin123', place_id: Site.first.place.id, first_name: 'Admin', last_name: 'Admin', admin: true
+u.save!
+u.clear_verification_token
+u.terms_of_service = true
+u.save!

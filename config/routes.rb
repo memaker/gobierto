@@ -22,21 +22,23 @@ Rails.application.routes.draw do
   resource :user, only: [:edit, :update]
   resources :password_resets, only: [:new, :create, :update, :edit]
 
-  namespace :admin do
-    root to: redirect('/admin/activities')
-    resources :users, only: [:index, :edit, :update, :destroy] do
-      post 'impersonate/:id' => 'users#impersonate', as: :impersonate, on: :collection
-      post 'restore/:id' => 'users#restore', as: :restore, on: :collection
-    end
-    resource :site, only: [:edit, :update]
-    resources :activities, only: [:index, :show]
+  constraints GobiertoSiteConstraint.new do
+    namespace :admin do
+      root to: redirect('/admin/activities')
+      resources :users, only: [:index, :edit, :update, :destroy] do
+        post 'impersonate/:id' => 'users#impersonate', as: :impersonate, on: :collection
+        post 'restore/:id' => 'users#restore', as: :restore, on: :collection
+      end
+      resource :site, only: [:edit, :update]
+      resources :activities, only: [:index, :show]
 
-    namespace :gobierto_cms, path: '/cms', module: 'gobierto_cms' do
-      resources :attachments, only: [:index, :destroy, :create]
-      resources :pages, except: [:show] do
-        resources :attachments, only: [:index, :destroy]
-        collection do
-          put :batch_update
+      namespace :gobierto_cms, path: '/cms', module: 'gobierto_cms' do
+        resources :attachments, only: [:index, :destroy, :create]
+        resources :pages, except: [:show] do
+          resources :attachments, only: [:index, :destroy]
+          collection do
+            put :batch_update
+          end
         end
       end
     end

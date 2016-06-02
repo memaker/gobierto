@@ -250,13 +250,5 @@ module GobiertoBudgets
       markdown.render(text).html_safe
     end
 
-    def class_if(css_class, condition)
-      if condition
-        {class: css_class}
-      else
-        {}
-      end
-    end
-
   end
 end

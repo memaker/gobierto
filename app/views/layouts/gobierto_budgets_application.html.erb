@@ -63,10 +63,10 @@
 
       <menu>
         <ul>
-          <li><%= link_to 'Municipios', root_path, class_if('selected', current_page?(root_path))  %></li>
-          <li><%= link_to 'Compara', gobierto_budgets_compare_path , class_if('selected', current_page?(gobierto_budgets_compare_path) || action_name == 'compare')%></li>
-          <li><%= link_to 'Rankings', gobierto_budgets_ranking_path , class_if('selected', current_page?(gobierto_budgets_ranking_path) || action_name == 'ranking')%></li>
-          <li><%= link_to 'Servicios', gobierto_budgets_about_path(anchor: 'municipalities') , class_if('selected', current_page?(gobierto_budgets_about_path))%></li>
+          <li><%= link_to 'Municipios', root_path, class: class_if('selected', current_page?(root_path))  %></li>
+          <li><%= link_to 'Compara', gobierto_budgets_compare_path , class: class_if('selected', current_page?(gobierto_budgets_compare_path) || action_name == 'compare')%></li>
+          <li><%= link_to 'Rankings', gobierto_budgets_ranking_path , class: class_if('selected', current_page?(gobierto_budgets_ranking_path) || action_name == 'ranking')%></li>
+          <li><%= link_to 'Servicios', gobierto_budgets_about_path(anchor: 'municipalities') , class: class_if('selected', current_page?(gobierto_budgets_about_path))%></li>
         </ul>
       </menu>
 

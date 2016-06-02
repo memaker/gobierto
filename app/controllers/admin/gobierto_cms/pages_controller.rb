@@ -1,4 +1,4 @@
-class Admin::GobiertoCms::PagesController < ApplicationController
+class Admin::GobiertoCms::PagesController < Admin::ApplicationController
   before_action :admin_user
   before_action :load_page, only: [:edit, :update, :destroy]
 
