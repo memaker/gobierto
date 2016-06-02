@@ -47,7 +47,7 @@
 
     this.assignHandlers = function(level){
       var that = this;
-      $('[data-level="' + level + '"] [data-code]').hover(function(e){
+      $('[data-level="' + level + '"] [data-code]').mouseenter(function(e){
         e.preventDefault();
         var currentCode = $(this).data('code');
         var nextLevel = parseInt($(this).parents('[data-level]').data('level')) + 1;
