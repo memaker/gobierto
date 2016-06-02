@@ -56,7 +56,8 @@ Rails.application.routes.draw do
 
         get 'budgets(/:year)' => 'budgets#index', as: :budgets
         resources :budget_lines, only: [:index]
-        get ':id/:year/:area_name/:kind' => 'budget_lines#show', as: :budget_line
+        get 'budget_lines/:id/:year/:area_name/:kind' => 'budget_lines#show', as: :budget_line
+        get 'budget_line_descendants/:year/:area_name/:kind' => 'budget_line_descendants#index', as: :budget_line_descendants
       end
     end
 
@@ -101,6 +102,7 @@ Rails.application.routes.draw do
       get '/data/widget/total_widget_execution/:ine_code/:year' => 'data#total_budget_execution', as: :data_total_budget_execution
       get '/data/widget/debt/:ine_code/:year' => 'data#debt', as: :data_debt
 
+      get '/categories' => 'categories#index'
       get '/categories/:area/:kind' => 'categories#index'
       get '/places' => 'places#index'
     end

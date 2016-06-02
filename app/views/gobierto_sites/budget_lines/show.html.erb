@@ -1,134 +1,45 @@
-<div class="breadcrumb stick_ip">
+<div class="breadcrumb stick_ip" data-budget-line-breadcrumb="<%= ([@year, @kind].concat(@code.length.downto(1).map{|i| @code[0..-i]})).join('/') %>"
+                                 data-budget-line-area="<%= @area_name %>" data-budget-line-categories="<%= gobierto_budgets_api_categories_url(host: Site.budgets_host, format: :json) %>">
   <div class="column">
-
     <div class="bread_hover">
-      <div class="bread_links">
-        <%= link_to '2015' %> » <%= link_to 'Gastos' %> » <%= link_to 'Servicios Publicos Basicos' %> »
+      <div class="bread_links" data-line-breadcrumb>
       </div>
 
       <div class="line_browser clearfix">
-
-        <div class="bread_links clearfix">
-          <%= link_to '2015' %> » <%= link_to 'Gastos' %> » <%= link_to 'Servicios Publicos Basicos' %> »
+        <div class="bread_links clearfix" data-line-breadcrumb>
         </div>
 
         <div class="col" data-level="0">
           <table>
-            <tr>
-              <td><%= link_to '2015' %></td>
-            </tr>
-            <tr>
-              <td><%= link_to '2014' %></td>
-            </tr>
-            <tr>
-              <td><%= link_to '2013' %></td>
-            </tr>
-            <tr>
-              <td><%= link_to '2012' %></td>
-            </tr>
-            <tr>
-              <td><%= link_to '2011' %></td>
-            </tr>
-            <tr>
-              <td><%= link_to '2010' %></td>
-            </tr>
+            <% GobiertoBudgets::SearchEngineConfiguration::Year.all.each do |year| %>
+              <tr data-code="<%= year %>">
+                <td><%= link_to year, gobierto_sites_budgets_path %></td>
+              </tr>
+            <% end %>
           </table>
         </div>
 
         <div class="col" data-level="1">
-          <table>
-            <tr>
-              <td><%= link_to 'Gastos' %></td>
-            </tr>
-            <tr>
-              <td><%= link_to 'Ingresos' %></td>
-            </tr>
-          </table>
+          <table></table>
         </div>
 
         <div class="col" data-level="2">
-          <table>
-            <tr>
-              <td><%= link_to 'Impuestos directos' %></td>
-              <td class="qty">5,9%</td>
-            </tr>
-            <tr>
-              <td><%= link_to 'Impuestos indirectos' %></td>
-              <td class="qty">5,9%</td>
-            </tr>
-            <tr>
-              <td><%= link_to 'Tasas y otros ingresos' %></td>
-              <td class="qty">5,9%</td>
-            </tr>
-            <tr>
-              <td><%= link_to 'Transferencias corrientes' %></td>
-              <td class="qty">5,9%</td>
-            </tr>
-            <tr>
-              <td><%= link_to 'Ingresos patromoniales' %></td>
-              <td class="qty">5,9%</td>
-            </tr>
-            <tr>
-              <td><%= link_to 'Enajenación de inv. reales' %></td>
-              <td class="qty">5,9%</td>
-            </tr>
-            <tr>
-              <td><%= link_to 'Transferencias de capital' %></td>
-              <td class="qty">5,9%</td>
-            </tr>
-          </table>
+          <table data-current-code=""></table>
         </div>
 
         <div class="col" data-level="3">
-          <table>
-            <tr>
-              <td><%= link_to 'Impuestos sobre la renta' %></td>
-              <td class="qty">5,9%</td>
-            </tr>
-            <tr>
-              <td><%= link_to 'Impuestos sobre el capital' %></td>
-              <td class="qty">5,9%</td>
-            </tr>
-            <tr>
-              <td><%= link_to 'Impuesto Actividades Económicas' %></td>
-              <td class="qty">5,9%</td>
-            </tr>
-            <tr>
-              <td><%= link_to 'Impuestos directos extinguidos' %></td>
-              <td class="qty">5,9%</td>
-            </tr>
-          </table>
+          <table data-current-code=""></table>
         </div>
 
         <div class="col" data-level="4">
-          <table>
-            <tr>
-              <td><%= link_to 'IBI Rústico' %></td>
-              <td class="qty">5,9%</td>
-            </tr>
-            <tr>
-              <td><%= link_to 'IBI Urbano' %></td>
-              <td class="qty">5,9%</td>
-            </tr>
-            <tr>
-              <td><%= link_to 'IBI Especial' %></td>
-              <td class="qty">5,9%</td>
-            </tr>
-            <tr>
-              <td><%= link_to 'Vehículos' %></td>
-              <td class="qty">5,9%</td>
-            </tr>
-            <tr>
-              <td><%= link_to 'Incremento Valor Terrenos' %></td>
-              <td class="qty">5,9%</td>
-            </tr>
-          </table>
+          <table data-current-code=""></table>
         </div>
 
+        <div class="col" data-level="5">
+          <table data-current-code=""></table>
+        </div>
       </div>
-
     </div>
-
   </div>
 </div>
 

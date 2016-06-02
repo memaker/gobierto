@@ -53,4 +53,17 @@ class BudgetLinePresenter
     }
   end
 
+  def as_json(attrs = {})
+    {
+      name: self.name,
+      amount: self.amount,
+      amount_per_inhabitant: self.amount_per_inhabitant,
+      percentage_of_total: self.percentage_of_total,
+      total: self.total,
+      total_per_inhabitant: self.total_per_inhabitant,
+      code: self.code,
+      level: self.level
+    }
+  end
+
 end

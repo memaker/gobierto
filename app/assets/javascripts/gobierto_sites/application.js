@@ -53,11 +53,6 @@ $(function(){
     $('.line_browser').velocity("fadeOut", { duration: 50 });
   });
 
-  $('[data-level]').hover(function(e) {
-    var level = $(this).data('level') + 1;
-    $('[data-level=' + level + ']').velocity("fadeIn", { duration: 250 });
-  });
-
   $('.open_modal').magnificPopup({
     type: 'inline',
     removalDelay: 300,
