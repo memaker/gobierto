@@ -55,7 +55,7 @@ Rails.application.routes.draw do
         get 'cookie_warning' => 'pages#cookie_warning'
 
         get 'budgets(/:year)' => 'budgets#index', as: :budgets
-        resources :budget_lines, only: [:index]
+        get 'budget_lines/:year/:area_name/:kind' => 'budget_lines#index', as: :budget_lines
         get 'budget_lines/:id/:year/:area_name/:kind' => 'budget_lines#show', as: :budget_line
         get 'budget_line_descendants/:year/:area_name/:kind' => 'budget_line_descendants#index', as: :budget_line_descendants
       end

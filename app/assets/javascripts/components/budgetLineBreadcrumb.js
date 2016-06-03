@@ -35,11 +35,11 @@
 
     this.renderLineBreadcrumb = function($el, state, categories){
       var html = "";
-      html += '<a href="#">' + this.states[0] + '</a> »';
-      html += '<a href="#">' + this.attr.areaNamesDict[this.states[1]] + '</a> »';
+      html += '<a href="/site/budget_lines/'+this.states[0]+'/'+this.areaName+'/' + this.states[1] + '">' + this.states[0] + '</a> »';
+      html += '<a href="/site/budget_lines/'+this.states[0]+'/'+this.areaName+'/' + this.states[1] + '">' + this.attr.areaNamesDict[this.states[1]] + '</a> »';
 
       this.states.slice(2, this.states.length - 1).forEach(function(segment){
-        html += '<a href="#">' + categories[this.states[1]][segment] + '</a> »';
+        html += '<a href="/site/budget_lines/'+segment+'/'+this.states[0]+'/'+this.areaName+'/' + this.states[1] + '">' + categories[this.states[1]][segment] + '</a> »';
       }.bind(this));
       $el.html(html);
     };
