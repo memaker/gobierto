@@ -1,7 +1,7 @@
 namespace :gobierto_budgets do
   namespace :debt do
-    INDEX = GobiertoBudgets::SearchEngineConfiguration::Data.index
-    TYPE = GobiertoBudgets::SearchEngineConfiguration::Data.type_debt
+    DEBT_INDEX = GobiertoBudgets::SearchEngineConfiguration::Data.index
+    DEBT_TYPE = GobiertoBudgets::SearchEngineConfiguration::Data.type_debt
 
     def create_debt_mapping(index, type)
       m = GobiertoBudgets::SearchEngine.client.indices.get_mapping index: index, type: type
@@ -49,7 +49,7 @@ namespace :gobierto_budgets do
 
         id = [place.id,year].join("/")
 
-        GobiertoBudgets::SearchEngine.client.index index: INDEX, type: TYPE, id: id, body: data
+        GobiertoBudgets::SearchEngine.client.index index: DEBT_INDEX, type: DEBT_TYPE, id: id, body: data
       end
 
       pbar.finish
@@ -57,17 +57,17 @@ namespace :gobierto_budgets do
 
     desc 'Reset ElasticSearch'
     task :reset => :environment do
-      if GobiertoBudgets::SearchEngine.client.indices.exists? index: INDEX
-        puts "- Deleting #{INDEX} index"
-        GobiertoBudgets::SearchEngine.client.indices.delete index: INDEX
+      if GobiertoBudgets::SearchEngine.client.indices.exists? index: DEBT_INDEX
+        puts "- Deleting #{DEBT_INDEX} index"
+        GobiertoBudgets::SearchEngine.client.indices.delete index: DEBT_INDEX
       end
     end
 
     desc 'Create mappings'
     task :create => :environment do
-      unless GobiertoBudgets::SearchEngine.client.indices.exists? index: INDEX
-        puts "- Creating index #{INDEX}"
-        GobiertoBudgets::SearchEngine.client.indices.create index: INDEX, body: {
+      unless GobiertoBudgets::SearchEngine.client.indices.exists? index: DEBT_INDEX
+        puts "- Creating index #{DEBT_INDEX}"
+        GobiertoBudgets::SearchEngine.client.indices.create index: DEBT_INDEX, body: {
           settings: {
             # Allow 100_000 results per query
             index: { max_result_window: 100_000 }
@@ -75,11 +75,11 @@ namespace :gobierto_budgets do
         }
       end
 
-      puts "- Creating #{INDEX} > #{TYPE}"
-      create_debt_mapping(INDEX, TYPE)
+      puts "- Creating #{DEBT_INDEX} > #{DEBT_TYPE}"
+      create_debt_mapping(DEBT_INDEX, DEBT_TYPE)
     end
 
-    desc "Import debt from pc-axis file into ElasticSearch. Example rake gobierto_budgets:debt:import[2014,'db/data/deb/debt-2014.csv']"
+    desc "Import debt from pc-axis file into ElasticSearch. Example rake gobierto_budgets:debt:import[2014,'db/data/debt/debt-2014.csv']"
     task :import, [:year, :file_path] => :environment do |t, args|
       if m = args[:year].match(/\A\d{4}\z/)
         year = m[0].to_i

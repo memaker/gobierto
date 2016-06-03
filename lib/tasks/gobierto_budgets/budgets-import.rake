@@ -22,6 +22,7 @@ namespace :gobierto_budgets do
             amount:                { type: 'double', index: 'not_analyzed'  },
             code:                  { type: 'string', index: 'not_analyzed'  },
             parent_code:           { type: 'string', index: 'not_analyzed'  },
+            functional_code:       { type: 'string', index: 'not_analyzed'  },
             level:                 { type: 'integer', index: 'not_analyzed' },
             kind:                  { type: 'string', index: 'not_analyzed'  }, # income I / expense G
             province_id:           { type: 'integer', index: 'not_analyzed' },
@@ -47,7 +48,7 @@ namespace :gobierto_budgets do
     def import_functional_budgets(db_name, index, year)
       db = create_db_connection(db_name)
 
-      pbar = ProgressBar.new("functional-#{year}", INE::Places::Place.all.length)
+      pbar = ProgressBar.new("funct-#{year}", INE::Places::Place.all.length)
 
       INE::Places::Place.all.each do |place|
         pbar.inc
@@ -67,21 +68,57 @@ INNER JOIN "tb_inventario_#{year}" ON tb_inventario_#{year}.idente = tb_funciona
 GROUP BY tb_funcional_#{year}.cdfgr
 SQL
 
-index_request_body = []
-db.execute(sql).each do |row|
-  data = base_data.merge({
-    amount: row['amount'].to_f.round(2), code: row['code'],
-    level: row['code'].length, kind: 'G',
-    amount_per_inhabitant: (row['amount'].to_f / pop).round(2),
-    parent_code: row['code'][0..-2]
-  })
+        index_request_body = []
+        db.execute(sql).each do |row|
+          code = row['code']
+          level = row['code'].length
+          parent_code = row['code'][0..-2]
+          if code.include?('.')
+            code = code.tr('.','-')
+            level = 4
+            parent_code = code.split('-').first
+          end
+          data = base_data.merge({
+            amount: row['amount'].to_f.round(2), code: code,
+            level: level, kind: 'G',
+            amount_per_inhabitant: (row['amount'].to_f / pop).round(2),
+            parent_code: parent_code
+          })
 
-  id = [place.id,year,row['code'],'G'].join("/")
-  index_request_body << {index: {_id: id, data: data}}
-end
-next if index_request_body.empty?
+          id = [place.id,year,code,'G'].join("/")
+          index_request_body << {index: {_id: id, data: data}}
+        end
+        next if index_request_body.empty?
 
-GobiertoBudgets::SearchEngine.client.bulk index: index, type: 'functional', body: index_request_body
+        GobiertoBudgets::SearchEngine.client.bulk index: index, type: 'functional', body: index_request_body
+
+        # Import economic sublevels
+        sql = <<-SQL
+SELECT tb_funcional_#{year}.cdcta as code, tb_funcional_#{year}.cdfgr as functional_code, tb_funcional_#{year}.importe as amount
+FROM tb_funcional_#{year}
+INNER JOIN "tb_inventario_#{year}" ON tb_inventario_#{year}.idente = tb_funcional_#{year}.idente AND tb_inventario_#{year}.codente = '#{format("%.5i", place.id)}AA000'
+SQL
+
+        index_request_body = []
+        db.execute(sql).each do |row|
+          code = row['code']
+          functional_code = row['functional_code']
+          if functional_code.include?('.')
+            functional_code = functional_code.tr('.','-')
+          end
+          data = base_data.merge({
+            amount: row['amount'].to_f.round(2), code: code,
+            functional_code: functional_code, kind: 'G',
+            amount_per_inhabitant: (row['amount'].to_f / pop).round(2)
+          })
+
+          id = [place.id,year,"#{code}-#{functional_code}",'G'].join("/")
+          index_request_body << {index: {_id: id, data: data}}
+        end
+        next if index_request_body.empty?
+
+
+        GobiertoBudgets::SearchEngine.client.bulk index: index, type: 'economic', body: index_request_body
       end
 
       pbar.finish
@@ -115,21 +152,30 @@ FROM tb_economica_#{year}
 INNER JOIN "tb_inventario_#{year}" ON tb_inventario_#{year}.idente = tb_economica_#{year}.idente AND tb_inventario_#{year}.codente = '#{format("%.5i", place.id)}AA000'
 SQL
 
-index_request_body = []
-db.execute(sql).each do |row|
-  data = base_data.merge({
-    amount: row['amount'].to_f.round(2), code: row['code'],
-    level: row['code'].length, kind: row['kind'],
-    amount_per_inhabitant: (row['amount'].to_f / pop).round(2),
-    parent_code: row['code'][0..-2]
-  })
+        index_request_body = []
+        db.execute(sql).each do |row|
+          code = row['code']
+          level = row['code'].length
+          parent_code = row['code'][0..-2]
+          if code.include?('.')
+            code = code.tr('.','-')
+            level = 4
+            parent_code = code.split('-').first
+          end
 
-  id = [place.id,year,row['code'],row['kind']].join("/")
-  index_request_body << {index: {_id: id, data: data}}
-end
-next if index_request_body.empty?
+          data = base_data.merge({
+            amount: row['amount'].to_f.round(2), code: code,
+            level: level, kind: row['kind'],
+            amount_per_inhabitant: (row['amount'].to_f / pop).round(2),
+            parent_code: parent_code
+          })
 
-GobiertoBudgets::SearchEngine.client.bulk index: index, type: 'economic', body: index_request_body
+          id = [place.id,year,code,row['kind']].join("/")
+          index_request_body << {index: {_id: id, data: data}}
+        end
+        next if index_request_body.empty?
+
+        GobiertoBudgets::SearchEngine.client.bulk index: index, type: 'economic', body: index_request_body
       end
 
       pbar.finish
