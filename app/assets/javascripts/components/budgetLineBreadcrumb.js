@@ -13,14 +13,23 @@
       this.areaName = this.$node.data('budget-line-area');
       this.state = this.$node.data('budget-line-breadcrumb');
       this.states = this.state.split('/');
-      this.currentState = this.states[1];
+      this.currentKind = this.states[1];
       this.categoriesUrl = this.$node.data('budget-line-categories');
       var $lineBreadcrumb = this.$node.find('[data-line-breadcrumb]');
 
       $.getJSON(this.categoriesUrl, function(categories){
-        this.renderLineBreadcrumb($lineBreadcrumb, this.state, categories[this.areaName]);
         this.renderLevel1(categories[this.areaName]);
+        this.renderLineBreadcrumb($lineBreadcrumb, this.state, categories[this.areaName]);
         this.assignHandlers(0);
+
+        this.states.slice(2, this.states.length - 1).forEach(function(code, level){
+          var currentCode = code.slice(0, code.length-1);
+          if(level == 0) {
+            currentCode = this.currentKind;
+          }
+          this.renderLevel(level + 2, currentCode);
+        }.bind(this));
+
       }.bind(this));
     });
 
@@ -42,6 +51,8 @@
         html += '<tr><td data-code="'+c+'"><a href="#">' + this.attr.areaNamesDict[c] + '</a></td></tr>';
       }
       $el.html(html);
+      $el.data('current-code', this.currentKind);
+      $el.parent().velocity('fadeIn', {duration: 250});
       this.assignHandlers(1);
     };
 
@@ -49,9 +60,14 @@
       var that = this;
       $('[data-level="' + level + '"] [data-code]').mouseenter(function(e){
         e.preventDefault();
+
+        for(var i=(level+2); i < 5; i++){
+          $('[data-level="' + i + '"]').velocity('fadeOut', {duration: 100});
+        }
+
         var currentCode = $(this).data('code');
         var nextLevel = parseInt($(this).parents('[data-level]').data('level')) + 1;
-        if(nextLevel == 2){ that.currentState = currentCode; }
+        if(nextLevel == 2){ that.currentKind = currentCode; }
 
         if(nextLevel > 1){
           that.renderLevel(nextLevel, currentCode);
@@ -62,11 +78,10 @@
     };
 
     this.renderLevel = function(level, currentCode){
-      var url = '/site/budget_line_descendants/' + this.states[0] + '/' + this.areaName + '/' + this.currentState + '.json';
+      var url = '/site/budget_line_descendants/' + this.states[0] + '/' + this.areaName + '/' + this.currentKind + '.json';
       if(level > 2){
         url += '?parent_code=' + currentCode;
       }
-      console.log(url);
 
       var that = this;
       var $el = $('[data-level="'+level+'"] table');
@@ -79,11 +94,12 @@
           $el.html(html);
           $el.data('current-code', currentCode);
 
-          // On Ajax success
           $('[data-level=' + level + ']').velocity("fadeIn", { duration: 250 });
-
           this.assignHandlers(level);
         }.bind(this));
+      } else {
+        if(!$el.parent().is(':visible'))
+          $el.parent().velocity('fadeIn', {duration: 250});
       }
     };
   });
