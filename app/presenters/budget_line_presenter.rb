@@ -45,6 +45,18 @@ class BudgetLinePresenter
     @attributes[:level]
   end
 
+  def kind
+    @attributes[:kind]
+  end
+
+  def area_name
+    @attributes[:area_name]
+  end
+
+  def year
+    @attributes[:year]
+  end
+
   def to_param
     {
       id: code, year: @attributes[:year],

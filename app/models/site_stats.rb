@@ -43,7 +43,12 @@ class SiteStats
       ((self.send(variable1, year).to_f - self.send(variable2, year).to_f)/self.send(variable2, year).to_f) * 100
     end
 
-    direction = (diff < 0) ? 'más' : 'menos'
+    if(diff < 0)
+      direction = 'más'
+      diff = diff*-1
+    else
+      direction = 'menos'
+    end
 
     "#{ActionController::Base.helpers.number_with_precision(diff, precision: 2)}% #{direction}"
   end

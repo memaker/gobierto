@@ -14,6 +14,8 @@ class GobiertoSites::BudgetLinesController < GobiertoSites::ApplicationControlle
   def show
     @budget_line = GobiertoBudgets::BudgetLine.where(code: @code, place: @place, year: @year, kind: @kind, area_name: @area_name).first
 
+    @budget_line_stats = GobiertoBudgets::BudgetLineStats.new site: @site, budget_line: @budget_line
+
     respond_to do |format|
       format.html
       format.js
@@ -26,7 +28,7 @@ class GobiertoSites::BudgetLinesController < GobiertoSites::ApplicationControlle
     @place = @site.place
     render_404 and return if @place.nil?
 
-    @year = params[:year]
+    @year = params[:year].to_i
     @kind = params[:kind] || GobiertoBudgets::BudgetLine::EXPENSE
     @area_name = params[:area_name] || GobiertoBudgets::BudgetLine::FUNCTIONAL
     @level = params[:level].present? ? params[:level].to_i : 1

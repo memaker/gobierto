@@ -64,10 +64,9 @@
 
       <div class="pure-u-1 pure-u-md-1-2 p_h_l_1">
         <ul>
-          <li>Por habitante <strong>nos gastamos <span class="highlight">1.403€</span></strong>.</li>
-          <li>En total son <strong><span class="highlight">4442M€</span></strong>.</li>
-          <li>El año pasado gastamos un <span class="highlight"><strong>28% más</strong></span> de lo planeado.</li>
-          <li>Debemos <strong><span class="highlight">4.567M€</span></strong>, un 10% menos que hace un año.</li>
+          <li>Por habitante <strong>nos gastamos <span class="highlight"><%= number_to_currency @budget_line_stats.amount_per_inhabitant, precision: 2 %></span></strong>.</li>
+          <li>En total son <strong><span class="highlight"><%= format_currency @budget_line_stats.amount %></span></strong>.</li>
+          <li>El año pasado gastamos un <span class="highlight"><strong><%= @budget_line_stats.percentage_difference(variable1: :amount_planned, variable2: :amount_executed, year: @year-1) %></strong></span> de lo planeado.</li>
         </ul>
       </div>
 
