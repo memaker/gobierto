@@ -53,9 +53,16 @@ module GobiertoBudgets
       terms = [
         {term: { kind: @conditions[:kind] }},
         {term: { year: @conditions[:year] }},
-        {term: { level: @conditions[:level] }},
         {term: { ine_code: @conditions[:place].id }}
       ]
+
+      if @conditions[:level]
+        terms.push({term: { level: @conditions[:level] }})
+      end
+
+      if @conditions[:parent_code]
+        terms.push({term: { parent_code: @conditions[:parent_code] }})
+      end
 
       query = {
         sort: [

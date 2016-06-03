@@ -2,7 +2,14 @@ class GobiertoSites::BudgetLineDescendantsController < GobiertoSites::Applicatio
   before_action :load_params
 
   def index
-    @budget_lines = GobiertoBudgets::BudgetLineDescendant.where(place: @place, parent_code: @parent_code, year: @year, kind: @kind, area_name: @area_name).all
+    conditions = {place: @place, year: @year, kind: @kind, area_name: @area_name}
+    if @parent_code
+      conditions.merge!({parent_code: @parent_code})
+    else
+      conditions.merge!({level: 1})
+    end
+
+    @budget_lines = GobiertoBudgets::BudgetLine.where(conditions).all
 
     respond_to do |format|
       format.js

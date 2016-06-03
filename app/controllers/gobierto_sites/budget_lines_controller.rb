@@ -16,7 +16,7 @@ class GobiertoSites::BudgetLinesController < GobiertoSites::ApplicationControlle
 
     @budget_line_stats = GobiertoBudgets::BudgetLineStats.new site: @site, budget_line: @budget_line
 
-    @budget_line_descendants = GobiertoBudgets::BudgetLineDescendant.where(place: @place, parent_code: @code, year: @year, kind: @kind, area_name: @area_name).all
+    @budget_line_descendants = GobiertoBudgets::BudgetLine.where(place: @place, parent_code: @code, year: @year, kind: @kind, area_name: @area_name).all
 
     respond_to do |format|
       format.html
