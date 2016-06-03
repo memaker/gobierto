@@ -13,10 +13,13 @@ class GobiertoSites::BudgetLinesController < GobiertoSites::ApplicationControlle
 
   def show
     @budget_line = GobiertoBudgets::BudgetLine.where(code: @code, place: @place, year: @year, kind: @kind, area_name: @area_name).first
-
     @budget_line_stats = GobiertoBudgets::BudgetLineStats.new site: @site, budget_line: @budget_line
-
     @budget_line_descendants = GobiertoBudgets::BudgetLine.where(place: @place, parent_code: @code, year: @year, kind: @kind, area_name: @area_name).all
+    @budget_line_economic_composition = if @area_name == GobiertoBudgets::BudgetLine::FUNCTIONAL
+                                          GobiertoBudgets::BudgetLine.where(place: @place, functional_code: @code, year: @year, kind: @kind, area_name: @area_name).all
+                                        else
+                                          []
+                                        end
 
     respond_to do |format|
       format.html

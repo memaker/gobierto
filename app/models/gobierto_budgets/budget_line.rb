@@ -56,12 +56,11 @@ module GobiertoBudgets
         {term: { ine_code: @conditions[:place].id }}
       ]
 
-      if @conditions[:level]
-        terms.push({term: { level: @conditions[:level] }})
-      end
-
-      if @conditions[:parent_code]
-        terms.push({term: { parent_code: @conditions[:parent_code] }})
+      terms.push({term: { level: @conditions[:level] }}) if @conditions[:level]
+      terms.push({term: { parent_code: @conditions[:parent_code] }}) if @conditions[:parent_code]
+      if @conditions[:functional_code]
+        terms.push({term: { functional_code: @conditions[:functional_code] }})
+        @conditions[:area_name] = ECONOMIC
       end
 
       query = {
@@ -84,7 +83,7 @@ module GobiertoBudgets
         size: 10_000
       }
 
-      if @conditions[:area_name] == GobiertoBudgets::BudgetLine::ECONOMIC
+      if @conditions[:area_name] == ECONOMIC
         area = GobiertoBudgets::EconomicArea
       else
         area = GobiertoBudgets::FunctionalArea
