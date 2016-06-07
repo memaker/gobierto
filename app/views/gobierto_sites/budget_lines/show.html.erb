@@ -47,7 +47,7 @@
   <div class="budget_line">
 
     <header data-share>
-      <h1><%= @budget_line.name %></h1>
+      <h1><%= title @budget_line.name %></h1>
 
       <div class="social_links_container" data-share-text="En @gobierto: <%= @area_name == GobiertoBudgets::BudgetLine::EXPENSE ? 'Gasto' : 'Ingreso' %> municipal de <%= @site.place.name %> en <%= @budget_line.name %> para el <%= @year %>">
         <a href="#" class="social_share twitter" data-share-network="twitter" data-track-event="Social Share|Click Twitter|XXX"><i class="fa fa-twitter"></i></a>
