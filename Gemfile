@@ -19,6 +19,7 @@ gem 'delayed_job_active_record'
 gem 'daemons'
 gem 'config'
 gem 'dalli'
+gem 'aws-ses'
 
 # Gobify
 gem 'friendly_id'
