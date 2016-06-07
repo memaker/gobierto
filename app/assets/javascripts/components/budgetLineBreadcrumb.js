@@ -35,11 +35,11 @@
 
     this.renderLineBreadcrumb = function($el, state, categories){
       var html = "";
-      html += '<a href="/site/budget_lines/'+this.states[0]+'/'+this.areaName+'/' + this.states[1] + '">' + this.states[0] + '</a> »';
-      html += '<a href="/site/budget_lines/'+this.states[0]+'/'+this.areaName+'/' + this.states[1] + '">' + this.attr.areaNamesDict[this.states[1]] + '</a> »';
+      html += '<a href="/presupuestos/partidas/'+this.states[0]+'/'+this.areaName+'/' + this.states[1] + '">' + this.states[0] + '</a> »';
+      html += '<a href="/presupuestos/partidas/'+this.states[0]+'/'+this.areaName+'/' + this.states[1] + '">' + this.attr.areaNamesDict[this.states[1]] + '</a> »';
 
       this.states.slice(2, this.states.length - 1).forEach(function(segment){
-        html += '<a href="/site/budget_lines/'+segment+'/'+this.states[0]+'/'+this.areaName+'/' + this.states[1] + '">' + categories[this.states[1]][segment] + '</a> »';
+        html += '<a href="/presupuestos/partidas/'+segment+'/'+this.states[0]+'/'+this.areaName+'/' + this.states[1] + '">' + categories[this.states[1]][segment] + '</a> »';
       }.bind(this));
       $el.html(html);
     };
@@ -78,7 +78,7 @@
     };
 
     this.renderLevel = function(level, currentCode){
-      var url = '/site/budget_line_descendants/' + this.states[0] + '/' + this.areaName + '/' + this.currentKind + '.json';
+      var url = '/budget_line_descendants/' + this.states[0] + '/' + this.areaName + '/' + this.currentKind + '.json';
       if(level > 2){
         url += '?parent_code=' + currentCode;
       }

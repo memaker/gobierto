@@ -35,7 +35,7 @@
         <div class="logo"><%= image_tag @site.configuration.logo %></div>
       <% end %>
       <div class="site_title">
-        <strong><%= link_to @site.name, gobierto_sites_root_path %></strong> / <%= link_to 'Presupuestos', gobierto_sites_budgets_path %>
+        <strong><%= link_to @site.name, gobierto_sites_site_path %></strong> / <%= link_to 'Presupuestos', gobierto_sites_budgets_path %>
       </div>
     </div>
   </div>

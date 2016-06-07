@@ -16,3 +16,7 @@ en:
     edit: edit
     new: new
     pages: pages
+    budgets: budgets
+    budget_lines: budget_lines
+    budget_line: budget_line
+    summary: summary

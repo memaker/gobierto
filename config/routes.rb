@@ -45,18 +45,18 @@ Rails.application.routes.draw do
   end
 
   localized do
-    namespace :gobierto_sites, path: '/site', module: 'gobierto_sites' do
+    namespace :gobierto_sites, path: '', module: 'gobierto_sites' do
       constraints GobiertoSiteConstraint.new do
-        root to: 'sites#show'
+        get 'site' => 'sites#show'
 
         # legal pages (TODO: we should merge them)
         get 'privacy' => 'pages#privacy'
         get 'legal' => 'pages#legal'
         get 'cookie_warning' => 'pages#cookie_warning'
 
-        get 'budgets(/:year)' => 'budgets#index', as: :budgets
-        get 'budget_lines/:year/:area_name/:kind' => 'budget_lines#index', as: :budget_lines
-        get 'budget_lines/:id/:year/:area_name/:kind' => 'budget_lines#show', as: :budget_line
+        get 'budgets/summary(/:year)' => 'budgets#index', as: :budgets
+        get 'budgets/budget_lines/:year/:area_name/:kind' => 'budget_lines#index', as: :budget_lines
+        get 'budgets/budget_line/:id/:year/:area_name/:kind' => 'budget_lines#show', as: :budget_line
         get 'budget_line_descendants/:year/:area_name/:kind' => 'budget_line_descendants#index', as: :budget_line_descendants
       end
     end

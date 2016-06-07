@@ -16,3 +16,7 @@ es:
     edit: editar
     new: crear
     pages: paginas
+    budgets: presupuestos
+    budget_lines: partidas
+    budget_line: partida
+    summary: resumen
