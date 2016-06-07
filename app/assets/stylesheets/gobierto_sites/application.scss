@@ -22,9 +22,11 @@ $font_text: 'Source Sans Pro';
  *
  */
 
+/*
 $color_1: #00909E;
 $color_1_soft: #EFF8F9;
 $color_1_dark: #00909E;
+*/
 $color_text: #767168;
 $color_main: #00909E;
 $color_secondary: #F0F0F0;
@@ -377,7 +379,8 @@ input[type=submit]:hover, .button:hover, button:hover {
 }
 .button, button {
   text-decoration: none;
-  padding: 18px;
+  padding: 1em 2em;
+  font-weight: 700;
 }
 .button:hover, button {
   color: #FFF;
@@ -411,6 +414,10 @@ select {
 }
 select::-ms-expand { /* for IE 11 */
   display: none;
+}
+.disclaimer {
+	font-size: .75em;
+	opacity: .5;
 }
   
 
@@ -642,6 +649,96 @@ h1, h2, h3, h4 {
     visibility: hidden
 }
 
+
+
+
+
+/*
+ * Consultations
+ *
+ */
+.consultation_list {
+	.consultation {
+		width: 48%;
+		height: 190px;
+		float: left;
+		margin-bottom: 4em;
+		@include border-radius(5px);
+		background: $color_main;
+		box-sizing: border-box;
+		color: $color_main_negative;
+		position: relative;
+
+		h3 {
+			margin: 0;
+			font-size: 1.6em;
+			font-weight: 200;
+			line-height: 1.2em;
+			a {
+				padding: 1.5rem 1.5rem 3rem;
+				display: block;
+			}
+			a:hover {
+				background: darken($color_main, 5%);
+				@include border-radius(5px);
+			}
+		}
+		a {
+			color: $color_main_negative;
+			text-decoration: none;
+		}
+		a:hover {
+			color: rgba($color_main_negative, .8);
+		}
+		.meta {
+			border-top: 1px solid rgba($color_main_negative, .3);
+			box-sizing: border-box;
+			padding: .75rem 1.5rem;
+			font-size: .8em;
+			line-height: 1.2em;
+			.dates {
+				float: left;
+				width: 120px;
+				border-right: 1px solid rgba($color_main_negative, .2);
+				margin-right: 1em;
+			}
+		}
+		.act {
+			position: absolute;
+			bottom: -1em;
+			right: 1em;
+			a {
+				display: block;
+				padding: .75em 1.5em .65em;
+				font-weight: 700;
+				background: darken($color_main, 15%);
+				height: initial;
+
+			}
+		}
+		form {
+			input[type=email] {
+				width: 60%;
+			}
+		}
+	}
+	.consultation:nth-of-type(2n) {
+		float: right; 
+	}
+	.consultation.get_lead, .consultation.stats {
+		background: rgba($color_main, .2);
+		padding: 1.5rem;
+		color: $color_text;
+		h3 {
+			font-size: 1.3em;
+			margin: 0 0 1.25em 0;
+		}
+	}
+}
+
+
+
+
 /*
  * Social Buttons
  *
@@ -858,7 +955,7 @@ a.soft_cta:hover {
 }
 .autocomplete-suggestion { padding: 2px 10px; white-space: nowrap; overflow: hidden; }
 .autocomplete-no-suggestion { padding: 2px 10px;}
-.autocomplete-selected { background: $color_1; color: #FFF; }
+.autocomplete-selected { background: $color_main; color: #FFF; }
 .autocomplete-suggestions strong { font-weight: bold; color: #000; }
 .autocomplete-group { }
 .autocomplete-group strong { 
