@@ -29,6 +29,14 @@ class BudgetLinePresenter
     amount.to_f / total.to_f
   end
 
+  def percentage_compared_with(other_value)
+    amount.to_f / other_value.to_f
+  end
+
+  def attr
+    @attributes
+  end
+
   def total
     @attributes[:total]
   end
@@ -55,6 +63,10 @@ class BudgetLinePresenter
 
   def year
     @attributes[:year]
+  end
+
+  def parent_code
+    @attributes[:parent_code]
   end
 
   def to_param

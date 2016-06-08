@@ -47,7 +47,7 @@ Rails.application.routes.draw do
   localized do
     namespace :gobierto_sites, path: '', module: 'gobierto_sites' do
       constraints GobiertoSiteConstraint.new do
-        get 'site' => 'sites#show'
+        get 'site' => redirect('/presupuestos/resumen')
 
         # legal pages (TODO: we should merge them)
         get 'privacy' => 'pages#privacy'
@@ -56,7 +56,7 @@ Rails.application.routes.draw do
 
         get 'budgets/summary(/:year)' => 'budgets#index', as: :budgets
         get 'budgets/budget_lines/:year/:area_name/:kind' => 'budget_lines#index', as: :budget_lines
-        get 'budgets/budget_line/:id/:year/:area_name/:kind' => 'budget_lines#show', as: :budget_line
+        get 'budgets/budget_lines/:id/:year/:area_name/:kind' => 'budget_lines#show', as: :budget_line
         get 'budget_line_descendants/:year/:area_name/:kind' => 'budget_line_descendants#index', as: :budget_line_descendants
       end
     end

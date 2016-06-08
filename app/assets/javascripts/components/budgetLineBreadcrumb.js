@@ -66,6 +66,8 @@
         }
 
         var currentCode = $(this).data('code');
+        $('[data-level="' + level + '"] [data-code]').removeClass('selected');
+        $('[data-level="' + level + '"] [data-code="'+currentCode+'"]').addClass('selected');
         var nextLevel = parseInt($(this).parents('[data-level]').data('level')) + 1;
         if(nextLevel == 2){ that.currentKind = currentCode; }
 
@@ -89,7 +91,7 @@
         $.getJSON(url, function(data){
           var html = "";
           data.forEach(function(budgetLine){
-            html += '<tr><td data-code="'+budgetLine.code+'"><a href="/site/budget_lines/'+budgetLine.code+'/'+that.states[0]+'/'+that.areaName+'/' + that.states[1] + '">' + budgetLine.name + '</a></td></tr>';
+            html += '<tr><td data-code="'+budgetLine.code+'"><a href="/presupuestos/partidas/'+budgetLine.code+'/'+that.states[0]+'/'+that.areaName+'/' + that.states[1] + '">' + budgetLine.name + '</a></td></tr>';
           });
           $el.html(html);
           $el.data('current-code', currentCode);

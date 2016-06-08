@@ -18,6 +18,7 @@ module GobiertoBudgets
         {term: { kind: @conditions[:kind] }},
         {term: { year: @conditions[:year] }},
         {term: { code: @conditions[:code] }},
+        {missing: { field: 'functional_code'}},
         {term: { ine_code: @conditions[:place].id }}
       ]
 
@@ -49,18 +50,65 @@ module GobiertoBudgets
       BudgetLinePresenter.new response['hits']['hits'].first['_source'].merge({kind: @conditions[:kind], area_name: @conditions[:area_name], area: area})
     end
 
+    def self.functional_codes_for_economic_budget_line(conditions)
+      terms = [
+        {term: { kind: conditions[:kind] }},
+        {term: { year: conditions[:year] }},
+        {term: { code: conditions[:functional_code] }},
+        {exists: { field: 'functional_code'}},
+        {term: { ine_code: conditions[:place].id }}
+      ]
+
+      query = {
+        sort: [
+          { @sort_attribute => { order: @sort_order } }
+        ],
+        query: {
+          filtered: {
+            filter: {
+              bool: {
+                must: terms
+              }
+            }
+          }
+        },
+        aggs: {
+          total_budget: { sum: { field: 'amount' } },
+          total_budget_per_inhabitant: { sum: { field: 'amount_per_inhabitant' } },
+        },
+        size: 10_000
+      }
+
+      response = GobiertoBudgets::SearchEngine.client.search index: GobiertoBudgets::SearchEngineConfiguration::BudgetLine.index_forecast,
+                                                             type: ECONOMIC, body: query
+
+      response['hits']['hits'].map{ |h| h['_source'] }.map do |row|
+        next if row['functional_code'].length != 1
+        area = GobiertoBudgets::FunctionalArea
+        row['code'] = row['functional_code']
+
+        BudgetLinePresenter.new(row.merge({ kind: EXPENSE, area_name: FUNCTIONAL, area: area }))
+      end.compact.sort{|b,a| a.amount <=> b.amount }
+    end
+
     def self.all
       terms = [
         {term: { kind: @conditions[:kind] }},
         {term: { year: @conditions[:year] }},
+        {missing: { field: 'functional_code'}},
         {term: { ine_code: @conditions[:place].id }}
       ]
 
       terms.push({term: { level: @conditions[:level] }}) if @conditions[:level]
       terms.push({term: { parent_code: @conditions[:parent_code] }}) if @conditions[:parent_code]
       if @conditions[:functional_code]
-        terms.push({term: { functional_code: @conditions[:functional_code] }})
-        @conditions[:area_name] = ECONOMIC
+        if @conditions[:area_name] == FUNCTIONAL
+          @conditions[:area_name] = ECONOMIC
+          terms.push({term: { functional_code: @conditions[:functional_code] }})
+        else
+          @conditions[:area_name] = FUNCTIONAL
+          return functional_codes_for_economic_budget_line(@conditions)
+        end
       end
 
       query = {

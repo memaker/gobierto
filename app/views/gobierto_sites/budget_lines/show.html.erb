@@ -64,12 +64,12 @@
 
       <div class="pure-u-1 pure-u-md-1-2 p_h_l_1">
         <ul>
-          <li>Por habitante <strong>nos <%= @area_name == GobiertoBudgets::BudgetLine::EXPENSE ? 'gastamos' : 'ingresamos' %> <span class="highlight"><%= number_to_currency @budget_line_stats.amount_per_inhabitant, precision: 2 %></span></strong>.</li>
+          <li>Por habitante <strong> <%= @kind == GobiertoBudgets::BudgetLine::EXPENSE ? 'nos gastamos' : 'ingresamos' %> <span class="highlight"><%= number_to_currency @budget_line_stats.amount_per_inhabitant, precision: 2 %></span></strong>.</li>
           <li>En total son <strong><span class="highlight"><%= format_currency @budget_line_stats.amount %></span></strong>.</li>
           <% if diff = @budget_line_stats.percentage_difference(variable1: :amount_planned, variable2: :amount_executed, year: @year-1) %>
-            <li>El año pasado <%= @area_name == GobiertoBudgets::BudgetLine::EXPENSE ? 'gastamos' : 'ingresamos' %> un <span class="highlight"><strong><%= diff %></strong></span> de lo planeado.</li>
+            <li>El año pasado <%= @kind == GobiertoBudgets::BudgetLine::EXPENSE ? 'nos gastamos' : 'ingresamos' %> un <span class="highlight"><strong><%= diff %></strong></span> de lo planeado.</li>
           <% else %>
-            <li>Hemos <%= @area_name == GobiertoBudgets::BudgetLine::EXPENSE ? 'gastado' : 'ingresado' %> un <span class="highlight"><strong><%= @budget_line_stats.percentage_difference(variable1: :amount_planned, year1: @year, year2: @year-1) %></strong></span> que el año anterior.</li>
+            <li>Hemos <%= @kind == GobiertoBudgets::BudgetLine::EXPENSE ? 'gastado' : 'ingresado' %> un <span class="highlight"><strong><%= @budget_line_stats.percentage_difference(variable1: :amount_planned, year1: @year, year2: @year-1) %></strong></span> que el año anterior.</li>
           <% end %>
         </ul>
       </div>
@@ -96,28 +96,36 @@
     <div class="pure-g block">
       <div class="pure-u-1 pure-u-md-1-2 p_h_l_1">
         <h2>Partidas</h2>
-        <table>
-          <% @budget_line_descendants.each do |budget_line| %>
-            <tr>
-              <td><%= link_to budget_line.name, gobierto_sites_budget_line_path(budget_line.to_param) %></td>
-              <td class="qty"><%= number_with_precision(budget_line.percentage_of_total * 100, precision: 2) + '%' %></td>
-              <td class="amount"><%= format_currency(budget_line.amount) %></td>
-            </tr>
-          <% end %>
-        </table>
+        <% if @budget_line_descendants.any? %>
+          <table>
+            <% @budget_line_descendants.each do |budget_line| %>
+              <tr>
+                <td><%= link_to truncate(budget_line.name, length: 75), gobierto_sites_budget_line_path(budget_line.to_param), title: budget_line.name %></td>
+                <td class="qty"><%= number_with_precision(budget_line.percentage_compared_with(@budget_line.amount) * 100, precision: 2) + '%' %></td>
+                <td class="amount"><%= format_currency(budget_line.amount) %></td>
+              </tr>
+            <% end %>
+          </table>
+        <% else %>
+          <p>No hay más sub-partidas. <% if @parent_budget_line %>Volver a la partida padre: <a href="<%= gobierto_sites_budget_line_path(@parent_budget_line.to_param) %>"><%= @parent_budget_line.name %></a>.<% end %></p>
+        <% end %>
       </div>
 
       <div class="pure-u-1 pure-u-md-1-2 p_h_r_1">
         <h2>Distribución de los gastos de esta partida</h2>
-        <table>
-          <% @budget_line_economic_composition.each do |budget_line| %>
-            <tr>
-              <td><%= link_to budget_line.name, gobierto_sites_budget_line_path(budget_line.to_param) %></td>
-              <td class="qty"><%= number_with_precision(budget_line.percentage_of_total * 100, precision: 2) + '%' %></td>
-              <td class="amount"><%= format_currency(budget_line.amount) %></td>
-            </tr>
-          <% end %>
-        </table>
+        <% if @budget_line_composition.any? %>
+          <table>
+            <% @budget_line_composition.each do |budget_line| %>
+              <tr>
+                <td><%= link_to truncate(budget_line.name, length: 75), gobierto_sites_budget_line_path(budget_line.to_param), title: budget_line.name %></td>
+                <td class="qty"><%= number_with_precision(budget_line.percentage_compared_with(@budget_line.amount) * 100, precision: 2) + '%' %></td>
+                <td class="amount"><%= format_currency(budget_line.amount) %></td>
+              </tr>
+            <% end %>
+          </table>
+        <% else %>
+          <p>No hay distribución asociada a esta partida.</p>
+        <% end %>
       </div>
     </div>
 
