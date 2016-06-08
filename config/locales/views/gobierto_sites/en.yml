@@ -3,3 +3,56 @@ en:
     budgets:
       index:
         in_year: "In %{year}..."
+        per_person: Per person
+        we_spend: we spend
+        totally: Totally
+        last_year_we_spent: Last year we spent
+        than_planned: than planned
+        last_year_data_we_owe: According to last year data, we owe
+        than_two_years_ago: than two years ago
+        summary: Summary
+        twitter_text: "From @gobierto: Municipality budgets from %{name} in %{year}"
+        main_budget_lines: Main income and expenses from your council
+        income: Income
+        expenses: Gastos
+        see_all: see all
+        at_a_glance: At a glance
+        context: Context
+        note_about_the_data: Note about the data
+        note_about_the_data_title: "The database we use doesn't include the 100% of the municipalities, and the means are calculated only with the data that exists (which is the most). More information in our FAQ"
+        in_total: Total
+    budget_lines:
+      explorer:
+        explore_the_detail: Explore the detail
+        search_budget_line: Search for a specific budget line
+        examples: Examples
+        search: Search
+        income: Income
+        expenses: Gastos
+      index:
+        budget_line: Budget line
+        amount: Amount
+        per_inhabitant: Per inhabitant
+        expense_in_what: In what is expended
+        expense_to_do_what: To do what is expended
+        income_from_what: Where does the income come from
+        help: The budget is organized in two categories. Checkout our guide
+      show:
+        context: Context
+        evolution: Evolution
+        budget_lines_distribution: Expense budget lines distribution
+        no_distribution: There are related budget lines.
+        budget_lines: Budget lines
+        no_more_descendants: There are no more descendants
+        back_to_parent: Back to parent budget line
+        we_expend: we expend
+        we_income: we income
+        expended: expended
+        income: income
+        we_have: We have
+        last_year: Last year
+        in_total: In total they are
+        from_planned: from planned
+        per_inhabitant: Per inhabitant
+        twitter_text_expense: "In @gobierto: Municipal expense on %{name} in %{budget_line_name} for year %{year}"
+        twitter_text_income: "In @gobierto: Municipal income on %{name} in %{budget_line_name} for year %{year}"

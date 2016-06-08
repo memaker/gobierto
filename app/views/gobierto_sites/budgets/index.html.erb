@@ -1,4 +1,4 @@
-<% title 'Resumen' %>
+<% title t('.summary') %>
 
 <div class="column">
   <div class="pure-g numbers_intro">
@@ -8,10 +8,10 @@
 
     <div class="pure-u-1 pure-u-md-10-24 p_h_1">
       <ul>
-        <li>Por habitante <strong>nos gastamos <span class="highlight"><%= number_to_currency @site_stats.total_budget_per_inhabitant, precision: 2 %></span></strong>.</li>
-        <li>En total son <strong><span class="highlight"><%= format_currency @site_stats.total_budget %></span></strong>.</li>
-        <li>El año pasado gastamos un <span class="highlight"><strong><%= @site_stats.percentage_difference(variable1: :total_budget_planned, variable2: :total_budget_executed, year: @year-1) %></strong></span> de lo planeado.</li>
-        <li>Según datos del año pasado, debemos <strong><span class="highlight"><%= format_currency @site_stats.debt(@year - 1) %></span></strong>, un <%= number_with_precision(@site_stats.percentage_difference(variable1: :debt, year1: @year-1, year2: @year-2), precision: 2) %> que hace dos años.</li>
+        <li><%= t('.per_person') %><strong><%= t('.we_spend') %> <span class="highlight"><%= number_to_currency @site_stats.total_budget_per_inhabitant, precision: 2 %></span></strong>.</li>
+        <li><%= t('.totally') %><strong><span class="highlight"><%= format_currency @site_stats.total_budget %></span></strong>.</li>
+        <li><%= t('.last_year_we_spent') %><span class="highlight"><strong><%= @site_stats.percentage_difference(variable1: :total_budget_planned, variable2: :total_budget_executed, year: @year-1) %></strong></span> <%= t '.than_planned' %>.</li>
+        <li><%= t('.last_year_data_we_owe') %><strong><span class="highlight"><%= format_currency @site_stats.debt(@year - 1) %></span></strong>, <%= number_with_precision(@site_stats.percentage_difference(variable1: :debt, year1: @year-1, year2: @year-2), precision: 2) %> <%= t('.than_two_years_ago') %>.</li>
       </ul>
     </div>
 
@@ -22,7 +22,7 @@
     </div>
 
     <div class="pure-u-1 pure-u-md-4-24" data-share>
-      <div class="social_links_container" data-share-text="En @gobierto: Presupuestos municipales de <%= @site.place.name %> del <%= @year %>">
+      <div class="social_links_container" data-share-text="<%= t('.twitter_text', name: @site.place.name, year: @year) %>">
         <a href="#" class="social_share twitter" data-share-network="twitter" data-track-event="Social Share|Click Twitter|XXX"><i class="fa fa-twitter"></i></a>
         <a href="#" class="social_share facebook" data-share-network="facebook" data-track-event="Social Share|Click Facebook|XXX"><i class="fa fa-facebook"></i></a>
         <a href="#embed-graph-code" class="social_share code open_modal" data-track-event="Social Share|Click Code|XXX"><i class="fa fa-code"></i></a>
@@ -37,7 +37,7 @@
   <div class="pure-g intro_p_l">
 
     <div class="pure-u-1 pure-u-md-4-24">
-      <h2>Los principales gastos e ingresos de tu ayuntamiento</h2>
+      <h2><%= t('.main_budget_lines') %></h2>
 
       <% pending do %>
         <div class="tip">
@@ -47,7 +47,7 @@
     </div>
 
     <div class="pure-u-1 pure-u-md-10-24 p_h_1">
-      <h3>Ingresos</h3>
+      <h3><%= t('.income') %></h3>
 
       <table>
         <% @top_income_budget_lines.each do |budget_line| %>
@@ -64,7 +64,7 @@
     </div>
 
     <div class="pure-u-1 pure-u-md-10-24 p_h_1">
-      <h3>Gastos</h3>
+      <h3><%= t('.expenses') %></h3>
 
       <table>
         <% @top_expense_budget_lines.each do |budget_line| %>
@@ -76,7 +76,7 @@
       </table>
 
       <div class="small center m_v_2">
-        <%= link_to 'ver todos', gobierto_sites_budget_lines_path(year: @year, kind: GobiertoBudgets::BudgetLine::EXPENSE, area_name: GobiertoBudgets::BudgetLine::FUNCTIONAL, level: 1) %>
+        <%= link_to t('.see_all'), gobierto_sites_budget_lines_path(year: @year, kind: GobiertoBudgets::BudgetLine::EXPENSE, area_name: GobiertoBudgets::BudgetLine::FUNCTIONAL, level: 1) %>
       </div>
     </div>
   </div>
@@ -88,24 +88,24 @@
 
   <div class="pure-g" data-vis-lines>
     <div class="pure-u-1 pure-u-md-1-2 block">
-      <h2>De un vistazo</h2>
+      <h2><%= t('.at_a_glance') %></h2>
 
       <div id="lines_chart"></div>
     </div>
 
     <div class="pure-u-1 pure-u-md-1-2 block">
-      <h2>Contexto</h2>
+      <h2><%= t('.context') %></h2>
 
       <div id="lines_tooltip"></div>
       <div class="help">
-        <%= link_to 'Nota sobre los datos'.html_safe, gobierto_budgets_faq_path(anchor: 'no_data'), title: 'La base de datos que utilizamos no incluye datos para el 100% de los municipios, por lo que las medias están calculadas solo con los datos que existen (que son la gran mayoría). Más información en nuestras preguntas frecuentes', class: 'tipsit' %>
+        <%= link_to t('.note_about_the_data'), gobierto_budgets_faq_path(anchor: 'no_data'), title: t('.note_about_the_data_title'), class: 'tipsit' %>
       </div>
     </div>
 
     <div class="pure-u-1">
       <div class="filter m_v_2">
-        <%= link_to 'Por habitante', '#', class:'active',  data: {"line-widget-series" => "means", "line-widget-url" => gobierto_budgets_api_data_lines_path(ine_code: @place.id, year: @year, what: 'per_person', format: :json), "line-widget-type" => "per_person" } %>
-        <%= link_to 'En total', '#', class:'',  data: {"line-widget-series" => "means", "line-widget-url" => gobierto_budgets_api_data_lines_path(ine_code: @place.id, year: @year, what: 'total_budget', format: :json), "line-widget-type" => "total_budget" } %>
+        <%= link_to t('.per_person'), '#', class:'active',  data: {"line-widget-series" => "means", "line-widget-url" => gobierto_budgets_api_data_lines_path(ine_code: @place.id, year: @year, what: 'per_person', format: :json), "line-widget-type" => "per_person" } %>
+        <%= link_to t('.in_total'), '#', class:'',  data: {"line-widget-series" => "means", "line-widget-url" => gobierto_budgets_api_data_lines_path(ine_code: @place.id, year: @year, what: 'total_budget', format: :json), "line-widget-type" => "total_budget" } %>
 
         <% pending do %>
           <span class="separator_v"></span>
@@ -144,46 +144,5 @@
 
   <div class="separator"></div>
 
-  <div class="block explore_detail">
-
-    <h2>Explora el detalle</h2>
-
-    <div class="tabs m_v_2">
-      <ul>
-        <li class="active"><%= link_to 'Gastos', gobierto_sites_budget_lines_path(year: @year, kind: GobiertoBudgets::BudgetLine::EXPENSE, area_name: GobiertoBudgets::BudgetLine::FUNCTIONAL), data: { "budget-lines-tab": GobiertoBudgets::BudgetLine::EXPENSE, remote: true } %></li>
-        <li><%= link_to 'Ingresos', gobierto_sites_budget_lines_path(year: @year, kind: GobiertoBudgets::BudgetLine::INCOME, area_name: GobiertoBudgets::BudgetLine::ECONOMIC), data: { "budget-lines-tab": GobiertoBudgets::BudgetLine::INCOME, remote: true } %></li>
-      </ul>
-    </div>
-
-    <div class="pure-g">
-
-      <div class="pure-u-1 pure-u-md-2-3 table p_h_r_3" data-budget-lines>
-        <%= render partial: 'gobierto_sites/budget_lines/index', locals: { place_budget_lines: @place_budget_lines, kind: @kind, area_name: @area_name, year: @year, place: @place }  %>
-      </div>
-
-      <div class="pure-u-1 pure-u-md-1-3">
-        <div class="m_v_2">
-          <div class="tip">
-            <%# link_to '<i class="fa fa-info-circle"></i> Consulta la Guía sobre el Presupuesto Municipal para saber más'.html_safe %>
-          </div>
-        </div>
-
-        <h3>Busca una partida específica</h3>
-
-        <input type="text" placeholder="Busca partida..." autofocus="true" data-autocomplete="<%= gobierto_budgets_search_all_categories_url(@place.slug, @year, host: Site.budgets_host, format: :json) %>">
-
-        <div class="small m_v_3">
-          <p>Ejemplos:</p>
-          <ul>
-            <% @sample_budget_lines.each do |budget_line| %>
-              <li><%= link_to budget_line.name, gobierto_sites_budget_line_path(budget_line.to_param) %></li>
-            <% end %>
-          </ul>
-
-        </div>
-      </div>
-    </div>
-
-    <div class="pure-g " data-tab="expenses" id="expenses"></div>
-  </div>
+  <%= render partial: 'gobierto_sites/budget_lines/explorer' %>
 </div>
