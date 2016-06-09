@@ -812,12 +812,20 @@ h1, h2, h3, h4 {
 			}
 			.meta {
 				font-size: .8em;
-				margin: 2em 5em;
+				margin: 2em 5em 0;
 				padding: 2em 0 0 0;
 				border-top: 1px solid rgba($color_main_negative, .5);
 				text-transform: uppercase;
 				text-align: center;
 			}
+		}
+		.pre_title {
+			margin: 6% 30% 2%;
+			font-size: 1.2em;
+			font-weight: 200;
+		}
+		.header_comps {
+			padding-top: 8em;
 		}
 	}
 	.participation_question_cont {
@@ -853,6 +861,31 @@ h1, h2, h3, h4 {
 			}
 		}
 	}
+	ul.slick-dots {
+		position: absolute;
+		top: -1em;
+		text-align: center;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+		li {
+			display: inline-block;
+			button {
+			  text-indent: -3000px;
+		    border-radius: 13px;
+		    font-size: 3px;
+		    height: 12px;
+		    opacity: .5;
+		    margin: 0 2em;
+			}
+		}
+		li.slick-active {
+			button {
+				opacity: 1;
+			}
+		}
+
+	}
 
 }
 
@@ -880,6 +913,19 @@ a.social_share {
     // margin: 0 .2em 0 0;
   }
 }
+.social_share_container {
+	.social_share {
+		@include border-radius(16px);
+    padding: .25em 2em;
+		text-decoration: none;
+		.fa {
+			margin: 0 .2em 0 0;
+		}
+	}
+	.social_share:hover {
+		text-decoration: none;
+	}
+}
 .social_share:hover {
   color: #FFF;
 }
@@ -906,6 +952,9 @@ a.social_share {
 }
 .email:hover {
   background: darken($color_main, 10%);
+}
+.linkedin:hover {
+  background: darken(#0074B5, 10%);
 }
 .code:hover {
   background: darken($color_main, 10%);
@@ -1091,5 +1140,4 @@ a.soft_cta:hover {
   display: block; 
   border-bottom: 1px solid $separator; 
 }
-
 

@@ -77,7 +77,7 @@ $(function(){
   $autocomplete.autocomplete($.extend({}, AUTOCOMPLETE_DEFAULTS, searchOptions));
 
   $('.carousel').slick({
-    dots: false,
+    dots: true,
     arrows: false,
     slidesToShow: 1,
     adaptiveHeight: true
