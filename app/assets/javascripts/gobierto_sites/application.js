@@ -76,4 +76,15 @@ $(function(){
 
   $autocomplete.autocomplete($.extend({}, AUTOCOMPLETE_DEFAULTS, searchOptions));
 
+  $('.carousel').slick({
+    dots: false,
+    arrows: false,
+    slidesToShow: 1,
+    adaptiveHeight: true
+  });
+
+  $('.slick_next').click(function(e) {
+    $('.carousel').slick('slickNext');
+  });
+
 });
