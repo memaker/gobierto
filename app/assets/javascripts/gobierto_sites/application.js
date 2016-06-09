@@ -14,6 +14,7 @@
 //= require jquery.autocomplete
 //= require autocomplete_settings
 //= require klass
+//= require slick.min
 
 //= require gobierto_budgets/vis_treemap
 //= require gobierto_budgets/vis_lineas_tabla

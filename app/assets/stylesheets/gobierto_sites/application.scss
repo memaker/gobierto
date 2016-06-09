@@ -4,12 +4,15 @@
  */
 /* ToDo: Change to production location */
 @import "bourbon";
-@import "gobierto_sites/vendor/pure-min";
-@import "gobierto_sites/vendor/pure-grids-responsive-min";
-@import "gobierto_sites/vendor/tipsy";
-@import "gobierto_sites/vendor/populities";
+@import "pure-min";
+@import "pure-grids-responsive-min";
+@import "tipsy";
+@import "populities";
+@import "magnific-popup";
+@import "slick";
+@import "slick-theme";
 @import "gobierto_budgets/treemap";
-@import "gobierto_sites/vendor/magnific-popup";
+
 
 @import url("https://fonts.googleapis.com/css?family=Work+Sans:200,400,700,600|Source+Sans+Pro:200,400,700,600");
 @import "//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css";        
@@ -100,6 +103,7 @@ footer {
 }
 
 
+
 /*
  * Site Header
  *
@@ -187,6 +191,37 @@ header.meta {
 			}
 		}
 	}
+}
+header.section {
+	border-bottom: 1px solid $color_separator;
+	padding: 0 0 1em 0;
+	margin: 2em 0 1em 0;
+	h1 {
+		border-bottom: 1px solid $color_separator;
+		padding: 0 0 1em 0;
+		margin: 0 0 1em 0;
+	}
+	.social_links_container {
+		float: right;
+	}
+	.description {
+		padding: 0 2em 2em 0;
+		box-sizing: border-box;
+		p {
+			font-size: 1.3em;
+			font-weight: 200;
+			line-height: 1.5em;	
+		}
+		@include reset_ul_li;
+		ul {
+			a {
+				display: inline-block;
+				text-transform: uppercase;
+				margin: 0 1em 0 0;
+			}
+		}
+	}
+	
 }
 
 
@@ -370,12 +405,15 @@ input[type=submit], .button, button {
 input[type=submit]:hover, .button:hover, button:hover {
   background: darken($color_main, 10%);
 }
-.option, option, select {
+option, select {
   font-weight: 400;
   font-size: .8em;
   // border: 1px solid #CCC;
   padding: 18px;
   background: #F1F1F1;
+}
+.option {
+	padding: 0;
 }
 .button, button {
   text-decoration: none;
@@ -385,25 +423,45 @@ input[type=submit]:hover, .button:hover, button:hover {
 .button:hover, button {
   color: #FFF;
 }
-input[type="checkbox"] {
+button.light, .button.light {
+	background: $color_main_negative;
+	border: 1px solid $color_separator;
+	color: $color_main;
+}
+button.light:hover, .button.light:hover {
+	background: rgba($color_main, .2);
+}
+input[type="checkbox"], input[type="radio"] {
   display: none;
 }
-input[type="checkbox"] + label {
+input[type="checkbox"] + label, input[type="radio"] + label {
   cursor: pointer;
+  display: block;
+  padding: 14px;
+  @include transition;
 }
-input[type="checkbox"] + label span {
+input[type="checkbox"] + label span, input[type="radio"] + label span {
   display: inline-block;
   width: 19px;
   height: 19px;
   border: 1px solid $color_main;
   background: #FFF;
   @include border-radius(3px);
-  margin: -1px 4px 0 0;
+  margin: -4px 11px 0 0;
   vertical-align: middle;
   cursor: pointer;
 }
-input[type="checkbox"]:checked + label span {
+input[type="checkbox"] + label:hover, input[type="radio"] + label:hover {
+  background: rgba($color_main, .1);
+}
+input[type="checkbox"]:checked + label, input[type="radio"]:checked + label {
+  background: rgba($color_main, .2);
+}
+input[type="checkbox"]:checked + label span, input[type="radio"]:checked + label span {
   background: $color_main;
+}
+input[type="radio"] + label span {
+	@include border-radius(13px);
 }
 select {
   -webkit-appearance: none;
@@ -726,7 +784,7 @@ h1, h2, h3, h4 {
 		float: right; 
 	}
 	.consultation.get_lead, .consultation.stats {
-		background: rgba($color_main, .2);
+		background: rgba($color_main, .1);
 		padding: 1.5rem;
 		color: $color_text;
 		h3 {
@@ -734,6 +792,68 @@ h1, h2, h3, h4 {
 			margin: 0 0 1.25em 0;
 		}
 	}
+}
+
+.consultation_item {
+	margin-top: 3em;
+	margin-bottom: 3em;
+	header {
+		.main_title {
+			margin: 1em 0 2em 0;
+			box-sizing: border-box;
+			padding: 3em 6em 2em;
+			text-align: center;
+			@include linear-gradient(135deg, rgba($color_main, 0.5) 0%, $color_main 150%);
+			@include border-radius(6px);
+			color: $color_main_negative;
+			h1 {
+				line-height: 1.6em;
+				font-weight: 600;
+			}
+			.meta {
+				font-size: .8em;
+				margin: 2em 5em;
+				padding: 2em 0 0 0;
+				border-top: 1px solid rgba($color_main_negative, .5);
+				text-transform: uppercase;
+				text-align: center;
+			}
+		}
+	}
+	.participation_question_cont {
+		margin: auto;
+		box-sizing: border-box;
+		@include border-radius(5px);
+		border: 1px solid $color_separator;
+		padding: 3em 5em;
+		text-align: center;
+		margin-top: 2em;
+		h2 {
+			font-size: 1.8em;
+			line-height: 1.4em;
+			margin: 1em 0 1.5em 0;
+			font-weight: 600;
+			color: $color_main;
+		}
+		.options {
+			margin: 0 10%;
+			.option {
+				display: block;
+				margin: 0 0 1em 0;
+				text-align: left;
+				height: 65px;
+				input[type="checkbox"] + label, input[type="radio"] + label {
+					box-sizing: border-box;
+					padding: 20px;
+				}
+			}
+			button, .button {
+				width: 100%;
+				margin: 1em auto;
+			}
+		}
+	}
+
 }
 
 
