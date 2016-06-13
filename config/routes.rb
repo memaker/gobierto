@@ -140,6 +140,7 @@ Rails.application.routes.draw do
 
         get '/categories/:area/:kind' => 'categories#index'
         get '/places' => 'places#index'
+        get '/data/:ine_code/:year/:kind/:area' => 'data#budgets'
       end
     end
   end

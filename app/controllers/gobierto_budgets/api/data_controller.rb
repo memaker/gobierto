@@ -275,6 +275,45 @@ module GobiertoBudgets
         end
       end
 
+      def budgets
+        year = params[:year].to_i
+        kind = params[:kind]
+        place = INE::Places::Place.find params[:ine_code]
+        area_name = params[:area]
+
+        query = {
+          sort: [
+            { 'code' => { order: 'asc' } }
+          ],
+          query: {
+            filtered: {
+              filter: {
+                bool: {
+                  must: [
+                    {term: { year: year }},
+                    {term: { ine_code: place.id }},
+                    {term: { kind: kind }}
+                  ]
+                }
+              }
+            }
+          },
+          size: 10_000
+        }
+        area = area_name == 'economic' ? EconomicArea : FunctionalArea
+
+        response = GobiertoBudgets::SearchEngine.client.search index: GobiertoBudgets::SearchEngineConfiguration::BudgetLine.index_forecast,
+                                                               type: area_name, body: query
+        items = response['hits']['hits'].map do |h|
+              h['_source'].merge({category: area.all_items[kind][h['_source']['code']]})
+            end
+        respond_to do |format|
+          format.json do
+            render json: items.to_json
+          end
+        end
+      end
+
       private
 
       def get_debt(year, ine_code)
