@@ -302,14 +302,20 @@ module GobiertoBudgets
         response = GobiertoBudgets::SearchEngine.client.search index: GobiertoBudgets::SearchEngineConfiguration::Data.index,
           type: GobiertoBudgets::SearchEngineConfiguration::Data.type_debt, body: query
 
-        result = {
-          'places' => response['hits']['hits'].map{ |h| h['_source'].merge({'value' => h['_source']['value']*1_000}) },
-          'total_debt' => response['aggregations']['total_debt']['value'] * 1_000
-        }
+        result = response['hits']['hits'].map{ |h| h['_source'].merge({'value' => h['_source']['value']*1_000}) }
 
         respond_to do |format|
           format.json do
             render json: result.to_json
+          end
+          format.csv do
+            csv =  CSV.generate do |csv|
+              csv << result.first.keys
+              result.each do |row|
+                csv << row.values
+              end
+            end
+            send_data csv, filename: "debt-#{year}.csv"
           end
         end
       end
