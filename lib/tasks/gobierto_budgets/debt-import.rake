@@ -31,17 +31,13 @@ namespace :gobierto_budgets do
       CSV.foreach(file_path) do |row|
         pbar.inc
 
-        begin
-          id = row[1] + format('%.3i', row[2])
-        rescue
-          puts row
-        end
+        id = row[1] + format('%.3i', row[2].to_i)
         next if id.nil?
         value = row[4].tr('.','').to_f
         place = INE::Places::Place.find id
         if place.nil?
           puts "==================="
-          puts row
+          puts row.join(',')
           puts "==================="
           next
         end
