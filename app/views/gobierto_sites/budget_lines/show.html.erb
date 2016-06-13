@@ -10,33 +10,33 @@
         </div>
 
         <div class="col" data-level="0">
-          <table>
+          <table  class="med_bg">
             <% GobiertoBudgets::SearchEngineConfiguration::Year.all.each do |year| %>
-              <tr data-code="<%= year %>">
-                <td><%= link_to year, gobierto_sites_budgets_path %></td>
+              <tr >
+                <td data-code="<%= year %>"><%= link_to year, gobierto_sites_budgets_path %></td>
               </tr>
             <% end %>
           </table>
         </div>
 
         <div class="col" data-level="1">
-          <table data-current-code=""></table>
+          <table class="med_bg" data-current-code=""></table>
         </div>
 
         <div class="col" data-level="2">
-          <table data-current-code=""></table>
+          <table class="med_bg" data-current-code=""></table>
         </div>
 
         <div class="col" data-level="3">
-          <table data-current-code=""></table>
+          <table class="med_bg" data-current-code=""></table>
         </div>
 
         <div class="col" data-level="4">
-          <table data-current-code=""></table>
+          <table class="med_bg" data-current-code=""></table>
         </div>
 
         <div class="col" data-level="5">
-          <table data-current-code=""></table>
+          <table class="med_bg" data-current-code=""></table>
         </div>
       </div>
     </div>

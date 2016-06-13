@@ -371,7 +371,7 @@ var VisLineasJ = Class.extend({
           }.bind(this))
           .text(function(column) {
             if (column == 'dif') {
-              return 'Cambio sobre año anterior'
+              return 'Cambio año anterior'
             } else if (column == 'value') {
               return this.dataYear.getFullYear();
             } else {

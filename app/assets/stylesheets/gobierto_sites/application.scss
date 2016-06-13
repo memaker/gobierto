@@ -338,6 +338,26 @@ header.section {
 	button {
 		width: 23%;
 	}
+	table {
+		font-size: 1rem;
+		.fa {
+			margin-right: .5em;
+		}
+		td, th {
+			font-size: 1rem;
+		}
+		tr:first-child td {
+			// border-top: 0;
+		}
+		td {
+			table {
+				border: 1px solid transparentize($color_main, .85);
+			}
+			.child_tb_cont {
+				padding: 1em 1.5em;
+			}
+		}
+	}
 }
 
 
@@ -489,7 +509,7 @@ select::-ms-expand { /* for IE 11 */
 	@include border-radius(6px);
 	padding: .5em 0;
 }
-table {
+table.med_bg {
 	width: 100%;
 	background: $color_main_negative;
 	tr:first-child {
@@ -503,7 +523,7 @@ table {
 		padding: .7em 1em .4em;
 		font-size: .85em;
 		a {
-			display: block;
+			display: inline-block;
 		}
 	}
 	th {
@@ -530,7 +550,32 @@ table {
 		width: 50%;
 	}
 }
+table {
+	width: 100%;
+	td, th {
+		border-top: 1px solid transparentize($color_main, .85);
+		padding: .7em 1em .4em;
+		font-size: .85em;
+		a {
+			display: inline-block;
+		}
+	}
+}
 
+#lines_tooltip {
+	table {
+		th[title=name] {
+			width: 45%;
+		}
+	}
+}
+.help {
+  font-size: .75em;
+  float: right;
+  a {
+    color: rgba($color_main, .5);
+  }
+}
 
 
 /*
@@ -578,6 +623,9 @@ footer {
 	a.active, a.active:hover {
 		border: 1px solid rgba($color_main, .2);
 		background: $color_main_negative;
+	}
+	a.active {
+		cursor: default;
 	}
 	a.help {
 		font-weight: bold;
@@ -628,6 +676,8 @@ h1, h2, h3, h4 {
 }
 
 .line_browser {
+	overflow: hidden;
+	white-space: nowrap;
 	display: none;
 	position: absolute;
 	background: #FFF;
@@ -650,6 +700,24 @@ h1, h2, h3, h4 {
 	.bread_links {
 		margin: 0 0 1em 0;
 	}
+	table {
+		font-size: .85em;
+	}
+	td.selected {
+		border-left: 2px solid rgba($color_main, .5);
+		position: relative;
+	}
+	td.selected::after {
+    content: ' ';
+    height: 0;
+    position: absolute;
+    width: 0;
+    border-style: solid;
+		border-width: 6px 0 6px 11.3px;
+		border-color: transparent transparent transparent rgba($color_main, .5);
+    top: 38%;
+    left: 100%;
+  }
 	
 
 }
@@ -1147,3 +1215,8 @@ a.soft_cta:hover {
   border-bottom: 1px solid $separator; 
 }
 
+
+html.turbolinks-progress-bar::before {
+  background-color: $color_main !important;
+  height: 5px !important;
+}

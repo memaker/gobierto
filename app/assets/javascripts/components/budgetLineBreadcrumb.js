@@ -1,3 +1,7 @@
+function limit_length(input, length) {
+  return input.length > length ? input.substring(0, length - 3) + '...' : input
+}
+
 (function(window, undefined){
   'use strict';
 
@@ -91,7 +95,7 @@
         $.getJSON(url, function(data){
           var html = "";
           data.forEach(function(budgetLine){
-            html += '<tr><td data-code="'+budgetLine.code+'"><a href="/presupuestos/partidas/'+budgetLine.code+'/'+that.states[0]+'/'+that.areaName+'/' + that.states[1] + '">' + budgetLine.name + '</a></td></tr>';
+            html += '<tr><td data-code="'+budgetLine.code+'" title="' + budgetLine.name + '"><a href="/presupuestos/partidas/'+budgetLine.code+'/'+that.states[0]+'/'+that.areaName+'/' + that.states[1] + '">' + limit_length(budgetLine.name, 35) + '</a></td></tr>';
           });
           $el.html(html);
           $el.data('current-code', currentCode);
