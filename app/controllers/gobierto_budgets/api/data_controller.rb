@@ -275,7 +275,7 @@ module GobiertoBudgets
         end
       end
 
-      def municipalities_debt
+      def municipalities_population
         year = params[:year].to_i
 
         terms = [{term: { year: year }}]
@@ -293,8 +293,47 @@ module GobiertoBudgets
               }
             }
           },
-          aggs: {
-            total_debt: { sum: { field: 'value' } }
+          size: 10_000
+        }
+
+        response = GobiertoBudgets::SearchEngine.client.search index: GobiertoBudgets::SearchEngineConfiguration::Data.index,
+          type: GobiertoBudgets::SearchEngineConfiguration::Data.type_population, body: query
+
+        result = response['hits']['hits'].map{ |h| h['_source'] }
+
+        respond_to do |format|
+          format.json do
+            render json: result.to_json
+          end
+          format.csv do
+            csv =  CSV.generate do |csv|
+              csv << result.first.keys
+              result.each do |row|
+                csv << row.values
+              end
+            end
+            send_data csv, filename: "population-#{year}.csv"
+          end
+        end
+      end
+
+      def municipalities_debt
+        year = params[:year].to_i
+
+        terms = [{term: { year: year }}]
+
+        query = {
+          sort: [
+            { ine_code: { order: 'asc' } }
+          ],
+          query: {
+            filtered: {
+              filter: {
+                bool: {
+                  must: terms
+                }
+              }
+            }
           },
           size: 10_000
         }
