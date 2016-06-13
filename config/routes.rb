@@ -141,6 +141,7 @@ Rails.application.routes.draw do
         get '/categories/:area/:kind' => 'categories#index'
         get '/places' => 'places#index'
         get '/data/:ine_code/:year/:kind/:area' => 'data#budgets'
+        get '/data/debt/:year' => 'data#municipalities_debt'
       end
     end
   end

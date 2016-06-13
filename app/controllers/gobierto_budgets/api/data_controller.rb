@@ -275,6 +275,45 @@ module GobiertoBudgets
         end
       end
 
+      def municipalities_debt
+        year = params[:year].to_i
+
+        terms = [{term: { year: year }}]
+
+        query = {
+          sort: [
+            { ine_code: { order: 'asc' } }
+          ],
+          query: {
+            filtered: {
+              filter: {
+                bool: {
+                  must: terms
+                }
+              }
+            }
+          },
+          aggs: {
+            total_debt: { sum: { field: 'value' } }
+          },
+          size: 10_000
+        }
+
+        response = GobiertoBudgets::SearchEngine.client.search index: GobiertoBudgets::SearchEngineConfiguration::Data.index,
+          type: GobiertoBudgets::SearchEngineConfiguration::Data.type_debt, body: query
+
+        result = {
+          'places' => response['hits']['hits'].map{ |h| h['_source'].merge({'value' => h['_source']['value']*1_000}) },
+          'total_debt' => response['aggregations']['total_debt']['value'] * 1_000
+        }
+
+        respond_to do |format|
+          format.json do
+            render json: result.to_json
+          end
+        end
+      end
+
       def budgets
         year = params[:year].to_i
         kind = params[:kind]
