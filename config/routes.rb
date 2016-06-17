@@ -105,6 +105,9 @@ Rails.application.routes.draw do
       get '/categories' => 'categories#index'
       get '/categories/:area/:kind' => 'categories#index'
       get '/places' => 'places#index'
+      get '/data/:ine_code/:year/:kind/:area' => 'data#budgets'
+      get '/data/debt/:year' => 'data#municipalities_debt'
+      get '/data/population/:year' => 'data#municipalities_population'
     end
 
     constraints GobiertoBudgetsConstraint.new do
@@ -148,7 +151,6 @@ Rails.application.routes.draw do
 
       # follow place
       resources :subscriptions, only: [:create, :destroy]
-
     end
   end
 end

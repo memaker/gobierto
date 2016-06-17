@@ -135,6 +135,7 @@ bin/rake gobierto_budgets:budget_categories:import['budgets-planned']
 bin/rake gobierto_budgets:places:import
 
 # Load debt
+bin/rake gobierto_budgets:debt:import[2015,'db/data/debt/debt-2015.csv'] &&
 bin/rake gobierto_budgets:debt:import[2014,'db/data/debt/debt-2014.csv'] &&
 bin/rake gobierto_budgets:debt:import[2013,'db/data/debt/debt-2013.csv'] &&
 bin/rake gobierto_budgets:debt:import[2012,'db/data/debt/debt-2012.csv'] &&
@@ -194,3 +195,7 @@ bin/rake gobierto_budgets:total_budget:import['budgets-execution-v2',2012] &&
 bin/rake gobierto_budgets:total_budget:import['budgets-execution-v2',2011] &&
 bin/rake gobierto_budgets:total_budget:import['budgets-execution-v2',2010]
 ```
+
+### Datasets
+
+- Debt: http://www.minhap.gob.es/es-ES/Areas%20Tematicas/Administracion%20Electronica/OVEELL/Paginas/DeudaViva.aspx

@@ -266,11 +266,134 @@ module GobiertoBudgets
         respond_to do |format|
           format.json do
             render json: {
-              title: "Deuda viva #{'(dato 2014)' if year == 2015}",
+              title: "Deuda viva",
               sign: nil,
               delta_percentage: helpers.number_with_precision(delta_percentage(debt_previous_year, debt_year), precision: 2),
               value: helpers.number_to_currency(debt_year, precision: 0, strip_insignificant_zeros: true)
             }.to_json
+          end
+        end
+      end
+
+      def municipalities_population
+        year = params[:year].to_i
+
+        terms = [{term: { year: year }}]
+
+        query = {
+          sort: [
+            { ine_code: { order: 'asc' } }
+          ],
+          query: {
+            filtered: {
+              filter: {
+                bool: {
+                  must: terms
+                }
+              }
+            }
+          },
+          size: 10_000
+        }
+
+        response = GobiertoBudgets::SearchEngine.client.search index: GobiertoBudgets::SearchEngineConfiguration::Data.index,
+          type: GobiertoBudgets::SearchEngineConfiguration::Data.type_population, body: query
+
+        result = response['hits']['hits'].map{ |h| h['_source'] }
+
+        respond_to do |format|
+          format.json do
+            render json: result.to_json
+          end
+          format.csv do
+            csv =  CSV.generate do |csv|
+              csv << result.first.keys
+              result.each do |row|
+                csv << row.values
+              end
+            end
+            send_data csv, filename: "population-#{year}.csv"
+          end
+        end
+      end
+
+      def municipalities_debt
+        year = params[:year].to_i
+
+        terms = [{term: { year: year }}]
+
+        query = {
+          sort: [
+            { ine_code: { order: 'asc' } }
+          ],
+          query: {
+            filtered: {
+              filter: {
+                bool: {
+                  must: terms
+                }
+              }
+            }
+          },
+          size: 10_000
+        }
+
+        response = GobiertoBudgets::SearchEngine.client.search index: GobiertoBudgets::SearchEngineConfiguration::Data.index,
+          type: GobiertoBudgets::SearchEngineConfiguration::Data.type_debt, body: query
+
+        result = response['hits']['hits'].map{ |h| h['_source'].merge({'value' => h['_source']['value']*1_000}) }
+
+        respond_to do |format|
+          format.json do
+            render json: result.to_json
+          end
+          format.csv do
+            csv =  CSV.generate do |csv|
+              csv << result.first.keys
+              result.each do |row|
+                csv << row.values
+              end
+            end
+            send_data csv, filename: "debt-#{year}.csv"
+          end
+        end
+      end
+
+      def budgets
+        year = params[:year].to_i
+        kind = params[:kind]
+        place = INE::Places::Place.find params[:ine_code]
+        area_name = params[:area]
+
+        query = {
+          sort: [
+            { 'code' => { order: 'asc' } }
+          ],
+          query: {
+            filtered: {
+              filter: {
+                bool: {
+                  must: [
+                    {term: { year: year }},
+                    {term: { ine_code: place.id }},
+                    {term: { kind: kind }}
+                  ]
+                }
+              }
+            }
+          },
+          size: 10_000
+        }
+        area = area_name == 'economic' ? EconomicArea : FunctionalArea
+
+        response = GobiertoBudgets::SearchEngine.client.search index: GobiertoBudgets::SearchEngineConfiguration::BudgetLine.index_forecast,
+                                                               type: area_name, body: query
+        items = response['hits']['hits'].map do |h|
+              h['_source'].merge({category: area.all_items[kind][h['_source']['code']]})
+            end
+        respond_to do |format|
+          format.json do
+            render json: items.to_json
           end
         end
       end
