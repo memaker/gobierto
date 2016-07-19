@@ -6,10 +6,11 @@ namespace :gobierto_budgets do
       m = GobiertoBudgets::SearchEngine.client.indices.get_mapping index: index, type: type
       return unless m.empty?
 
-      # Document identifier: <ine_code>/<year>
+      # Document identifier: <ine_code>/<year>/<kind>
       #
-      # Example: 28079/2015
-      # Example: 28079/2015
+      # Example: 28079/2015/I
+      # Example: 28079/2015/G
+      # Example: 28079/2014/G
       GobiertoBudgets::SearchEngine.client.indices.put_mapping index: index, type: type, body: {
         type.to_sym => {
           properties: {
@@ -17,6 +18,7 @@ namespace :gobierto_budgets do
             province_id:                 { type: 'integer', index: 'not_analyzed' },
             autonomy_id:                 { type: 'integer', index: 'not_analyzed' },
             year:                        { type: 'integer', index: 'not_analyzed' },
+            kind:                        { type: 'string', index: 'not_analyzed'  }, # income I / expense G
             total_budget:                { type: 'double',  index: 'not_analyzed' },
             total_budget_per_inhabitant: { type: 'double',  index: 'not_analyzed' }
           }
@@ -24,7 +26,7 @@ namespace :gobierto_budgets do
       }
     end
 
-    def get_data(index,place,year)
+    def get_data(index,place,year,kind)
       # total budget in a place
       query = {
         query: {
@@ -37,7 +39,7 @@ namespace :gobierto_budgets do
                 must: [
                   {term: { ine_code: place.id }},
                   {term: { level: 1 }},
-                  {term: { kind: 'G' }},
+                  {term: { kind: kind }},
                   {term: { year: year }}
                 ]
               }
@@ -51,25 +53,28 @@ namespace :gobierto_budgets do
         size: 0
       }
 
-      result = GobiertoBudgets::SearchEngine.client.search index: index, type: 'functional', body: query
+      type = (kind == 'G') ? 'functional' : 'economic'
+
+      result = GobiertoBudgets::SearchEngine.client.search index: index, type: type, body: query
       return result['aggregations']['total_budget']['value'].round(2), result['aggregations']['total_budget_per_inhabitant']['value'].round(2)
     end
 
-    def import_total_budget(year, index)
+    def import_total_budget(year, index, kind)
       pbar = ProgressBar.new("total-#{year}", INE::Places::Place.all.length)
 
       INE::Places::Place.all.each do |place|
         pbar.inc
-        total_budget, total_budget_per_inhabitant = get_data(index, place, year)
+        total_budget, total_budget_per_inhabitant = get_data(index, place, year, kind)
 
         data = {
           ine_code: place.id.to_i, province_id: place.province.id.to_i,
           autonomy_id: place.province.autonomous_region.id.to_i, year: year,
+          kind: kind,
           total_budget: total_budget,
           total_budget_per_inhabitant: total_budget_per_inhabitant
         }
 
-        id = [place.id,year].join("/")
+        id = [place.id,year,kind].join("/")
         GobiertoBudgets::SearchEngine.client.index index: index, type: GobiertoBudgets::SearchEngineConfiguration::TotalBudget.type, id: id, body: data
       end
 
@@ -113,7 +118,8 @@ namespace :gobierto_budgets do
         year = m[0].to_i
       end
 
-      import_total_budget(year, index)
+      import_total_budget(year, index, 'G')
+      import_total_budget(year, index, 'I')
     end
   end
 end
