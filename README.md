@@ -4,10 +4,16 @@
 
 The application server should be queried through the top-level domain `.gobierto.dev`.
 
-To configure this host in your computer:
+To configure this host in your computer, the simplest way is through POW [POW](http://pow.cx/). To install:
 
 ```
-$ cd .pow
+$ curl get.pow.cx | sh
+```
+
+Then, configure the host like this:
+
+```
+$ cd ~/.pow
 $ ln -s DIRECTORY/gobierto gobierto
 ```
 
