@@ -122,17 +122,17 @@ module GobiertoBudgets
 
         @category_name = @kind == 'G' ? 'Gasto ejecutado vs presupuestado' : 'Ingreso ejecutado vs presupuestado'
 
-        budget_data = budget_data_executed(@year, 'amount')
-        budget_data_previous_year = budget_data_executed(@year - 1, 'amount')
-        sign = sign(budget_data_previous_year[:value], budget_data[:value])
+        budget_executed = budget_data_executed(@year, 'amount')
+        budget_planned = budget_data(@year, 'amount')
+        sign = sign(budget_executed[:value], budget_planned[:value])
 
         respond_to do |format|
           format.json do
             render json: {
               title: @category_name,
               sign: sign,
-              value: format_currency(budget_data[:value]),
-              delta_percentage: helpers.number_with_precision(delta_percentage(budget_data_previous_year[:value], budget_data[:value]), precision: 2),
+              value: format_currency(budget_executed[:value]),
+              delta_percentage: helpers.number_with_precision(delta_percentage(budget_executed[:value], budget_planned[:value]), precision: 2),
             }.to_json
           end
         end
