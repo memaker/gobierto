@@ -54,6 +54,8 @@ Then just run `rails s` as usual, but type in the browser http://presupuestos.go
 
 ### Total budgets data
 
+#### Planned
+
 - indexes: `budgets-forecast`
 - types: `total-budget`
 - document id: `<ine_code>/<year>`. Example: `28079/2015`
@@ -64,6 +66,24 @@ Then just run `rails s` as usual, but type in the browser http://presupuestos.go
   - province_id:                 { type: 'integer', index: 'not_analyzed' },
   - autonomy_id:                 { type: 'integer', index: 'not_analyzed' },
   - year:                        { type: 'integer', index: 'not_analyzed' },
+  - kind:                        { type: 'string', index: 'not_analyzed'  }, # income I / expense G
+  - total_budget:                { type: 'double',  index: 'not_analyzed' },
+  - total_budget_per_inhabitant: { type: 'double',  index: 'not_analyzed' }
+```
+
+#### Executed
+
+- indexes: `budgets-forecast`
+- types: `total-budget`
+- document id: `<ine_code>/<year>/<kind>`. Example: `28079/2015/G`
+- schema:
+
+```
+  - ine_code:                    { type: 'integer', index: 'not_analyzed' },
+  - province_id:                 { type: 'integer', index: 'not_analyzed' },
+  - autonomy_id:                 { type: 'integer', index: 'not_analyzed' },
+  - year:                        { type: 'integer', index: 'not_analyzed' },
+  - kind:                        { type: 'string', index: 'not_analyzed'  }, # income I / expense G
   - total_budget:                { type: 'double',  index: 'not_analyzed' },
   - total_budget_per_inhabitant: { type: 'double',  index: 'not_analyzed' }
 ```

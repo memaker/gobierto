@@ -529,7 +529,7 @@ module GobiertoBudgets
       end
 
       def total_budget_data_executed(year, field)
-        id = "#{params[:ine_code]}/#{year}"
+        id = "#{params[:ine_code]}/#{year}/#{BudgetLine::EXPENSE}"
 
         begin
           value = GobiertoBudgets::SearchEngine.client.get index: GobiertoBudgets::SearchEngineConfiguration::TotalBudget.index_executed, type: GobiertoBudgets::SearchEngineConfiguration::TotalBudget.type, id: id
