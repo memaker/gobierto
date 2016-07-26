@@ -177,6 +177,7 @@ bin/rake gobierto_budgets:total_budget:import['budgets-forecast-v2',2010]
 
 ```
 # Load budgets
+bin/rake gobierto_budgets:budgets:import['budgets-executed','budgets-execution-v2','economic',2015] &&
 bin/rake gobierto_budgets:budgets:import['budgets-executed','budgets-execution-v2','economic',2014] &&
 bin/rake gobierto_budgets:budgets:import['budgets-executed','budgets-execution-v2','economic',2013] &&
 bin/rake gobierto_budgets:budgets:import['budgets-executed','budgets-execution-v2','economic',2012] &&
@@ -189,6 +190,7 @@ bin/rake gobierto_budgets:budgets:import['budgets-executed','budgets-execution-v
 bin/rake gobierto_budgets:budgets:import['budgets-executed','budgets-execution-v2','functional',2010]
 
 # Load total aggregations
+bin/rake gobierto_budgets:total_budget:import['budgets-execution-v2',2015] &&
 bin/rake gobierto_budgets:total_budget:import['budgets-execution-v2',2014] &&
 bin/rake gobierto_budgets:total_budget:import['budgets-execution-v2',2013] &&
 bin/rake gobierto_budgets:total_budget:import['budgets-execution-v2',2012] &&
