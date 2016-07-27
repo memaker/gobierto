@@ -12,5 +12,5 @@
   <td class="right total"><%= number_to_currency budget_line['amount'], precision: 0 %></td>
   <td class="right per_hab"><%= number_to_currency budget_line['amount_per_inhabitant'], precision: 0 %></td>
   <td class="right percentage"><strong><%= percentage_of_total budget_line['amount'], total_budget %></strong></td>
-  <td class="bar_cont"><div class="bar" style="width:<%= percentage_of_total(budget_line['amount'], total_budget) %>"></div></td>
+  <td class="bar_cont"><div class="bar" style="width:<%= percentage_of_total(budget_line['amount'], total_budget).tr(',','.') %>"></div></td>
 </tr>
