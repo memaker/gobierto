@@ -8,7 +8,7 @@ module GobiertoBudgets
     def self.for(ine_code, year)
       return for_places(ine_code, year) if ine_code.is_a?(Array)
 
-      result = SearchEngine.client.get index: SearchEngineConfiguration::TotalBudget.index_forecast, type: SearchEngineConfiguration::TotalBudget.type, id: [ine_code, year].join('/')
+      result = SearchEngine.client.get index: SearchEngineConfiguration::TotalBudget.index_forecast, type: SearchEngineConfiguration::TotalBudget.type, id: [ine_code, year, BudgetLine::EXPENSE].join('/')
       result['_source']['total_budget'].to_f
     end
 
