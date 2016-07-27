@@ -176,7 +176,7 @@ module GobiertoBudgets
           result = GobiertoBudgets::SearchEngine.client.get index: GobiertoBudgets::SearchEngineConfiguration::BudgetLine.index_forecast, type: @area, id: [params[:ine_code],@year,@code,@kind].join('/')
           amount = result['_source']['amount'].to_f
 
-          result = GobiertoBudgets::SearchEngine.client.get index: GobiertoBudgets::SearchEngineConfiguration::TotalBudget.index_forecast, type: GobiertoBudgets::SearchEngineConfiguration::TotalBudget.type, id: [params[:ine_code], @year].join('/')
+          result = GobiertoBudgets::SearchEngine.client.get index: GobiertoBudgets::SearchEngineConfiguration::TotalBudget.index_forecast, type: GobiertoBudgets::SearchEngineConfiguration::TotalBudget.type, id: [params[:ine_code], @year, BudgetLine::EXPENSE].join('/')
           total_amount = result['_source']['total_budget'].to_f
 
           percentage = (amount.to_f * 100)/total_amount
@@ -503,7 +503,7 @@ module GobiertoBudgets
           _source: false
         }
 
-        id = "#{params[:ine_code]}/#{year}"
+        id = "#{params[:ine_code]}/#{year}/#{BudgetLine::EXPENSE}"
 
         if ranking
           response = GobiertoBudgets::SearchEngine.client.search index: GobiertoBudgets::SearchEngineConfiguration::TotalBudget.index_forecast, type: GobiertoBudgets::SearchEngineConfiguration::TotalBudget.type, body: query
