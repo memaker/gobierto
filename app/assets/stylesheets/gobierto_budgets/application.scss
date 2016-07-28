@@ -2332,6 +2332,23 @@ input[type=submit]:disabled:hover {
 .button.user:hover {
   background: darken($color_logo_yellow, 10%);
 }
+.button_light {
+  background: rgba($color_1, .2);
+  @include transition;
+  font-size: .75em;
+  text-decoration: none;
+  padding: .5em 1.5em;
+  line-height: 1.2em;
+  @include border-radius(20px);
+  margin: 1em 0;
+  display: inline-block;
+}
+.button_light:hover {
+  background: rgba($color_1, .3); 
+  text-decoration: none;
+}
+
+
 
 /*
  * Flash messages
