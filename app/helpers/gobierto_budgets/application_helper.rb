@@ -42,14 +42,14 @@ module GobiertoBudgets
       return nil if n.blank?
 
       if n > 1_000_000
-        "#{helpers.number_with_precision(n.to_f / 1_000_000.to_f, precision: 0, strip_insignificant_zeros: true)} M€"
+        "#{helpers.number_with_precision(n.to_f / 1_000_000.to_f, precision: 0, strip_insignificant_zeros: true)}M€"
       else
         helpers.number_to_currency(n, precision: 0, strip_insignificant_zeros: true)
       end
     end
 
     def delta_percentage(current_year_value, old_value)
-      number_with_precision(((current_year_value.to_f - old_value.to_f)/old_value.to_f) * 100, precision: 2).to_s + " %"
+      number_with_precision(((current_year_value.to_f - old_value.to_f)/old_value.to_f) * 100, precision: 2).to_s + "%"
     end
 
     def percentage_of_total(value, total)
