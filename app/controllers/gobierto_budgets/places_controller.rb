@@ -28,6 +28,9 @@ module GobiertoBudgets
       @top_possitive_difference_expending_functional, @top_negative_difference_expending_functional = GobiertoBudgets::BudgetLine.top_differences(ine_code: @place.id, year: @year, kind: GobiertoBudgets::BudgetLine::EXPENSE, type: 'functional')
     end
 
+    def debt_alive
+    end
+
     def budget
       @level = (params[:parent_code].present? ? params[:parent_code].length + 1 : 1)
 

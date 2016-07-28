@@ -1,21 +1,21 @@
 <table>
   <thead>
-    <tr style="font-weight: bold">
-      <td>Partida</td>
-      <td>Ejecutado</td>
-      <td>Presupuestado</td>
-      <td>Diferencia %</td>
-      <td>Diferencia €</td>
+    <tr>
+      <th></th>
+      <th title="Ejecutado">Ejecutado</th>
+      <th title="Presupuestado">Pres.</th>
+      <th>Desviación</th>
+      <!-- <td>Diferencia €</td> -->
     </tr>
   </thead>
   <tbody>
     <% data.each do |code, values| %>
       <tr>
-        <td>(<%= code %>) <%= budget_line_denomination(area, code, kind) %></td>
+        <td class="title" title="<%= code %>"><%= link_to(budget_line_denomination(area, code, kind), '') %></td>
         <td><%= format_currency(values[1]) %></td>
         <td><%= format_currency(values[0]) %></td>
         <td><%= delta_percentage(values[1], values[0]) %></td>
-        <td><%= format_currency(values[1] - values[0]) %></td>
+        <!-- <td><%= format_currency(values[1] - values[0]) %></td> -->
       </tr>
     <% end %>
   </tbody>

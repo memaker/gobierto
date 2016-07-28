@@ -134,6 +134,7 @@ Rails.application.routes.draw do
       get '/budget_lines/:slug/:year/:code/:kind/:area/feedback/:question_id' => 'budget_lines#feedback', as: :budget_line_feedback
       get '/places/:slug' => 'places#show'
       get '/places/:slug/:year/execution' => 'places#explore_execution'
+      get '/places/:slug/:year/debt' => 'places#debt_alive'
       get '/places/:slug/:year' => 'places#show', as: :place
       get '/places/:slug/:year/:kind/:area' => 'places#budget', as: :place_budget
 

@@ -322,6 +322,17 @@ $(function(){
     $('.tab_content[data-tab="'+tab+'"]').show();
   });
 
+  // Tabs navigation
+  $('[data-tab-target]').on('click', function(e){
+    e.preventDefault();
+    var target = $(this).data('tab-target');
+    $('[data-tab-target]').removeClass('active');
+    $('[data-tab-target="' + target + '"]').addClass('active');
+
+    $('[data-tab]').hide();
+    $('[data-tab="' + target + '"]').show();
+  });
+
   $('[data-link]').click(function(e){
     e.preventDefault();
     window.location.href = $(this).data('link');
