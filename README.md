@@ -64,7 +64,7 @@ Then just run `rails s` as usual, but type in the browser http://presupuestos.go
 
 - indexes: `budgets-forecast`
 - types: `total-budget`
-- document id: `<ine_code>/<year>`. Example: `28079/2015`
+- document id: `<ine_code>/<year>/<kind>`. Example: `28079/2015/G`
 - schema:
 
 ```
@@ -79,7 +79,7 @@ Then just run `rails s` as usual, but type in the browser http://presupuestos.go
 
 #### Executed
 
-- indexes: `budgets-forecast`
+- indexes: `budgets-execution`
 - types: `total-budget`
 - document id: `<ine_code>/<year>/<kind>`. Example: `28079/2015/G`
 - schema:
