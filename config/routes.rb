@@ -108,6 +108,8 @@ Rails.application.routes.draw do
       get '/data/:ine_code/:year/:kind/:area' => 'data#budgets'
       get '/data/debt/:year' => 'data#municipalities_debt'
       get '/data/population/:year' => 'data#municipalities_population'
+
+      get '/intelligence/budget_lines/:ine_code/:years' => 'intelligence#budget_lines', as: :intelligence_budget_lines
     end
 
     constraints GobiertoBudgetsConstraint.new do
@@ -133,6 +135,7 @@ Rails.application.routes.draw do
       get '/budget_lines/:slug/:year/:code/:kind/:area' => 'budget_lines#show', as: :budget_line
       get '/budget_lines/:slug/:year/:code/:kind/:area/feedback/:question_id' => 'budget_lines#feedback', as: :budget_line_feedback
       get '/places/:slug' => 'places#show'
+      get '/places/:slug/inteligencia' => 'places#intelligence'
       get '/places/:slug/:year/execution' => 'places#explore_execution'
       get '/places/:slug/:year' => 'places#show', as: :place
       get '/places/:slug/:year/:kind/:area' => 'places#budget', as: :place_budget

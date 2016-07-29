@@ -88,6 +88,9 @@ module GobiertoBudgets
       end
     end
 
+    def intelligence
+    end
+
     private
 
     def get_params

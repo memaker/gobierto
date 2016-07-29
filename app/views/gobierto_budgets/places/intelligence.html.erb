@@ -1,0 +1,43 @@
+<!-- First block -->
+<div data-intelligence-budget-lines data-url="<%= gobierto_budgets_api_intelligence_budget_lines_url(@place.id, ['year_from,year_to'].join(','), format: :json) %>">
+  <h3>
+    Partidas que más suben y bajan respecto en
+    <%= select_tag("year_from", options_for_select(GobiertoBudgets::SearchEngineConfiguration::Year.all, GobiertoBudgets::SearchEngineConfiguration::Year.all.second)) %>
+    vs
+    <%= select_tag("year_to", options_for_select(GobiertoBudgets::SearchEngineConfiguration::Year.all, GobiertoBudgets::SearchEngineConfiguration::Year.all.first)) %>
+    en
+    <%= select_tag("variable", options_for_select([['Gasto total', 'amount'], ['Gasto por habitante', 'amount_per_inhabitant']])) %>
+  </h3>
+
+  <div data-budget-line-up>
+    <table>
+      <thead>
+        <tr>
+          <td><strong>Más sube</strong></td>
+          <td data-year-from></td>
+          <td data-year-to></td>
+          <td></td>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+    <p><a href="#" data-view-all>Ver todas</a></p>
+  </div>
+
+  <div data-budget-line-down>
+    <table>
+      <thead>
+        <tr>
+          <td><strong>Más baja</strong></td>
+          <td data-year-from></td>
+          <td data-year-to></td>
+          <td></td>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+    <p><a href="#" data-view-all>Ver todas</a></p>
+  </div>
+</div>
