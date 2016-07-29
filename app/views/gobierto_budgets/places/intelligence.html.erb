@@ -41,3 +41,55 @@
     <p><a href="#" data-view-all>Ver todas</a></p>
   </div>
 </div>
+
+<!-- Second block -->
+<div data-intelligence-budget-lines-means data-url="<%= gobierto_budgets_api_intelligence_budget_lines_means_url(@place.id, 'year', format: :json) %>">
+  <h3>
+    Partidas comparativamente más altas y más bajas en
+    <%= select_tag("year", options_for_select(GobiertoBudgets::SearchEngineConfiguration::Year.all, GobiertoBudgets::SearchEngineConfiguration::Year.all.first)) %>
+    en
+    <%= select_tag("variable", options_for_select([['Gasto total', 'amount'], ['Gasto por habitante', 'amount_per_inhabitant']])) %>
+  </h3>
+
+  <div data-budget-line-up>
+    <div class="left">
+      <table>
+        <thead>
+          <tr>
+            <td><strong>Más altas</strong></td>
+            <td><%= @place.name %></td>
+            <td data-select-filter-1 colspan="2"><%= filter_variables_for_means('province')%></td>
+            <td data-select-filter-2 colspan="2"><%= filter_variables_for_means('country') %></td>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </div>
+    <div class="right">
+      <p>Insights</p>
+    </div>
+    <p><a href="#" data-view-all>Ver todas</a></p>
+  </div>
+
+  <div data-budget-line-down>
+    <div class="left">
+      <table>
+        <thead>
+          <tr>
+            <td><strong>Más bajas</strong></td>
+            <td><%= @place.name %></td>
+            <td data-select-filter-1 colspan="2"><%= filter_variables_for_means('province') %></td>
+            <td data-select-filter-2 colspan="2"><%= filter_variables_for_means('country') %></td>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </div>
+    <div class="right">
+      <p>Insights</p>
+    </div>
+    <p><a href="#" data-view-all>Ver todas</a></p>
+  </div>
+</div>

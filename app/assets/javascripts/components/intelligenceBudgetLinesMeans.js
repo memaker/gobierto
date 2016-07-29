@@ -1,24 +1,13 @@
 (function(window, undefined){
   'use strict';
 
-  window.intelligenceBudgetLines = flight.component(function(){
+  window.intelligenceBudgetLinesMeans = flight.component(function(){
     this.attributes({
     });
 
     this.after('initialize', function() {
-      this.$yearFrom = this.$node.find('select[name=year_from]');
-      this.$yearTo = this.$node.find('select[name=year_to]');
+      this.$year = this.$node.find('select[name=year]')
       this.$variable = this.$node.find('select[name=variable]');
-
-      this.$yearFrom.on('change', function(e){
-        e.preventDefault();
-        return this.renderWidgets(this.$node.data('url'), true);
-      }.bind(this));
-
-      this.$yearTo.on('change', function(e){
-        e.preventDefault();
-        return this.renderWidgets(this.$node.data('url'), true);
-      }.bind(this));
 
       this.$variable.on('change', function(e){
         e.preventDefault();
@@ -37,60 +26,51 @@
     });
 
     this.renderWidgets = function(url, limit){
-      var yearFrom = this.$yearFrom.val();
-      var yearTo = this.$yearTo.val();
       var variable = this.$variable.val();
+      var year = this.$year.val();
 
-      $.getJSON(this.dataUrl(yearFrom, yearTo), function(data){
-        var groups = _.groupBy(data, 'year');
-        var collection = [];
-        groups[yearFrom].forEach(function(d){
-          var d2 = _.find(groups[yearTo], function(d2){ return d2.code == d.code; });
-          if(d2 !== undefined){
-            collection.push({
-              code: d.code,
-              amount_year_from: d[variable],
-              amount_year_to: d2[variable],
-              difference: ((d2[variable] - d[variable])/d[variable])*100
-            });
-          }
+      $.getJSON(this.dataUrl(year), function(collection){
+        collection.forEach(function(d){
+          var v1 = d[variable];
+          var v2 = (variable == 'amount_per_inhabitant') ? d['avg_per_inhabitant_province'] : d['avg_province'];
+          d['difference'] = v1 - v2;
         });
         collection = _.sortBy(collection, 'difference');
         this.attr.possitiveDiff = _.filter(collection, function(d){ return d.difference > 0; }).reverse();
         this.attr.negativeDiff = _.filter(collection, function(d){ return d.difference < 0; });
+        console.log(this.attr.possitiveDiff);
 
-        this.renderWidget(this.attr.possitiveDiff, this.$node.find('[data-budget-line-up]'), yearFrom, yearTo, limit);
-        this.renderWidget(this.attr.negativeDiff, this.$node.find('[data-budget-line-down]'), yearFrom, yearTo, limit);
+        this.renderWidget(this.attr.possitiveDiff, this.$node.find('[data-budget-line-up]'), year, limit);
+        this.renderWidget(this.attr.negativeDiff, this.$node.find('[data-budget-line-down]'), year, limit);
       }.bind(this));
     }
 
-    this.renderWidget = function(collection, $container, yearFrom, yearTo, limit){
-      if(limit === true) {
-        if(collection.length < 5) {
-          // Remove pagination link
-          $container.parents('table').next().remove();
-        }
-      }
+    this.renderWidget = function(collection, $container, year, limit){
+      var variable = this.$variable.val();
+      var variableFilter1, variableFilter2;
+      var f1 = $container.find('[data-select-filter-1] select').val();
+      var f2 = $container.find('[data-select-filter-2] select').val();
+      var variableFilter1 = (variable == 'amount_per_inhabitant') ? 'avg_per_inhabitant_'+f1 : 'avg_'+f1;
+      var variableFilter2 = (variable == 'amount_per_inhabitant') ? 'avg_per_inhabitant_'+f2 : 'avg_'+f2;
       var $tbody = $container.find('tbody');
       var $thead = $container.find('thead');
-      $thead.find('td[data-year-from]').html(yearFrom);
-      $thead.find('td[data-year-to]').html(yearTo);
       $tbody.html('');
       var i = 0;
       collection.forEach(function(d){
         $tbody.append('<tr '+((limit == true && i >=5) ? 'style="display:none"' : '')+'><td>' + window.budgetCategoriesDictionary(d.code, 'G', 'functional') + '</td><td>' +
-            this.formatMoney(d.amount_year_from) + '</td><td>' +
-            this.formatMoney(d.amount_year_to) + '</td>' +
-            '<td class="'+(d.difference > 0 ? 'positive' : 'negative')+'">' +
-            accounting.formatNumber(d.difference) + '%</td></tr>');
+            this.formatMoney(d[variable]) + '</td><td>' +
+            this.formatMoney(d[variableFilter1]) + '</td>' +
+            '<td class="'+(d.difference > 0 ? 'positive' : 'negative')+'">' + accounting.formatNumber(d.difference) + '%</td><td>' +
+            this.formatMoney(d[variableFilter2]) + '</td>' +
+            '<td class="'+(d.difference > 0 ? 'positive' : 'negative')+'">' + accounting.formatNumber(d.difference) + '%</td></tr>');
         i++;
       }.bind(this));
     }
 
-    this.dataUrl = function(yearFrom, yearTo){
+    this.dataUrl = function(year){
       var url = this.$node.data('url');
 
-      return url.replace("year_from", yearFrom).replace("year_to", yearTo);
+      return url.replace("year", year);
     }
 
     this.formatMoney = function(n){
@@ -118,7 +98,7 @@
   });
 
   $(function() {
-    window.intelligenceBudgetLines.attachTo('[data-intelligence-budget-lines]');
+    window.intelligenceBudgetLinesMeans.attachTo('[data-intelligence-budget-lines-means]');
   });
 
 })(window);

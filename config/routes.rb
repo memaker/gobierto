@@ -110,6 +110,7 @@ Rails.application.routes.draw do
       get '/data/population/:year' => 'data#municipalities_population'
 
       get '/intelligence/budget_lines/:ine_code/:years' => 'intelligence#budget_lines', as: :intelligence_budget_lines
+      get '/intelligence/budget_lines_means/:ine_code/:year' => 'intelligence#budget_lines_means', as: :intelligence_budget_lines_means
     end
 
     constraints GobiertoBudgetsConstraint.new do
