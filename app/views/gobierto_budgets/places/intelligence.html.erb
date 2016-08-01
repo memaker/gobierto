@@ -1,4 +1,10 @@
-<!-- First block -->
+<%
+  @title = "Módulo inteligencia en #{@place.name}"
+  set_meta_tags title: @title
+  set_meta_tags description: "Consulta y visualiza los presupuestos municipales de #{@place.name} del #{@year}. Consulta gastos e ingresos, indicadores presupuestarios, datos de ejecución..."
+%>
+
+<!-- First block. JS code in app/assets/javascripts/components/intelligenceBudgetLines.js  -->
 <div data-intelligence-budget-lines data-url="<%= gobierto_budgets_api_intelligence_budget_lines_url(@place.id, ['year_from,year_to'].join(','), format: :json) %>">
   <h3>
     Partidas que más suben y bajan respecto en
@@ -42,7 +48,7 @@
   </div>
 </div>
 
-<!-- Second block -->
+<!-- Second block. JS code in app/assets/javascripts/components/intelligenceBudgetLinesMeans.js  -->
 <div data-intelligence-budget-lines-means data-url="<%= gobierto_budgets_api_intelligence_budget_lines_means_url(@place.id, 'year', format: :json) %>">
   <h3>
     Partidas comparativamente más altas y más bajas en
@@ -51,7 +57,7 @@
     <%= select_tag("variable", options_for_select([['Gasto total', 'amount'], ['Gasto por habitante', 'amount_per_inhabitant']], 'amount_per_inhabitant')) %>
   </h3>
 
-  <div data-budget-line-up>
+  <div data-budget-line-up data-place-name="<%= @place.name %>">
     <div class="left">
       <table>
         <thead>
@@ -66,13 +72,13 @@
         </tbody>
       </table>
     </div>
-    <div class="right">
+    <div class="right" data-insight>
       <p>Insights</p>
     </div>
     <p><a href="#" data-view-all>Ver todas</a></p>
   </div>
 
-  <div data-budget-line-down>
+  <div data-budget-line-down data-place-name="<%= @place.name %>">
     <div class="left">
       <table>
         <thead>
@@ -87,7 +93,7 @@
         </tbody>
       </table>
     </div>
-    <div class="right">
+    <div class="right" data-insight>
       <p>Insights</p>
     </div>
     <p><a href="#" data-view-all>Ver todas</a></p>

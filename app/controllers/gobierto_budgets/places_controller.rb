@@ -3,6 +3,7 @@ module GobiertoBudgets
     layout :choose_layout
     before_action :get_params
     before_action :solve_income_area_mismatch, except: [:show]
+    before_action :admin_user, only: [:intelligence]
 
     def show
       render_404 and return if @place.nil?
