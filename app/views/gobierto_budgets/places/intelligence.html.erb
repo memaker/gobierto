@@ -6,7 +6,7 @@
     vs
     <%= select_tag("year_to", options_for_select(GobiertoBudgets::SearchEngineConfiguration::Year.all, GobiertoBudgets::SearchEngineConfiguration::Year.all.first)) %>
     en
-    <%= select_tag("variable", options_for_select([['Gasto total', 'amount'], ['Gasto por habitante', 'amount_per_inhabitant']])) %>
+    <%= select_tag("variable", options_for_select([['Gasto total', 'amount'], ['Gasto por habitante', 'amount_per_inhabitant']], 'amount_per_inhabitant')) %>
   </h3>
 
   <div data-budget-line-up>
@@ -46,9 +46,9 @@
 <div data-intelligence-budget-lines-means data-url="<%= gobierto_budgets_api_intelligence_budget_lines_means_url(@place.id, 'year', format: :json) %>">
   <h3>
     Partidas comparativamente más altas y más bajas en
-    <%= select_tag("year", options_for_select(GobiertoBudgets::SearchEngineConfiguration::Year.all, GobiertoBudgets::SearchEngineConfiguration::Year.all.first)) %>
+    <%= select_tag("yearIntelligence", options_for_select(GobiertoBudgets::SearchEngineConfiguration::Year.all, GobiertoBudgets::SearchEngineConfiguration::Year.all.first)) %>
     en
-    <%= select_tag("variable", options_for_select([['Gasto total', 'amount'], ['Gasto por habitante', 'amount_per_inhabitant']])) %>
+    <%= select_tag("variable", options_for_select([['Gasto total', 'amount'], ['Gasto por habitante', 'amount_per_inhabitant']], 'amount_per_inhabitant')) %>
   </h3>
 
   <div data-budget-line-up>

@@ -6,10 +6,15 @@
     });
 
     this.after('initialize', function() {
-      this.$year = this.$node.find('select[name=year]')
+      this.$year = this.$node.find('select[name=yearIntelligence]')
       this.$variable = this.$node.find('select[name=variable]');
 
       this.$variable.on('change', function(e){
+        e.preventDefault();
+        return this.renderWidgets(this.$node.data('url'), true);
+      }.bind(this));
+
+      this.$year.on('change', function(e){
         e.preventDefault();
         return this.renderWidgets(this.$node.data('url'), true);
       }.bind(this));
@@ -22,6 +27,20 @@
         $widget.find('tr:hidden').show();
       }.bind(this));
 
+      this.$node.find('[data-budget-line-up]').find('[data-select-filter-1] select').on('change', function(e){
+        e.preventDefault();
+
+        console.log('filter 1 updated');
+        return this.renderWidgets(this.$node.data('url'), true);
+      }.bind(this));
+
+      this.$node.find('[data-budget-line-up]').find('[data-select-filter-2] select').on('change', function(e){
+        e.preventDefault();
+
+        console.log('filter 2 updated');
+        return this.renderWidgets(this.$node.data('url'), true);
+      }.bind(this));
+
       this.renderWidgets(this.$node.data('url'), true);
     });
 
@@ -29,16 +48,23 @@
       var variable = this.$variable.val();
       var year = this.$year.val();
 
+      // List of differences is always sorted based on the first filter of the first widget
+      var f1 = this.$node.find('[data-budget-line-up]').find('[data-select-filter-1] select').val();
+      var f2 = this.$node.find('[data-budget-line-up]').find('[data-select-filter-2] select').val();
+      var variableFilter1 = (variable == 'amount_per_inhabitant') ? 'avg_per_inhabitant_'+f1 : 'avg_'+f1;
+      var variableFilter2 = (variable == 'amount_per_inhabitant') ? 'avg_per_inhabitant_'+f2 : 'avg_'+f2;
+
       $.getJSON(this.dataUrl(year), function(collection){
         collection.forEach(function(d){
           var v1 = d[variable];
-          var v2 = (variable == 'amount_per_inhabitant') ? d['avg_per_inhabitant_province'] : d['avg_province'];
-          d['difference'] = v1 - v2;
+          var v2 = d[variableFilter1];
+          var v3 = d[variableFilter2];
+          d['differenceFilter1'] = ((v1 - v2)/v2)*100;
+          d['differenceFilter2'] = ((v1 - v3)/v3)*100;
         });
-        collection = _.sortBy(collection, 'difference');
-        this.attr.possitiveDiff = _.filter(collection, function(d){ return d.difference > 0; }).reverse();
-        this.attr.negativeDiff = _.filter(collection, function(d){ return d.difference < 0; });
-        console.log(this.attr.possitiveDiff);
+        collection = _.sortBy(collection, 'differenceFilter1');
+        this.attr.possitiveDiff = _.filter(collection, function(d){ return d.differenceFilter1 > 0; }).reverse();
+        this.attr.negativeDiff = _.filter(collection, function(d){ return d.differenceFilter1 < 0; });
 
         this.renderWidget(this.attr.possitiveDiff, this.$node.find('[data-budget-line-up]'), year, limit);
         this.renderWidget(this.attr.negativeDiff, this.$node.find('[data-budget-line-down]'), year, limit);
@@ -60,9 +86,9 @@
         $tbody.append('<tr '+((limit == true && i >=5) ? 'style="display:none"' : '')+'><td>' + window.budgetCategoriesDictionary(d.code, 'G', 'functional') + '</td><td>' +
             this.formatMoney(d[variable]) + '</td><td>' +
             this.formatMoney(d[variableFilter1]) + '</td>' +
-            '<td class="'+(d.difference > 0 ? 'positive' : 'negative')+'">' + accounting.formatNumber(d.difference) + '%</td><td>' +
+            '<td class="'+(d.differenceFilter1 > 0 ? 'positive' : 'negative')+'">' + accounting.formatNumber(d.differenceFilter1) + '%</td><td>' +
             this.formatMoney(d[variableFilter2]) + '</td>' +
-            '<td class="'+(d.difference > 0 ? 'positive' : 'negative')+'">' + accounting.formatNumber(d.difference) + '%</td></tr>');
+            '<td class="'+(d.differenceFilter2 > 0 ? 'positive' : 'negative')+'">' + accounting.formatNumber(d.differenceFilter2) + '%</td></tr>');
         i++;
       }.bind(this));
     }
