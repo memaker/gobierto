@@ -30,14 +30,12 @@
       this.$node.find('[data-budget-line-up]').find('[data-select-filter-1] select').on('change', function(e){
         e.preventDefault();
 
-        console.log('filter 1 updated');
         return this.renderWidgets(this.$node.data('url'), true);
       }.bind(this));
 
       this.$node.find('[data-budget-line-up]').find('[data-select-filter-2] select').on('change', function(e){
         e.preventDefault();
 
-        console.log('filter 2 updated');
         return this.renderWidgets(this.$node.data('url'), true);
       }.bind(this));
 
@@ -68,7 +66,23 @@
 
         this.renderWidget(this.attr.possitiveDiff, this.$node.find('[data-budget-line-up]'), year, limit);
         this.renderWidget(this.attr.negativeDiff, this.$node.find('[data-budget-line-down]'), year, limit);
+        this.renderInsight(this.attr.possitiveDiff, this.$node.find('[data-budget-line-up]'), 'alto', this.attr.possitiveDiff.length / collection.length);
+        this.renderInsight(this.attr.negativeDiff, this.$node.find('[data-budget-line-down]'), 'bajo', this.attr.negativeDiff.length / collection.length);
       }.bind(this));
+    }
+
+    this.renderInsight = function(collection, $container, direction, percentage){
+      var variable = this.$variable.val() == 'amount' ? 'gasto' : 'gasto por habitante';
+      var comparationVariable = $container.find('[data-select-filter-1] select :selected').text().toLowerCase();
+      var comparationPercentage = accounting.formatNumber(percentage * 100) + '%';
+
+      var insightText = $container.data('place-name');
+      insightText += " tiene un " + variable;
+      insightText += " más " + direction;
+      insightText += " que la " + comparationVariable;
+      insightText += " en un " + comparationPercentage + " de partidas";
+
+      $container.find('[data-insight] p').html(insightText);
     }
 
     this.renderWidget = function(collection, $container, year, limit){
