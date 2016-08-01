@@ -246,7 +246,7 @@ module GobiertoBudgets
     end
 
     def self.find(options)
-      return self.search(options)['hits'][0]
+      return self.search(options)['hits'].detect{|h| h['code'] == options[:code] }
     end
 
     def self.for_ranking(options)
