@@ -15,6 +15,7 @@ class SessionsController < ApplicationController
       current_user.update_pending_answers(session.id)
       track_login_user_activity
       store_subscriptions
+      session[:referer] = nil
     else
       flash.now[:alert] = 'Credenciales incorrectas. Por favor, vuelve a intentarlo'
       flash.now[:session_alert] = t('controllers.sessions.create.alert')
@@ -23,8 +24,8 @@ class SessionsController < ApplicationController
     respond_to do |format|
       format.html do
         if logged_in?
-          if user.admin?
-            redirect_to admin_root_path
+          if params[:back_url].present?
+            redirect_to params[:back_url]
           else
             redirect_to :back
           end
