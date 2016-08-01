@@ -209,6 +209,7 @@ bin/rake gobierto_budgets:budgets:import['budgets-executed','budgets-execution-v
 bin/rake gobierto_budgets:budgets:import['budgets-executed','budgets-execution-v2','economic',2012] &&
 bin/rake gobierto_budgets:budgets:import['budgets-executed','budgets-execution-v2','economic',2011] &&
 bin/rake gobierto_budgets:budgets:import['budgets-executed','budgets-execution-v2','economic',2010] &&
+bin/rake gobierto_budgets:budgets:import['budgets-executed','budgets-execution-v2','functional',2015] &&
 bin/rake gobierto_budgets:budgets:import['budgets-executed','budgets-execution-v2','functional',2014] &&
 bin/rake gobierto_budgets:budgets:import['budgets-executed','budgets-execution-v2','functional',2013] &&
 bin/rake gobierto_budgets:budgets:import['budgets-executed','budgets-execution-v2','functional',2012] &&
