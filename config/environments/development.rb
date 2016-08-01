@@ -40,11 +40,8 @@ Rails.application.configure do
   # config.action_view.raise_on_missing_translations = true
 
   config.cache_store = :memory_store
-  config.action_controller.perform_caching = true
+  # config.cache_store = :mem_cache_store
+  config.action_controller.perform_caching = false
 
   config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
-
-  # Enable cache
-  config.action_controller.perform_caching = true
-  config.cache_store = :mem_cache_store
 end
