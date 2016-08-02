@@ -96,7 +96,12 @@ module GobiertoBudgets
       query.merge!(from: options[:offset]) if options[:offset].present?
       query.merge!(_source: false) if options[:to_rank]
 
-      SearchEngine.client.search index: SearchEngineConfiguration::TotalBudget.index_forecast, type: SearchEngineConfiguration::TotalBudget.type, body: query
+      index = SearchEngineConfiguration::TotalBudget.index_forecast
+      if options[:executed]
+        index = SearchEngineConfiguration::TotalBudget.index_executed
+      end
+
+      SearchEngine.client.search index: index, type: SearchEngineConfiguration::TotalBudget.type, body: query
     end
   end
 end
