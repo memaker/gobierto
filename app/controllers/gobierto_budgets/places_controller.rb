@@ -20,7 +20,7 @@ module GobiertoBudgets
       end
     end
 
-    def explore_execution
+    def execution
       render_404 and return if @place.nil?
 
       @top_possitive_difference_income, @top_negative_difference_income = GobiertoBudgets::BudgetLine.top_differences(ine_code: @place.id, year: @year, kind: GobiertoBudgets::BudgetLine::INCOME, type: 'economic')
