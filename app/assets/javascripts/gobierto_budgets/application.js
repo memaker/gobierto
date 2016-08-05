@@ -26,6 +26,7 @@
 //= require gobierto_budgets/history
 //= require gobierto_budgets/compare
 //= require gobierto_budgets/ui
+//= require gobierto_budgets/execution
 //= require gobierto_budgets/ranking
 //= require gobierto_budgets/analytics
 //= require gobierto_budgets/vendor/iframeResizer/iframeResizer.contentWindow.min
