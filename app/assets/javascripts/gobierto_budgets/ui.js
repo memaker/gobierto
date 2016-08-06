@@ -109,16 +109,6 @@ $(function(){
     render_comp_table($widget.data('line-widget-type'));
   }
 
-  $('[data-line-widget-url]').on('click', function(e){
-    $('.selected').removeClass('selected');
-    $(this).addClass('selected');
-
-    if($('.comparison_table').length > 0) {
-      e.preventDefault();
-      render_comp_table($(this).data('line-widget-type'));
-    }
-  });
-
   $(document).on('click', '[data-feedback]', function(e){
     e.preventDefault();
     $('.metric_graphs').hide();
@@ -271,19 +261,46 @@ $(function(){
     window.expenseTreemap.render($('#expense-treemap').data('functional-url'));
   }
 
+  var hash = window.location.hash.slice(1);
+  if($('[data-widget-type]').length > 0 && hash !== "")
+    $("[data-widget-type='" + hash + "']").addClass('selected');
+  else
+    $('[data-widget-type]:first').addClass('selected');
+
+  var visLineasJ;
+  var widgetClicked = function(e){
+    e.preventDefault();
+    var $widget = $(this);
+
+    $('.selected').removeClass('selected');
+    $widget.addClass('selected');
+
+    if($('.comparison_table').length > 0) {
+      $widget.addClass('selected');
+      render_comp_table($widget.data('line-widget-type'));
+    }
+
+    if ($('#lines_chart').length && $(this).data('line-widget-url') !== undefined) {
+      $widget.addClass('selected');
+      visLineasJ.measure = $widget.data('line-widget-type');
+      visLineasJ.render($(this).data('line-widget-url'));
+    } else if($(this).data('page-href') !== undefined) {
+      Turbolinks.visit($(this).data('page-href'));
+    } else {
+      return false;
+    }
+  }
+
   // There's an equivalent code in components/vis_line but it uses the class
   // active instead of selected. Using the class active should allow us to remove
   // this code
   if($('#lines_chart').length > 0){
     var $widget = $('[data-line-widget-url].selected');
-    var visLineasJ = new VisLineasJ('#lines_chart', '#lines_tooltip', $widget.data('line-widget-type'), $widget.data('line-widget-series'));
+    visLineasJ = new VisLineasJ('#lines_chart', '#lines_tooltip', $widget.data('line-widget-type'), $widget.data('line-widget-series'));
     visLineasJ.render($widget.data('line-widget-url'));
-
-    $('[data-line-widget-url]').on('click', function(e){
-      visLineasJ.measure = $(this).data('line-widget-type');
-      visLineasJ.render($(this).data('line-widget-url'));
-    });
   }
+
+  $('[data-line-widget-url],[data-page-href]').on('click',widgetClicked);
 
   // When the treemap is clicked, we extract the URL of the node
   // and detect which is the link that expands the tree nodes with the
