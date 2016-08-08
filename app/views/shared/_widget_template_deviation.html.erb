@@ -11,14 +11,26 @@
       </div>
     </div>
     <table>
-    <tr>
-      <th>Ingresos presupuestados</th>
-      <td>{{total_budgeted}}</td>
-    </tr>
-    <tr>
-      <th>Ingresos ejecutados</th>
-      <td>{{total_executed}}</td>
-    </tr>
+    {{#I}}
+      <tr>
+        <th>Ingresos presupuestados</th>
+        <td>{{total_budgeted}}</td>
+      </tr>
+      <tr>
+        <th>Ingresos reales</th>
+        <td>{{total_executed}}</td>
+      </tr>
+    {{/I}}
+    {{#G}}
+      <tr>
+        <th>Gastos presupuestados</th>
+        <td>{{total_budgeted}}</td>
+      </tr>
+      <tr>
+        <th>Gastos reales</th>
+        <td>{{total_executed}}</td>
+      </tr>
+    {{/G}}
     </table>
     <p>{{deviation_summary}}</p>
   </div>

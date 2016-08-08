@@ -7,19 +7,19 @@ module GobiertoBudgets
     BUDGET_SEL = 'B'
     EXECUTION_SEL = 'E'
 
-    def self.budgeted_for(ine_code, year)
-      return BudgetTotal.for(ine_code, year, BudgetTotal::BUDGET_SEL)
+    def self.budgeted_for(ine_code, year, kind = BudgetLine::EXPENSE)
+      return BudgetTotal.for(ine_code, year, BudgetTotal::BUDGET_SEL, kind)
     end
 
-    def self.execution_for(ine_code, year)
-      return BudgetTotal.for(ine_code, year, BudgetTotal::EXECUTION_SEL)
+    def self.execution_for(ine_code, year, kind = BudgetLine::EXPENSE)
+      return BudgetTotal.for(ine_code, year, BudgetTotal::EXECUTION_SEL, kind)
     end
 
-    def self.for(ine_code, year, b_or_e = BudgetTotal::BUDGET_SEL)
+    def self.for(ine_code, year, b_or_e = BudgetTotal::BUDGET_SEL, kind = BudgetLine::EXPENSE)
       return for_places(ine_code, year) if ine_code.is_a?(Array)
       index = (b_or_e == BudgetTotal::EXECUTION_SEL) ? SearchEngineConfiguration::TotalBudget.index_executed : SearchEngineConfiguration::TotalBudget.index_forecast
 
-      result = SearchEngine.client.get index: index, type: SearchEngineConfiguration::TotalBudget.type, id: [ine_code, year, BudgetLine::EXPENSE].join('/')
+      result = SearchEngine.client.get index: index, type: SearchEngineConfiguration::TotalBudget.type, id: [ine_code, year, kind].join('/')
       result['_source']['total_budget'].to_f
     end
 

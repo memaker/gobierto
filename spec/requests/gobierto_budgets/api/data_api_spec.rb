@@ -144,15 +144,15 @@ describe "Data API" do
         expect(response).to be_success
 
         expect(json['deviation_heading']).to eq('Desviación de los gastos en 2015')
-        expect(json['total_budgeted']).to eq('188M€')
-        expect(json['total_executed']).to eq('173M€')
-        expect(json['deviation_percentage']).to eq('-7,87')
         expect(json['deviation_summary']).to eq('Se ha gastado un 7,87% (15M€) menos de lo planeado')
+        expect(json['deviation_percentage']).to eq('-7,87')
+        expect(json['G']['total_budgeted']).to eq('188M€')
+        expect(json['G']['total_executed']).to eq('173M€')
       end
     end
 
     describe 'Income' do
-      pending 'returns a dev. heading, summary, percentage, total budgeted and total executed' do
+      it 'returns a dev. heading, summary, percentage, total budgeted and total executed' do
         get '/api/data/widget/budget_execution_deviation/39075/2014/I.json'
 
         json = JSON.parse(response.body)
@@ -161,10 +161,10 @@ describe "Data API" do
         expect(response).to be_success
 
         expect(json['deviation_heading']).to eq('Desviación de los ingresos en 2014')
-        expect(json['deviation_summary']).to eq('Se ha ingresado un X,XX% (XM€) más de lo planeado')
-        expect(json['deviation_percentage']).to eq('X,XX%')
-        expect(json['total_budgeted']).to eq('XXXM')
-        expect(json['total_executed']).to eq('XXXM')
+        expect(json['deviation_summary']).to eq('Se ha ingresado un 14,66% (27M€) más de lo planeado')
+        expect(json['deviation_percentage']).to eq('14,66')
+        expect(json['I']['total_budgeted']).to eq('187M€')
+        expect(json['I']['total_executed']).to eq('215M€')
       end
     end
   end

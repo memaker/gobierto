@@ -402,8 +402,8 @@ module GobiertoBudgets
         year = params[:year].to_i
         kind = params[:kind]
         ine_code = params[:ine_code]
-        total_budgeted = GobiertoBudgets::BudgetTotal.budgeted_for(ine_code,year)
-        total_executed = GobiertoBudgets::BudgetTotal.execution_for(ine_code,year)
+        total_budgeted = GobiertoBudgets::BudgetTotal.budgeted_for(ine_code,year,kind)
+        total_executed = GobiertoBudgets::BudgetTotal.execution_for(ine_code,year,kind)
         deviation = total_executed - total_budgeted
         deviation_percentage = helpers.number_with_precision(delta_percentage(total_executed, total_budgeted), precision: 2)
         up_or_down = sign(total_executed, total_budgeted)
@@ -415,8 +415,10 @@ module GobiertoBudgets
               deviation_heading: heading,
               deviation_summary: deviation_message(kind, up_or_down, deviation_percentage, deviation),
               deviation_percentage: deviation_percentage,
-              total_budgeted: format_currency(total_budgeted),
-              total_executed: format_currency(total_executed)
+              "#{kind}": {
+                total_budgeted: format_currency(total_budgeted),
+                total_executed: format_currency(total_executed)
+              }
             }.to_json
           end
         end
