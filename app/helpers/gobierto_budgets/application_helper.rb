@@ -41,7 +41,7 @@ module GobiertoBudgets
     def format_currency(n)
       return nil if n.blank?
 
-      if n > 1_000_000
+      if n.abs > 1_000_000
         "#{helpers.number_with_precision(n.to_f / 1_000_000.to_f, precision: 0, strip_insignificant_zeros: true)}M€"
       else
         helpers.number_to_currency(n, precision: 0, strip_insignificant_zeros: true)
