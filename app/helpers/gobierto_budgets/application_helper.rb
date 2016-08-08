@@ -38,8 +38,9 @@ module GobiertoBudgets
       'sign-neutral'
     end
 
-    def format_currency(n)
+    def format_currency(n, absolute_value = false)
       return nil if n.blank?
+      n = n.abs if absolute_value
 
       if n.abs > 1_000_000
         "#{helpers.number_with_precision(n.to_f / 1_000_000.to_f, precision: 0, strip_insignificant_zeros: true)}M€"

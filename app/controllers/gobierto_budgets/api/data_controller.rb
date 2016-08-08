@@ -398,6 +398,30 @@ module GobiertoBudgets
         end
       end
 
+      def budget_execution_deviation
+        year = params[:year].to_i
+        kind = params[:kind]
+        ine_code = params[:ine_code]
+        total_budgeted = GobiertoBudgets::BudgetTotal.budgeted_for(ine_code,year)
+        total_executed = GobiertoBudgets::BudgetTotal.execution_for(ine_code,year)
+        deviation = total_executed - total_budgeted
+        deviation_percentage = helpers.number_with_precision(delta_percentage(total_executed, total_budgeted), precision: 2)
+        up_or_down = sign(total_executed, total_budgeted)
+
+        heading = "Desviación de los #{kind_literal(kind)} en #{year.to_s}"
+        respond_to do |format|
+          format.json do
+            render json: {
+              deviation_heading: heading,
+              deviation_summary: deviation_message(kind, up_or_down, deviation_percentage, deviation),
+              deviation_percentage: deviation_percentage,
+              total_budgeted: format_currency(total_budgeted),
+              total_executed: format_currency(total_executed)
+            }.to_json
+          end
+        end
+      end
+
       private
 
       def get_debt(year, ine_code)
@@ -546,6 +570,23 @@ module GobiertoBudgets
       def delta_percentage(value, old_value)
         return "" if value.nil? || old_value.nil?
         ((value.to_f - old_value.to_f)/old_value.to_f) * 100
+      end
+
+      def deviation_message(kind, up_or_down, percentage, diff)
+        percentage = percentage.to_s.gsub('-', '')
+        diff = format_currency(diff, true)
+        messages = {
+          income_up:   "Se ha ingresado un #{percentage}% (#{diff}) más de lo planeado",
+          income_down: "Se ha ingresado un #{percentage}% (#{diff}) menos de lo planeado",
+          expense_up:  "Se ha gastado un #{percentage}% (#{diff}) más de lo planeado",
+          expense_down:"Se ha gastado un #{percentage}% (#{diff}) menos de lo planeado"
+        }
+        final_message = if (kind == GobiertoBudgets::BudgetLine::INCOME)
+          up_or_down == "sign-up" ? messages[:income_up] : messages[:income_down]
+        else
+          up_or_down == "sign-up" ? messages[:expense_up] : messages[:expense_down]
+        end
+        final_message
       end
 
       def get_places(ine_codes)
