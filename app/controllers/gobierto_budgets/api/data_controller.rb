@@ -407,6 +407,7 @@ module GobiertoBudgets
         deviation = total_executed - total_budgeted
         deviation_percentage = helpers.number_with_precision(delta_percentage(total_executed, total_budgeted), precision: 2)
         up_or_down = sign(total_executed, total_budgeted)
+        evolution = deviation_evolution(ine_code, kind)
 
         heading = "Desviación de los #{kind_literal(kind)} en #{year.to_s}"
         respond_to do |format|
@@ -417,7 +418,8 @@ module GobiertoBudgets
               deviation_percentage: deviation_percentage,
               "#{kind}": {
                 total_budgeted: format_currency(total_budgeted),
-                total_executed: format_currency(total_executed)
+                total_executed: format_currency(total_executed),
+                evolution: evolution
               }
             }.to_json
           end
@@ -589,6 +591,24 @@ module GobiertoBudgets
           up_or_down == "sign-up" ? messages[:expense_up] : messages[:expense_down]
         end
         final_message
+      end
+
+      def deviation_evolution(ine_code, kind)
+        response_budgeted = GobiertoBudgets::BudgetTotal.budget_evolution_for(ine_code, GobiertoBudgets::BudgetTotal::BUDGETED, kind)
+        response_executed = GobiertoBudgets::BudgetTotal.budget_evolution_for(ine_code, GobiertoBudgets::BudgetTotal::EXECUTED, kind)
+
+        response_budgeted.map do |budgeted_result|
+          year = budgeted_result['year']
+          total_budgeted = budgeted_result['total_budget']
+          total_executed = response_executed.select {|te| te['year'] == year }.first.try(:[],'total_budget')
+          next unless total_executed.present?
+
+          deviation = delta_percentage(total_executed,total_budgeted)
+          {
+            year: year,
+            deviation: helpers.number_with_precision(deviation, precision: 2,separator:'.').to_f
+          }
+        end
       end
 
       def get_places(ine_codes)

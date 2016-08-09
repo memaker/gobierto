@@ -4,23 +4,49 @@ module GobiertoBudgets
     TOTAL_FILTER_MAX = 5000000000
     PER_INHABITANT_FILTER_MIN = 0
     PER_INHABITANT_FILTER_MAX = 20000
-    BUDGET_SEL = 'B'
-    EXECUTION_SEL = 'E'
+    BUDGETED = 'B'
+    EXECUTED = 'E'
 
     def self.budgeted_for(ine_code, year, kind = BudgetLine::EXPENSE)
-      return BudgetTotal.for(ine_code, year, BudgetTotal::BUDGET_SEL, kind)
+      return BudgetTotal.for(ine_code, year, BudgetTotal::BUDGETED, kind)
     end
 
     def self.execution_for(ine_code, year, kind = BudgetLine::EXPENSE)
-      return BudgetTotal.for(ine_code, year, BudgetTotal::EXECUTION_SEL, kind)
+      return BudgetTotal.for(ine_code, year, BudgetTotal::EXECUTED, kind)
     end
 
-    def self.for(ine_code, year, b_or_e = BudgetTotal::BUDGET_SEL, kind = BudgetLine::EXPENSE)
+    def self.for(ine_code, year, b_or_e = BudgetTotal::BUDGETED, kind = BudgetLine::EXPENSE)
       return for_places(ine_code, year) if ine_code.is_a?(Array)
-      index = (b_or_e == BudgetTotal::EXECUTION_SEL) ? SearchEngineConfiguration::TotalBudget.index_executed : SearchEngineConfiguration::TotalBudget.index_forecast
+      index = (b_or_e == BudgetTotal::EXECUTED) ? SearchEngineConfiguration::TotalBudget.index_executed : SearchEngineConfiguration::TotalBudget.index_forecast
 
       result = SearchEngine.client.get index: index, type: SearchEngineConfiguration::TotalBudget.type, id: [ine_code, year, kind].join('/')
       result['_source']['total_budget'].to_f
+    end
+
+    def self.budget_evolution_for(ine_code, b_or_e = BudgetTotal::BUDGETED, kind = BudgetLine::EXPENSE)
+      query = {
+        sort: [
+          { year: { order: 'asc' } }
+        ],
+        query: {
+          filtered: {
+            filter: {
+              bool: {
+                must: [
+                  {term: {ine_code: ine_code}},
+                  {term: {kind: kind}}
+                ]
+              }
+            }
+          }
+        },
+        size: 10000
+      }
+
+      index = index = (b_or_e == BudgetTotal::EXECUTED) ? SearchEngineConfiguration::TotalBudget.index_executed : SearchEngineConfiguration::TotalBudget.index_forecast
+
+      response = SearchEngine.client.search index: index, type: SearchEngineConfiguration::TotalBudget.type, body: query
+      response['hits']['hits'].map{ |h| h['_source'] }
     end
 
     def self.for_places(ine_codes, year)
