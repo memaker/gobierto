@@ -5,11 +5,11 @@ var VisEvoLine = Class.extend({
     this.container = divId;
     this.data = series;
     //this.data = [{"year":2010,"deviation":0},{"year":2011,"deviation":-3.19},{"year":2012,"deviation":-6.37},{"year":2013,"deviation":-10},{"year":2014,"deviation":10},{"year":2015,"deviation":-7.87}];
-    // this.dataUrl = null;
+    this.dataUrl = null;
     this.classed = "evoline"
 
     // Chart dimensions
-    this.margin = {top: 5, right: 40, bottom: 25, left: 0};
+    this.margin = {top: 5, right: 50, bottom: 25, left: 0};
     this.width = parseInt(d3.select(this.container).style('width'));
     this.height = 60 + this.margin.top + this.margin.bottom;
 
@@ -69,7 +69,7 @@ var VisEvoLine = Class.extend({
 
     this.yScale.domain(d3.extent(this.data.map(function(e) {
         return e.deviation;
-      }).concat(this.defaultYDomain)))
+      }).concat(this._yTickValues())))
       .range([this.height - this.margin.bottom, this.margin.top]);
 
     //xAxis
@@ -93,13 +93,31 @@ var VisEvoLine = Class.extend({
     this.svg.select(".x.axis").call(this.xAxis);
 
     this.yAxis.tickSize(-this.width,0);
-    this.yAxis.tickValues(this.defaultYDomain.concat([0]));
+    this.yAxis.tickValues(this._yTickValues());
     this.yAxis.tickFormat(this._formatNumberY.bind(this));
     this.yAxis.scale(this.yScale);
     this.svg.select(".y.axis").call(this.yAxis);
   },
   _axisRendered: function() {
     return this.svg.selectAll('.axis').size() > 0;
+  },
+  _yTickValues: function() {
+    var max_abs = Math.round(d3.max(this.data.map(function(e) {
+        return Math.abs(e.deviation);
+      })));
+    var edge, lower_edge;
+    if(max_abs > 100) {
+      edge = ((max_abs % 100) < 50) ? Math.floor(max_abs/100) * 100 : (Math.floor(max_abs/100) + 1) * 100;
+      lower_edge = -100;
+    } else if (max_abs < 10) {
+      edge = 10
+    } else if (max_abs % 10 < 5) {
+      edge = Math.floor(max_abs/10) * 10
+    } else {
+      edge = (Math.floor(max_abs/10) + 1) * 10
+    }
+    if (lower_edge === undefined) lower_edge = -edge;
+    return [edge, 0, lower_edge];
   },
   _formatNumberX: function(d) {
     //replace with whatever format you want
