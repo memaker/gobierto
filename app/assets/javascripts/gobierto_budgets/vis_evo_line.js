@@ -10,7 +10,7 @@ var VisEvoLine = Class.extend({
 
     // Chart dimensions
     this.margin = {top: 5, right: 50, bottom: 25, left: 0};
-    this.width = parseInt(d3.select(this.container).style('width'));
+    this.width = this._width();
     this.height = 60 + this.margin.top + this.margin.bottom;
 
     // Scales & Ranges
@@ -33,6 +33,21 @@ var VisEvoLine = Class.extend({
       .classed(this.classed,true)
       .attr('width',this.width)
       .attr('height',this.height);
+
+    //xAxis
+    this.svg.append('g')
+      .attr('class','x axis');
+
+    //yAxis
+    this.svg.append('g')
+      .attr('class','y axis');
+
+    //line chart
+    this.svg.append("path")
+      .datum(this.data)
+      .attr("class", "line")
+
+    d3.select(window).on('resize.' + this.container, this._resize.bind(this));
   },
   getData: function() {
     d3.json(this.dataUrl, function(error, jsonData) {
@@ -50,19 +65,6 @@ var VisEvoLine = Class.extend({
     }
   },
   updateRender: function(callback) {
-    if (!this._axisRendered())
-      this._renderAxis();
-
-    var line = d3.svg.line()
-    .x(function(d) { return this.xScale(d.year); }.bind(this))
-    .y(function(d) { return this.yScale(d.deviation); }.bind(this));
-
-    this.svg.append("path")
-      .datum(this.data)
-      .attr("class", "line")
-      .attr("d", line);
-  },
-  _renderAxis: function() {
     this.xScale.domain(d3.extent(this.data.map(function(e) {
       return e.year;
     }))).range([this.margin.left, this.width - this.margin.left - this.margin.right]);
@@ -72,14 +74,22 @@ var VisEvoLine = Class.extend({
       }).concat(this._yTickValues())))
       .range([this.height - this.margin.bottom, this.margin.top]);
 
-    //xAxis
-    this.svg.append('g')
-      .attr('class','x axis')
+    this._renderAxis();
+
+    var line = d3.svg.line()
+      .x(function(d) { return this.xScale(d.year); }.bind(this))
+      .y(function(d) { return this.yScale(d.deviation); }.bind(this));
+
+    this.svg.select('.line')
+      .attr("d", line);
+  },
+  _renderAxis: function() {
+
+    //position axis
+    this.svg.select('.x.axis')
       .attr("transform", "translate("+ this.margin.left + "," + (this.height - this.margin.bottom + 10) + ")");
 
-    //yAxis
-    this.svg.append('g')
-      .attr('class','y axis')
+    this.svg.select('.y.axis')
       .attr("transform", "translate(" + (this.width - this.margin.right + 10) + "," + 0 + ")");
 
     this.xAxis.tickValues(this.data.filter(function(d) {
@@ -87,6 +97,7 @@ var VisEvoLine = Class.extend({
     }).map(function(d) {
       return d.year;
     }));
+
     this.xAxis.tickSize(0,0);
     this.xAxis.tickFormat(this._formatNumberX.bind(this));
     this.xAxis.scale(this.xScale);
@@ -128,5 +139,16 @@ var VisEvoLine = Class.extend({
     //replace with whatever format you want
     //examples here: http://koaning.s3-website-us-west-2.amazonaws.com/html/d3format.html
     return d3.format('%')(d/100)
+  },
+  _width: function() {
+    return parseInt(d3.select(this.container).style('width'));
+  },
+  _resize: function() {
+    this.width = this._width();
+    // this.height = this._width();
+    this.svg.attr('width',this.width)
+      .attr('height',this.height);
+
+    this.updateRender();
   }
 });
