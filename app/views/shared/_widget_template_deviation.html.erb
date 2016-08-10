@@ -7,7 +7,12 @@
         <h1 title="{{deviation_heading}}">{{deviation_percentage}}%</h1>
       </div>
       <div class="pure-u-1 pure-u-md-1 pure-u-lg-1-2 vizz_cont">
-        <div class="vizz"></div>
+        {{#I}}
+          <div id="evo_line_income" class="vizz" data-series="{{evolution_to_s}}"></div>
+        {{/I}}
+        {{#G}}
+          <div id="evo_line_expenditure" class="vizz" data-series="{{evolution_to_s}}"></div>
+        {{/G}}
       </div>
     </div>
     <table>

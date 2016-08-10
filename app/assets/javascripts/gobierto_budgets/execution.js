@@ -11,4 +11,14 @@ $(function () {
     else
       $(this).text($(this).data('more-literal'));
   })
+
 });
+var vis_evoline = [];
+function render_evo_line($widget_node) {
+  var data = $widget_node.find('.vizz').data('series');
+  var container_id = "#" + $widget_node.find('.vizz').attr('id');
+  var vis = new VisEvoLine(container_id, data);
+  vis.render();
+  vis_evoline.push(vis);
+
+}

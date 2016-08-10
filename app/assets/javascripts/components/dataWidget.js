@@ -10,6 +10,11 @@
         }
         var html = Mustache.render(template, data);
         this.$node.html(html);
+        if(this.$node.data('callback') !== undefined) {
+          var callback = this.$node.data('callback');
+          callback += "(this.$node)";
+          eval(callback);
+        }
       }.bind(this));
     });
   });

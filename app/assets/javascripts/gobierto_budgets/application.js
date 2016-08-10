@@ -23,6 +23,7 @@
 //= require gobierto_budgets/vendor/nouislider
 //= require gobierto_budgets/vis_treemap
 //= require gobierto_budgets/vis_lineas_tabla
+//= require gobierto_budgets/vis_evo_line
 //= require gobierto_budgets/history
 //= require gobierto_budgets/compare
 //= require gobierto_budgets/ui

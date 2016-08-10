@@ -419,7 +419,8 @@ module GobiertoBudgets
               "#{kind}": {
                 total_budgeted: format_currency(total_budgeted),
                 total_executed: format_currency(total_executed),
-                evolution: evolution
+                evolution: evolution,
+                evolution_to_s: evolution.to_json
               }
             }.to_json
           end
