@@ -3155,7 +3155,8 @@ html.turbolinks-progress-bar::before {
         stroke: #009BAA;
         stroke-width: 1.5px;
       }
-      .y.axis path {
+      .y.axis path,
+      .x.axis path {
         display: none;
       }
     }

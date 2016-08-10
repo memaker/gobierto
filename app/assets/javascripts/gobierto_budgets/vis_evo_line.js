@@ -75,7 +75,7 @@ var VisEvoLine = Class.extend({
     //xAxis
     this.svg.append('g')
       .attr('class','x axis')
-      .attr("transform", "translate("+ this.margin.left + "," + this.yScale(0) + ")");
+      .attr("transform", "translate("+ this.margin.left + "," + (this.height - this.margin.bottom + 10) + ")");
 
     //yAxis
     this.svg.append('g')
@@ -91,10 +91,6 @@ var VisEvoLine = Class.extend({
     this.xAxis.tickFormat(this._formatNumberX.bind(this));
     this.xAxis.scale(this.xScale);
     this.svg.select(".x.axis").call(this.xAxis);
-
-    //moving ticks down
-    this.svg.selectAll(".x.axis text")
-      .attr('transform','translate(0,'+ ((this.height/2) - this.margin.bottom) +')')
 
     this.yAxis.tickSize(-this.width,0);
     this.yAxis.tickValues(this.defaultYDomain.concat([0]));
