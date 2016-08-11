@@ -3166,23 +3166,33 @@ html.turbolinks-progress-bar::before {
     }
     @include screen(1280) {
       .vizz {
-        margin: 0em 0.5em 1em;
+        margin: 0em 1em 1em;
       }
       h1 {
         text-align: center;
       }
     }
-    table {
-      width: initial;
-      th {
-        background: none;
-        text-transform: none;
-        font-size: 1em;
+    .totals {
+      table {
+        width: 100%;
+        margin-bottom: 1em;
       }
-    }
-    p, th, td {
-      font-size: .85em;
-      line-height: 1.2em;
+      th,td {
+        white-space: nowrap;
+        font-size: 1em;
+        width: 50%;
+      }
+      th {
+        font-weight: bold;
+        text-align: right;
+      }
+      td {
+        text-align: left;
+        margin-left:1em;
+      }
+      p {
+        margin: 0.25em 0.5em;
+      }
     }
   }
   h2.lite {

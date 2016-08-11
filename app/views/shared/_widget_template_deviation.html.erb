@@ -15,29 +15,26 @@
         {{/G}}
       </div>
     </div>
-    <table>
-    {{#I}}
-      <tr>
-        <th>Ingresos presupuestados</th>
-        <td>{{total_budgeted}}</td>
-      </tr>
-      <tr>
-        <th>Ingresos reales</th>
-        <td>{{total_executed}}</td>
-      </tr>
-    {{/I}}
-    {{#G}}
-      <tr>
-        <th>Gastos presupuestados</th>
-        <td>{{total_budgeted}}</td>
-      </tr>
-      <tr>
-        <th>Gastos reales</th>
-        <td>{{total_executed}}</td>
-      </tr>
-    {{/G}}
-    </table>
-    <p>{{deviation_summary}}</p>
+    <div class="pure-g totals">
+      <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-2">
+        <table>
+          <tr>
+            <th>{{#I}}Ingresos{{/I}}{{#G}}Gastos{{/G}} presupuestados</th>
+            <td>{{#I}}{{total_budgeted}}{{/I}}{{#G}}{{total_budgeted}}{{/G}}</td>
+          </tr>
+          <tr>
+            <th>{{#I}}Ingresos{{/I}}{{#G}}Gastos{{/G}} reales</th>
+            <td>{{#I}}{{total_executed}}{{/I}}{{#G}}{{total_executed}}{{/G}}</td>
+          </tr>
+        </table>
+      </div>
+      <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1">
+        <p>
+          {{#I}}{{deviation_summary}}{{/I}}
+          {{#G}}{{deviation_summary}}{{/G}}
+        </p>
+      </div>
+    </div>
   </div>
 </div>
 </script>
