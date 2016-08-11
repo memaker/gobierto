@@ -262,8 +262,11 @@ $(function(){
   }
 
   var hash = window.location.hash.slice(1);
+  var action = $('body').data('action');
   if($('[data-widget-type]').length > 0 && hash !== "")
     $("[data-widget-type='" + hash + "']").addClass('selected');
+  else if (hash === '' && action === 'execution')
+    $("[data-widget-type='total_budget_execution']").addClass('selected');
   else
     $('[data-widget-type]:first').addClass('selected');
 
