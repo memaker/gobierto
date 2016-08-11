@@ -3152,6 +3152,12 @@ html.turbolinks-progress-bar::before {
       }
       .line {
         fill: none;
+        stroke: #B0B2AE;
+        stroke-width: 1px;
+        stroke-dasharray: 5,2;
+      }
+      line.year_marker {
+        fill: none;
         stroke: #009BAA;
         stroke-width: 1.5px;
       }

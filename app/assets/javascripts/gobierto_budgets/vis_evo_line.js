@@ -1,9 +1,10 @@
 'use strict';
 
 var VisEvoLine = Class.extend({
-  init: function(divId, series) {
+  init: function(divId, series, current_year) {
     this.container = divId;
     this.data = series;
+    this.currentYear = (current_year !== undefined) ? parseInt(current_year) : null;
     //this.data = [{"year":2010,"deviation":0},{"year":2011,"deviation":-3.19},{"year":2012,"deviation":-6.37},{"year":2013,"deviation":-10},{"year":2014,"deviation":10},{"year":2015,"deviation":-7.87}];
     this.dataUrl = null;
     this.classed = "evoline"
@@ -47,6 +48,14 @@ var VisEvoLine = Class.extend({
       .datum(this.data)
       .attr("class", "line")
 
+    if(this.currentYear != null) {
+      this.svg.selectAll('.year_marker')
+            .data([this.currentYear])
+            .enter()
+          .append('line')
+            .attr('class', 'year_marker');
+    }
+
     d3.select(window).on('resize.' + this.container, this._resize.bind(this));
   },
   getData: function() {
@@ -82,6 +91,16 @@ var VisEvoLine = Class.extend({
 
     this.svg.select('.line')
       .attr("d", line);
+
+    if (this.currentYear != null) {
+      console.log(this.svg.select('.year_marker'))
+      this.svg.selectAll('.year_marker')
+        .attr('x1', function(d) {
+          return this.xScale(d); }.bind(this))
+        .attr('y1', 0)
+        .attr('x2', function(d) { return this.xScale(d); }.bind(this))
+        .attr('y2', this.height - this.margin.bottom + 10)
+    }
   },
   _renderAxis: function() {
 

@@ -17,8 +17,8 @@ var vis_evoline = [];
 function render_evo_line($widget_node) {
   var data = $widget_node.find('.vizz').data('series');
   var container_id = "#" + $widget_node.find('.vizz').attr('id');
-  var vis = new VisEvoLine(container_id, data);
+  var current_year = $('body').data('year');
+  var vis = new VisEvoLine(container_id, data, current_year);
   vis.render();
   vis_evoline.push(vis);
-
 }
