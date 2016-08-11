@@ -3212,13 +3212,29 @@ html.turbolinks-progress-bar::before {
     }
     td {
       text-align: right;
+      white-space: nowrap;
     }
     td.title {
       text-align: left;
       max-width: 200px;
       overflow: hidden;
       text-overflow: ellipsis;
-      white-space: nowrap;
+    }
+  }
+  @include screen(1280) {
+    table td.title {
+      max-width: 160px;
+    }
+  }
+
+  @include screen(1024) {
+    .deviation_table_container {
+      padding-bottom:2em;
+      margin-bottom:2em;
+      border-bottom:solid 1px rgba(178, 175, 169, 0.5); 
+    }
+    .deviation_table_container:last-child {
+      border-bottom: none;
     }
   }
 
