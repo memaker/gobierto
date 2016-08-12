@@ -33,24 +33,25 @@ module GobiertoBudgets
       return response['hits']['hits'].map{ |h| h['_source'] }
     end
 
-    def self.for_ranking(year, variable, offset, per_page, filters = {})
-      response = budget_total_query(year: year, variable: variable, filters: filters, offset: offset, per_page: per_page)
+    def self.for_ranking(year, variable, kind, offset, per_page, filters = {})
+      response = budget_total_query(year: year, variable: variable, kind: kind, filters: filters, offset: offset, per_page: per_page)
       results = response['hits']['hits'].map{|h| h['_source']}
       total_elements = response['hits']['total']
       return results, total_elements
     end
 
-    def self.place_position_in_ranking(year, variable, ine_code, filters)
-      response = budget_total_query(year: year, variable: variable, filters: filters, to_rank: true)
+    def self.place_position_in_ranking(year, variable, ine_code, kind, filters)
+      response = budget_total_query(year: year, variable: variable, kind: kind, filters: filters, to_rank: true)
 
       buckets = response['hits']['hits'].map{|h| h['_id']}
-      id = [ine_code, year].join('/')
+      id = [ine_code, year, kind].join('/')
       position = buckets.index(id) ? buckets.index(id) + 1 : 0;
       return position
     end
 
     def self.budget_total_query(options)
-      terms = [{term: { year: options[:year] }}]
+      terms =  [{term: { year: options[:year]}}]
+      terms << {term: { kind: options[:kind]}} if options[:kind].present?
 
       if options[:filters].present?
         population_filter =  options[:filters][:population]

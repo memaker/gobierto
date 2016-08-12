@@ -69,7 +69,6 @@ module GobiertoBudgets
     def ranking
       @filters = params[:f]
       if @place && params[:page].nil?
-
         place_position = GobiertoBudgets::Ranking.place_position(year: @year, ine_code: @place.id, code: @code, kind: @kind, area_name: @area_name, variable: @variable, filters: @filters)
 
         page = GobiertoBudgets::Ranking.page_from_position(place_position)
