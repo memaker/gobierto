@@ -247,7 +247,7 @@ module GobiertoBudgets
         respond_to do |format|
           format.json do
             render json: {
-              title: 'Ejecución vs Presupuestado',
+              title: 'Ejecución vs Presupuesto',
               sign: sign,
               delta_percentage: helpers.number_with_precision(delta_percentage(total_budget_data_executed[:value], total_budget_data_planned[:value]), precision: 2),
               value: diff

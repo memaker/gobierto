@@ -3128,6 +3128,7 @@ html.turbolinks-progress-bar::before {
  *
  */
 .execution {
+  margin: 3em 0;
   .block {
     .inner {
       box-sizing: border-box;
@@ -3197,12 +3198,14 @@ html.turbolinks-progress-bar::before {
         margin-left:1em;
       }
       p {
-        margin: 0.25em 0.5em;
+        margin: 0.25em 0;
       }
     }
   }
   h2.lite {
     display: inline-block;
+    min-height: 3em;
+    width: 50%;
   }
   .form_filters {
     margin: 0;
