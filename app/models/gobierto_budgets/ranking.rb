@@ -20,6 +20,7 @@ module GobiertoBudgets
     def self.query(options)
       year = options[:year]
       variable = options[:variable]
+      kind = options[:kind]
       page = options[:page]
       code = options[:code]
       filters = options[:filters]
@@ -31,7 +32,7 @@ module GobiertoBudgets
       elsif variable == 'population'
         self.population_ranking(variable, year, offset, filters)
       else
-        self.total_budget_ranking(variable, year, offset, filters)
+        self.total_budget_ranking(variable, year, kind, offset, filters)
       end
 
       Kaminari.paginate_array(results, {limit: self.per_page, offset: offset, total_count: total_results})
@@ -43,6 +44,7 @@ module GobiertoBudgets
       year = options[:year]
       ine_code = options[:ine_code]
       code = options[:code]
+      kind = options[:kind]
       variable = options[:variable]
       filters = options[:filters]
 
@@ -53,7 +55,7 @@ module GobiertoBudgets
           return Population.place_position_in_ranking(year, ine_code, filters)
         else
           variable = (variable == 'amount') ? 'total_budget' : 'total_budget_per_inhabitant'
-          return BudgetTotal.place_position_in_ranking(year, variable, ine_code, filters)
+          return BudgetTotal.place_position_in_ranking(year, variable, ine_code, kind, filters)
         end
       end
     end
@@ -101,14 +103,14 @@ module GobiertoBudgets
       end, total_elements
     end
 
-    def self.total_budget_ranking(variable, year, offset, filters)
+    def self.total_budget_ranking(variable, year, kind, offset, filters)
       variable = if variable == 'amount'
                    'total_budget'
                  else
                    'total_budget_per_inhabitant'
                  end
 
-      results, total_elements = BudgetTotal.for_ranking(year, variable, offset, self.per_page, filters)
+      results, total_elements = BudgetTotal.for_ranking(year, variable, kind, offset, self.per_page, filters)
 
       places_ids = results.map {|h| h['ine_code']}
       population_results = Population.for_places(places_ids, year)

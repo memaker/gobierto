@@ -522,7 +522,8 @@ module GobiertoBudgets
               filter: {
                 bool: {
                   must: [
-                    {term: { year: year }}
+                    {term: { year: year }},
+                    {term: { kind: GobiertoBudgets::BudgetLine::EXPENSE }}
                   ]
                 }
               }

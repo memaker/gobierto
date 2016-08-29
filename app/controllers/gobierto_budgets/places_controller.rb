@@ -3,6 +3,7 @@ module GobiertoBudgets
     layout :choose_layout
     before_action :get_params
     before_action :solve_income_area_mismatch, except: [:show]
+    before_action :admin_user, only: [:intelligence]
 
     def show
       render_404 and return if @place.nil?
@@ -71,7 +72,6 @@ module GobiertoBudgets
     def ranking
       @filters = params[:f]
       if @place && params[:page].nil?
-
         place_position = GobiertoBudgets::Ranking.place_position(year: @year, ine_code: @place.id, code: @code, kind: @kind, area_name: @area_name, variable: @variable, filters: @filters)
 
         page = GobiertoBudgets::Ranking.page_from_position(place_position)
@@ -89,6 +89,9 @@ module GobiertoBudgets
         format.html
         format.js
       end
+    end
+
+    def intelligence
     end
 
     private

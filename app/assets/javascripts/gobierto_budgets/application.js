@@ -17,9 +17,11 @@
 //= require d3.v3.min
 //= require d3-legend.min
 //= require gobierto_budgets/vendor/select2.min
+//= require underscore-min
 //= require klass
 //= require gobierto_budgets/vendor/jquery.inview
 //= require jquery.magnific-popup.min
+//= require gobierto_budgets/budgetCategoriesDictionary
 //= require gobierto_budgets/vendor/nouislider
 //= require gobierto_budgets/vis_treemap
 //= require gobierto_budgets/vis_lineas_tabla
@@ -32,5 +34,3 @@
 //= require gobierto_budgets/analytics
 //= require gobierto_budgets/vendor/iframeResizer/iframeResizer.contentWindow.min
 //= require_directory ../components/
-
-

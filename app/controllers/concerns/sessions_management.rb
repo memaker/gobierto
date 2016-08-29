@@ -33,6 +33,7 @@ module SessionsManagement
 
   def admin_user
     unless logged_in?
+      session[:referer] = request.fullpath
       redirect_to login_path and return false
     end
 

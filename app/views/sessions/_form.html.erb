@@ -20,7 +20,7 @@
 
   <div class="form_item full submit_item">
     <div class="form_item_cont clearfix">
-      <%= hidden_field_tag :back_url, request.referer %>
+      <%= hidden_field_tag :back_url, session[:referer] || request.referer %>
       <input type="submit" class="submit" value="Enviar"> <span class="recover_password"><%= link_to '¿Contraseña?', new_password_reset_path, class: 'tipsit', title: 'Recuperar contraseña' %></span>
     </div>
   </div>
