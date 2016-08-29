@@ -339,7 +339,7 @@ module GobiertoBudgets
     end
 
     def self.top_differences(options)
-      terms = [{term: { kind: options[:kind] }}, {term: { year: options[:year] }}]
+      terms = [{term: { kind: options[:kind] }}, {term: { year: options[:year] }}, {term: { level: 3 }}]
       terms << {term: { ine_code: options[:ine_code] }} if options[:ine_code].present?
       terms << {term: { code: options[:code] }} if options[:code].present?
 
