@@ -370,6 +370,7 @@ $(function(){
           $('.' + target).velocity('fadeIn', {
             duration: 100,
             complete: function(e) {
+              $(this).removeClass('hidden');
               if (target.indexOf('income') > 1) {
                 window.incomeTreemap.render($('#income-treemap').data('economic-url'));
               }
