@@ -52,8 +52,11 @@ namespace :gobierto_budgets do
 
       INE::Places::Place.all.each do |place|
         pbar.inc
-        pop = population(place.id, year)
-        next if pop.nil?
+        pop = population(place.id, year) || population(place.id, year - 1)
+        if pop.nil?
+          puts "- Skipping #{place.id} #{place.name} because population data is missing for #{year} and #{year-1}"
+          next
+        end
 
         base_data = {
           ine_code: place.id.to_i, province_id: place.province.id.to_i,
@@ -117,7 +120,6 @@ SQL
         end
         next if index_request_body.empty?
 
-
         GobiertoBudgets::SearchEngine.client.bulk index: index, type: 'economic', body: index_request_body
       end
 
@@ -131,8 +133,12 @@ SQL
 
       INE::Places::Place.all.each do |place|
         pbar.inc
-        pop = population(place.id, year)
-        next if pop.nil?
+
+        pop = population(place.id, year) || population(place.id, year - 1)
+        if pop.nil?
+          puts "- Skipping #{place.id} #{place.name} because population data is missing for #{year} and #{year-1}"
+          next
+        end
 
         base_data = {
           ine_code: place.id.to_i, province_id: place.province.id.to_i,
