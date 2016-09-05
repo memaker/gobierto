@@ -1,6 +1,43 @@
 # Gobierto
 
-## Setup subdomain
+Gobierto is a software focused in helping the local administration to communicate better with the
+citiziens. It is composed of the following tools:
+
+- budget comparator and explorer module
+- participation module: allows to ask questions and opinions
+- CMS module to create a hierarchy of static pages
+- user communication management via Mailchimp
+- user feedback gathering
+- _more coming soon_
+
+## Application architecture
+
+The application is implemented using Ruby programming language and Ruby on Rails framework. In the
+database layer uses Postgres. Also, it uses an external Elastic Search to store and process all the
+budgets and third-party data.
+
+Every module lives in a subdomain. This is the subdomains schema:
+
+- `presupuestos.`, where the budget comparing tool lives
+- `<municipality_name>.`, is the municipality page where local budgets, cms module and participation module
+  can be activated
+
+## Development
+
+### Software Requirements
+
+- Git
+- Ruby 2.3.1
+- Rubygems
+- Postgres
+- Elastic Search
+- Pow or another subdomains tool
+
+### Setup the database and the secrets file
+
+Once you have cloned the repository, create a file `config/database.yml` based on `config/database.yml.example`. Do the same with the `config/secrets.yml.example` file.
+
+### Setup subdomain and start the applictation
 
 The application server should be queried through the top-level domain `.gobierto.dev`.
 
@@ -19,130 +56,9 @@ $ ln -s DIRECTORY/gobierto gobierto
 
 Then just run `rails s` as usual, but type in the browser http://presupuestos.gobierto.dev/
 
-## Elastic Search schema
+### Load the data
 
-### Budget categories
-
-- indexes: `budget-categories`
-- types: `categories`
-- document id: `<area>/<code>/<kind>`. Example: `economic/30/G`
-- schema:
-
-```
-  - area:                  { type: 'string', index: 'not_analyzed'  },
-  - code:                  { type: 'string', index: 'not_analyzed'  },
-  - name:                  { type: 'string', index: 'not_analyzed'  },
-  - parent_code:           { type: 'string', index: 'not_analyzed'  },
-  - level:                 { type: 'integer', index: 'not_analyzed' },
-  - kind:                  { type: 'string', index: 'not_analyzed'  }, # income I / expense G
-```
-
-### Budget Line data
-
-- indexes: `budgets-forecast`, `budgets-execution`
-- types: `economic`, `functional`
-- document id: `<ine_code>/<year>/<code>/<kind>`. Example: `28079/2015/210/G`
-- schema:
-
-```
-  - ine_code:              { type: 'integer', index: 'not_analyzed' },
-  - year:                  { type: 'integer', index: 'not_analyzed' },
-  - amount:                { type: 'double', index: 'not_analyzed'  },
-  - code:                  { type: 'string', index: 'not_analyzed'  },
-  - parent_code:           { type: 'string', index: 'not_analyzed'  },
-  - functional_code:       { type: 'string', index: 'not_analyzed'  },
-  - level:                 { type: 'integer', index: 'not_analyzed' },
-  - kind:                  { type: 'string', index: 'not_analyzed'  }, # income I / expense G
-  - province_id:           { type: 'integer', index: 'not_analyzed' },
-  - autonomy_id:           { type: 'integer', index: 'not_analyzed' },
-  - amount_per_inhabitant: { type: 'double', index: 'not_analyzed'  }
-```
-
-### Total budgets data
-
-#### Planned
-
-- indexes: `budgets-forecast`
-- types: `total-budget`
-- document id: `<ine_code>/<year>/<kind>`. Example: `28079/2015/G`
-- schema:
-
-```
-  - ine_code:                    { type: 'integer', index: 'not_analyzed' },
-  - province_id:                 { type: 'integer', index: 'not_analyzed' },
-  - autonomy_id:                 { type: 'integer', index: 'not_analyzed' },
-  - year:                        { type: 'integer', index: 'not_analyzed' },
-  - kind:                        { type: 'string', index: 'not_analyzed'  }, # income I / expense G
-  - total_budget:                { type: 'double',  index: 'not_analyzed' },
-  - total_budget_per_inhabitant: { type: 'double',  index: 'not_analyzed' }
-```
-
-#### Executed
-
-- indexes: `budgets-execution`
-- types: `total-budget`
-- document id: `<ine_code>/<year>/<kind>`. Example: `28079/2015/G`
-- schema:
-
-```
-  - ine_code:                    { type: 'integer', index: 'not_analyzed' },
-  - province_id:                 { type: 'integer', index: 'not_analyzed' },
-  - autonomy_id:                 { type: 'integer', index: 'not_analyzed' },
-  - year:                        { type: 'integer', index: 'not_analyzed' },
-  - kind:                        { type: 'string', index: 'not_analyzed'  }, # income I / expense G
-  - total_budget:                { type: 'double',  index: 'not_analyzed' },
-  - total_budget_per_inhabitant: { type: 'double',  index: 'not_analyzed' }
-```
-
-### Population data
-
-- indexes: `data`
-- types: `population`
-- document id: `<ine_code>/<year>`. Example: `28079/2015`
-- schema:
-
-```
-  - ine_code:              { type: 'integer', index: 'not_analyzed' },
-  - province_id:           { type: 'integer', index: 'not_analyzed' },
-  - autonomy_id:           { type: 'integer', index: 'not_analyzed' },
-  - year:                  { type: 'integer', index: 'not_analyzed' },
-  - value:                 { type: 'integer', index: 'not_analyzed' }
-```
-
-### Places data
-
-- indexes: `data`
-- types: `places`
-- document id: `<ine_code>`. Example: `28079`
-- schema:
-
-```
-  - ine_code:              { type: 'integer', index: 'not_analyzed' },
-  - province_id:           { type: 'integer', index: 'not_analyzed' },
-  - autonomy_id:           { type: 'integer', index: 'not_analyzed' },
-  - year:                  { type: 'integer', index: 'not_analyzed' },
-  - name:                  { type: 'string',  index: 'analyzed', analyzer: 'spanish' }
-```
-
-### Debt data
-
-- indexes: `data`
-- types: `debt`
-- document id: `<ine_code>/<year>`. Example: `28079/2014`
-- schema:
-
-```
-  - ine_code:              { type: 'integer', index: 'not_analyzed' },
-  - province_id:           { type: 'integer', index: 'not_analyzed' },
-  - autonomy_id:           { type: 'integer', index: 'not_analyzed' },
-  - year:                  { type: 'integer', index: 'not_analyzed' },
-  - value:                 { type: 'double', index: 'not_analyzed' }
-```
-
-
-## Load the data
-
-### Create schemas
+#### Create schemas
 
 bin/rake gobierto_budgets:budgets:create
 bin/rake gobierto_budgets:total_budget:create
@@ -151,7 +67,7 @@ bin/rake gobierto_budgets:places:create
 bin/rake gobierto_budgets:debt:create
 bin/rake gobierto_budgets:population:create
 
-### Load planned data
+#### Load planned data
 
 ```
 # Load categories
@@ -228,3 +144,4 @@ bin/rake gobierto_budgets:total_budget:import['budgets-execution-v2',2010]
 ### Datasets
 
 - Debt: http://www.minhap.gob.es/es-ES/Areas%20Tematicas/Administracion%20Electronica/OVEELL/Paginas/DeudaViva.aspx
+- Population: http://www.ine.es/inebmenu/mnu_cifraspob.htm
