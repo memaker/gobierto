@@ -30,4 +30,4 @@ config/settings/*.local.yml
 config/environments/*.local.yml
 
 # Deploy
-config/environments/production.rb
+config/deploy/production.rb
