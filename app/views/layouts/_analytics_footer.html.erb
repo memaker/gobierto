@@ -1,14 +1,7 @@
 <script type="text/javascript">
 
-<% if Rails.env.production? %>
-  ga('create', 'UA-69636046-2', 'auto');
-  mixpanel.init("846fad87149cef36298ce1a22b0003cf");
-<% else %>
-  // DEV accounts 
-  ga('create', 'UA-69636046-3', 'auto'); 
-  mixpanel.init("a22a372d8b32aee7752b0f1a6094b6d8");
-<% end %>
-
+  ga('create', Settings.google_analytics_key, 'auto');
+  mixpanel.init(Settings.mixpanel_key);
   ga('send', 'pageview');
-  
+
 </script>
