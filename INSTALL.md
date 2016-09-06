@@ -64,8 +64,9 @@ and this guide is going to follow those conventions. Feel free to adapt the guid
   - `/var/www/gobierto/releases
   - `/var/www/gobierto/repo
 
+2 - Update `config/settings/production.yml` with the final domain (replacing `gobierto.es`).
 
-2 - Create `/var/www/gobierto/shared/config/database.yml` with the following content:
+3 - Create `/var/www/gobierto/shared/config/database.yml` with the following content:
 
 ```yaml
 production:
@@ -77,7 +78,7 @@ production:
   password:
 ```
 
-3 - Create `/var/www/gobierto/shared/config/secrets.yml`
+4 - Create `/var/www/gobierto/shared/config/secrets.yml`
 
 ```yaml
 production:
@@ -89,32 +90,32 @@ production:
   amazon_secret_key: ''
 ```
 
-3.1 - Run `rake secret` in your dev environment and paste the result as `secret_key_base`
+4.1 - Run `rake secret` in your dev environment and paste the result as `secret_key_base`
 
-3.2 - Paste your Rollbar API key. If you don't use Rollbar, leave that variable in blank
+4.2 - Paste your Rollbar API key. If you don't use Rollbar, leave that variable in blank
 
-3.3 - Update the URL of the ElasticSearch in case you use a remote server
+4.3 - Update the URL of the ElasticSearch in case you use a remote server
 
-3.4 - Paste your Mailchimp API Key
+4.4 - Paste your Mailchimp API Key
 
-3.5 - Paste Amazon credentials
+4.5 - Paste Amazon credentials
 
-4 - Deploy the site
+5 - Deploy the site
 
 Back to your development environment, we are going to deploy the site, following these steps:
 
-4.1 - Create the file `config/deploy/production.rb` based on `config/deploy/production.rb.example`,
+5.1 - Create the file `config/deploy/production.rb` based on `config/deploy/production.rb.example`,
 updating the host
 
-4.2 - Check the server configuration: `$ bundle exec cap production deploy:check`
+5.2 - Check the server configuration: `$ bundle exec cap production deploy:check`
 
-4.3 - Deploy! `$ bundle exec cap production deploy`
+5.3 - Deploy! `$ bundle exec cap production deploy`
 
-4.4 - In the remote server, check that `/var/www/gobierto/current/` has been created as a symlink
+5.4 - In the remote server, check that `/var/www/gobierto/current/` has been created as a symlink
 
 Notice that you can change the way to deploy the application. We prefer [Capistrano](http://capistranorb.com) and that's the configured option, but if you want to deploy in a different way just update the code in the fork of your project and that's all.
 
-5 - Load the data
+6 - Load the data
 
 Once the application is working in production (without working in the HTTP server yet) we need to
 load the data.
@@ -126,7 +127,7 @@ Because you are in a remote server, you need to setup an environment variable na
 this command: `$ export RAILS_ENV=production`. This variable **must be set in our your sessions in
 this remote server**.
 
-6 - Configure and enable the server virtual host. You can use this file as template, with SSL configuration:
+7 - Configure and enable the server virtual host. You can use this file as template, with SSL configuration:
 
 ```
 server {
@@ -203,7 +204,7 @@ server {
 
 Remember to update the domains (updating the variable `server_name`) according to your needs.
 
-7 - Once you reload the webserver to read the new configuration you should be able to see the site up and running.
+8 - Once you reload the webserver to read the new configuration you should be able to see the site up and running.
 
 ## Questions
 
