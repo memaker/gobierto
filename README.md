@@ -161,3 +161,7 @@ You can check the different IDs in these tables:
 
 - Debt: http://www.minhap.gob.es/es-ES/Areas%20Tematicas/Administracion%20Electronica/OVEELL/Paginas/DeudaViva.aspx
 - Population: http://www.ine.es/inebmenu/mnu_cifraspob.htm
+
+## Contributing
+
+See [https://github.com/PopulateTools/gobierto/blob/master/CONTRIBUTING_EN.md] or [https://github.com/PopulateTools/gobierto/blob/master/CONTRIBUTING_ES.md]
