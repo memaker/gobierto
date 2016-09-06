@@ -64,6 +64,17 @@ namespace :gobierto_budgets do
 
       INE::Places::Place.all.each do |place|
         pbar.inc
+
+        if ENV['place_id'].present?
+          next if place.id.to_i != ENV['place_id'].to_i
+        end
+        if ENV['province_id'].present?
+          next if place.province.id.to_i != ENV['province_id'].to_i
+        end
+        if ENV['autonomous_region_id'].present?
+          next if place.province.autonomous_region.id.to_i != ENV['autonomous_region_id'].to_i
+        end
+
         total_budget, total_budget_per_inhabitant = get_data(index, place, year, kind)
 
         data = {
@@ -110,7 +121,7 @@ namespace :gobierto_budgets do
     end
 
     desc "Import total budgets. Example rake total_budget:import['budgets-execution',2014]"
-    task :import, [:index,:year] => :environment do |t, args|
+    task :import, [:index,:year,:ine_code] => :environment do |t, args|
       index = args[:index] if TOTAL_BUDGET_INDEXES.include?(args[:index])
       raise "Invalid index #{args[:index]}" if index.blank?
 

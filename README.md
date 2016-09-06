@@ -115,7 +115,7 @@ bin/rake gobierto_budgets:total_budget:import['budgets-forecast-v2',2011] &&
 bin/rake gobierto_budgets:total_budget:import['budgets-forecast-v2',2010]
 ```
 
-### Load executed data
+#### Load executed data
 
 ```
 # Load budgets
@@ -141,7 +141,23 @@ bin/rake gobierto_budgets:total_budget:import['budgets-execution-v2',2011] &&
 bin/rake gobierto_budgets:total_budget:import['budgets-execution-v2',2010]
 ```
 
-### Datasets
+#### Load local data
+
+In case you want to load only the data from a municipality, province or autonomous region, in the
+tasks that load the budgets or the total aggregations you can use an argument to declare which
+region you want to import the data from. There are three different arguments:
+
+- `place_id`. Example: `bin/rake gobierto_budgets:budgets:import['budgets-planned','budgets-forecast-v2','economic',2015] place_id=28079`
+- `province_id`. Example: `bin/rake gobierto_budgets:budgets:import['budgets-planned','budgets-forecast-v2','economic',2015] province_id=1`
+- `autonomous_region_id`. Example: `bin/rake gobierto_budgets:budgets:import['budgets-planned','budgets-forecast-v2','economic',2015] autonomous_region_id=1`
+
+You can check the different IDs in these tables:
+
+- [places IDs](https://github.com/PopulateTools/ine-places/blob/master/lib/ine/places/data/places.csv)
+- [provinces IDs](https://github.com/PopulateTools/ine-places/blob/master/lib/ine/places/data/provinces.csv)
+- [autonomous regions IDs](https://github.com/PopulateTools/ine-places/blob/master/lib/ine/places/data/autonomous_regions.csv)
+
+#### Datasets
 
 - Debt: http://www.minhap.gob.es/es-ES/Areas%20Tematicas/Administracion%20Electronica/OVEELL/Paginas/DeudaViva.aspx
 - Population: http://www.ine.es/inebmenu/mnu_cifraspob.htm
