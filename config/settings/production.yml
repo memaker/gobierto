@@ -1,2 +1,3 @@
 ---
 gobierto_host: gobierto.es
+mailchimp_list: 'https://us11.api.mailchimp.com/3.0/lists/c5ae573572/members/'

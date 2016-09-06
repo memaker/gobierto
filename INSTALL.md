@@ -64,7 +64,9 @@ and this guide is going to follow those conventions. Feel free to adapt the guid
   - `/var/www/gobierto/releases
   - `/var/www/gobierto/repo
 
-2 - Update `config/settings/production.yml` with the final domain (replacing `gobierto.es`).
+2 - Update `config/settings/production.yml` with:
+  - the final domain (replacing `gobierto.es`)
+  - Mailchimp API resource URI of the list. Leave it blank if you don't want to use Mailchimp
 
 3 - Create `/var/www/gobierto/shared/config/database.yml` with the following content:
 

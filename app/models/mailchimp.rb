@@ -1,8 +1,10 @@
 class Mailchimp
-  LIST_URL = 'https://us11.api.mailchimp.com/3.0/lists/c5ae573572/members/'
+  LIST_URL = Settings.mailchimp_list
   API_KEY = Rails.application.secrets.mailchimp_api_key
 
   def self.is_member?(user)
+    return if LIST_URL.blank?
+
     email_digest = Digest::MD5.hexdigest user.email.downcase
 
     req = Faraday.new(url: "#{LIST_URL}#{email_digest}")
@@ -13,6 +15,8 @@ class Mailchimp
   end
 
   def self.add_member(user)
+    return if LIST_URL.blank?
+
     conn = Faraday.new(url: LIST_URL)
     conn.basic_auth('anystring',API_KEY)
 
@@ -23,6 +27,8 @@ class Mailchimp
   end
 
   def self.update_member(user)
+    return if LIST_URL.blank?
+
     email_digest = Digest::MD5.hexdigest user.email.downcase
 
     conn = Faraday.new(url: "#{LIST_URL}#{email_digest}")
@@ -35,6 +41,7 @@ class Mailchimp
   end
 
   private
+
   def self.request_body(user, action = :add)
     body = {
       "email_address": user.email,
