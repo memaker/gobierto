@@ -230,7 +230,12 @@ module GobiertoBudgets
           filtered: {
             filter: {
               bool: {
-                must: terms
+                must: terms,
+                must_not: {
+                  exists: {
+                    field: "functional_code"
+                  }
+                }
               }
             }
           }
