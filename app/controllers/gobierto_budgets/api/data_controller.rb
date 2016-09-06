@@ -610,7 +610,7 @@ module GobiertoBudgets
             year: year,
             deviation: helpers.number_with_precision(deviation, precision: 2,separator:'.').to_f
           }
-        end
+        end.reject(&:nil?)
       end
 
       def get_places(ine_codes)
