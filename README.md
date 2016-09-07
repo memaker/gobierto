@@ -1,25 +1,27 @@
+
+![Gobierto](https://gobierto.es/assets/logo_gobierto.png)
+
 # Gobierto
 
-Gobierto is a software focused in helping the local administration to communicate better with the
-citiziens. It is composed of the following tools:
+Gobierto is a web application that enables local administrations to communicate better with their constituents. It is composed of the following tools:
 
-- budget comparator and explorer module
-- participation module: allows to ask questions and opinions
-- CMS module to create a hierarchy of static pages
-- user communication management via Mailchimp
-- user feedback gathering
+- Gobierto Budgets: A tool to enable citizens to explore, visualize, compare and contextualize budgets. Ideal for any public institution or governing body (like a municipality or autonomous region) that wants to publish their budget in a simple and user friendly way (see [madrid](madrid.gobierto.es) for an example) or a group of them (such as all the municipalities within an autonomous region. Explore all of Spain's municipal budgets [here](presupuestos.gobierto.es))
+- Gobierto Participation: A tool for public bodies to create consultations on any subject, to ask questions and gather feedback and opinions
+- Gobierto CMS: A simple CMS to create a hierarchy of static pages for informational purposes
 - _more coming soon_
+
+Additionally:
+- Optional integration with Mailchimp for simple user communication management
+- User feedback gathering
 
 ## Application architecture
 
-The application is implemented using Ruby programming language and Ruby on Rails framework. In the
-database layer uses Postgres. Also, it uses an external Elastic Search to store and process all the
-budgets and third-party data.
+The application is written in the Ruby programming language and uses the Ruby on Rails framework. In the database layer uses Postgres. Also, it uses an external Elastic Search to store and process all the budgets and third-party data.
 
-Every module lives in a subdomain. This is the subdomains schema:
+Gobierto budgets module lives in its own subdomain, and so does each of the individual sites for public bodies. This is the subdomains schema:
 
-- `presupuestos.`, where the budget comparing tool lives
-- `<municipality_name>.`, is the municipality page where local budgets, cms module and participation module
+- `presupuestos.`, where Gobierto Budgets for more than one public entity lives
+- `<public_entity_name>.`, is the public entity page where local budgets, cms module and participation module
   can be activated
 
 ## Development
@@ -35,11 +37,43 @@ Every module lives in a subdomain. This is the subdomains schema:
 
 ### Setup the database and the secrets file
 
-Once you have cloned the repository, create a file `config/database.yml` based on `config/database.yml.example`. Do the same with the `config/secrets.yml.example` file.
+Once you have cloned the repository, do the following:
+
+```
+$ cd gobierto
+$ cp config/database.yml.example config/database.yml
+$ cp config/secrets.yml.example config/secrets.yml
+$ bundle install
+$ rake db:setup
+```
+
+### Setup Elastic Search
+
+See [how](https://www.elastic.co/guide/en/elasticsearch/guide/current/running-elasticsearch.html)
+
+Once it is running, make sure you enter the correct URL for your instance in `config/secrets.yml` under the `elastic_url` key
+
+### Load some data
+
+If you want to import some basic data to get started, do the following:
+
+```
+$ bin/rake gobierto_budgets:budgets:create
+$ bin/rake gobierto_budgets:total_budget:create
+$ bin/rake gobierto_budgets:budget_categories:create
+$ bin/rake gobierto_budgets:places:create
+$ bin/rake gobierto_budgets:debt:create
+$ bin/rake gobierto_budgets:population:create
+$ bin/sample_data
+```
+
+This will load data for X and Y municipalities in Spain as a sample.
+
+Alternatively, learn [how to load the data](https://github.com/PopulateTools/gobierto/wiki/Loading-Gobierto-Data) for all or some municipalities in Spain.
 
 ### Setup subdomain and start the applictation
 
-The application server should be queried through the top-level domain `.gobierto.dev`.
+When working locally, the application server should be queried through the top-level domain `.gobierto.dev`.
 
 To configure this host in your computer, the simplest way is through POW [POW](http://pow.cx/). To install:
 
@@ -54,114 +88,11 @@ $ cd ~/.pow
 $ ln -s DIRECTORY/gobierto gobierto
 ```
 
-Then just run `rails s` as usual, but type in the browser http://presupuestos.gobierto.dev/
+Then just browse to http://presupuestos.gobierto.dev/ and the app should load.
 
-### Load the data
+### Setting up the site for a single public entity
 
-#### Create schemas
-
-bin/rake gobierto_budgets:budgets:create
-bin/rake gobierto_budgets:total_budget:create
-bin/rake gobierto_budgets:budget_categories:create
-bin/rake gobierto_budgets:places:create
-bin/rake gobierto_budgets:debt:create
-bin/rake gobierto_budgets:population:create
-
-#### Load planned data
-
-```
-# Load categories
-bin/rake gobierto_budgets:budget_categories:import['budgets-planned'] &&
-bin/rake gobierto_budgets:budget_categories:import['budgets-executed']
-
-# Load places
-bin/rake gobierto_budgets:places:import
-
-# Load debt
-bin/rake gobierto_budgets:debt:import[2015,'db/data/debt/debt-2015.csv'] &&
-bin/rake gobierto_budgets:debt:import[2014,'db/data/debt/debt-2014.csv'] &&
-bin/rake gobierto_budgets:debt:import[2013,'db/data/debt/debt-2013.csv'] &&
-bin/rake gobierto_budgets:debt:import[2012,'db/data/debt/debt-2012.csv'] &&
-bin/rake gobierto_budgets:debt:import[2011,'db/data/debt/debt-2011.csv'] &&
-bin/rake gobierto_budgets:debt:import[2010,'db/data/debt/debt-2010.csv']
-
-# Load population
-bin/rake gobierto_budgets:population:import[2015,'db/data/population/2015.px'] &&
-bin/rake gobierto_budgets:population:import[2014,'db/data/population/2014.px'] &&
-bin/rake gobierto_budgets:population:import[2013,'db/data/population/2013.px'] &&
-bin/rake gobierto_budgets:population:import[2012,'db/data/population/2012.px'] &&
-bin/rake gobierto_budgets:population:import[2011,'db/data/population/2011.px'] &&
-bin/rake gobierto_budgets:population:import[2010,'db/data/population/2011.px']
-
-# Load budgets
-bin/rake gobierto_budgets:budgets:import['budgets-planned','budgets-forecast-v2','economic',2015] &&
-bin/rake gobierto_budgets:budgets:import['budgets-planned','budgets-forecast-v2','economic',2014] &&
-bin/rake gobierto_budgets:budgets:import['budgets-planned','budgets-forecast-v2','economic',2013] &&
-bin/rake gobierto_budgets:budgets:import['budgets-planned','budgets-forecast-v2','economic',2012] &&
-bin/rake gobierto_budgets:budgets:import['budgets-planned','budgets-forecast-v2','economic',2011] &&
-bin/rake gobierto_budgets:budgets:import['budgets-planned','budgets-forecast-v2','economic',2010] &&
-bin/rake gobierto_budgets:budgets:import['budgets-planned','budgets-forecast-v2','functional',2015] &&
-bin/rake gobierto_budgets:budgets:import['budgets-planned','budgets-forecast-v2','functional',2014] &&
-bin/rake gobierto_budgets:budgets:import['budgets-planned','budgets-forecast-v2','functional',2013] &&
-bin/rake gobierto_budgets:budgets:import['budgets-planned','budgets-forecast-v2','functional',2012] &&
-bin/rake gobierto_budgets:budgets:import['budgets-planned','budgets-forecast-v2','functional',2011] &&
-bin/rake gobierto_budgets:budgets:import['budgets-planned','budgets-forecast-v2','functional',2010]
-
-# Load total aggregations
-bin/rake gobierto_budgets:total_budget:import['budgets-forecast-v2',2015] && 
-bin/rake gobierto_budgets:total_budget:import['budgets-forecast-v2',2014] &&
-bin/rake gobierto_budgets:total_budget:import['budgets-forecast-v2',2013] &&
-bin/rake gobierto_budgets:total_budget:import['budgets-forecast-v2',2012] &&
-bin/rake gobierto_budgets:total_budget:import['budgets-forecast-v2',2011] &&
-bin/rake gobierto_budgets:total_budget:import['budgets-forecast-v2',2010]
-```
-
-#### Load executed data
-
-```
-# Load budgets
-bin/rake gobierto_budgets:budgets:import['budgets-executed','budgets-execution-v2','economic',2015] &&
-bin/rake gobierto_budgets:budgets:import['budgets-executed','budgets-execution-v2','economic',2014] &&
-bin/rake gobierto_budgets:budgets:import['budgets-executed','budgets-execution-v2','economic',2013] &&
-bin/rake gobierto_budgets:budgets:import['budgets-executed','budgets-execution-v2','economic',2012] &&
-bin/rake gobierto_budgets:budgets:import['budgets-executed','budgets-execution-v2','economic',2011] &&
-bin/rake gobierto_budgets:budgets:import['budgets-executed','budgets-execution-v2','economic',2010] &&
-bin/rake gobierto_budgets:budgets:import['budgets-executed','budgets-execution-v2','functional',2015] &&
-bin/rake gobierto_budgets:budgets:import['budgets-executed','budgets-execution-v2','functional',2014] &&
-bin/rake gobierto_budgets:budgets:import['budgets-executed','budgets-execution-v2','functional',2013] &&
-bin/rake gobierto_budgets:budgets:import['budgets-executed','budgets-execution-v2','functional',2012] &&
-bin/rake gobierto_budgets:budgets:import['budgets-executed','budgets-execution-v2','functional',2011] &&
-bin/rake gobierto_budgets:budgets:import['budgets-executed','budgets-execution-v2','functional',2010]
-
-# Load total aggregations
-bin/rake gobierto_budgets:total_budget:import['budgets-execution-v2',2015] &&
-bin/rake gobierto_budgets:total_budget:import['budgets-execution-v2',2014] &&
-bin/rake gobierto_budgets:total_budget:import['budgets-execution-v2',2013] &&
-bin/rake gobierto_budgets:total_budget:import['budgets-execution-v2',2012] &&
-bin/rake gobierto_budgets:total_budget:import['budgets-execution-v2',2011] &&
-bin/rake gobierto_budgets:total_budget:import['budgets-execution-v2',2010]
-```
-
-#### Load local data
-
-In case you want to load only the data from a municipality, province or autonomous region, in the
-tasks that load the budgets or the total aggregations you can use an argument to declare which
-region you want to import the data from. There are three different arguments:
-
-- `place_id`. Example: `bin/rake gobierto_budgets:budgets:import['budgets-planned','budgets-forecast-v2','economic',2015] place_id=28079`
-- `province_id`. Example: `bin/rake gobierto_budgets:budgets:import['budgets-planned','budgets-forecast-v2','economic',2015] province_id=1`
-- `autonomous_region_id`. Example: `bin/rake gobierto_budgets:budgets:import['budgets-planned','budgets-forecast-v2','economic',2015] autonomous_region_id=1`
-
-You can check the different IDs in these tables:
-
-- [places IDs](https://github.com/PopulateTools/ine-places/blob/master/lib/ine/places/data/places.csv)
-- [provinces IDs](https://github.com/PopulateTools/ine-places/blob/master/lib/ine/places/data/provinces.csv)
-- [autonomous regions IDs](https://github.com/PopulateTools/ine-places/blob/master/lib/ine/places/data/autonomous_regions.csv)
-
-#### Datasets
-
-- Debt: http://www.minhap.gob.es/es-ES/Areas%20Tematicas/Administracion%20Electronica/OVEELL/Paginas/DeudaViva.aspx
-- Population: http://www.ine.es/inebmenu/mnu_cifraspob.htm
+PENDING
 
 ## Contributing
 

@@ -49,7 +49,7 @@ tutorial.
 _We have our preferences about which folders to use and with which permissions and users the application should be installed,
 and this guide is going to follow those conventions. Feel free to adapt the guide to your infrastructure and personal perferences_.
 
-### Setup directorios
+### Setup folders
 
 1 - Choose a destionation folder and create it. In our case, we prefer `/var/www/gobierto`:
 
