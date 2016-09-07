@@ -295,6 +295,27 @@ RSpec.feature "Rankings", type: :feature do
 
     end
 
+    context 'Expenditure => Specific Budget Lines. Ensuring no repetitions' do
+
+      ranking_url = '/ranking/2015/G/economic/amount_per_inhabitant/2'
+
+      scenario 'there should be no repetitions' do
+        visit ranking_url
+        expect(page).to have_css('#place_9184', maximum: 1)
+      end
+
+      scenario 'should show correct values' do
+        visit ranking_url
+        expect(page).to have_css('#place_9184 .expense_per', text: '5.720 €')
+      end
+
+      scenario 'specifying a given Place, it redirects to the page where that Place appears in the ranking' do
+        visit "#{ranking_url}?ine_code=43143"
+        expect(page).to have_current_path("#{ranking_url}?ine_code=43143&page=2")
+      end
+
+    end
+
     context 'Income' do
       ranking_url = '/ranking/2012/I/economic/amount_per_inhabitant'
 

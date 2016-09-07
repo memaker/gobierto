@@ -95,7 +95,6 @@ module GobiertoBudgets
       terms = [
         {term: { kind: @conditions[:kind] }},
         {term: { year: @conditions[:year] }},
-        {missing: { field: 'functional_code'}},
         {term: { ine_code: @conditions[:place].id }}
       ]
 
@@ -109,6 +108,8 @@ module GobiertoBudgets
           @conditions[:area_name] = FUNCTIONAL
           return functional_codes_for_economic_budget_line(@conditions)
         end
+      else
+        terms.push({missing: { field: 'functional_code'}})
       end
 
       query = {
@@ -230,7 +231,12 @@ module GobiertoBudgets
           filtered: {
             filter: {
               bool: {
-                must: terms
+                must: terms,
+                must_not: {
+                  exists: {
+                    field: "functional_code"
+                  }
+                }
               }
             }
           }

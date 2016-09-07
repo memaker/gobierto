@@ -2,8 +2,8 @@ class GobiertoSites::BudgetsController < GobiertoSites::ApplicationController
   before_action :load_place, :load_year
 
   def index
-    @kind = GobiertoBudgets::BudgetLine::EXPENSE
-    @area_name = GobiertoBudgets::BudgetLine::FUNCTIONAL
+    @kind = GobiertoBudgets::BudgetLine::INCOME
+    @area_name = GobiertoBudgets::BudgetLine::ECONOMIC
 
     @site_stats = SiteStats.new site: @site, year: @year
 

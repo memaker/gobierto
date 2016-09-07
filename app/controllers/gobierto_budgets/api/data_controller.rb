@@ -145,7 +145,6 @@ module GobiertoBudgets
         @code = code_from_params(params[:code])
 
         @category_name = @kind == 'G' ? 'Gasto' : 'Ingreso'
-
         budget_data = budget_data(@year, 'amount_per_inhabitant')
         budget_data_previous_year = budget_data(@year - 1, 'amount_per_inhabitant', false)
         position = budget_data[:position].to_i
@@ -450,49 +449,24 @@ module GobiertoBudgets
       end
 
       def budget_data(year, field, ranking = true)
-        query = {
-          sort: [
-            { field.to_sym => { order: 'desc' } }
-          ],
-          query: {
-            filtered: {
-              filter: {
-                bool: {
-                  must: [
-                    {term: { year: year }},
-                    {term: { code: @code }},
-                    {term: { kind: @kind }}
-                  ]
-                }
-              }
-            }
-          },
-          size: 10_000,
-          _source: false
-        }
+        ine_code = params[:ine_code].to_i
 
-        id = "#{params[:ine_code]}/#{year}/#{@code}/#{@kind}"
+        opts = {year: year, code: @code, kind: @kind, area_name: @area, variable: field}
+        results, total_elements = BudgetLine.for_ranking(opts)
 
         if ranking
-          response = GobiertoBudgets::SearchEngine.client.search index: GobiertoBudgets::SearchEngineConfiguration::BudgetLine.index_forecast, type: @area, body: query
-          buckets = response['hits']['hits'].map{|h| h['_id']}
-          position = buckets.index(id) + 1 rescue 0
+          position = BudgetLine.place_position_in_ranking(opts.merge(ine_code: ine_code))
         else
-          buckets = []
+          total_elements = 0
           position = 0
         end
 
-        begin
-          value = GobiertoBudgets::SearchEngine.client.get index: GobiertoBudgets::SearchEngineConfiguration::BudgetLine.index_forecast, type: @area, id: id
-          value = value['_source'][field]
-        rescue Elasticsearch::Transport::Transport::Errors::NotFound
-          value = 0
-        end
+        value = results.select {|r| r['ine_code'] == ine_code }.first.try(:[],field)
 
         return {
           value: value,
           position: position,
-          total_elements: buckets.length
+          total_elements: total_elements
         }
       end
 
@@ -610,7 +584,7 @@ module GobiertoBudgets
             year: year,
             deviation: helpers.number_with_precision(deviation, precision: 2,separator:'.').to_f
           }
-        end
+        end.reject(&:nil?)
       end
 
       def get_places(ine_codes)

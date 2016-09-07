@@ -71,7 +71,8 @@ bin/rake gobierto_budgets:population:create
 
 ```
 # Load categories
-bin/rake gobierto_budgets:budget_categories:import['budgets-planned']
+bin/rake gobierto_budgets:budget_categories:import['budgets-planned'] &&
+bin/rake gobierto_budgets:budget_categories:import['budgets-executed']
 
 # Load places
 bin/rake gobierto_budgets:places:import
