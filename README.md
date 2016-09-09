@@ -97,3 +97,7 @@ PENDING
 ## Contributing
 
 See [https://github.com/PopulateTools/gobierto/blob/master/CONTRIBUTING_EN.md] or [https://github.com/PopulateTools/gobierto/blob/master/CONTRIBUTING_ES.md]
+
+## License
+
+Code published under AFFERO GPL v3 (see [LICENSE-AGPLv3.txt](https://github.com/PopulateTools/gobierto/blob/master/LICENSE-AGPLv3.txt))
