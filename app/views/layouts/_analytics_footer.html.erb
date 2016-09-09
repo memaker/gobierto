@@ -1,7 +1,7 @@
 <script type="text/javascript">
 
-  ga('create', Settings.google_analytics_key, 'auto');
-  mixpanel.init(Settings.mixpanel_key);
+  ga('create', '<%= Settings.google_analytics_key %>', 'auto');
+  mixpanel.init('<% Settings.mixpanel_key %>');
   ga('send', 'pageview');
 
 </script>
