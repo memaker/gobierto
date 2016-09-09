@@ -103,7 +103,7 @@ module GobiertoBudgets
       @kind ||= GobiertoBudgets::BudgetLine::EXPENSE if action_name == 'ranking'
       @area_name = params[:area] || 'functional'
       @year = params[:year]
-      @code = code_from_params(params[:code]) if params[:code].present?
+      @code = params[:code]
       if params[:variable].present?
         @variable = params[:variable]
         render_404 and return unless valid_variables.include?(@variable)
