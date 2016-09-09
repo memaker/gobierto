@@ -3,15 +3,24 @@
 
 # Gobierto
 
-Gobierto is a web application that enables local administrations to communicate better with their constituents. Here are some of the things you can do with it:
+Gobierto is a Rails app that provides a set of tools to power efforts from public administrations towards transparency and citizen engagement, to enable them to communicate better with their constituents and put public open data to work. We are getting started and many things will change. The first working module is for budget visualization. Things you can currently do with Gobierto:
 
-1. Setup a site for a municipality (such as madrid.gobierto.es) to publish their budgets in a well designed, easy to understand way. Soon also the site will incorporate other optional features such as a Participation module (where a consultation process can be put in place and fully managed), a Simple CMS and more.
-2. Setup a multi-site installation to manage sites for multiple municipalities or public bodies at scale.
-3. Deploy a budgets comparison tool to enable citizens to explore, visualize, compare and contextualize the budgets of multiple municipalities/public bodies at the same time (such as those of a given Province, Autonomous Region or Country)
+1. **Single-Site for a public body (ie municipality)**: Setup a site for a municipality (such as madrid.gobierto.es) to publish their budgets in a well designed, easy to understand way. We'll be adding other modules such as budget consultations, indicators, stories...
+2. **Multi-site for public bodies**: #1, but to provide service for many bodies with the same software installation in separate URLs (madrid.gobierto.es, barcelona.gobierto.es, etc). 
+3. **Budget comparison**: A budgets comparison tool to enable citizens to explore, visualize, compare and contextualize the budgets of multiple municipalities/public bodies at the same time (such as those of a given Province, Autonomous Region or Country). You can check the working software at presupuestos.gobierto.es (it contains municipal budget data for almost 8.000 municipalities).
 
-Additionally:
-- Optional integration with Mailchimp for simple user communication management
-- User feedback gathering
+You can use any of the three use cases indepently, or all at once with the same software installation. 
+
+Gobierto is being built in the open by [Populate](http://populate.tools), a product design studio around civic engagement based in Madrid, Spain. We provide commercial services around data journalism, news products, open data... and Gobierto, of course ;) 
+
+* #todo Why we build Gobierto and our design philosophy
+* [Check our roadmap](https://github.com/PopulateTools/gobierto/wiki). 
+
+More info: 
+
+* Main site (spanish): [gobierto.es](http://gobierto.es)
+* Blog (spanish): [gobierto.es](http://gobierto.es/blog)
+* #todo public broadcast channel to report updates
 
 ## Application architecture
 
