@@ -55,16 +55,16 @@ Once it is running, make sure you enter the correct URL for your instance in `co
 
 ### Load some data
 
-If you want to import some basic data to get started, do the following:
+If you want to import some basic data to get started, run the following:
 
 ```
-$ bin/rake gobierto_budgets:budgets:create
-$ bin/rake gobierto_budgets:total_budget:create
-$ bin/rake gobierto_budgets:budget_categories:create
-$ bin/rake gobierto_budgets:places:create
-$ bin/rake gobierto_budgets:debt:create
-$ bin/rake gobierto_budgets:population:create
-$ bin/sample_data
+bin/rake gobierto_budgets:budgets:create
+bin/rake gobierto_budgets:total_budget:create
+bin/rake gobierto_budgets:budget_categories:create
+bin/rake gobierto_budgets:places:create
+bin/rake gobierto_budgets:debt:create
+bin/rake gobierto_budgets:population:create
+bin/sample_data
 ```
 
 This will load data for X and Y municipalities in Spain as a sample.
@@ -78,14 +78,14 @@ When working locally, the application server should be queried through the top-l
 To configure this host in your computer, the simplest way is through POW [POW](http://pow.cx/). To install:
 
 ```
-$ curl get.pow.cx | sh
+curl get.pow.cx | sh
 ```
 
 Then, configure the host like this:
 
 ```
-$ cd ~/.pow
-$ ln -s DIRECTORY/gobierto gobierto
+cd ~/.pow
+ln -s DIRECTORY/gobierto gobierto
 ```
 
 Then just browse to http://presupuestos.gobierto.dev/ and the app should load.
