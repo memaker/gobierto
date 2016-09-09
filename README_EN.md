@@ -108,7 +108,7 @@ ToDo: Document the format of budget data needed to import it.
 
 ## Contributing
 
-See [contributing (english)](https://github.com/PopulateTools/gobierto/blob/master/CONTRIBUTING_EN.md) or [contribuyendo (castellano)](https://github.com/PopulateTools/gobierto/blob/master/CONTRIBUTING_ES.md)
+Yes! See [contributing](https://github.com/PopulateTools/gobierto/blob/master/CONTRIBUTING_EN.md)
 
 ### Libraries/gems being used
 

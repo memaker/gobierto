@@ -1,7 +1,7 @@
 
 ![Gobierto](https://gobierto.es/assets/logo_gobierto.png)
 
-This README is available [in English](README_EN.MD)
+This README is available [in English](README_EN.md)
 
 # Gobierto
 
@@ -73,7 +73,7 @@ Una vez esté corriendo, asegúrate de configurar la URL correcta para tu instan
 
 Si simplemente quieres cargar unos cuantos datos para empezar a trabajar, haz lo siguiente:
 
-1. Clone [this repo](https://github.com/PopulateTools/gobierto-budgets-data) y sigue las instrucciones para que tengas todos los datos de los municipios españoles disponibles para importar.
+1. Clona [este repo](https://github.com/PopulateTools/gobierto-budgets-data) y sigue las instrucciones para que tengas todos los datos de los municipios españoles disponibles para importar.
 2. Después, ejecuta `bin/rake gobierto_budgets:setup:sample_site`
 
 Esto cargará los datos para Madrid, Barcelona y Bilbao y activará el Site de Municipio de prueba para Madrigal de la vera.
@@ -112,7 +112,7 @@ ToDo: Documentar el formato de datos para importar
 
 ## Contribuir
 
-Ver [contributing (english)](https://github.com/PopulateTools/gobierto/blob/master/CONTRIBUTING_EN.md) o [contribuyendo (castellano)](https://github.com/PopulateTools/gobierto/blob/master/CONTRIBUTING_ES.md)
+Claro! Mira [[cómo contribuir](https://github.com/PopulateTools/gobierto/blob/master/CONTRIBUTING_ES.md)
 
 ### Librerías/gemas
 
