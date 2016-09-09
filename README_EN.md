@@ -1,6 +1,8 @@
 
 ![Gobierto](https://gobierto.es/assets/logo_gobierto.png)
 
+Este README está disponible [en Español](README.md)
+
 # Gobierto
 
 Gobierto is a Rails app that provides a set of tools to power efforts from public administrations towards transparency and citizen engagement, to enable them to communicate better with their constituents and put public open data to work. We are getting started and many things will change. The first working module is for budget visualization. Things you can currently do with Gobierto:
