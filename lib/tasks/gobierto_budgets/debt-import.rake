@@ -27,7 +27,7 @@ namespace :gobierto_budgets do
     def import_debt(file_path, year)
       pbar = ProgressBar.new("debt-#{year}", INE::Places::Place.all.length)
 
-
+      problems = []
       CSV.foreach(file_path) do |row|
         pbar.inc
 
@@ -36,9 +36,7 @@ namespace :gobierto_budgets do
         value = row[4].tr('.','').to_f
         place = INE::Places::Place.find id
         if place.nil?
-          puts "==================="
-          puts row.join(',')
-          puts "==================="
+          problems << row
           next
         end
 
@@ -54,6 +52,10 @@ namespace :gobierto_budgets do
       end
 
       pbar.finish
+      puts "Problems importing debt with: " if problems.any?
+      problems.each do |row|
+        puts "  #{row.join(',')}"
+      end
     end
 
     desc 'Reset ElasticSearch'

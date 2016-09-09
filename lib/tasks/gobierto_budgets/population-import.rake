@@ -31,12 +31,13 @@ namespace :gobierto_budgets do
       population_data = dataset.data('edad (año a año)' => 'Total', 'sexo' => 'Ambos sexos')
       places_codes = dataset.dimension('municipios').map{|k| k.split('-').first.to_i }
       population_data = Hash[places_codes.zip(population_data)]
+      missing_data = []
 
       INE::Places::Place.all.each do |place|
         pbar.inc
         pop = population_data[place.id.to_i]
         if pop.nil?
-          puts place.name
+          missing_data << place.name
           next
         end
 
@@ -52,6 +53,9 @@ namespace :gobierto_budgets do
       end
 
       pbar.finish
+      if missing_data.any?
+        puts "Couldn't find population data of #{year} for #{missing_data.join(', ')}"
+      end
     end
 
     desc 'Reset ElasticSearch'
