@@ -7,14 +7,13 @@ Gobierto is a Rails app that provides a set of tools to power efforts from publi
 
 1. **Single-Site for a public body (ie municipality)**: Setup a site for a municipality (such as madrid.gobierto.es) to publish their budgets in a well designed, easy to understand way. We'll be adding other modules such as budget consultations, indicators, stories...
 2. **Multi-site for public bodies**: #1, but to provide service for many bodies with the same software installation in separate URLs (madrid.gobierto.es, barcelona.gobierto.es, etc). 
-3. **Budget comparison**: A budgets comparison tool to enable citizens to explore, visualize, compare and contextualize the budgets of multiple municipalities/public bodies at the same time (such as those of a given Province, Autonomous Region or Country). You can check the working software at presupuestos.gobierto.es (it contains municipal budget data for almost 8.000 municipalities).
+3. **Budget comparison**: A budgets comparison tool to enable citizens to explore, visualize, compare and contextualize the budgets of multiple municipalities/public bodies at the same time (such as those of a given Province, Autonomous Region or Country). You can check a live instance at [presupuestos.gobierto.es](http://presupuestos.gobierto.es) (it contains municipal budget data for almost 8.000 municipalities).
 
-You can use any of the three use cases indepently, or all at once with the same software installation. 
+You can use any of the three use cases indepently, or all at once with the same software installation. And you don't have to be a public bobdy to use it: if you 
 
 Gobierto is being built in the open by [Populate](http://populate.tools), a product design studio around civic engagement based in Madrid, Spain. We provide commercial services around data journalism, news products, open data... and Gobierto, of course ;) 
 
 * #todo Why we build Gobierto and our design philosophy
-* [Check our roadmap](https://github.com/PopulateTools/gobierto/wiki). 
 
 More info: 
 
@@ -22,15 +21,20 @@ More info:
 * Blog (spanish): [gobierto.es](http://gobierto.es/blog)
 * #todo public broadcast channel to report updates
 
+## Roadmap
+
+* [Roadmap](https://github.com/PopulateTools/gobierto/wiki). 
+
+## Feature requests
+
+File an [issue](https://github.com/PopulateTools/gobierto/issues). 
+
 ## Application architecture
 
-The application is written in the Ruby programming language and uses the Ruby on Rails framework. In the database layer uses Postgres. Also, it uses an external Elastic Search to store and process all the budgets and third-party data.
+The application is written in the Ruby programming language and uses the Ruby on Rails framework. In the database layer uses Postgres. Also, it uses an external Elastic Search to store and process all the budgets and third-party data. Gobierto budgets module lives in its own subdomain, and so does each of the individual sites for public bodies. This is the subdomains schema:
 
-Gobierto budgets module lives in its own subdomain, and so does each of the individual sites for public bodies. This is the subdomains schema:
-
-- `presupuestos.`, where Gobierto Budgets for more than one public entity lives
-- `<public_entity_name>.`, is the public entity page where local budgets, cms module and participation module
-  can be activated
+- `presupuestos.`, where Gobierto Budget Comparison lives
+- `<public_entity_name>.`, is the public entity page where budgets visualization and other modules can be activated
 
 ## Development
 
@@ -74,9 +78,7 @@ Alternatively, learn [how to load the data](https://github.com/PopulateTools/gob
 
 ### Setup subdomain and start the application
 
-When working locally, the application server should be queried through the top-level domain `.gobierto.dev`.
-
-To configure this host in your computer, the simplest way is through POW [POW](http://pow.cx/). To install:
+When working locally, the application server should be queried through the top-level domain `.gobierto.dev`. To configure this host in your computer, the simplest way is through POW [POW](http://pow.cx/). To install:
 
 ```
 curl get.pow.cx | sh
@@ -100,9 +102,13 @@ bin/rake gobierto_budgets:setup:create_site['<Place ID>','<URL OF INSTITUTION>']
 ```
 Where `<Place ID>` is the ID of the municipality you wish to setup the site for and the optional `<URL OF INSTITUTION>` is the URL for other municipality's website, if any.
 
+## Bring your own data
+
+#ToDo Document the format of budget data needed to import it.
+
 ## Contributing
 
-See [https://github.com/PopulateTools/gobierto/blob/master/CONTRIBUTING_EN.md] or [https://github.com/PopulateTools/gobierto/blob/master/CONTRIBUTING_ES.md]
+See [contributing (english)](https://github.com/PopulateTools/gobierto/blob/master/CONTRIBUTING_EN.md) or [contribuyendo (castellano)](https://github.com/PopulateTools/gobierto/blob/master/CONTRIBUTING_ES.md)
 
 ## License
 
