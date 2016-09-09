@@ -9,7 +9,7 @@ Gobierto is a Rails app that provides a set of tools to power efforts from publi
 2. **Multi-site for public bodies**: #1, but to provide service for many bodies with the same software installation in separate URLs (madrid.gobierto.es, barcelona.gobierto.es, etc). 
 3. **Budget comparison**: A budgets comparison tool to enable citizens to explore, visualize, compare and contextualize the budgets of multiple municipalities/public bodies at the same time (such as those of a given Province, Autonomous Region or Country). You can check a live instance at [presupuestos.gobierto.es](http://presupuestos.gobierto.es) (it contains municipal budget data for almost 8.000 spanish municipalities).
 
-You can use any of the three use cases independently, or all at once with the same software installation. And you don't have to be a public bobdy to use it: if you 
+You can use any of the three use cases independently, or all at once with the same software installation. And you don't have to be a public bobdy to use it. 
 
 Gobierto is being built in the open by [Populate](http://populate.tools), a product design studio around civic engagement based in Madrid, Spain. We provide commercial services around data journalism, news products, open data... and Gobierto, of course ;) 
 
