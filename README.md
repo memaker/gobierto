@@ -7,9 +7,9 @@ Gobierto is a Rails app that provides a set of tools to power efforts from publi
 
 1. **Single-Site for a public body (ie municipality)**: Setup a site for a municipality (such as madrid.gobierto.es) to publish their budgets in a well designed, easy to understand way. We'll be adding other modules such as budget consultations, indicators, stories...
 2. **Multi-site for public bodies**: #1, but to provide service for many bodies with the same software installation in separate URLs (madrid.gobierto.es, barcelona.gobierto.es, etc). 
-3. **Budget comparison**: A budgets comparison tool to enable citizens to explore, visualize, compare and contextualize the budgets of multiple municipalities/public bodies at the same time (such as those of a given Province, Autonomous Region or Country). You can check a live instance at [presupuestos.gobierto.es](http://presupuestos.gobierto.es) (it contains municipal budget data for almost 8.000 municipalities).
+3. **Budget comparison**: A budgets comparison tool to enable citizens to explore, visualize, compare and contextualize the budgets of multiple municipalities/public bodies at the same time (such as those of a given Province, Autonomous Region or Country). You can check a live instance at [presupuestos.gobierto.es](http://presupuestos.gobierto.es) (it contains municipal budget data for almost 8.000 spanish municipalities).
 
-You can use any of the three use cases indepently, or all at once with the same software installation. And you don't have to be a public bobdy to use it: if you 
+You can use any of the three use cases independently, or all at once with the same software installation. And you don't have to be a public bobdy to use it: if you 
 
 Gobierto is being built in the open by [Populate](http://populate.tools), a product design studio around civic engagement based in Madrid, Spain. We provide commercial services around data journalism, news products, open data... and Gobierto, of course ;) 
 
@@ -18,12 +18,12 @@ Gobierto is being built in the open by [Populate](http://populate.tools), a prod
 More info: 
 
 * Main site (spanish): [gobierto.es](http://gobierto.es)
-* Blog (spanish): [gobierto.es](http://gobierto.es/blog)
+* Blog (spanish): [gobierto.es/blog](http://gobierto.es/blog)
 * #todo public broadcast channel to report updates
 
 ## Roadmap
 
-* [Roadmap](https://github.com/PopulateTools/gobierto/wiki). 
+[See our wiki](https://github.com/PopulateTools/gobierto/wiki). 
 
 ## Feature requests
 
@@ -104,11 +104,16 @@ Where `<Place ID>` is the ID of the municipality you wish to setup the site for 
 
 ## Bring your own data
 
-#ToDo Document the format of budget data needed to import it.
+ToDo: Document the format of budget data needed to import it.
 
 ## Contributing
 
 See [contributing (english)](https://github.com/PopulateTools/gobierto/blob/master/CONTRIBUTING_EN.md) or [contribuyendo (castellano)](https://github.com/PopulateTools/gobierto/blob/master/CONTRIBUTING_ES.md)
+
+### Libraries/gems being used
+
+* Gems: See [Gemfile](https://github.com/PopulateTools/gobierto/blob/master/Gemfile) for complete reference
+* Other (CSS, JS): #ToDo (browse source meanwhile ;)
 
 ## License
 
