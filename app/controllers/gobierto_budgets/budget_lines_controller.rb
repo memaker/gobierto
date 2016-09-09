@@ -18,7 +18,7 @@ module GobiertoBudgets
     def load_params
       @place = INE::Places::Place.find_by_slug params[:slug]
       @year = params[:year]
-      @code = code_from_params(params[:code])
+      @code = params[:code]
       @kind = ( %w{income i}.include?(params[:kind].downcase) ? GobiertoBudgets::BudgetLine::INCOME : GobiertoBudgets::BudgetLine::EXPENSE )
       @area_name = params[:area] || 'economic'
 

@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
   rescue_from ActionController::RoutingError, with: :render_404
   rescue_from ActionController::UnknownFormat, with: :render_404
 
-  helper_method :code_from_params, :helpers
+  helper_method :helpers
 
   before_action :load_site
 
@@ -16,12 +16,6 @@ class ApplicationController < ActionController::Base
 
   def helpers
     ActionController::Base.helpers
-  end
-
-  def code_from_params(code)
-    if code.present?
-      code.tr('-','.')
-    end
   end
 
   def choose_layout

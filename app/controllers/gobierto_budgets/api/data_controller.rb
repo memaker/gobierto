@@ -74,14 +74,14 @@ module GobiertoBudgets
 
       def lines
         @place = INE::Places::Place.find(params[:ine_code])
-        data_line = GobiertoBudgets::Data::Lines.new place: @place, year: params[:year], what: params[:what], kind: params[:kind], code: code_from_params(params[:code]), area: params[:area]
+        data_line = GobiertoBudgets::Data::Lines.new place: @place, year: params[:year], what: params[:what], kind: params[:kind], code: params[:code], area: params[:area]
 
         respond_lines_to_json data_line
       end
 
       def compare
         @places = get_places params[:ine_codes]
-        data_line = GobiertoBudgets::Data::Lines.new place: @places, year: params[:year], what: params[:what], kind: params[:kind], code: code_from_params(params[:code]), area: params[:area]
+        data_line = GobiertoBudgets::Data::Lines.new place: @places, year: params[:year], what: params[:what], kind: params[:kind], code: params[:code], area: params[:area]
 
         respond_lines_to_json data_line
       end
@@ -90,7 +90,7 @@ module GobiertoBudgets
         @year = params[:year].to_i
         @area = params[:area]
         @kind = params[:kind]
-        @code = code_from_params(params[:code])
+        @code = params[:code]
 
         @category_name = @kind == 'G' ? 'Gasto' : 'Ingreso'
 
@@ -118,7 +118,7 @@ module GobiertoBudgets
         @year = params[:year].to_i
         @area = params[:area]
         @kind = params[:kind]
-        @code = code_from_params(params[:code])
+        @code = params[:code]
 
         @category_name = @kind == 'G' ? 'Gasto ejecutado vs presupuestado' : 'Ingreso ejecutado vs presupuestado'
 
@@ -142,7 +142,7 @@ module GobiertoBudgets
         @year = params[:year].to_i
         @area = params[:area]
         @kind = params[:kind]
-        @code = code_from_params(params[:code])
+        @code = params[:code]
 
         @category_name = @kind == 'G' ? 'Gasto' : 'Ingreso'
         budget_data = budget_data(@year, 'amount_per_inhabitant')
@@ -169,7 +169,7 @@ module GobiertoBudgets
         @year = params[:year].to_i
         @area = params[:area]
         @kind = params[:kind]
-        @code = code_from_params(params[:code])
+        @code = params[:code]
 
         begin
           result = GobiertoBudgets::SearchEngine.client.get index: GobiertoBudgets::SearchEngineConfiguration::BudgetLine.index_forecast, type: @area, id: [params[:ine_code],@year,@code,@kind].join('/')
