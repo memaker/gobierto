@@ -9,7 +9,7 @@ Gobierto es una aplicación Rails que proporciona una serie de herramientas a la
 
 Gobierto está comenzando y es posible que algunas cosas cambien por el camino. El primer módulo disponible es el de Visualización de Presupuestos. Este es el tipo de cosas que puedes hacer:
 
-1. **Sitio único para una entidad pública (por ejemplo, un municipio) **: Monta un sitio web para un Municipio (por ejemplo, madrid.gobierto.es) para publicar sus presupuestos de una manera sencilla de comprender. Pronto añadiremos otros módulos tales como Consultas de Presupuestos, Indicadores, Historias...
+1. **Sitio único para una entidad pública (por ejemplo, un municipio)**: Monta un sitio web para un Municipio (por ejemplo, madrid.gobierto.es) para publicar sus presupuestos de una manera sencilla de comprender. Pronto añadiremos otros módulos tales como Consultas de Presupuestos, Indicadores, Historias...
 2. **Sitio múltiple para entidades públicas**: Como el punto 1, pero para dar servico a múltiples entidades públicas bajo la misma instalación de Software y con distintos subdominios (madrid.gobierto.es, barcelona.gobierto.es, etc). 
 3. **Comparación de Presupuestos**: Una herramienta de comparación de presupuestos para que los ciudadanos puedan explorar, visualizar, comparar y poner en contexto los presupuestos de varias entidades públicas al mismo tiempo (como por ejemplo los de los municipios de una Provincia, Comunidad Autónoma o de un País). Puedes ver una instancia activa aquí [presupuestos.gobierto.es](http://presupuestos.gobierto.es) (contiene datos presupuestarios municipales para prácticamente la totalidad de los 8000 municipios en España).
 
