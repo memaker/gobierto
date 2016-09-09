@@ -3,6 +3,7 @@ namespace :gobierto_budgets do
   namespace :setup do
 
     SAMPLE_PLACES = %w{madrid barcelona bilbao madrigal-de-la-vera}
+    SAMPLE_SITE = 'madrigal-de-la-vera'
 
     def indices_populated?
       GobiertoBudgets::SearchEngine.client.cluster.stats['indices']['docs']['count'] > 0
@@ -73,13 +74,40 @@ namespace :gobierto_budgets do
           end
         end
       end
+      ENV['place_id'] = nil
+    end
+
+    desc "Creates a Gobierto Site. Example: rake gobierto_budgets:setup:create_site[28079,'http://ayuntamientodemadrid.es']"
+    task :create_site, [:place_id, :institution_url] => :environment do |t, args|
+      place_id = args[:place_id]
+      fail "Please provide a Place ID" if place_id.blank?
+      fail "'#{place_id}' is not a valid place" unless INE::Places::Place.find(place_id)
+
+      place = INE::Places::Place.find place_id
+      institution_url = args[:institution_url] || "http://#{place.slug}.es"
+
+      site = Site.create! name: "#{place.name} Presupuestos",
+                          domain: "#{place.slug}.gobierto.dev",
+                          location_name: place.name,
+                          location_type: place.class.name,
+                          external_id: place.id,
+                          institution_url: institution_url,
+                          institution_type: 'Ayuntamiento'
+
+      site.configuration.links = [institution_url]
+      # site.configuration.logo = 'http://santander.es/sites/default/themes/custom/ayuntamiento/img/logo-ayto-santander.png'
+      site.configuration.modules = ['GobiertoBudgets']
+      site.save!
     end
 
     desc "Imports data for sample municipalities and creates sites accordingly. Good to get started"
-    task :sample_sites => :environment do |t, args|
+    task :sample_site => :environment do |t, args|
       Rake::Task["gobierto_budgets:setup:create_all_indices"].invoke
       Rake::Task["gobierto_budgets:setup:import_supporting_data"].invoke
       Rake::Task["gobierto_budgets:setup:import_sample_budget_data"].invoke
+      Rake::Task["gobierto_budgets:setup:create_site"].invoke('10111','http://www.madrigaldelavera.es/')
+      url = Site.last.domain
+      puts "Browse to #{url} to check out your sample site."
     end
 
   end
