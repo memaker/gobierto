@@ -112,7 +112,7 @@ ToDo: Documentar el formato de datos para importar
 
 ## Contribuir
 
-Claro! Mira [[cómo contribuir](https://github.com/PopulateTools/gobierto/blob/master/CONTRIBUTING_ES.md)
+Claro! Mira [cómo contribuir](https://github.com/PopulateTools/gobierto/blob/master/CONTRIBUTING_ES.md)
 
 ### Librerías/gemas
 
