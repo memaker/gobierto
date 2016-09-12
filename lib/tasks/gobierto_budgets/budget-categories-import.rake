@@ -41,7 +41,10 @@ namespace :gobierto_budgets do
 
       table_name = "tb_cuentasEconomica_#{year}"
       sql = %Q{SELECT * from "#{table_name}"}
-      db.execute(sql).each do |row|
+      all_rows = db.execute(sql)
+      pbar = ProgressBar.new("econ-#{year}", all_rows.num_tuples)
+      all_rows.each do |row|
+        pbar.inc
         code = row['cdcta']
         level = row['cdcta'].length
         parent_code = row['cdcta'][0..-2]
@@ -63,6 +66,7 @@ namespace :gobierto_budgets do
         id = ['economic',code,row['tipreig']].join('/')
         GobiertoBudgets::SearchEngine.client.index index: GobiertoBudgets::SearchEngineConfiguration::BudgetCategories.index, type: GobiertoBudgets::SearchEngineConfiguration::BudgetCategories.type, id: id, body: query
       end
+      pbar.finish
     end
 
     def import_functional_categories(db, year)
@@ -74,7 +78,10 @@ namespace :gobierto_budgets do
       table_name = "tb_cuentasProgramas_#{year}"
 
       sql = %Q{select * from "#{table_name}"}
-      db.execute(sql).each do |row|
+      all_rows = db.execute(sql)
+      pbar = ProgressBar.new("func-#{year}", all_rows.num_tuples)
+      all_rows.each do |row|
+        pbar.inc
         code = row['cdfgr']
         level = row['cdfgr'].length
         parent_code = row['cdfgr'][0..-2]
@@ -97,6 +104,7 @@ namespace :gobierto_budgets do
 
         GobiertoBudgets::SearchEngine.client.index index: GobiertoBudgets::SearchEngineConfiguration::BudgetCategories.index, type: GobiertoBudgets::SearchEngineConfiguration::BudgetCategories.type, id: id,  body: query
       end
+      pbar.finish
     end
 
     desc 'Reset ElasticSearch'

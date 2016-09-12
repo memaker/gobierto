@@ -52,6 +52,17 @@ namespace :gobierto_budgets do
 
       INE::Places::Place.all.each do |place|
         pbar.inc
+
+        if ENV['place_id'].present?
+          next if place.id.to_i != ENV['place_id'].to_i
+        end
+        if ENV['province_id'].present?
+          next if place.province.id.to_i != ENV['province_id'].to_i
+        end
+        if ENV['autonomous_region_id'].present?
+          next if place.province.autonomous_region.id.to_i != ENV['autonomous_region_id'].to_i
+        end
+
         pop = population(place.id, year) || population(place.id, year - 1)
         if pop.nil?
           puts "- Skipping #{place.id} #{place.name} because population data is missing for #{year} and #{year-1}"
@@ -133,6 +144,16 @@ SQL
 
       INE::Places::Place.all.each do |place|
         pbar.inc
+
+        if ENV['place_id'].present?
+          next if place.id.to_i != ENV['place_id'].to_i
+        end
+        if ENV['province_id'].present?
+          next if place.province.id.to_i != ENV['province_id'].to_i
+        end
+        if ENV['autonomous_region_id'].present?
+          next if place.province.autonomous_region.id.to_i != ENV['autonomous_region_id'].to_i
+        end
 
         pop = population(place.id, year) || population(place.id, year - 1)
         if pop.nil?
@@ -217,14 +238,13 @@ SQL
       end
     end
 
-    desc "Import budgets from database into ElasticSearch. Example rake budgets:import['budgets-dbname','budgets-execution','economic',2015]"
-    task :import, [:db_name, :index,:type,:year] => :environment do |t, args|
+    desc "Import budgets from database into ElasticSearch. Example rake budgets:import['budgets-dbname','budgets-execution','economic',2015] place_id=28079 province_id=3 autonomous_region_id=5"
+    task :import, [:db_name, :index, :type, :year] => :environment do |t, args|
       db_name = args[:db_name]
       index = args[:index] if BUDGETS_INDEXES.include?(args[:index])
       raise "Invalid index #{args[:index]}" if index.blank?
       type = args[:type] if BUDGETS_TYPES.include?(args[:type])
       raise "Invalid type #{args[:type]}" if type.blank?
-
       if m = args[:year].match(/\A\d{4}\z/)
         year = m[0].to_i
       end

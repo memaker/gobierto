@@ -21,7 +21,7 @@ gem 'config'
 gem 'dalli'
 gem 'aws-ses'
 
-# Gobify
+# Gobierto Pparticipation
 gem 'friendly_id'
 gem 'acts_as_list'
 gem 'paranoia', '~> 2.0'
@@ -32,7 +32,6 @@ gem 'acts_as_tree'
 gem 'paperclip'
 gem 'aws-sdk-v1'
 
-
 # Frontend
 gem 'jquery-rails'
 gem 'jquery-turbolinks'
@@ -41,7 +40,6 @@ gem 'turbolinks'
 gem 'therubyracer'
 gem 'cookies_eu'
 gem 'flight-for-rails'
-
 
 # Elastic search
 gem 'elasticsearch'

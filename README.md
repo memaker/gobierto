@@ -1,231 +1,124 @@
+
+![Gobierto](https://gobierto.es/assets/logo_gobierto.png)
+
+This README is available [in English](README_EN.md)
+
 # Gobierto
 
-## Setup subdomain
+Gobierto es una aplicación Rails que proporciona una serie de herramientas a las administraciones públicas para facilitar la transparencia y la participación ciudadana, para que se comuniquen mejor con los ciudadanos y para facilitar la explotación de los datos públicos.
 
-The application server should be queried through the top-level domain `.gobierto.dev`.
+Gobierto está comenzando y es posible que algunas cosas cambien por el camino. El primer módulo disponible es el de Visualización de Presupuestos. Este es el tipo de cosas que puedes hacer:
 
-To configure this host in your computer, the simplest way is through POW [POW](http://pow.cx/). To install:
+1. **Sitio único para una entidad pública (por ejemplo, un municipio)**: Monta un sitio web para un Municipio (por ejemplo, madrid.gobierto.es) para publicar sus presupuestos de una manera sencilla de comprender. Pronto añadiremos otros módulos tales como Consultas de Presupuestos, Indicadores, Historias...
+2. **Sitio múltiple para entidades públicas**: Como el punto 1, pero para dar servico a múltiples entidades públicas bajo la misma instalación de Software y con distintos subdominios (madrid.gobierto.es, barcelona.gobierto.es, etc). 
+3. **Comparación de Presupuestos**: Una herramienta de comparación de presupuestos para que los ciudadanos puedan explorar, visualizar, comparar y poner en contexto los presupuestos de varias entidades públicas al mismo tiempo (como por ejemplo los de los municipios de una Provincia, Comunidad Autónoma o de un País). Puedes ver una instancia activa aquí [presupuestos.gobierto.es](http://presupuestos.gobierto.es) (contiene datos presupuestarios municipales para prácticamente la totalidad de los 8000 municipios en España).
 
-```
-$ curl get.pow.cx | sh
-```
+Puedes usar cualquiera de los tres escenarios de forma independiente o todos a la vez bajo una única instalación. Y no tienes por qué ser una institución pública para usarlo.
 
-Then, configure the host like this:
+Gobierto es un proyecto abierto de [Populate](http://populate.tools), un estudio que diseña desde Madrid productos digitales alrededor de la Participación Ciudadana. Además de trabajar en Gobierto, también ofrecemos servicios en torno a datos abiertos, periodismo de datos, sostenibilidad, etc.
 
-```
-$ cd ~/.pow
-$ ln -s DIRECTORY/gobierto gobierto
-```
+* #todo Por qué Gobierto y nuestra filosofía de Diseño
 
-Then just run `rails s` as usual, but type in the browser http://presupuestos.gobierto.dev/
+Más información: 
 
-## Elastic Search schema
+* Website de Gobierto: [gobierto.es](http://gobierto.es)
+* Blog: [gobierto.es/blog](http://gobierto.es/blog)
+* #todo public broadcast channel to report updates
 
-### Budget categories
+## Roadmap
 
-- indexes: `budget-categories`
-- types: `categories`
-- document id: `<area>/<code>/<kind>`. Example: `economic/30/G`
-- schema:
+[Puedes verlo en nuestro Wiki](https://github.com/PopulateTools/gobierto/wiki). (En Inglés)
 
-```
-  - area:                  { type: 'string', index: 'not_analyzed'  },
-  - code:                  { type: 'string', index: 'not_analyzed'  },
-  - name:                  { type: 'string', index: 'not_analyzed'  },
-  - parent_code:           { type: 'string', index: 'not_analyzed'  },
-  - level:                 { type: 'integer', index: 'not_analyzed' },
-  - kind:                  { type: 'string', index: 'not_analyzed'  }, # income I / expense G
-```
+## Sugerencias de Mejora
 
-### Budget Line data
+Crea un [issue](https://github.com/PopulateTools/gobierto/issues).
 
-- indexes: `budgets-forecast`, `budgets-execution`
-- types: `economic`, `functional`
-- document id: `<ine_code>/<year>/<code>/<kind>`. Example: `28079/2015/210/G`
-- schema:
+## Arquitectura de la aplicación
 
-```
-  - ine_code:              { type: 'integer', index: 'not_analyzed' },
-  - year:                  { type: 'integer', index: 'not_analyzed' },
-  - amount:                { type: 'double', index: 'not_analyzed'  },
-  - code:                  { type: 'string', index: 'not_analyzed'  },
-  - parent_code:           { type: 'string', index: 'not_analyzed'  },
-  - functional_code:       { type: 'string', index: 'not_analyzed'  },
-  - level:                 { type: 'integer', index: 'not_analyzed' },
-  - kind:                  { type: 'string', index: 'not_analyzed'  }, # income I / expense G
-  - province_id:           { type: 'integer', index: 'not_analyzed' },
-  - autonomy_id:           { type: 'integer', index: 'not_analyzed' },
-  - amount_per_inhabitant: { type: 'double', index: 'not_analyzed'  }
-```
+La aplicación está escrita en Ruby y usa el framework Ruby on Rails. Para la Base de Datos usa PostgreSQL y también usa ElasticSearch para almacenar toda la información de presupuestos y otros datos de terceros. El módulo de presupuestos vive bajo su propio subdominio, lo mismo que cada uno de los sites individuales para cada una de las entidades públicas. Este es el esquema que siguen los subdominios:
 
-### Total budgets data
+- `presupuestos.`, donde vive el comparador de presupuestos.
+- `<entidad_publica>.`, es como empieza el dominio de cada Sitio individual para cada entidad pública donde el módulo de presupuestos y otros se pueden activar.
 
-#### Planned
+## Desarrollo
 
-- indexes: `budgets-forecast`
-- types: `total-budget`
-- document id: `<ine_code>/<year>/<kind>`. Example: `28079/2015/G`
-- schema:
+### Requerimientos de Software
+
+- Git
+- Ruby 2.3.1
+- Rubygems
+- PostgreSQL
+- Elastic Search
+- Pow or another subdomains tool
+
+### Prepara la base de datos y el archivo secrets.yml
+
+Una vez tengas PostgreSQL corriendo y hayas clonado este repo, haz lo siguiente en el terminal:
 
 ```
-  - ine_code:                    { type: 'integer', index: 'not_analyzed' },
-  - province_id:                 { type: 'integer', index: 'not_analyzed' },
-  - autonomy_id:                 { type: 'integer', index: 'not_analyzed' },
-  - year:                        { type: 'integer', index: 'not_analyzed' },
-  - kind:                        { type: 'string', index: 'not_analyzed'  }, # income I / expense G
-  - total_budget:                { type: 'double',  index: 'not_analyzed' },
-  - total_budget_per_inhabitant: { type: 'double',  index: 'not_analyzed' }
+$ cd gobierto
+$ cp config/database.yml.example config/database.yml
+$ cp config/secrets.yml.example config/secrets.yml
+$ bundle install
+$ rake db:setup
 ```
 
-#### Executed
+### Monta una instancia de Elastic Search
 
-- indexes: `budgets-execution`
-- types: `total-budget`
-- document id: `<ine_code>/<year>/<kind>`. Example: `28079/2015/G`
-- schema:
+Aquí puedes ver [cómo](https://www.elastic.co/guide/en/elasticsearch/guide/current/running-elasticsearch.html)
 
-```
-  - ine_code:                    { type: 'integer', index: 'not_analyzed' },
-  - province_id:                 { type: 'integer', index: 'not_analyzed' },
-  - autonomy_id:                 { type: 'integer', index: 'not_analyzed' },
-  - year:                        { type: 'integer', index: 'not_analyzed' },
-  - kind:                        { type: 'string', index: 'not_analyzed'  }, # income I / expense G
-  - total_budget:                { type: 'double',  index: 'not_analyzed' },
-  - total_budget_per_inhabitant: { type: 'double',  index: 'not_analyzed' }
-```
+Una vez esté corriendo, asegúrate de configurar la URL correcta para tu instancia de Elastic Search en el archivo `config/secrets.yml` bajo la clave `elastic_url`
 
-### Population data
+### Carga algunos datos
 
-- indexes: `data`
-- types: `population`
-- document id: `<ine_code>/<year>`. Example: `28079/2015`
-- schema:
+Si simplemente quieres cargar unos cuantos datos para empezar a trabajar, haz lo siguiente:
+
+1. Clona [este repo](https://github.com/PopulateTools/gobierto-budgets-data) y sigue las instrucciones para que tengas todos los datos de los municipios españoles disponibles para importar.
+2. Después, ejecuta `bin/rake gobierto_budgets:setup:sample_site`
+
+Esto cargará los datos para Madrid, Barcelona y Bilbao y activará el Site de Municipio de prueba para Madrigal de la vera.
+
+Alternativamente, aquí puedes ver [cómo cargar los datos](https://github.com/PopulateTools/gobierto/wiki/Loading-Gobierto-Data) para más municipios de España.
+
+### Crea el subdominio y lanza la aplicación
+
+Cuando trabajes en local, al servidor de aplicaciones se debería acceder a través del dominio `.gobierto.dev`. Para configurar esto en tu entorno, la manera más sencilla es usando [POW](http://pow.cx/). Para instalarlo:
 
 ```
-  - ine_code:              { type: 'integer', index: 'not_analyzed' },
-  - province_id:           { type: 'integer', index: 'not_analyzed' },
-  - autonomy_id:           { type: 'integer', index: 'not_analyzed' },
-  - year:                  { type: 'integer', index: 'not_analyzed' },
-  - value:                 { type: 'integer', index: 'not_analyzed' }
+curl get.pow.cx | sh
 ```
 
-### Places data
-
-- indexes: `data`
-- types: `places`
-- document id: `<ine_code>`. Example: `28079`
-- schema:
+Después, configura el servidor así:
 
 ```
-  - ine_code:              { type: 'integer', index: 'not_analyzed' },
-  - province_id:           { type: 'integer', index: 'not_analyzed' },
-  - autonomy_id:           { type: 'integer', index: 'not_analyzed' },
-  - year:                  { type: 'integer', index: 'not_analyzed' },
-  - name:                  { type: 'string',  index: 'analyzed', analyzer: 'spanish' }
+cd ~/.pow
+ln -s DIRECTORIO/gobierto gobierto
 ```
 
-### Debt data
+Y simplemente navega a http://presupuestos.gobierto.dev/ para cargar la aplicación.
 
-- indexes: `data`
-- types: `debt`
-- document id: `<ine_code>/<year>`. Example: `28079/2014`
-- schema:
+### Montando el site para una sóla entidad pública
 
-```
-  - ine_code:              { type: 'integer', index: 'not_analyzed' },
-  - province_id:           { type: 'integer', index: 'not_analyzed' },
-  - autonomy_id:           { type: 'integer', index: 'not_analyzed' },
-  - year:                  { type: 'integer', index: 'not_analyzed' },
-  - value:                 { type: 'double', index: 'not_analyzed' }
-```
-
-
-## Load the data
-
-### Create schemas
-
-bin/rake gobierto_budgets:budgets:create
-bin/rake gobierto_budgets:total_budget:create
-bin/rake gobierto_budgets:budget_categories:create
-bin/rake gobierto_budgets:places:create
-bin/rake gobierto_budgets:debt:create
-bin/rake gobierto_budgets:population:create
-
-### Load planned data
+Ejecuta lo siguiente:
 
 ```
-# Load categories
-bin/rake gobierto_budgets:budget_categories:import['budgets-planned'] &&
-bin/rake gobierto_budgets:budget_categories:import['budgets-executed']
-
-# Load places
-bin/rake gobierto_budgets:places:import
-
-# Load debt
-bin/rake gobierto_budgets:debt:import[2015,'db/data/debt/debt-2015.csv'] &&
-bin/rake gobierto_budgets:debt:import[2014,'db/data/debt/debt-2014.csv'] &&
-bin/rake gobierto_budgets:debt:import[2013,'db/data/debt/debt-2013.csv'] &&
-bin/rake gobierto_budgets:debt:import[2012,'db/data/debt/debt-2012.csv'] &&
-bin/rake gobierto_budgets:debt:import[2011,'db/data/debt/debt-2011.csv'] &&
-bin/rake gobierto_budgets:debt:import[2010,'db/data/debt/debt-2010.csv']
-
-# Load population
-bin/rake gobierto_budgets:population:import[2015,'db/data/population/2015.px'] &&
-bin/rake gobierto_budgets:population:import[2014,'db/data/population/2014.px'] &&
-bin/rake gobierto_budgets:population:import[2013,'db/data/population/2013.px'] &&
-bin/rake gobierto_budgets:population:import[2012,'db/data/population/2012.px'] &&
-bin/rake gobierto_budgets:population:import[2011,'db/data/population/2011.px'] &&
-bin/rake gobierto_budgets:population:import[2010,'db/data/population/2011.px']
-
-# Load budgets
-bin/rake gobierto_budgets:budgets:import['budgets-planned','budgets-forecast-v2','economic',2015] &&
-bin/rake gobierto_budgets:budgets:import['budgets-planned','budgets-forecast-v2','economic',2014] &&
-bin/rake gobierto_budgets:budgets:import['budgets-planned','budgets-forecast-v2','economic',2013] &&
-bin/rake gobierto_budgets:budgets:import['budgets-planned','budgets-forecast-v2','economic',2012] &&
-bin/rake gobierto_budgets:budgets:import['budgets-planned','budgets-forecast-v2','economic',2011] &&
-bin/rake gobierto_budgets:budgets:import['budgets-planned','budgets-forecast-v2','economic',2010] &&
-bin/rake gobierto_budgets:budgets:import['budgets-planned','budgets-forecast-v2','functional',2015] &&
-bin/rake gobierto_budgets:budgets:import['budgets-planned','budgets-forecast-v2','functional',2014] &&
-bin/rake gobierto_budgets:budgets:import['budgets-planned','budgets-forecast-v2','functional',2013] &&
-bin/rake gobierto_budgets:budgets:import['budgets-planned','budgets-forecast-v2','functional',2012] &&
-bin/rake gobierto_budgets:budgets:import['budgets-planned','budgets-forecast-v2','functional',2011] &&
-bin/rake gobierto_budgets:budgets:import['budgets-planned','budgets-forecast-v2','functional',2010]
-
-# Load total aggregations
-bin/rake gobierto_budgets:total_budget:import['budgets-forecast-v2',2015] && 
-bin/rake gobierto_budgets:total_budget:import['budgets-forecast-v2',2014] &&
-bin/rake gobierto_budgets:total_budget:import['budgets-forecast-v2',2013] &&
-bin/rake gobierto_budgets:total_budget:import['budgets-forecast-v2',2012] &&
-bin/rake gobierto_budgets:total_budget:import['budgets-forecast-v2',2011] &&
-bin/rake gobierto_budgets:total_budget:import['budgets-forecast-v2',2010]
+bin/rake gobierto_budgets:setup:create_site['<Place ID>','<URL OF INSTITUTION>']
 ```
+Donde `<Place ID>` es el ID del municipio que quieres montar y `<URL OF INSTITUTION>` es la URL opcional del posible site oficial de ese municipio.
 
-### Load executed data
+## Trae tus propios datos
 
-```
-# Load budgets
-bin/rake gobierto_budgets:budgets:import['budgets-executed','budgets-execution-v2','economic',2015] &&
-bin/rake gobierto_budgets:budgets:import['budgets-executed','budgets-execution-v2','economic',2014] &&
-bin/rake gobierto_budgets:budgets:import['budgets-executed','budgets-execution-v2','economic',2013] &&
-bin/rake gobierto_budgets:budgets:import['budgets-executed','budgets-execution-v2','economic',2012] &&
-bin/rake gobierto_budgets:budgets:import['budgets-executed','budgets-execution-v2','economic',2011] &&
-bin/rake gobierto_budgets:budgets:import['budgets-executed','budgets-execution-v2','economic',2010] &&
-bin/rake gobierto_budgets:budgets:import['budgets-executed','budgets-execution-v2','functional',2015] &&
-bin/rake gobierto_budgets:budgets:import['budgets-executed','budgets-execution-v2','functional',2014] &&
-bin/rake gobierto_budgets:budgets:import['budgets-executed','budgets-execution-v2','functional',2013] &&
-bin/rake gobierto_budgets:budgets:import['budgets-executed','budgets-execution-v2','functional',2012] &&
-bin/rake gobierto_budgets:budgets:import['budgets-executed','budgets-execution-v2','functional',2011] &&
-bin/rake gobierto_budgets:budgets:import['budgets-executed','budgets-execution-v2','functional',2010]
+ToDo: Documentar el formato de datos para importar
 
-# Load total aggregations
-bin/rake gobierto_budgets:total_budget:import['budgets-execution-v2',2015] &&
-bin/rake gobierto_budgets:total_budget:import['budgets-execution-v2',2014] &&
-bin/rake gobierto_budgets:total_budget:import['budgets-execution-v2',2013] &&
-bin/rake gobierto_budgets:total_budget:import['budgets-execution-v2',2012] &&
-bin/rake gobierto_budgets:total_budget:import['budgets-execution-v2',2011] &&
-bin/rake gobierto_budgets:total_budget:import['budgets-execution-v2',2010]
-```
+## Contribuir
 
-### Datasets
+Claro! Mira [cómo contribuir](https://github.com/PopulateTools/gobierto/blob/master/CONTRIBUTING_ES.md)
 
-- Debt: http://www.minhap.gob.es/es-ES/Areas%20Tematicas/Administracion%20Electronica/OVEELL/Paginas/DeudaViva.aspx
+### Librerías/gemas
+
+* Gemas: Echa un vistazo a [Gemfile](https://github.com/PopulateTools/gobierto/blob/master/Gemfile) para una referencia completa
+* Otras (CSS, JS): #ToDo (explora el código de momento;)
+
+## Licencia
+
+Software publicado bajo la licencia de código abierto AFFERO GPL v3 (ver [LICENSE-AGPLv3.txt](https://github.com/PopulateTools/gobierto/blob/master/LICENSE-AGPLv3.txt))
