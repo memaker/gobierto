@@ -75,19 +75,7 @@
       </div>
 
       <div class="pure-u-1 pure-u-md-1-2 p_h_r_1 description">
-        <% pending do %>
-          <p>
-            Comprende esta área todos aquellos gastos originados por los
-            servicios públicos básicos que, con carácter obligatorio, deben
-            prestar los municipios, por sí o asociados, con arreglo al artículo
-            26.1 de la Ley 7/1985, de 2 de abril, reguladora de las Bases del Régimen
-            Local, o, en su caso, las provincias con arreglo al artículo 31.2 de la
-            misma Ley, atendiendo a su función de cooperación y asistencia a los
-            municipios. A estos efectos, se incluyen, en los términos que se exponen para
-            cada una de ellas, cuatro políticas de gasto básicas: seguridad y movilidad
-            ciudadana, vivienda y urbanismo, bienestar comunitario y medio ambiente.
-          </p>
-        <% end %>
+        <%= simple_format budget_line_description(@area_name, @code, @kind) %>
       </div>
     </div>
 
