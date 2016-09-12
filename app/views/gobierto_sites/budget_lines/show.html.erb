@@ -70,7 +70,9 @@
         <ul>
           <li><%= t('.per_inhabitant') %> <strong> <%= @kind == GobiertoBudgets::BudgetLine::EXPENSE ? t('.we_expend') : t('.we_income') %> <span class="highlight"><%= number_to_currency @budget_line_stats.amount_per_inhabitant, precision: 2 %></span></strong>.</li>
           <li><%= t('.in_total') %> <strong><span class="highlight"><%= format_currency @budget_line_stats.amount %></span></strong>.</li>
-          <% if diff = @budget_line_stats.percentage_difference(variable1: :amount_planned, variable2: :amount_executed, year: @year-1) %>
+          <% if diff = @budget_line_stats.percentage_difference(variable1: :amount_executed, variable2: :amount_planned, year: @year) %>
+            <li><%= t('.this_year') %> <%= @kind == GobiertoBudgets::BudgetLine::EXPENSE ? t('.we_expend') : t('.we_income') %> un <span class="highlight"><strong><%= diff %></strong></span> <%= t('.from_planned') %>.</li>
+          <% elsif diff = @budget_line_stats.percentage_difference(variable1: :amount_executed, variable2: :amount_planned, year: @year-1) %>
             <li><%= t('.last_year') %> <%= @kind == GobiertoBudgets::BudgetLine::EXPENSE ? t('.we_expend') : t('.we_income') %> un <span class="highlight"><strong><%= diff %></strong></span> <%= t('.from_planned') %>.</li>
           <% else %>
             <li><%= t('.we_have') %> <%= @kind == GobiertoBudgets::BudgetLine::EXPENSE ? t('.expended'): t('.income') %> <span class="highlight"><strong><%= @budget_line_stats.percentage_difference(variable1: :amount_planned, year1: @year, year2: @year-1) %></strong></span> que el año anterior.</li>

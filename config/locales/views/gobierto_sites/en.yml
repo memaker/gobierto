@@ -7,9 +7,12 @@ en:
         we_spend: we spend
         totally: Totally
         last_year_we_spent: Last year we spent
+        this_year_we_spent: This year we spent
         than_planned: than planned
         last_year_data_we_owe: According to last year data, we owe
+        this_year_data_we_owe: According to this year data, we owe
         than_two_years_ago: than two years ago
+        than_last_year: than last year
         summary: Summary
         twitter_text: "From @gobierto: Municipality budgets from %{name} in %{year}"
         main_budget_lines: Main income and expenses from your council
@@ -51,6 +54,7 @@ en:
         income: income
         we_have: We have
         last_year: Last year
+        this_year: This year
         in_total: In total they are
         from_planned: from planned
         per_inhabitant: Per inhabitant
