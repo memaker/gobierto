@@ -540,7 +540,7 @@ table.med_bg {
 	tr:hover {
 		@include transition;
 		td, th {
-			background: rgba($color_main, .2) !important;
+			background: rgba($color_main, .1) !important;
 		}
 	}
 	.qty {
