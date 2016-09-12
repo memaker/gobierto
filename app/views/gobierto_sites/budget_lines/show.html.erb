@@ -71,7 +71,7 @@
           <li><%= t('.per_inhabitant') %> <strong> <%= @kind == GobiertoBudgets::BudgetLine::EXPENSE ? t('.we_expend') : t('.we_income') %> <span class="highlight"><%= number_to_currency @budget_line_stats.amount_per_inhabitant, precision: 2 %></span></strong>.</li>
           <li><%= t('.in_total') %> <strong><span class="highlight"><%= format_currency @budget_line_stats.amount %></span></strong>.</li>
           <% if diff = @budget_line_stats.percentage_difference(variable1: :amount_planned, variable2: :amount_executed, year: @year-1) %>
-            <li><%= t('.last_year') %><%= @kind == GobiertoBudgets::BudgetLine::EXPENSE ? t('.we_expend') : t('.we_income') %> un <span class="highlight"><strong><%= diff %></strong></span> <%= t('.from_planned') %>.</li>
+            <li><%= t('.last_year') %> <%= @kind == GobiertoBudgets::BudgetLine::EXPENSE ? t('.we_expend') : t('.we_income') %> un <span class="highlight"><strong><%= diff %></strong></span> <%= t('.from_planned') %>.</li>
           <% else %>
             <li><%= t('.we_have') %> <%= @kind == GobiertoBudgets::BudgetLine::EXPENSE ? t('.expended'): t('.income') %> <span class="highlight"><strong><%= @budget_line_stats.percentage_difference(variable1: :amount_planned, year1: @year, year2: @year-1) %></strong></span> que el año anterior.</li>
           <% end %>
@@ -116,19 +116,21 @@
       </div>
 
       <div class="pure-u-1 pure-u-md-1-2 p_h_r_1">
-        <h2><%= t('.budget_lines_distribution') %></h2>
-        <% if @budget_line_composition.any? %>
-          <table>
-            <% @budget_line_composition.each do |budget_line| %>
-              <tr>
-                <td><%= link_to truncate(budget_line.name, length: 75), gobierto_sites_budget_line_path(budget_line.to_param), title: budget_line.name %></td>
-                <td class="qty"><%= number_with_precision(budget_line.percentage_compared_with(@budget_line.amount) * 100, precision: 2) + '%' %></td>
-                <td class="amount"><%= format_currency(budget_line.amount) %></td>
-              </tr>
-            <% end %>
-          </table>
-        <% else %>
-          <p><%= t('.no_distribution') %></p>
+        <% if @kind != GobiertoBudgets::BudgetLine::INCOME %>
+          <h2><%= t('.budget_lines_distribution') %></h2>
+          <% if @budget_line_composition.any? %>
+            <table>
+              <% @budget_line_composition.each do |budget_line| %>
+                <tr>
+                  <td><%= link_to truncate(budget_line.name, length: 75), gobierto_sites_budget_line_path(budget_line.to_param), title: budget_line.name %></td>
+                  <td class="qty"><%= number_with_precision(budget_line.percentage_compared_with(@budget_line.amount) * 100, precision: 2) + '%' %></td>
+                  <td class="amount"><%= format_currency(budget_line.amount) %></td>
+                </tr>
+              <% end %>
+            </table>
+          <% else %>
+            <p><%= t('.no_distribution') %></p>
+          <% end %>
         <% end %>
       </div>
     </div>
