@@ -43,10 +43,10 @@ module GobiertoBudgets
              end
 
       if(diff < 0)
-        direction = 'más'
+        direction = 'menos'
         diff = diff*-1
       else
-        direction = 'menos'
+        direction = 'más'
       end
 
       if diff == Float::INFINITY

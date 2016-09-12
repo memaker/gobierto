@@ -5,6 +5,11 @@ class SiteStats
     @year = options.fetch(:year).to_i
   end
 
+  def has_data?(variable, year)
+    r = send(variable, year)
+    r.present? && r != 0
+  end
+
   def total_budget_per_inhabitant(year = nil)
     year ||= @year
     total_budget_planned_query(year)['_source']['total_budget_per_inhabitant'].to_f
@@ -44,10 +49,10 @@ class SiteStats
     end
 
     if(diff < 0)
-      direction = 'más'
+      direction = 'menos'
       diff = diff*-1
     else
-      direction = 'menos'
+      direction = 'más'
     end
 
     "#{ActionController::Base.helpers.number_with_precision(diff, precision: 2)}% #{direction}"
