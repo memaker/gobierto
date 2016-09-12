@@ -95,7 +95,12 @@ namespace :gobierto_budgets do
                           institution_type: 'Ayuntamiento'
 
       site.configuration.links = [institution_url]
-      # site.configuration.logo = 'http://santander.es/sites/default/themes/custom/ayuntamiento/img/logo-ayto-santander.png'
+      # site.configuration.logo = 'institution logo URL'
+      site.configuration.password_protected = false
+      # Uncomment the following three lines if you want to password protect the site
+      # site.configuration.password_protected = true
+      # site.configuration.password_protection_username = 'demo'
+      # site.configuration.password_protection_password = 'demo123'
       site.configuration.modules = ['GobiertoBudgets']
       site.save!
     end

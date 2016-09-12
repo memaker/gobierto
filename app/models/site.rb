@@ -52,6 +52,10 @@ class Site < ActiveRecord::Base
     configuration.modules && configuration.modules.include?('GobiertoParticipation')
   end
 
+  def password_protected?
+    configuration.password_protected
+  end
+
   private
 
   def store_configuration
