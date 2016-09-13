@@ -7,6 +7,7 @@ site = Site.find_or_create_by! name: 'Órgiva Participa', domain: 'orgiva.gobier
 site.configuration.links = ['http://orgiva.es']
 site.configuration.logo = 'http://www.aytoorgiva.org/web/sites/all/themes/aytoorgiva_COPSEG/logo.png'
 site.configuration.modules = ['GobiertoParticipation', 'GobiertoBudgets']
+site.configuration.demo = true
 site.save!
 
 ## Create an admin in Orgiva
