@@ -11,6 +11,8 @@ RSpec.feature 'User feedback' do
     click_link 'Levanta la mano'
     click_link 'No'
 
+    sleep 2
+
     expect(page).to have_content('Puedes solicitar a tu alcalde que amplie la información sobre esta y otras partidas')
 
     fill_in 'user_email', with: 'bar@example.com'
@@ -91,6 +93,8 @@ RSpec.feature 'User feedback' do
     visit '/budget_lines/santander/2015/1/G/economic'
     click_link 'Levanta la mano'
     click_link 'No'
+
+    sleep 3
 
     expect(page).to have_content('Puedes solicitar a tu alcalde que amplie la información sobre esta y otras partidas')
     expect(page).to have_content('El 100.0% de personas han respondido que No')

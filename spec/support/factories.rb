@@ -22,8 +22,13 @@ module Factories
   end
 
   def create_site(attrs = {})
-    Site.create! name: 'Órgiva Participa', domain: 'orgiva.' + Settings.gobierto_host, location_name: 'Órgiva', location_type: 'INE::Places::Place',
+    site = Site.create! name: 'Órgiva Participa', domain: 'orgiva.' + Settings.gobierto_host, location_name: 'Órgiva', location_type: 'INE::Places::Place',
   external_id: 18147, institution_url: 'http://orgiva.es', institution_type: 'Ayuntamiento'
+    site.configuration.links = ['http://orgiva.es']
+    site.configuration.logo = 'http://www.aytoorgiva.org/web/sites/all/themes/aytoorgiva_COPSEG/logo.png'
+    site.configuration.modules = ['GobiertoParticipation', 'GobiertoBudgets', 'GobiertoCms']
+    site.save!
+    site
   end
 
   def new_gobierto_cms_page(attrs = {})

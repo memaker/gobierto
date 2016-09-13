@@ -215,7 +215,7 @@ module GobiertoBudgets
                                                             per_page: 5})
         else
           @variable = (@var == 'amount') ? 'total_budget' : 'total_budget_per_inhabitant'
-          results, total_elements = GobiertoBudgets::BudgetTotal.for_ranking(@year, @variable, offset, max_results)
+          results, total_elements = GobiertoBudgets::BudgetTotal.for_ranking(@year, @variable, @kind, offset, max_results)
         end
 
         top = results.first
