@@ -52,6 +52,11 @@ $color_vis_province: #A479F4;
 $color_vis_com: #AAC44B;
 $color_vis_country: #008998;
 
+/* logo colors */
+$color_logo_yellow: #E9AD00;
+$color_logo_pink: #F39B95;
+$color_logo_blue: #388F9C;
+
 @import "gobierto_sites/vis_lineas_tabla";
 
 .color_main {
@@ -231,19 +236,20 @@ header.section {
 
 .demo_bar {
 	position: fixed;
-	bottom:0;
+	bottom: 0;
 	background-color: #FEF1D5;
-	min-height:55px;
+	min-height: 55px;
 	width: 100%;
-	@include box-shadow(0,-3px,9px,rgba(0, 0, 0, 0.1));
+	@include box-shadow(0,0,20px,rgba(0, 0, 0, 0.3));
 
 	> div {
 		margin-top: 15px;
 		margin-bottom: 8px;
-		color:#B18300;
+		color: #B18300;
 
 		> a {
 			margin-left: 20px;
+			color: #B18300;
 		}
 	}
 
