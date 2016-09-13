@@ -18,6 +18,8 @@
 
 //= require gobierto_budgets/vis_treemap
 //= require gobierto_budgets/vis_lineas_tabla
+//= require gobierto_budgets/vis_evo_line
+//= require gobierto_budgets/execution
 //= require flight-for-rails
 //= require_directory ../components/
 
@@ -85,6 +87,17 @@ $(function(){
 
   $('.slick_next').click(function(e) {
     $('.carousel').slick('slickNext');
+  });
+
+  // Tabs navigation
+  $('[data-tab-target]').on('click', function(e){
+    e.preventDefault();
+    var target = $(this).data('tab-target');
+    $('[data-tab-target]').removeClass('active');
+    $('[data-tab-target="' + target + '"]').addClass('active');
+
+    $('[data-tab]').hide();
+    $('[data-tab="' + target + '"]').show();
   });
 
 });
