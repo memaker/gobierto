@@ -1,5 +1,17 @@
 'use strict';
 
+Array.prototype.unique = function() {
+    var a = this.concat();
+    for(var i=0; i<a.length; ++i) {
+        for(var j=i+1; j<a.length; ++j) {
+            if(a[i] === a[j])
+                a.splice(j--, 1);
+        }
+    }
+
+    return a;
+};
+
 var VisLineasJ = Class.extend({
   init: function(divId, tableID, measure, series) {
     this.container = divId;
@@ -213,9 +225,9 @@ var VisLineasJ = Class.extend({
         .range(this.series == 'means' ? this.meanColorRange : this.comparatorColorRange)
         .domain(this.dataChart.map(function(d) { return d.name; }));
 
-
       // Define the axis
       this.xAxis
+          .tickValues(this._xTickValues(years))
           .scale(this.xScale)
           .orient("bottom");
 
@@ -562,6 +574,10 @@ var VisLineasJ = Class.extend({
     var range = scale.domain()[1] - scale.domain()[0];
     var a = range/4;
     return [scale.domain()[0], scale.domain()[0] + a, scale.domain()[0] + (a * 2), scale.domain()[1] - a, scale.domain()[1]];
+  },
+
+  _xTickValues: function(years){
+    return [new Date(2010,0,1), new Date(2011,0,1), new Date(2012, 0, 1), new Date(2013,0,1), new Date(2014,0,1), new Date(2015,0,1)].concat(years).unique();
   },
 
   _mouseover: function () {
