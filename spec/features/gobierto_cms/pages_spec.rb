@@ -32,7 +32,7 @@ RSpec.feature 'Gobierto CMS module' do
   end
 
   scenario 'Layout menu should include root pages' do
-    visit '/'
+    visit '/paginas'
 
     within(:css, 'menu.global') do
       expect(page).to have_content('Sobre el ayuntamiento')

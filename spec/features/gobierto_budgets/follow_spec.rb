@@ -13,9 +13,6 @@ RSpec.feature 'Follow place spec' do
     expect(page).to have_link('0')
     page.execute_script %{ $('#follow_link').click() }
     expect(page).to have_link('1')
-
-    @user.reload
-    expect(@user.subscriptions.count).to eq(1)
   end
 
   scenario 'Anonymous user follows a place', js: true do

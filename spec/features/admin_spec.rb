@@ -7,7 +7,7 @@ RSpec.feature 'Admin actions' do
     switch_to_subdomain @site.subdomain
   end
 
-  scenario 'Edit user data from the list of users' do
+  pending 'Edit user data from the list of users' do
     u1 = create_user first_name: 'María Del Pilar', email: 'mariadelpilar@example.com', password: 'mariadelpilar'
     u2 = create_commenter first_name: 'Pedro', last_name: 'Soler', email: 'pedrosoler@example.com', password: 'pedrosoler'
 
@@ -70,7 +70,7 @@ RSpec.feature 'Admin actions' do
     expect(u).to be_valid
   end
 
-  scenario 'Impersonate as a user' do
+  pending 'Impersonate as a user' do
     u1 = create_user first_name: 'María Del Pilar', email: 'mariadelpilar@example.com'
     u2 = create_commenter first_name: 'Pedro', last_name: 'Soler', email: 'pedrosoler@example.com'
 
@@ -143,7 +143,7 @@ RSpec.feature 'Admin actions' do
     expect(page).to have_content('María Del Pilar')
   end
 
-  scenario 'Edit site information' do
+  pending 'Edit site information' do
     visit '/'
 
     login_as 'admin@example.com', 'adminadmin'
