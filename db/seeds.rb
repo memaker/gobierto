@@ -1,7 +1,7 @@
 ## Órgiva
 place = INE::Places::Place.find_by_slug 'orgiva'
 
-site = Site.create! name: 'Órgiva Participa', domain: 'orgiva.gobierto.dev', location_name: 'Órgiva', location_type: place.class.name,
+site = Site.find_or_create_by! name: 'Órgiva Participa', domain: 'orgiva.gobierto.dev', location_name: 'Órgiva', location_type: place.class.name,
   external_id: place.id, institution_url: 'http://orgiva.es', institution_type: 'Ayuntamiento'
 
 site.configuration.links = ['http://orgiva.es']
@@ -9,12 +9,22 @@ site.configuration.logo = 'http://www.aytoorgiva.org/web/sites/all/themes/aytoor
 site.configuration.modules = ['GobiertoParticipation', 'GobiertoBudgets']
 site.save!
 
-site.gobierto_cms_pages.create! title: 'Sobre el ayuntamiento', body: 'Sobre el ayuntamiento body'
+## Create an admin in Orgiva
+u = User.find_or_initialize_by email: 'admin@example.com'
+u.password = u.password_confirmation = 'admin123'
+u.place_id = place.id
+u.first_name = 'Admin'
+u.last_name = 'Admin'
+u.admin = true
+u.save!
+u.clear_verification_token
+u.terms_of_service = true
+u.save!
 
 ## Burjassot
 place = INE::Places::Place.find_by_slug 'burjassot'
 
-site = Site.create! name: 'Burjassot Transparente', domain: 'gobierto.burjassot.dev', location_name: 'Burjassot', location_type: place.class.name,
+site = Site.find_or_create_by! name: 'Burjassot Transparente', domain: 'gobierto.burjassot.dev', location_name: 'Burjassot', location_type: place.class.name,
   external_id: place.id, institution_url: 'http://burjassot.es', institution_type: 'Ayuntamiento'
 
 site.configuration.links = ['http://burjassot.es']
@@ -22,12 +32,10 @@ site.configuration.logo = 'http://www.burjassot.org/wp-content/themes/ajuntament
 site.configuration.modules = ['GobiertoParticipation']
 site.save!
 
-site.gobierto_cms_pages.create! title: 'Sobre el ayuntamiento', body: 'Sobre el ayuntamiento body'
-
 ## Santander
 place = INE::Places::Place.find_by_slug 'santander'
 
-site = Site.create! name: 'Santander Participa', domain: 'santander.gobierto.dev', location_name: 'Santander', location_type: place.class.name,
+site = Site.find_or_create_by! name: 'Santander Participa', domain: 'santander.gobierto.dev', location_name: 'Santander', location_type: place.class.name,
   external_id: place.id, institution_url: 'http://santander.es', institution_type: 'Ayuntamiento'
 
 site.configuration.links = ['http://santander.es']
@@ -35,11 +43,13 @@ site.configuration.logo = 'http://santander.es/sites/default/themes/custom/ayunt
 site.configuration.modules = ['GobiertoParticipation', 'GobiertoBudgets']
 site.save!
 
-site.gobierto_cms_pages.create! title: 'Sobre el ayuntamiento', body: 'Sobre el ayuntamiento body'
+## Madrid
+place = INE::Places::Place.find_by_slug 'madrid'
 
-## Create Admin
-u = User.new email: 'admin@example.com', password: 'admin123', password_confirmation: 'admin123', place_id: Site.first.place.id, first_name: 'Admin', last_name: 'Admin', admin: true
-u.save!
-u.clear_verification_token
-u.terms_of_service = true
-u.save!
+site = Site.find_or_create_by! name: 'Madrid', domain: 'madrid.gobierto.dev', location_name: 'Madrid', location_type: place.class.name,
+  external_id: place.id, institution_url: 'http://www.madrid.es', institution_type: 'Ayuntamiento'
+
+site.configuration.links = ['http://www.madrid.es']
+site.configuration.logo = 'http://www.madrid.es/assets/images/logo-madrid.png'
+site.configuration.modules = ['GobiertoBudgets']
+site.save!
