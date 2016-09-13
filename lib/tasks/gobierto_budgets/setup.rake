@@ -78,13 +78,14 @@ namespace :gobierto_budgets do
     end
 
     desc "Creates a Gobierto Site. Example: rake gobierto_budgets:setup:create_site[28079,'http://ayuntamientodemadrid.es']"
-    task :create_site, [:place_id, :institution_url] => :environment do |t, args|
+    task :create_site, [:place_id, :institution_url, :demo] => :environment do |t, args|
       place_id = args[:place_id]
       fail "Please provide a Place ID" if place_id.blank?
       fail "'#{place_id}' is not a valid place" unless INE::Places::Place.find(place_id)
 
       place = INE::Places::Place.find place_id
       institution_url = args[:institution_url] || "http://#{place.slug}.es"
+      demo = args[:demo] || false
 
       site = Site.create! name: "#{place.name} Presupuestos",
                           domain: "#{place.slug}.gobierto.dev",
@@ -96,6 +97,7 @@ namespace :gobierto_budgets do
 
       site.configuration.links = [institution_url]
       # site.configuration.logo = 'institution logo URL'
+      site.configuration.demo = demo
       site.configuration.password_protected = false
       # Uncomment the following three lines if you want to password protect the site
       # site.configuration.password_protected = true
