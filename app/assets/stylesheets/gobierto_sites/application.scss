@@ -396,19 +396,22 @@ header.section {
 	button {
 		width: 23%;
 	}
-	table {
-		font-size: 1rem;
+	table.med_bg {
 		.fa {
 			margin-right: .5em;
 		}
 		td, th {
-			font-size: 1rem;
+			padding: .7em 1em .4em 1em;
 		}
-		tr:first-child td {
-			// border-top: 0;
+		td.qty, td.bar {
+			padding: .7em 0 .4em 0;
+		}
+		td.bar {
+			padding-left: 10px;
 		}
 		td {
 			table {
+				font-size: 1rem;
 				border: 1px solid transparentize($color_main, .85);
 			}
 			.child_tb_cont {
@@ -586,7 +589,7 @@ table.med_bg {
 	td, th {
 		border-top: 1px solid transparentize($color_main, .85);
 		background: transparentize($color_main, .94);
-		padding: .7em 1em .4em;
+		padding: .7em 1em .4em 1em;
 		font-size: .85em;
 		a {
 			display: inline;
@@ -599,6 +602,7 @@ table.med_bg {
 		text-align: left;
 		opacity: .5;
 		border: none;
+		text-align: right;
 	}
 	tr:hover {
 		@include transition;
@@ -607,10 +611,16 @@ table.med_bg {
 		}
 	}
 	td.qty, td.bar {
-		width: 70px;
+		width: 60px;
 	}
 	td.qty {
 		text-align: right;
+	}
+	td.big_qty {
+		width: 100px;
+	}
+	td.bar {
+		padding-left: 10px;
 	}
 	.budget_line {
 		width: 50%;
