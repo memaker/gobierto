@@ -18,7 +18,7 @@ class BudgetLinePresenter
 
   def percentage_of_total
     total = total || GobiertoBudgets::BudgetTotal.for(@attributes[:ine_code], @attributes[:year])
-    amount.to_f / total.to_f
+    (amount.to_f / total.to_f).round(1)
   end
 
   def percentage_compared_with(other_value)
