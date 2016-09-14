@@ -252,10 +252,184 @@
     '94': "Recoge los depósitos constituidos y las fianzas ingresadas en metálico en las cajas de las entidades locales o sus organismos autónomos."
 'functional':
   'G':
-    '1': "Comprende esta área todos aquellos gastos originados por los servicios públicos básicos que, con carácter obligatorio, deben prestar los municipios, por sí o asociados, con arreglo al artículo 26.1 de la Ley 7/1985, de 2 de abril, reguladora de las Bases del Régimen Local, o, en su caso, las provincias con arreglo al artículo 31.2 de la misma Ley, atendiendo a su función de cooperación y asistencia a los municipios. A estos efectos, se incluyen, en los términos que se exponen para cada una de ellas, cuatro políticas de gasto básicas: seguridad y movilidad ciudadana, vivienda y urbanismo, bienestar comunitario y medio ambiente."
     '2': "Se incluyen en esta área o grupo todos aquellos gastos y transferencias que constituyen el régimen de previsión; pensiones de funcionarios, atenciones de carácter benéfico-asistencial; atenciones a grupos con necesidades especiales, como jóvenes, mayores, minusválidos físicos y tercera edad; medidas de fomento del empleo."
     '3': "Comprende esta área o grupo todos los gastos que realice la Entidad local en relación con la sanidad, educación, cultura, con el ocio y el tiempo libre, deporte, y, en general, todos aquellos tendentes a la elevación o mejora de la calidad de vida."
     '4': "Se integran en esta área los gastos de actividades, servicios y transferencias que tienden a desarrollar el potencial de los distintos sectores de la actividad económica. Se incluirán también los gastos en infraestructuras básicas y de transportes; infraestructuras agrarias; comunicaciones; investigación, desarrollo e innovación."
     '5': "Incluye todos los gastos, preferentemente de inversión, relacionados con actividades que tienden a desarrollar el potencial económico del entorno social."
     '9': "Se incluyen en esta área los gastos relativos a actividades que afecten, con carácter general, a la Entidad local, y que consistan en el ejercicio de funciones de gobierno o de apoyo administrativo y de soporte lógico y técnico a toda la organización. Recogerá los gastos generales de la Entidad, que no puedan ser imputados ni aplicados directamente a otra área de las previstas en esta clasificación por programas. Se incluirán en este área las transferencias de carácter general que no puedan ser aplicadas a ningún otro epígrafe de esta clasificación por programas, ya que en caso contrario se imputarán en la política de gasto específica que corresponda."
     '0': "Comprende los gastos de intereses y amortización de la deuda y demás operaciones financieras de naturaleza análoga, con exclusión de los gastos que ocasione la formalización de los mismos."
+    '01': "Comprende los gastos de intereses y amortización de la deuda y demás operaciones financieras de naturaleza análoga, con exclusión de los gastos que ocasione la formalización de los mismos."
+    '011': "Comprende los gastos de intereses y amortización de la deuda y demás operaciones financieras de naturaleza análoga, con exclusión de los gastos que ocasione la formalización de los mismos."
+    '1': "Comprende esta área todos aquellos gastos originados por los servicios públicos básicos que, con carácter obligatorio, deben prestar los municipios, por sí o asociados, con arreglo al artículo 26.1 de la Ley 7/1985, de 2 de abril, reguladora de las Bases del Régimen Local, o, en su caso, las provincias con arreglo al artículo 31.2 de la misma Ley, atendiendo a su función de cooperación y asistencia a los municipios. A estos efectos, se incluyen, en los términos que se exponen para cada una de ellas, cuatro políticas de gasto básicas: seguridad y movilidad ciudadana, vivienda y urbanismo, bienestar comunitario y medio ambiente."
+    "13": "Comprende todos los gastos de los servicios relacionados con la seguridad y movilidad ciudadana y aquellos que tenga que realizar la Entidad local para colaborar con la Administración General del Estado o de la respectiva Comunidad Autónoma en apoyo de los servicios de protección y defensa civil, actuaciones en caso de calamidades o catástrofes, prevención y extinción de incendios y acciones en general destinadas a la protección de los bienes de la Entidad local o de los particulares, así como las que se refieran a la ordenación del tráfico y del estacionamiento de vehículos. Se tipifican cinco grupos de programas, distinguiéndose aquellos que tienen por finalidad la cobertura de gastos generales de administración asociados directamente a los servicios de seguridad ciudadana y protección civil. A estos efectos, se entiende por Administración General las actividades dirigidas a la planificación, coordinación, control, organización, gestión administrativa y desarrollo de funciones de apoyo de los distintos centros directivos que integran la política de gasto."
+    "130": "Comprende los gastos en las áreas de Administración General de la Seguridad y Protección Civil"
+    "132": "Comprende los gastos en las áreas de Seguridad y Orden Público"
+    "133": "Comprende los gastos en las áreas de Ordenación del tráfico y del estacionamiento"
+    "134": "Comprende los gastos destinados a Protección civil del municipio"
+    "135": "Incluye todos los gastos destinados al Servicio de extinción de incendios dentro del municipio"
+    "136": "Incluye todos los gastos destinados al Servicio de prevención y extinción de incendios del municipio"
+    "15": "Se incluyen todos los gastos de los servicios relacionados con la vivienda y el urbanismo, así como de los complementarios de éstos.\n
+      Así, pues, se imputarán a ella los gastos referentes a la construcción, mejora y conservación de viviendas y albergues, incluida la adquisición de terrenos; los derivados del planeamiento y régimen urbanístico del suelo; viales urbanos y otros de naturaleza análoga.\n
+      Se imputan a esta política de gasto los llevados a cabo en concepto de ayudas que posibilitan el acceso a la vivienda en cualquier régimen, en acciones propias o en colaboración con otras Administraciones Públicas. También se incluyen los gastos derivados de fomento de la promoción pública de viviendas.\n
+      Se tipifican cuatro grupos de programas distinguiéndose aquellos que tienen por finalidad la cobertura de gastos generales de administración asociados directamente al desarrollo de la política de la vivienda y del urbanismo"
+    "150": "Esta partida incluye los gastos en la Administración General de Vivienda y urbanismo"
+    "151": "Se incluyen los gastos en urbanismo"
+    "152": "Dentro del grupo de programas de Vivienda se tipifican dos programas, relativos a la Promoción y gestión de vivienda de protección pública y a Conservación y rehabilitación de la edificación."
+    "1521": "Promoción y gestión de vivienda de protección pública"
+    "1522": "Conservación y rehabilitación de la edificación"
+    "153": "Dentro del grupo de programas de vías públicas se tipifican dos programas, relativos al acceso a los núcleos de población y a la pavimentación de las vías públicas."
+    "1531": "Acceso a los núcleos de población"
+    "1532": "Pavimentación de vías públicas"
+    "154": "Fomento de la edificación protegida"
+    "155": "Vías públicas"
+    "16": "Comprende todos los gastos relativos a actuaciones y servicios cuya finalidad es la mejora de la calidad de vida en general.\n
+      Se imputarán a ella los derivados de la construcción, mantenimiento, conservación y funcionamiento de los servicios de alcantarillado, abastecimiento domiciliario de agua potable; recogida, eliminación o tratamiento de basuras; limpieza viaria; cementerios y servicios funerarios; y otros servicios de bienestar comunitario."
+    "160": "Alcantarillado"
+    "161": "Saneamiento, abastecimiento y distribución de aguas"
+    "162": "Dentro del grupo de programas Recogida, gestión y tratamiento de residuos se tipifican tres programas, relativos a recogida de residuos, gestión de residuos sólidos urbanos y tratamiento de residuos."
+    "1621": "Recogida de residuos"
+    "1622": "Gestión de residuos sólidos urbanos"
+    "1623": "Tratamiento de residuos"
+    "163": "Limpieza viaria"
+    "164": "Cementerios y servicios funerarios"
+    "165": "Alumbrado público"
+    "169": "Otros servicios de bienestar comunitario"
+    "17": "Se incluirán en esta política de gasto todos los gastos relativos a la protección y mejora del medio ambiente así como los de inversión y funcionamiento de los servicios de protección del medio natural; repoblación forestal, realizada por la propia Entidad o en consorcio con otras Administraciones Públicas; defensa contra incendios forestales, deslinde y amojonamiento o lucha contra la desertización; mantenimiento de playas y otros de naturaleza análoga."
+    "170": "Administración general del medio ambiente"
+    "171": "Parques y jardines"
+    "172": "Protección y mejora del medio ambiente"
+    "1721": "Protección contra la contaminación acústica, lumínica y atmosférica en las zonas urbanas"
+    "179": "Otras actuaciones relacionadas con el medio ambiente "
+    "21": "Pensiones graciables, mejoras de pensiones y pensiones extraordinarias a cargo de la Entidad local de funcionarios y personal laboral o sus derechohabientes y otros gastos de naturaleza similar."
+    "211": "Pensiones"
+    "22": "Comprende todos los gastos de este tipo, así como los derivados de la acción social a favor de los empleados, excepto las cuotas a cargo del empleador de Mutualidades y Seguridad Social."
+    "221": "Otras prestaciones económicas a favor de empleados"
+    "23": "Se imputarán a esta política de gasto los llevados a cabo por la Entidad local para desarrollar la asistencia social primaria: la promoción de la igualdad de género, promoción y reinserción social de marginados, así como para la gestión de los servicios sociales; prestación de servicios a personas dependientes y de asistencia social, residencias de ancianos y otros de naturaleza análoga; la evaluación e información de situaciones de necesidad social y la atención inmediata a personas en situación o riesgo de exclusión social. También se incluirán las transferencias finalistas a entidades y familias que colaboren en la consecución de estos fines.\n
+      Se incluirán los gastos correspondientes a la Administración General, que corresponderán a las actividades dirigidas a la planificación, coordinación, control, organización, gestión administrativa y desarrollo de funciones de apoyo de los distintos centros directivos que integran la política de gasto."
+    "230": "Administración General de servicios sociales"
+    "231": "Acción social"
+    "232": "Promoción social"
+    "233": "Asistencia a personas dependientes"
+    "24": "Se imputan a esta política de gasto aquellos que tienen por objeto el fomento y promoción del empleo en acciones propias o en colaboración con otras Administraciones Públicas."
+    "241": "Fomento del Empleo"
+    "31": "En esta política de gasto se incluyen los gastos que tienen por objeto la prevención y curación de enfermedades, así como el mantenimiento de un estado de inmunidad sanitario en la población. Quedan comprendidos los gastos destinados a la creación, construcción, equipamiento y funcionamiento de hospitales, clínicas y sanatorios de cualquier naturaleza, casas de socorro, dispensarios, botiquines de urgencia, balnearios, laboratorios de análisis, así como sus servicios complementarios, entre los que cabe citar ambulancias; servicios de salud pública; control y suministro de medicamentos y productos sanitarios; higiene pública; laboratorios de análisis agroalimentarios; actuaciones de seguridad alimentaria; campañas de desinfección, desinsectación o desratización, y otros de naturaleza análoga."
+    "311": "Protección de la salubridad pública"
+    "312": "Hospitales, servicios asistenciales y centros de salud"
+    "313": "Acciones públicas relativas a la salud"
+    "32": "Comprende esta política de gasto todos los gastos derivados de la creación, conservación y funcionamiento de centros e Instituciones de enseñanzas de todo tipo y sus servicios complementarios, así como las transferencias a otros entes o familias para ayuda y fomento de la misma.\n
+Los gastos incluidos en el grupo de programas de Administración General corresponderán a actividades dirigidas a la planificación, coordinación, control, organización, gestión administrativa y desarrollo de funciones de apoyo de los distintos centros directivos que integran la política de gasto.\n
+Así, se imputarán a esta política de gasto los gastos de construcción, dotación y funcionamiento de centros de enseñanza, distribuyéndose de acuerdo con los distintos niveles educativos a que se refieran. También se incluirán los gastos de centros benéfico-asistenciales cuando en ellos predomine el carácter educativo.\n
+Los gastos en concepto de transporte escolar, becas, ayudas, se consideran servicios complementarios de educación.\n
+Asimismo, se incluyen los gastos cuyo objeto sea la mejora del nivel educativo de los ciudadanos."
+    "320": "Administración general de educación"
+    "321": "Enseñanza preescolar y primaria"
+    "322": "Enseñanza secundaria"
+    "323": "Promoción educativa"
+    "324": "Servicios complementarios de educación"
+    "325": "Vigilancia del cumplimiento de la escolaridad obligatoria"
+    "326": "Servicios complementarios de educación"
+    "327": "Fomento de la convivencia ciudadana"
+    "33": "Esta política de gasto comprende los originados por los servicios a que se refiere su denominación, incluso los de carácter recreativo.\n
+Los gastos incluidos en el grupo de programas de Administración General corresponderán a actividades dirigidas a la planificación, coordinación, control, organización, gestión administrativa y desarrollo de funciones de apoyo de los distintos centros directivos que integran la política de gasto.\n
+Se incluyen los gastos de creación, conservación y funcionamiento de los edificios destinados a bibliotecas, museos, archivos, casas de la cultura, actividades culturales, de esparcimiento y tiempo libre como hogares del jubilado o casas de la juventud; salas de exposiciones, palacios de congresos, parques zoológicos, bandas de música y agrupaciones musicales, fiestas locales de carácter popular, actividades recreativas en playas, actuaciones en orden a la conservación, promoción y gestión del patrimonio histórico-artístico y otros gastos recreativos y culturales; comunicación, autorización, inspección y sanción de los espectáculos públicos; así como las transferencias a Entidades o familias que colaboren en el fomento de estas actividades."
+    "330": "Administración General de Cultura"
+    "332": "Bibliotecas y Archivos"
+    "3321": "Bibliotecas Públicas"
+    "3322": "Archivos"
+    "333": "Museos y Artes Plásticas"
+    "334": "Promoción cultural"
+    "335": "Artes escénicas"
+    "336": "Arqueología y protección del Patrimonio Histórico-Artístico"
+    "337": "Ocio y tiempo libre"
+    "338": "Fiestas populares y festejos"
+    "34": "Esta política de gasto comprende los originados por los servicios a que se refiere su denominación, tales como promoción y difusión deportiva, gastos de creación, conservación y funcionamiento de los edificios destinados a piscinas, instalaciones deportivas de todo tipo o cualquier otra actuación directamente relacionada con el deporte o la política deportiva de la respectiva Entidad local.\n
+Los gastos incluidos en el grupo de programas de Administración General corresponderán a actividades dirigidas a la planificación, coordinación, control, organización, gestión administrativa y desarrollo de funciones de apoyo de los distintos centros directivos que integran la política de gasto."
+    "340": "Administración General de Deportes"
+    "341": "Promoción y fomento del deporte"
+    "342": "Instalaciones deportivas"
+    "41": "Comprende los gastos de toda índole destinados a la mejora, fomento y ordenación de las actividades agrícolas, ganaderas y piscícolas.\n
+Los gastos incluidos en el grupo de programas de Administración General corresponderán a actividades dirigidas a la planificación, coordinación, control, organización, gestión administrativa y desarrollo de funciones de apoyo de los distintos centros directivos que integran la política de gasto.\n
+Se imputarán los gastos relativos a planes de ordenación del sector; colonización y concentración parcelaria; fomento del movimiento cooperativo y promoción del asociacionismo; fomento de la industrialización agroalimentaria; formación de jóvenes empresarios; centros de extensión agraria y otros de igual naturaleza.\n
+Se incluirán, además, los gastos relacionados con el control y erradicación de plagas; mejora y selección de semillas y de ganados, centros de biotecnología; explotaciones experimentales agrícolas y otras de naturaleza similar.\n
+Asimismo comprende los gastos relacionados con la creación, mejora y mantenimiento de infraestructuras básicas en actividades agrícolas, ganaderas, piscícolas o cinegéticas; regadíos; modificación y mejora de las estructuras; conservación y saneamiento de suelos y otras de naturaleza similar.\n
+Igualmente se imputará a esta política de gasto, en su caso, la aportación o cuota al depósito agrícola."
+    "410": "Administración General de Agricultura, Ganadería y Pesca"
+    "412": "Mejora de las estructuras agropecuarias y de los sistemas productivos"
+    "414": "Desarrollo rural"
+    "415": "Protección y desarrollo de los recursos pesqueros"
+    "419": "Otras actuaciones en agricultura, ganadería y pesca"
+    "42": "Comprende los gastos de todo tipo destinados a la promoción, apoyo y desarrollo de la industria en el ámbito de acción de la Entidad local.\n
+Los gastos incluidos en el grupo de programas de administración general corresponderán a actividades dirigidas a la planificación, coordinación, control, organización, gestión administrativa y desarrollo de funciones de apoyo de los distintos centros directivos que integran la política de gasto.\n
+Se imputarán a esta política de gasto los ocasionados con motivo de inversión en capital de empresas; fomento de la acción empresarial; ayudas para la reconversión y reindustrialización; fomento del asociacionismo de empresas industriales, y todo tipo de transferencias con destino a estos fines y de incentivos a la localización industrial.\n
+Se incluirán, además, los gastos relacionados con el apoyo a la minería, investigación, preparación, comercialización y otras actividades de la producción minera.\n
+Asimismo comprende los gastos relacionados con la producción, transmisión y distribución de energía, en especial de gas y electricidad. También se imputarán a esta política de gasto las transferencias a otros agentes con el fin específico propio de las actividades que se contemplan en la misma."
+    "420": "Administración General de Industria y energía"
+    "422": "Industria"
+    "423": "Minería"
+    "425": "Energía"
+    "43": "Se incluirán los gastos de cualquier naturaleza de los servicios de la Entidad relacionados con el comercio o la actividad comercial.\n
+Los gastos incluidos en el grupo de programas de Administración General corresponderán a actividades dirigidas a la planificación, coordinación, control, organización, gestión administrativa y desarrollo de funciones de apoyo de los distintos centros directivos que integran la política de gasto.\n
+Comprenderá, los gastos correspondientes a mercados centrales o de minoristas, lonjas y a cualesquiera otras instalaciones similares; actuaciones en defensa de la competencia; control de pesas y medidas y otros de naturaleza análoga; inspección y sanción de establecimientos.\n
+Se incluirán también los gastos de cualquier naturaleza asociados al desarrollo y fomento del turismo.\n
+Se imputarán los gastos de construcción, mejora, conservación y funcionamiento de establecimientos hoteleros, campings, oficinas de turismo, edición de folletos, carteles y libros y campañas publicitarias. Se recogen también las transferencias que se conceden a otras entidades públicas o privadas, con destino al cumplimiento de estos fines.\n
+Por último, se incluirán en esta política de gasto los destinados al desarrollo de las pequeñas y medianas empresas."
+    "430": "Administración General de Comercio, turismo y pequeñas y medianas empresas"
+    "431": "Comercio"
+    "4311": "Ferias"
+    "4312": "Mercados, Abastos y Lonjas"
+    "4313": "Comercio Ambulante"
+    "432": "Ordenación y promoción turística"
+    "433": "Desarrollo empresarial"
+    "439": "Otras actuaciones sectoriales"
+    "44": "Se incluirán los gastos a cargo de las entidades locales destinados al mantenimiento, desarrollo y financiación del servicio de transporte público.\n
+Los gastos incluidos en el grupo de programas de Administración General corresponderán a actividades dirigidas a la planificación, coordinación, control, organización, gestión administrativa y desarrollo de funciones de apoyo de los distintos centros directivos que integran la política de gasto.\n
+Se aplicarán a esta política de gastos todos los de inversión destinados a la adquisición de medios de transporte; y a la creación, mejora y mantenimiento de infraestructuras, como estaciones de autobuses, puertos, aeropuertos y otras de naturaleza análoga."
+    "440": "Administración general del transporte"
+    "441": "Promoción, mantenimiento y desarrollo del transporte"
+    "4411": "Transporte colectivo urbano de viajeros"
+    "4412": "Otro transporte de viajeros"
+    "442": "Infraestructuras del transporte"
+    "443": "Transporte de mercancías"
+    "45": "Comprende los gastos de toda índole tendentes a la creación, mejora y mantenimiento de las infraestructuras básicas no incluidas en políticas de gasto anteriores.\n
+Los gastos incluidos en el grupo de programas de Administración General corresponderán a actividades dirigidas a la planificación, coordinación, control, organización, gestión administrativa y desarrollo de funciones de apoyo de los distintos centros directivos que integran la política de gasto.\n
+Se aplicarán a esta política de gasto todos los de inversión destinados a la construcción y mejora de carreteras y caminos vecinales a cargo de la Entidad local y otros gastos complementarios de los anteriores, como puentes, viaductos, señalización o balizamiento, así como gastos relativos a estudios y servicios de asistencia técnica que resulten necesarios. En cuanto a recursos hidráulicos se incluirán gastos en obras de captación, acumulación y canalización hasta el inicio de la red de distribución urbana y otros de similar naturaleza."
+    "450": "Administración General de Infraestructuras"
+    "452": "Recursos Hidráulicos"
+    "453": "Carreteras"
+    "454": "Caminos vecinales"
+    "459": "Otras infraestructuras"
+    "46": "Comprende los gastos de administración, infraestructuras, funcionamiento y apoyo destinados a la investigación básica y aplicada, incluso las transferencias a otros agentes con esta finalidad.\n
+Se imputarán a esta política de gasto los relativos a actividades dirigidas al fomento de los conocimientos científicos puros y aquellos con objetivos prácticos, específicos o concretos y que no puedan aplicarse a ninguna otra política de gasto."
+    "462": "Investigación y estudios relacionados con los servicios públicos"
+    "463": "Investigación científica, técnica y aplicada"
+    "49": "Comprende los gastos de gestión, funcionamiento, apoyo, suministro y promoción de los servicios de telecomunicaciones, de la Sociedad de la Información, de la gestión del conocimiento y otros de naturaleza análoga; medios de comunicación, producción y difusión de programas audiovisuales, administración electrónica, oficinas de atención y defensa al consumidor; así como las transferencias a otros agentes para el cumplimiento de estos fines."
+    "491": "Sociedad de la información"
+    "492": "Gestión del conocimiento"
+    "493": "Oficinas de defensa al consumidor"
+    "91": "Comprende los gastos relativos a la constitución y funcionamiento de los órganos de gobierno de la Entidad local y de representación de los mismos. Se incluirán, por tanto, las asignaciones e indemnizaciones del Presidente y miembros de la corporación; secretarías particulares de la presidencia; dietas y gastos de viaje y otros de naturaleza análoga. También se imputarán a esta política de gasto los de material y los necesarios para la atención de los órganos de gobierno."
+    "912": "Órganos de gobierno"
+    "92": "Comprende los gastos de aquellos servicios que sirven o apoyan a todos los demás de la Entidad local.\n
+Se imputarán, por tanto, a esta política de gasto los de oficina y dependencias generales; información, publicaciones, registro y relaciones; desarrollos y soportes informáticos de carácter interno; coordinación y control general: archivo, organización y métodos, racionalización y mecanización; administración de personal; elecciones; atención y participación ciudadana, parque móvil, con exclusión de los vehículos afectados a servicios determinados que se imputarán a la correspondiente rúbrica y gastos de asesoramiento y defensa de los intereses de la entidad.\n
+Esta política de gasto integrará los derivados de actividades relacionadas con la elaboración de información básica de carácter general y series estadísticas sobre los distintos servicios de la Entidad local.\n
+Se imputarán, asimismo, los gastos referentes a gabinetes de estudio e información y documentación de carácter general."
+    "920": "Administración General"
+    "922": "Coordinación y organización institucional de las entidades locales"
+    "923": "Información básica y estadística"
+    "9231": "En cumplimiento de lo dispuesto en el artículo 31 de la Ley Orgánica 2/2012, de 27 de abril, de Estabilidad Presupuestaria y Sostenibilidad Financiera, las entidades locales incluidas en el ámbito subjetivo de los artículos 111 y 135 del texto refundido de la Ley reguladora de las Haciendas Locales, aprobado por Real Decreto Legislativo 2/2004, de 5 de marzo, incluirán dentro del grupo de programas 929 «Imprevistos, situaciones transitorias y contingencias de ejecución» una dotación diferenciada de créditos presupuestarios en concepto de Fondo de Contingencia de ejecución presupuestaria, para atender necesidades de carácter no discrecional y no previstas en el presupuesto inicialmente aprobado, que puedan presentarse a lo largo del ejercicio. Las entidades locales no incluidas en aquel ámbito subjetivo aplicarán este mismo criterio en el caso de que aprueben la dotación de un Fondo de contingencia con la misma finalidad citada."
+    "924": "Participación ciudadana"
+    "925": "Atención a los ciudadanos"
+    "926": "Comunicaciones internas"
+    "929": "Imprevistos y funciones no clasificadas"
+    "93": "Comprende esta política de gasto todos los gastos correspondientes a la administración financiera de la Entidad local.\n
+Se imputarán los gastos generales de los servicios de economía y hacienda; planificación y presupuestos y fiscalidad; control interno y contabilidad y cuentas generales; gestión de la tesorería; gestión del patrimonio, contabilidad patrimonial y rendición de cuentas; gestión, inspección y recaudación de tributos, formación y actualización de padrones fiscales; órganos de resolución de reclamaciones económico-administrativas y de defensa al contribuyente y otros gastos relacionados con la actividad económica y financiera de la entidad.\n
+Asimismo se incluyen los gastos referentes a la construcción, mejora y conservación, incluida la adquisición de terrenos, de edificios oficiales de uso múltiple."
+    "931": "Política económica y fiscal"
+    "932": "Gestión del sistema tributario"
+    "933": "Gestión del patrimonio"
+    "934": "Gestión de la deuda y de la tesorería"
+    "94":  "Se imputarán a esta política de gasto las transferencias genéricas que ordene la Entidad local hacia el Estado o la Comunidad Autónoma o a favor de otros entes locales, como son las participaciones en ingresos, cuotas de mancomunidades o consorcios y cualesquiera otras de naturaleza similar. Se distinguen, a estos efectos las entidades locales territoriales (artículo 3.1 de la Ley 7/1985, de 2 de abril, de la Ley reguladora de las Bases del Régimen Local) y el resto de entidades locales.\n
+Se tipifican cuatro grupos de programas en razón del agente receptor de la misma."
+    "941": "En esta partida se incluyen los gastos en transferencias a Comunidades Autónomas"
+    "942": "En esta partida se incluyen los gastos en transferencias a Entidades Locales territoriales"
+    "943": "En esta partida se incluyen los gastos en transferencias a otras Entidades Locales"
+    "944": "En esta partida se incluyen los gastos en transferencias a la Administración General del Estado"
