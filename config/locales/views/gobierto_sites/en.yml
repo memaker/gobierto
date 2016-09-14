@@ -4,15 +4,18 @@ en:
       index:
         in_year: In
         per_person: Per person
-        we_spend: we spend
-        totally: Totally
-        last_year_we_spent: Last year we spent
-        this_year_we_spent: This year we spent
+        we_spend: we spent
+        we_will_spend: we will spend
+        totally: A grand total of
+        previous_year_we_spent: That year we spent
+        that_year_we_spent: That year we spent
         than_planned: than planned
-        last_year_data_we_owe: According to last year's data, we owe
-        this_year_data_we_owe: According to this year's data, we owe
-        than_two_years_ago: than two years ago
-        than_last_year: than last year
+        previous_year_data_we_owe: According to the previous year's data, we owed
+        that_year_data_we_owe: According to the year's data, we owed
+        less: less
+        more: more
+        than_two_years_ago: than the year before
+        than_last_year: than the previous year
         summary: Summary
         twitter_text: "From @gobierto: Municipality budgets from %{name} in %{year}"
         main_budget_lines: Main income and expenses from your council

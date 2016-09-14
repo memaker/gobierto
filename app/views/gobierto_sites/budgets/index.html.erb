@@ -4,20 +4,27 @@
     <div class="pure-u-1 pure-u-md-4-24">
       <h2><%= t('.in_year') %> <%= render partial: 'gobierto_sites/budgets/year_breadcrumb' %>...</h2>
     </div>
-
+    <% current_year = (@year.to_i == Time.now.year) 
+       will = current_year ? "_will_" : "_" %>
     <div class="pure-u-1 pure-u-md-10-24 p_h_1">
       <ul>
-        <li><%= t('.per_person') %> <strong><%= t('.we_spend') %> <span class="highlight"><%= number_to_currency @site_stats.total_budget_per_inhabitant, precision: 2 %></span></strong>.</li>
+        <li><%= t('.per_person') %> <strong><%= t(".we#{will}spend") %> <span class="highlight"><%= number_to_currency @site_stats.total_budget_per_inhabitant, precision: 2 %></span></strong>.</li>
         <li><%= t('.totally') %><strong> <span class="highlight"><%= format_currency @site_stats.total_budget %></span></strong>.</li>
-        <% if @site_stats.has_data?(:total_budget_planned, @year) && @site_stats.has_data?(:total_budget_executed, @year) %>
-          <li><%= t('.this_year_we_spent') %> <span class="highlight"><strong><%= @site_stats.percentage_difference(variable1: :total_budget_executed, variable2: :total_budget_planned, year: @year) %></strong></span> <%= t '.than_planned' %>.</li>
+        <% if @site_stats.has_data?(:total_budget_planned, @year) && @site_stats.has_data?(:total_budget_executed, @year) 
+
+            %>
+          <li><%= t('.that_year_we_spent') %> <span class="highlight"><strong><%= @site_stats.percentage_difference(variable1: :total_budget_executed, variable2: :total_budget_planned, year: @year) %></strong></span> <%= t '.than_planned' %>.</li>
         <% else %>
-          <li><%= t('.last_year_we_spent') %> <span class="highlight"><strong><%= @site_stats.percentage_difference(variable1: :total_budget_executed, variable2: :total_budget_planned, year: @year-1) %></strong></span> <%= t '.than_planned' %>.</li>
+          <li><%= t('.previous_year_we_spent') %> <span class="highlight"><strong><%= @site_stats.percentage_difference(variable1: :total_budget_executed, variable2: :total_budget_planned, year: @year-1) %></strong></span> <%= t '.than_planned' %>.</li>
         <% end %>
         <% if @site_stats.has_data?(:debt, @year) && @site_stats.has_data?(:debt, @year-1) %>
-          <li><%= t('.this_year_data_we_owe') %> <strong><span class="highlight"><%= format_currency @site_stats.debt(@year) %></span></strong>, <%= number_with_precision(@site_stats.percentage_difference(variable1: :debt, year1: @year, year2: @year-1), precision: 2) %> <%= t('.than_last_year') %>.</li>
-        <% else %>
-          <li><%= t('.last_year_data_we_owe') %> <strong><span class="highlight"><%= format_currency @site_stats.debt(@year - 1) %></span></strong>, <%= number_with_precision(@site_stats.percentage_difference(variable1: :debt, year1: @year-1, year2: @year-2), precision: 2) %> <%= t('.than_two_years_ago') %>.</li>
+          <li><%= t('.that_year_data_we_owe') %> <strong><span class="highlight"><%= format_currency @site_stats.debt(@year) %></span></strong>, <%= number_with_precision(@site_stats.percentage_difference(variable1: :debt, year1: @year, year2: @year-1), precision: 2) %> <%= t('.than_last_year') %>.</li>
+        <% elsif @site_stats.has_data?(:debt, @year - 1) %>
+          <li>
+            <%= t('.previous_year_data_we_owe') %> <strong><span class="highlight"><%= format_currency @site_stats.debt(@year - 1) %></span></strong>
+            <% if @site_stats.has_data?(:debt, @year - 2) %>, <%= number_with_precision(@site_stats.percentage_difference(variable1: :debt, year1: @year-1, year2: @year-2), precision: 2) %> <%= t('.than_two_years_ago') %>.
+            <% end %>
+          </li>
         <% end %>
       </ul>
     </div>

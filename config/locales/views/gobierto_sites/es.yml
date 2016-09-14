@@ -4,15 +4,18 @@ es:
       index:
         in_year: En el
         per_person: Por habitante
-        we_spend: nos gastamos
-        totally: En total son
-        last_year_we_spent: El año pasado gastamos un 
-        this_year_we_spent: Este año gastamos un 
+        we_spend: gastamos
+        we_will_spend: gastaremos
+        totally: Un total de
+        previous_year_we_spent: El año anterior gastamos un 
+        that_year_we_spent: Se gastó un 
         than_planned: de lo planeado
-        last_year_data_we_owe: Según datos del año pasado, debemos 
-        this_year_data_we_owe: Según datos de este año, debemos 
-        than_two_years_ago: que hace dos años
-        than_last_year: que hace un año
+        previous_year_data_we_owe: A cierre del año anterior, debíamos 
+        that_year_data_we_owe: A cierre de año, debíamos 
+        less: menos
+        more: más
+        than_two_years_ago: que el año previo
+        than_last_year: que el año anterior
         summary: Resumen
         twitter_text: "En @gobierto: Presupuestos municipales de %{name} del %{year}"
         main_budget_lines: Los principales gastos e ingresos de tu ayuntamiento
