@@ -543,22 +543,30 @@ select::-ms-expand { /* for IE 11 */
 	background: transparentize($color_main, .94); // rgba($color_main, .06);
 	@include border-radius(6px);
 	padding: .5em 0;
+	td.bar {
+		padding-right: 0;
+	}
+	div.bar {
+		background: $color_vis_country;
+		height: 18px;
+		@include border-radius(3px);
+	}
 }
 table.med_bg {
 	width: 100%;
 	background: $color_main_negative;
-	tr:first-child {
+	/*tr:first-child {
 		td {
 			border-top: 3px solid $color_main;
 		}
-	}
+	}*/
 	td, th {
 		border-top: 1px solid transparentize($color_main, .85);
 		background: transparentize($color_main, .94);
 		padding: .7em 1em .4em;
 		font-size: .85em;
 		a {
-			display: inline-block;
+			display: inline;
 		}
 	}
 	th {
@@ -569,20 +577,30 @@ table.med_bg {
 		opacity: .5;
 		border: none;
 	}
-	tr {
-
-	}
 	tr:hover {
 		@include transition;
 		td, th {
 			background: rgba($color_main, .1) !important;
 		}
 	}
-	.qty {
+	td.qty, td.bar {
+		width: 70px;
+	}
+	td.qty {
 		text-align: right;
 	}
 	.budget_line {
 		width: 50%;
+	}
+	tr.child_group > td:first-child {
+		padding-right: 0;
+		padding-left: 2.5em;
+	}
+	tr.child_group {
+		.child_tb_cont {
+			padding: 0;
+			margin: 0 0 1em 0;
+		}
 	}
 }
 table {
