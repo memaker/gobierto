@@ -1,0 +1,25 @@
+<div class="breadcrumb year_only stick_ip">
+  <div class="column">
+    <div class="bread_hover">
+      <div class="bread_links">
+        <%= link_to @year, gobierto_sites_budgets_path(@year) %>
+      </div>
+
+      <div class="line_browser clearfix">
+        <div class="bread_links clearfix">
+          <%= link_to @year, gobierto_sites_budgets_path(@year) %>
+        </div>
+
+        <div class="col" data-level="0">
+          <table  class="med_bg">
+            <% GobiertoBudgets::SearchEngineConfiguration::Year.all.each do |year| %>
+              <tr >
+                <td data-code="<%= year %>"><%= link_to year, url_for(params.reject {|k,v| k == 'page' }.merge(year: year)) %></td>
+              </tr>
+            <% end %>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
