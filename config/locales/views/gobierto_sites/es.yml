@@ -2,7 +2,7 @@ es:
   gobierto_sites:
     budgets:
       index:
-        in_year: "En %{year}..."
+        in_year: En el
         per_person: Por habitante
         we_spend: nos gastamos
         totally: En total son

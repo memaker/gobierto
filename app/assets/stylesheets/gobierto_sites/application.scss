@@ -735,6 +735,18 @@ h1, h2, h3, h4 {
 	}
 }
 
+.numbers_intro .breadcrumb {
+	display: inline-block;
+	padding:0;
+	.column { width:auto; }
+	.line_browser {
+		margin-top: -1.83em;
+		margin-left: -1.03em;
+		padding: 1em 0em 1em 1em;
+		z-index: 1;
+	}
+}
+
 .line_browser {
 	overflow: hidden;
 	white-space: nowrap;
