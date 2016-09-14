@@ -285,6 +285,29 @@ header.section {
 	.social_links_container {
 		float: right;
 	}
+	.breadcrumb {
+		display: inline-block;
+		padding: 0;
+		.column { 
+			width:
+			auto; 
+		}
+		.line_browser {
+			margin-top: -1.83em;
+			margin-left: -1.03em;
+			padding: 1em 0em 1em 1em;
+			z-index: 1;
+		}
+		.bread_links {
+			a {
+				margin: 0;
+				text-decoration: none;
+				background: transparentize($color_main, .94);
+				padding: 0 10px;
+				@include border-radius(6px);
+			}	
+		}
+	}
 }
 .intro_p_l {
 	position: relative;
@@ -732,18 +755,6 @@ h1, h2, h3, h4 {
 	margin-bottom: -3em;
 	.bread_hover {
 		max-width: 100px;
-	}
-}
-
-.numbers_intro .breadcrumb {
-	display: inline-block;
-	padding:0;
-	.column { width:auto; }
-	.line_browser {
-		margin-top: -1.83em;
-		margin-left: -1.03em;
-		padding: 1em 0em 1em 1em;
-		z-index: 1;
 	}
 }
 
