@@ -100,6 +100,11 @@ namespace :gobierto_budgets do
           kind: 'G'
         }
 
+        # There's a bug in the government data
+        if code.to_i == 91
+          query[:name] = "Órganos de gobierno"
+        end
+
         id = ['functional',code,'G'].join('/')
 
         GobiertoBudgets::SearchEngine.client.index index: GobiertoBudgets::SearchEngineConfiguration::BudgetCategories.index, type: GobiertoBudgets::SearchEngineConfiguration::BudgetCategories.type, id: id,  body: query
