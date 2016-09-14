@@ -163,7 +163,7 @@ module GobiertoBudgets
         attrs << %Q{data-comparison-track-url="#{request.path}"}
         attrs << %Q{data-comparison-slug="#{params[:slug_list]}"}
       end
-      attrs << %Q{data-year="#{@year || 2015}"}
+      attrs << %Q{data-year="#{@year || GobiertoBudgets::SearchEngineConfiguration::Year.last}"}
       attrs << %Q{data-kind="#{@kind || 'expense'}"}
       attrs << %Q{data-area="#{@area_name || 'economic'}"}
       attrs << %Q{data-action="#{action_name}"}
