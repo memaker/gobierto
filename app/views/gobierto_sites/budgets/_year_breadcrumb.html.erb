@@ -2,12 +2,12 @@
   <div class="column">
     <div class="bread_hover">
       <div class="bread_links">
-        <%= link_to @year, gobierto_sites_budgets_path(@year) %>
+        <%= link_to @year, send(path_calculation_method, @year) %>
       </div>
 
       <div class="line_browser clearfix">
         <div class="bread_links clearfix">
-          <%= link_to @year, gobierto_sites_budgets_path(@year) %>
+          <%= link_to @year, send(path_calculation_method, @year) %>
         </div>
 
         <div class="col" data-level="0">

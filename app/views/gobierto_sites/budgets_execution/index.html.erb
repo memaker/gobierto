@@ -4,6 +4,8 @@
   set_meta_tags description: "Detalle sobre la ejecución del presupuesto municipal de #{@place.name} del #{@year}. Consulta la diferencia entre lo presupuestado y lo ejecutado."
 %>
 
+<%= render partial: 'gobierto_sites/budgets/year_breadcrumb', locals: {path_calculation_method: :gobierto_sites_budgets_execution_path} %>
+
 <div class="column">
 
 	<div class="execution">

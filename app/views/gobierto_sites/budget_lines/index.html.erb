@@ -1,5 +1,5 @@
 <% title 'Presupuestos' %>
-<%= render partial: 'gobierto_sites/budgets/year_breadcrumb' %>
+<%= render partial: 'gobierto_sites/budgets/year_breadcrumb', locals: {path_calculation_method: :gobierto_sites_budgets_path} %>
 <div class="column">
   <%= render partial: 'gobierto_sites/budget_lines/explorer' %>
 </div>
