@@ -728,6 +728,13 @@ h1, h2, h3, h4 {
 	@include box-shadow(0,3px,6px,rgba(0, 0, 0, 0.2));
 }
 
+.breadcrumb.year_only {
+	margin-bottom: -3em;
+	.bread_hover {
+		max-width: 100px;
+	}
+}
+
 .line_browser {
 	overflow: hidden;
 	white-space: nowrap;
