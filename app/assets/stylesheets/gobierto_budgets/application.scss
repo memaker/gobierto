@@ -3129,14 +3129,14 @@ html.turbolinks-progress-bar::before {
  */
 .execution {
   margin: 3em 0;
-  .block {
+  .box {
     .inner {
       box-sizing: border-box;
     }
     .vizz {
       /*border: 1px solid #DFDFDF;*/
       min-height: 60px;
-      margin: 1.7em 0em 0 1em ;
+      margin: 1em 0 2em 2em;
       .axis {
         line, path {
           fill: none;
@@ -3170,14 +3170,6 @@ html.turbolinks-progress-bar::before {
     h1 {
       color: $color_1;
       font-size: 3.6em;
-    }
-    @include screen(1280) {
-      .vizz {
-        margin: 0em 1em 1em;
-      }
-      h1 {
-        text-align: center;
-      }
     }
     .totals {
       table {
@@ -3256,10 +3248,10 @@ html.turbolinks-progress-bar::before {
 
 
 /*
- * Blocks
+ * Content Boxes
  *
  */
-.block {
+.box {
   background: $color_1_soft;
   @include border-radius(6px);
   .inner {
